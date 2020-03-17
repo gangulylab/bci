@@ -41,7 +41,7 @@ Params.MaxVelocity              = 200;
 
 %% Cursor Click
 Params.ClickerBins = 1; % set to -1 to use target hold time instead of click
-Params.DecisionBoundary= -0.5;
+Params.DecisionBoundary= -0.6;
 Params.ClickerDataCollection = false; % if true, does not use clicker, freezes cursor when in target
 if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
