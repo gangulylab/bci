@@ -22,7 +22,7 @@ else, % clicking
     decision = -1;
 end
 
-distance_from_boundary
+% distance_from_boundary
 
 
 

@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'RadialTyping';
+Params.Task = 'RadialTyping'; 
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -33,7 +33,7 @@ Params.CueTextFlag          = false;
 Params.CueTarget            = false;
 
 %% Cursor Velocity
-Params.Gain                     = 2; %10;
+Params.Gain                     = 6; %10;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
 Params.VelocityTransformFlag    = false;
 Params.MaxVelocityFlag          = false;
@@ -41,14 +41,14 @@ Params.MaxVelocity              = 200;
 
 %% Cursor Click
 Params.ClickerBins = 1; % set to -1 to use target hold time instead of click
-Params.DecisionBoundary= -0.5;
+Params.DecisionBoundary= -0.6;
 Params.ClickerDataCollection = false; % if true, does not use clicker, freezes cursor when in target
 if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Timing
 Params.ScreenRefreshRate = 10; % Hz
@@ -119,7 +119,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 3;
-Params.NumTrialsPerBlock    = 10;
+Params.NumTrialsPerBlock    = 25;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};

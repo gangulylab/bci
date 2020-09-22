@@ -16,7 +16,7 @@ end
 %% Control
 Params.CenterReset      = true;
 Params.Assistance       = 0; %0.05; % value btw 0 and 1, 1 full assist
-Params.DaggerAssist 	= true;
+Params.DaggerAssist 	= false;
 
 Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
@@ -32,7 +32,7 @@ Params.CueTextFlag          = false;
 Params.DrawFormattedText    = true;
 
 %% Cursor Velocity
-Params.Gain                     = 2;
+Params.Gain                     = 8;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
 Params.VelocityTransformFlag    = false;
 Params.MaxVelocityFlag          = false;
@@ -40,14 +40,14 @@ Params.MaxVelocity              = 200;
 
 %% Cursor Click
 Params.ClickerBins = 1; % set to -1 to use target hold time instead of click
-Params.DecisionBoundary= -0.5;
+Params.DecisionBoundary= -0.4;
 Params.ClickerDataCollection = false; % if true, does not use clicker, freezes cursor when in target
 if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Timing
 Params.ScreenRefreshRate = 10; % Hz
@@ -75,7 +75,7 @@ Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
 G = Params.Gain;
 t = 1/Params.UpdateRate;
-a = 0.85;%.825;
+a = 0.91;%.825;
 w = 150;
 if Params.ControlMode>=3,
     Params = LoadKF2dDynamics(Params, G, t, a, w);
@@ -94,7 +94,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 10;
-Params.NumTrialsPerBlock    = 20;
+Params.NumTrialsPerBlock    = 50;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};

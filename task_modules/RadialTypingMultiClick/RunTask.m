@@ -7,9 +7,9 @@ Cursor.ControlMode = Params.ControlMode;
 
 % Load Clicker
 if Params.ClickerBins ~= -1,
-    f = load(fullfile('clicker','clicker_svm_mdl.mat'));
+    f = load(fullfile('clicker','multiclick_svm_kick_vs_ok_03092020.mat'));
     Clicker.Model = f.model;
-    Clicker.Func = @ (X) click_classifier(X,Clicker.Model);
+    Clicker.Func = @ (X) multiclick_classifier(X,Clicker.Model);
 else,
     Clicker = [];
 end

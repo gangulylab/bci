@@ -33,7 +33,7 @@ Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets t
 Params.DrawFormattedText    = false;
 
 %% Cursor Velocity
-Params.Gain                     = 2; %10;
+Params.Gain                     = 7; %10;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
 Params.VelocityTransformFlag    = false;
 Params.MaxVelocityFlag          = false;
@@ -45,20 +45,20 @@ Params.ClickerBins = 1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
 Params.ClickerDataCollection = false; % if true, does not use clicker, freezes cursor when in target
 if Params.ClickerDataCollection,
-    Params.ClickerBins = -1; % must override to not use clicker
+    Params.ClickerBins = -1; % must overr   ide to not use clicker
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Timing
 Params.ScreenRefreshRate = 10; % Hz
 Params.UpdateRate = 10; % Hz
 
 %% Targets: radial layout
-Params.NumReachTargets   = 8;
+Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 350; % defines outer edge of target
+Params.OuterCircleRadius = 400; % defines outer edge of target
 Params.InnerCircleRadius =100; % defines inner edge of target
 Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
@@ -119,7 +119,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 3;
+Params.NumFixedBlocks       = 6;
 Params.NumTrialsPerBlock    = 10;
 
 %% CLDA Parameters

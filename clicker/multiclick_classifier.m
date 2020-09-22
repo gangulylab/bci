@@ -15,12 +15,15 @@ if size(X,1) ~= 1
     X=X';
 end
 
+decision=0;
 distance_from_boundary = X(129:end)*model.w'; % ignoring delta phase info
-if distance_from_boundary>-0.2, % not clicking
+if distance_from_boundary<-0.4, % not clicking
     decision = 1;
-else, % clicking
-    decision = -1;
+elseif distance_from_boundary>0.2, % clicking
+    decision = 2;
 end
+
+% distance_from_boundary
 
 end % multiclick_classifier
 

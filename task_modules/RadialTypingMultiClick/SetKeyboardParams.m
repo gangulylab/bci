@@ -33,7 +33,7 @@ KP.WordColor     = [0, 150, 255];
 KP.NextWordColor = [0, 255, 150];
 
 %% Text
-KP.Text.CharacterSets = {'A B','A B','A B','A B','A B','A B','A B','A B'};
+KP.Text.CharacterSets = {'A B','A B','A B','A B'};%,'A B','A B','A B','A B'};
 KP.Text.CharDisplayOpts = {'FontSize', 25,...
                             'Offset', [10, 18],...
                              'Color', [170, 170, 170]};

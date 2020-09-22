@@ -14,11 +14,12 @@ if (Params.GenNeuralFeaturesFlag),
        Click_Decision = 0;
    end
 else,
-   [~, Click_Decision] = Clicker.Func(Neuro.NeuralFeatures);
+   [ Click_Decision,~] = Clicker.Func(Neuro.NeuralFeatures);
 end
 
 % must click for X bins in a row
 if Click_Decision, % clicking
+    Cursor.ClickState(setdiff(1:Params.NumClickerClasses, Click_Decision)) = 0;
     Cursor.ClickState(Click_Decision) = Cursor.ClickState(Click_Decision) + 1;
     return;
 else, % not clicking

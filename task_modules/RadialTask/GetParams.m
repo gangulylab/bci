@@ -29,7 +29,7 @@ Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true
 
 %% Cursor Velocity
-Params.Gain                     = 2;
+Params.Gain                     = 7;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
 Params.VelocityTransformFlag    = false;
 Params.MaxVelocityFlag          = false;
@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Timing
 Params.ScreenRefreshRate = 10; % Hz
@@ -53,8 +53,8 @@ Params.UpdateRate = 10; % Hz
 %% Targets: radial layout
 Params.NumReachTargets   = 8;
 Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 300; % defines outer edge of target
-Params.InnerCircleRadius = 50; % defines inner edge of target
+Params.OuterCircleRadius = 350; % defines outer edge of target
+Params.InnerCircleRadius = 150; % defines inner edge of target
 Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
 Params.TargetsColor        = [100,100,100]; % all targets
@@ -113,8 +113,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 2;
-Params.NumTrialsPerBlock    = 8;
+Params.NumFixedBlocks       = 5;
+Params.NumTrialsPerBlock    = 10;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -122,7 +122,7 @@ Params.CLDA.TypeStr     = TypeStrs{Params.CLDA.Type+1};
 
 Params.CLDA.UpdateTime = 80; % secs, for smooth batch
 Params.CLDA.Alpha = exp(log(.5) / (120/Params.CLDA.UpdateTime)); % for smooth batch
-
+ 
 % Lambda
 Params.CLDA.Lambda = 5000; % for RML
 FinalLambda = 5000; % for RML

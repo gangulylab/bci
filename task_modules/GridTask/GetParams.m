@@ -29,7 +29,7 @@ Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true
 
 %% Cursor Velocity
-Params.Gain                     = 2;
+Params.Gain                     = 12;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
 Params.VelocityTransformFlag    = false;
 Params.MaxVelocityFlag          = false;
@@ -37,14 +37,14 @@ Params.MaxVelocity              = 200;
 
 %% Cursor Click
 Params.ClickerBins = 1; % set to -1 to use target hold time instead of click
-Params.DecisionBoundary= -0.5;
+Params.DecisionBoundary= -0.8;
 Params.ClickerDataCollection = false; % if true, does not use clicker, freezes cursor when in target
 if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Timing
 Params.ScreenRefreshRate = 10; % Hz
@@ -53,13 +53,13 @@ Params.UpdateRate = 10; % Hz
 %% Targets
 Params.ShowNextTarget   = false; % displays next target as a frame
 Params.FrameSize        = 5;
-Params.TargetSize       = 40;
+Params.TargetSize       = 50;
 Params.TargetSpacing    = Params.TargetSize*2+10;
 
 Params.GridColor        = [100,100,100];
 Params.OutTargetColor   = [55,255,0];
 
-Params.GridLayout = [4,4 ]; % [rows x cols]
+Params.GridLayout = [3,3 ]; % [rows x cols]
 top_left = -(Params.GridLayout-1)/2;
 sp = Params.TargetSpacing;
 sz = Params.TargetSize;
@@ -102,11 +102,11 @@ end
 Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
-%% Trial and Block Types
+%% Trial and Block Types 
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 10;
+Params.NumTrialsPerBlock    = 5;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
