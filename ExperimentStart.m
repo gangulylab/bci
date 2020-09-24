@@ -37,8 +37,8 @@ if strcmpi(Subject,'Test'), Subject = 'Test'; end % ignore case
 
 %% Set up path for running task dependent code
 if IsWin,
-    homedir = 'C:\Users\ganguly-lab2';
-    projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
+    homedir = 'C:\Users\Nikhlesh\Documents\bci_data_test';
+    projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\bci');
 elseif IsOSX,
     homedir = '/Users/daniel/';
     projectdir = '/Users/daniel/Projects/bci/';
@@ -116,12 +116,12 @@ f = load(fullfile('gridmaps',Params.ChMapFile));
 Params.ChMap = f.ecog_grid;
 
 %% Initialize Sync to Blackrock
-if Params.ArduinoSync,
-    Params.ArduinoPtr = arduino;
-    Params.ArduinoPin = 'D13';
-    writeDigitalPin(Params.ArduinoPtr, Params.ArduinoPin, 0); % make sure the pin is at 0
-    PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,20);
-end
+% if Params.ArduinoSync,
+%     Params.ArduinoPtr = arduino;
+%     Params.ArduinoPin = 'D13';
+%     writeDigitalPin(Params.ArduinoPtr, Params.ArduinoPin, 0); % make sure the pin is at 0
+%     PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,20);
+% end
 
 %% Neural Signal Processing
 % create neuro structure for keeping track of all neuro updates/state
