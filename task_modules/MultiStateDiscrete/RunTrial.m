@@ -305,6 +305,48 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
+              %%%%% NN
+            % arrow 
+            % updates Cursor.ClickDecision
+            [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker);            
+            
+            if Click_Decision == Data.TargetID
+                Cursor.ClickState = Cursor.ClickState+1;
+            end
+                        
+            % get arrow length based on number of correct decodes            
+            len = Params.ReachTargetRadius * Cursor.ClickState/Params.ArrowLength;
+            if len==0
+                len=5;
+            end
+            
+            % get the cooridnates of the arrow to draw            
+            theta = (ReachTargetPos(2) - StartTargetPos(2))/(ReachTargetPos(1) - StartTargetPos(1));
+            theta = atan(theta);
+            
+            % draw the arrow
+            ArrowStart = StartTargetPos;
+            ArrowEnd = len*[cos(theta) sin(theta)];
+            Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
+                ArrowEnd(1),ArrowEnd(2),10);
+            Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+            
+            
+            % end trial if reached
+            if Cursor.ClickState == Params.ArrowLength
+                done=1;
+            end
+            
+            %%% NN
+            % freeze cursor
+            Cursor.State(1) = 0;
+            Cursor.State(2) = 0;
+            Cursor.State(3) = 0;
+            Cursor.State(4) = 0;
+            Cursor.Vcommand(1) = 0;
+            Cursor.Vcommand(2) = 0;
+            
             % start target
             StartRect = Params.TargetRect; % centered at (0,0)
             StartRect([1,3]) = StartRect([1,3]) + StartTargetPos(1) + Params.Center(1); % add x-pos
