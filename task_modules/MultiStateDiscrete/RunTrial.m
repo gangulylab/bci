@@ -326,16 +326,18 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             
             % draw the arrow
             ArrowStart = StartTargetPos;
-            ArrowEnd = len*[cos(theta) sin(theta)];
-            Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
-                ArrowEnd(1),ArrowEnd(2),10);
-            Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
-                ArrowEnd(1)+20,ArrowEnd(2)+20],20)
-            
-            
-            % end trial if reached
-            if Cursor.ClickState == Params.ArrowLength
+            ArrowEnd = len*[cos(theta) sin(theta)];                    
+            if Cursor.ClickState == Params.ArrowLength % green if reached
                 done=1;
+                Screen('DrawLine', w, [0 1 0],ArrowStart(1),ArrowStart(2),...
+                    ArrowEnd(1),ArrowEnd(2),10);
+                Screen('FillOval',w,[0 1 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                    ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+            else % red otherwise
+                Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
+                    ArrowEnd(1),ArrowEnd(2),10);
+                Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                    ArrowEnd(1)+20,ArrowEnd(2)+20],20)
             end
             
             %%% NN
@@ -469,7 +471,7 @@ if ~Data.ErrorID,
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
-            %%%%% NN
+           %%%%% NN
             % arrow 
             % updates Cursor.ClickDecision
             [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker);            
@@ -490,16 +492,18 @@ if ~Data.ErrorID,
             
             % draw the arrow
             ArrowStart = StartTargetPos;
-            ArrowEnd = len*[cos(theta) sin(theta)];
-            Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
-                ArrowEnd(1),ArrowEnd(2),10);
-            Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
-                ArrowEnd(1)+20,ArrowEnd(2)+20],20)
-            
-            
-            % end trial if reached
-            if Cursor.ClickState == Params.ArrowLength
+            ArrowEnd = len*[cos(theta) sin(theta)];                    
+            if Cursor.ClickState == Params.ArrowLength % green if reached
                 done=1;
+                Screen('DrawLine', w, [0 1 0],ArrowStart(1),ArrowStart(2),...
+                    ArrowEnd(1),ArrowEnd(2),10);
+                Screen('FillOval',w,[0 1 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                    ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+            else % red otherwise
+                Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
+                    ArrowEnd(1),ArrowEnd(2),10);
+                Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                    ArrowEnd(1)+20,ArrowEnd(2)+20],20)
             end
             
             %%% NN
