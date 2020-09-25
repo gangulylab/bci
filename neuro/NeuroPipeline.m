@@ -22,6 +22,12 @@ if Neuro.Blackrock,
     if Neuro.ZscoreFeaturesFlag,
         Neuro = ZscoreFeatures(Neuro);
     end
+    
+%     % smoothing option
+%     if Neuro.SmoothDataFlag
+%         Neuro = SmoothNeuro(Neuro);
+%     end
+    
 end
 
 % override neural data if generating neural features

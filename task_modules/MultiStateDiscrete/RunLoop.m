@@ -1,4 +1,4 @@
-function [Neuro,KF,Params] = RunLoop(Params,Neuro,TaskFlag,DataDir,KF)
+function [Neuro,KF,Params,Clicker] = RunLoop(Params,Neuro,TaskFlag,DataDir,KF,Clicker)
 % Defines the structure of collected data on each trial
 % Loops through blocks and trials within blocks
 
@@ -59,6 +59,7 @@ for Block=1:NumBlocks, % Block Loop
     Cursor.State = [0,0,0,0,1]';
     Cursor.IntendedState = [0,0,0,0,1]';
     Cursor.Vcommand = [0,0]';
+    Cursor.ClickState = 0;
 
     for TrialPerBlock=1:Params.NumTrialsPerBlock, % Trial Loop
         % if smooth batch on & enough time has passed, update KF btw trials

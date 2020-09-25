@@ -178,6 +178,10 @@ if Neuro.NumFeatureBins>1,
         Neuro.NumFeatureBins);
 end
 
+% create buffer to smooth neural features over 100s of ms
+
+
+
 %% Kalman Filter
 if Params.ControlMode>=3,
     KF = Params.KF;

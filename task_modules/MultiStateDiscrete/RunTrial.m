@@ -1,4 +1,4 @@
-function [Data, Neuro, KF, Params] = RunTrial(Data,Params,Neuro,TaskFlag,KF)
+function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFlag,KF,Clicker)
 % Runs a trial, saves useful data along the way
 % Each trial contains the following pieces
 % 1) Inter-trial interval
@@ -15,8 +15,6 @@ global Cursor
 
 %% Set up trial
 
-% reset the cursor clicking
-Cursor.ClickState = 0;
 
 StartTargetPos = Params.StartTargetPosition;
 ReachTargetPos = Data.TargetPosition;
@@ -305,7 +303,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
-              %%%%% NN
+            %%%%% NN
             % arrow 
             % updates Cursor.ClickDecision
             [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker);            
@@ -342,12 +340,9 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             
             %%% NN
             % freeze cursor
-            Cursor.State(1) = 0;
-            Cursor.State(2) = 0;
-            Cursor.State(3) = 0;
-            Cursor.State(4) = 0;
-            Cursor.Vcommand(1) = 0;
-            Cursor.Vcommand(2) = 0;
+            Cursor.State = [0 0 0 0 1];    
+            Cursor.IntendedState = [0,0,0,0,1]';
+            Cursor.Vcommand = [0,0]';            
             
             % start target
             StartRect = Params.TargetRect; % centered at (0,0)
@@ -471,7 +466,7 @@ if ~Data.ErrorID,
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
-           %%%%% NN
+             %%%%% NN
             % arrow 
             % updates Cursor.ClickDecision
             [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker);            
@@ -508,12 +503,9 @@ if ~Data.ErrorID,
             
             %%% NN
             % freeze cursor
-            Cursor.State(1) = 0;
-            Cursor.State(2) = 0;
-            Cursor.State(3) = 0;
-            Cursor.State(4) = 0;
-            Cursor.Vcommand(1) = 0;
-            Cursor.Vcommand(2) = 0;
+            Cursor.State = [0 0 0 0 1];    
+            Cursor.IntendedState = [0,0,0,0,1]';
+            Cursor.Vcommand = [0,0]';       
             
             % reach target
             ReachRect = Params.TargetRect; % centered at (0,0)
