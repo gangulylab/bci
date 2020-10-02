@@ -36,9 +36,9 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Cursor Click
-Params.ClickerBins = 1; % set to -1 to use target hold time instead of click
+Params.ClickerBins = -1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
-Params.ClickerDataCollection = false; % if true, does not use clicker, freezes cursor when in target
+Params.ClickerDataCollection = true; % if true, does not use clicker, freezes cursor when in target
 if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
@@ -46,15 +46,20 @@ end
 %% Sync to Blackrock
 Params.ArduinoSync = false;
 
+%% Arrow length to hit the target
+% The number of bins of successful decodes to hit the target
+Params.ArrowLength = 1;
+Params.ClickCounter=5;
+
 %% Timing
-Params.ScreenRefreshRate = 10; % Hz
-Params.UpdateRate = 10; % Hz
+Params.ScreenRefreshRate = 3; % Hz
+Params.UpdateRate = 3; % Hz
 
 %% Targets: radial layout
-Params.NumReachTargets   = 8;
+Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 350; % defines outer edge of target
-Params.InnerCircleRadius = 150; % defines inner edge of target
+Params.OuterCircleRadius = 550; % defines outer edge of target
+Params.InnerCircleRadius = 200; % defines inner edge of target
 Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
 Params.TargetsColor        = [100,100,100]; % all targets
@@ -87,7 +92,7 @@ Params.TargetSize = Params.OuterCircleRadius - Params.InnerCircleRadius;
 %% Cursor
 Params.CursorColor = [0,102,255];
 Params.InTargetColor    = [255,55,0];
-Params.CursorSize = 10;
+Params.CursorSize = 50;
 Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
 
@@ -157,11 +162,11 @@ switch Params.CLDA.AdaptType,
 end
 
 %% Hold Times
-Params.TargetHoldTime = .5;
+Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1;
-Params.InstructedDelayTime = 0;
+Params.InstructedDelayTime = 2;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 15;
+Params.MaxReachTime = 5;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

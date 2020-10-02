@@ -35,7 +35,7 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Timing
 Params.ScreenRefreshRate = 10; % Hz
@@ -104,7 +104,7 @@ end
 TypeStrs                = {'none','refit','smooth_batch','rml'};
 Params.CLDA.TypeStr     = TypeStrs{Params.CLDA.Type+1};
 
-Params.CLDA.UpdateTime = 80; % secs, for smooth batch
+Params.CLDA.UpdateTime = 20; % secs, for smooth batch
 Params.CLDA.Alpha = exp(log(.5) / (120/Params.CLDA.UpdateTime)); % for smooth batch
 
 % Lambda

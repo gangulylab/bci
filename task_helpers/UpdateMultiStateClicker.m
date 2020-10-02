@@ -13,7 +13,10 @@ if (Params.GenNeuralFeaturesFlag),
        Click_Decision = 0;
    end
 else,
-   [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+  % [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+   
+    Click_Decision = randperm(4,1);
+    Click_Distance=0;
 end
 
 

@@ -5,7 +5,7 @@ function [decision, distance_from_boundary] = multistate_discrete(X,model)
 % X - Feature vector (vector of length 896)
 %
 % OUTPUT: 
-% DECISION - for 1 of the 8 possible targets
+% DECISION - for 1 of the 4 possible targets
 % DISTANCE_FROM_BOUNDARY - Mean distance away from the classifier and
 % towards the decoded class. 
 % More negative values : greater confidence in decision
@@ -24,15 +24,15 @@ d1 = X*squeeze(model(1,:,:))';
 d2 = X*squeeze(model(2,:,:))';
 d3 = X*squeeze(model(3,:,:))';
 d4 = X*squeeze(model(4,:,:))';
-d5 = X*squeeze(model(5,:,:))';
-d6 = X*squeeze(model(6,:,:))';
-d7 = X*squeeze(model(7,:,:))';
-d8 = X*squeeze(model(8,:,:))';
+%d5 = X*squeeze(model(5,:,:))';
+%d6 = X*squeeze(model(6,:,:))';
+%d7 = X*squeeze(model(7,:,:))';
+%d8 = X*squeeze(model(8,:,:))';
 
 % store results
-Dec = [d1;d2;d3;d4;d5;d6;d7;d8];
-Dec_values=[sum(d1);sum(d2);sum(d3);sum(d4);sum(d5);sum(d6);sum(d7);sum(d8)];
-Dec_thresh=sum(Dec'<0);
+Dec = [d1;d2;d3;d4];
+Dec_values=[sum(d1);sum(d2);sum(d3);sum(d4)];
+Dec_thresh=sum(Dec'<0)
 
 % make decision on max-vote strategy
 [aa bb]=max(Dec_thresh);
