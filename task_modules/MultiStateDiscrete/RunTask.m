@@ -1,4 +1,4 @@
-function [Neuro,KF,Params] = RunTask(Params,Neuro,TaskFlag,KF)
+function [Neuro,KF,Params,Clicker] = RunTask(Params,Neuro,TaskFlag,KF,Clicker)
 % Explains the task to the subject, and serves as a reminder for pausing
 % and quitting the experiment (w/o killing matlab or something)
 
@@ -87,7 +87,7 @@ switch TaskFlag,
         fprintf('  Change in Assistance: %.2f\n', Cursor.DeltaAssistance)
         fprintf('  Saving data to %s\n\n',fullfile(Params.Datadir,'BCI_CLDA'))
         
-        [Neuro,KF,Params] = RunLoop(Params,Neuro,TaskFlag,fullfile(Params.Datadir,'BCI_CLDA'),KF);
+        [Neuro,KF,Params,Clicker] = RunLoop(Params,Neuro,TaskFlag,fullfile(Params.Datadir,'BCI_CLDA'),KF,Clicker);
         
     case 3, % Control Mode without Assist and fixed
         switch Params.ControlMode,
@@ -146,7 +146,7 @@ switch TaskFlag,
             Params.NumFixedBlocks*Params.NumTrialsPerBlock)
         fprintf('  Saving data to %s\n\n',fullfile(Params.Datadir,'BCI_Fixed'))
         
-        [Neuro,KF,Params] = RunLoop(Params,Neuro,TaskFlag,fullfile(Params.Datadir,'BCI_Fixed'),KF);
+        [Neuro,KF,Params,Clicker] = RunLoop(Params,Neuro,TaskFlag,fullfile(Params.Datadir,'BCI_Fixed'),KF,Clicker);
         
 end
 

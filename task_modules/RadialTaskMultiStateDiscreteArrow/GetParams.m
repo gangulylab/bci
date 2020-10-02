@@ -44,12 +44,12 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Arrow length to hit the target
 % The number of bins of successful decodes to hit the target
 Params.ArrowLength = 1;
-Params.ClickCounter=5;
+Params.ClickCounter=4;
 
 %% Timing
 Params.ScreenRefreshRate = 3; % Hz
@@ -118,7 +118,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 5;
+Params.NumFixedBlocks       = 3;
 Params.NumTrialsPerBlock    = 10;
 
 %% CLDA Parameters
@@ -163,10 +163,10 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
+Params.InterTrialInterval = 3;
 Params.InstructedDelayTime = 2;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 5;
+Params.MaxReachTime = 15 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

@@ -13,7 +13,7 @@ switch Params.ControlMode,
 end
 
 %% Control
-Params.CenterReset      = false; % if true, cursor automatically is at center at trial start
+Params.CenterReset      = true; % if true, cursor automatically is at center at trial start
 Params.Assistance       = 0; %0.05; % value btw 0 and 1, 1 full assist
 Params.DaggerAssist 	= false;
 
@@ -28,7 +28,7 @@ Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true
 
 %% Cursor Velocity
-Params.Gain                     = 7;
+Params.Gain                     = 5;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
 Params.VelocityTransformFlag    = false;
 Params.MaxVelocityFlag          = false;
@@ -37,12 +37,12 @@ Params.MaxVelocity              = 200;
 %% Sync to Blackrock
 Params.ArduinoSync = false;
 
-%% Timing
+%% Timing 
 Params.ScreenRefreshRate = 10; % Hz
 Params.UpdateRate = 10; % Hz
 
 %% Targets
-Params.TargetSize = 30;
+Params.TargetSize = 60;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -50,7 +50,7 @@ Params.StartTargetPosition  = [0,0];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
-Params.ReachTargetAngles = (0:45:315)';
+Params.ReachTargetAngles = (0:90:270)';
 Params.ReachTargetRadius = 200; 
 Params.ReachTargetPositions = ...
     Params.StartTargetPosition ...
@@ -58,7 +58,7 @@ Params.ReachTargetPositions = ...
     * [cosd(Params.ReachTargetAngles) sind(Params.ReachTargetAngles)];
 Params.NumReachTargets = length(Params.ReachTargetAngles);
 
-Params.ReachTargetSamplingVec = [0 0 0 1 1 1 0 0];
+Params.ReachTargetSamplingVec = [1 1 1 1];
 Params.ReachTargetSamplingVec = Params.ReachTargetSamplingVec ...
     / sum(Params.ReachTargetSamplingVec);
 
@@ -89,8 +89,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
-Params.NumAdaptBlocks       = 2;
-Params.NumFixedBlocks       = 2;
+Params.NumAdaptBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles);
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
 switch Params.TargetSelectionFlag,
@@ -142,7 +142,7 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = .1;
-Params.InterTrialInterval = 0;
+Params.InterTrialInterval = 1.0;
 if Params.CenterReset,
     Params.InstructedDelayTime = .6;
 else,
@@ -151,7 +151,7 @@ end
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 10;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 3;
+Params.ImaginedMvmtTime = 3.5;
 
 %% Feedback
 Params.FeedbackSound = false;

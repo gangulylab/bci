@@ -119,12 +119,12 @@ f = load(fullfile('gridmaps',Params.ChMapFile));
 Params.ChMap = f.ecog_grid;
 
 %% Initialize Sync to Blackrock
-% if Params.ArduinoSync,
-%     Params.ArduinoPtr = arduino;
-%     Params.ArduinoPin = 'D13';
-%     writeDigitalPin(Params.ArduinoPtr, Params.ArduinoPin, 0); % make sure the pin is at 0
-%     PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,20);
-% end
+if Params.ArduinoSync,
+    Params.ArduinoPtr = arduino;
+    Params.ArduinoPin = 'D13';
+    writeDigitalPin(Params.ArduinoPtr, Params.ArduinoPin, 0); % make sure the pin is at 0
+    PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,20);
+end
 
 %% Neural Signal Processing
 % create neuro structure for keeping track of all neuro updates/state

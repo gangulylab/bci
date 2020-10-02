@@ -93,8 +93,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
-Params.NumAdaptBlocks       = 2;
-Params.NumFixedBlocks       = 2;
+Params.NumAdaptBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles);
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
 switch Params.TargetSelectionFlag,
@@ -146,14 +146,14 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = .1;
-Params.InterTrialInterval = 0;
+Params.InterTrialInterval = 2;
 if Params.CenterReset,
-    Params.InstructedDelayTime = .6;
+    Params.InstructedDelayTime = 0;
 else,
     Params.InstructedDelayTime = 0;
 end
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 10;     
+Params.MaxReachTime = 15;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

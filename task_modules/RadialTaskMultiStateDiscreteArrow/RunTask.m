@@ -19,7 +19,8 @@ Cursor.ControlMode = Params.ControlMode;
 f = load(fullfile('clicker','clicker_svm_mdl_multistate_4Target.mat')); % load the parallel decoders
 Clicker.Model = f.model;
 Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model); % calling function
-
+%clicker_svm_mdl_4state_3BinSmothed
+%clicker_svm_mdl_multistate_4Target
 
 switch TaskFlag,
     case 1, % Imagined Movements

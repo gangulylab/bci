@@ -11,7 +11,7 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 
 
 global Cursor
-
+Cursor.ClickState =0;
 
 %% Set up trial
 
@@ -327,16 +327,18 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             ArrowEnd = len*[cos(theta) sin(theta)];                    
             if Cursor.ClickState == Params.ArrowLength % green if reached
                 done=1;
-                Screen('DrawLine', w, [0 1 0],ArrowStart(1),ArrowStart(2),...
+                Screen('DrawLine', Params.WPTR, [0 1 0],ArrowStart(1),ArrowStart(2),...
                     ArrowEnd(1),ArrowEnd(2),10);
-                Screen('FillOval',w,[0 1 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                Screen('FillOval',Params.WPTR,[0 1 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
                     ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+                
             else % red otherwise
-                Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
+                Screen('DrawLine', Params.WPTR, [1 0 0],ArrowStart(1),ArrowStart(2),...
                     ArrowEnd(1),ArrowEnd(2),10);
-                Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
-                    ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+                Screen('FillOval',Params.WPTR,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                    ArrowEnd(1)+20,ArrowEnd(2)+20],20)                
             end
+            Screen('Flip', Params.WPTR);
             
             %%% NN
             % freeze cursor
@@ -490,20 +492,23 @@ if ~Data.ErrorID,
             ArrowEnd = len*[cos(theta) sin(theta)];                    
             if Cursor.ClickState == Params.ArrowLength % green if reached
                 done=1;
-                Screen('DrawLine', w, [0 1 0],ArrowStart(1),ArrowStart(2),...
+                Screen('DrawLine', Params.WPTR, [0 1 0],ArrowStart(1),ArrowStart(2),...
                     ArrowEnd(1),ArrowEnd(2),10);
-                Screen('FillOval',w,[0 1 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                Screen('FillOval',Params.WPTR,[0 1 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
                     ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+                
             else % red otherwise
-                Screen('DrawLine', w, [1 0 0],ArrowStart(1),ArrowStart(2),...
+                Screen('DrawLine', Params.WPTR, [1 0 0],ArrowStart(1),ArrowStart(2),...
                     ArrowEnd(1),ArrowEnd(2),10);
-                Screen('FillOval',w,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+                Screen('FillOval',Params.WPTR,[1 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
                     ArrowEnd(1)+20,ArrowEnd(2)+20],20)
+                
             end
+            Screen('Flip', Params.WPTR);
             
             %%% NN
             % freeze cursor
-            Cursor.State = [0 0 0 0 1];    
+            Cursor.State = [0 0 0 0 1]';    
             Cursor.IntendedState = [0,0,0,0,1]';
             Cursor.Vcommand = [0,0]';       
             
