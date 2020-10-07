@@ -248,7 +248,7 @@ end % only complete if no errors
 
 
 %% Inter trial interval
-% blank screen at end of trial but continue collecting data
+% blank screen at end of trial but continue co
 
 
 %% Completed Trial - Give Feedback
