@@ -40,6 +40,7 @@ if Params.CenterReset,
 end
 
 Cursor.ClickState = 0;
+Cursor.ClickDistance = 0;
 
 %% Go to reach target
 if ~Data.ErrorID,
@@ -109,21 +110,25 @@ if ~Data.ErrorID,
             end
             
             Cursor.Center = Params.Center;
-            TargetID = InTargetRadial(Cursor,Params.ReachTargetVerts,Params.InnerCircleRadius)
+            TargetID = InTargetRadial(Cursor,Params.ReachTargetVerts,Params.InnerCircleRadius);
             if TargetID == Data.TargetID
-                Cursor.State = Cursor.State
+                Cursor.State = Cursor.State;
                 CursorCol = Params.InTargetColor;
             else
                 CursorCol = Params.CursorColor;
-                [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker)
+                [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+                Cursor.ClickState = Click_Decision;
+                Cursor.ClickDistance = Click_Distance;
+                Data.ClickerState(1,end+1) = Cursor.ClickState;
+                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
                 if Click_Decision == 1
-                    temp_dir = 0.05*Params.ReachTargetPositions(1,:);
+                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(1,:);
                 elseif Click_Decision == 2
-                    temp_dir = 0.05*Params.ReachTargetPositions(2,:);
+                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(2,:);
                 elseif Click_Decision == 3
-                    temp_dir = 0.05*Params.ReachTargetPositions(3,:);
+                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(3,:);
                 elseif Click_Decision == 4
-                    temp_dir = 0.05*Params.ReachTargetPositions(4,:);
+                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(4,:);
                 end
                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
@@ -133,18 +138,6 @@ if ~Data.ErrorID,
                 CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) ; % add y-pos
                 Cursor.IntendedState = [0 0 0 0 0]';                
             end
-            
-            
-%             % cursor
-%             if TaskFlag==1, % imagined movements
-%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-%                 Cursor.Vcommand = Cursor.State(3:4);
-%                 ct = ct + 1;
-%             end
-            
-            
-            Params.ReachTargetPositions
             
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
@@ -162,20 +155,6 @@ if ~Data.ErrorID,
             TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
             TargetsCol(Data.TargetID,:) = Params.CuedTargetColor; % cue
           
-%             if Params.ClickerBins == -1, % not using clicker, use col to show inTarget
-%                 if TargetID == Data.TargetID,
-%                     CursorCol = Params.InTargetColor;
-%                 else,
-%                     CursorCol = Params.CursorColor;
-%                 end
-%             else, % use cursor color to indicate clicking
-%                 if Cursor.ClickState>0,
-%                     CursorCol = Params.InTargetColor;
-%                 else,
-%                     CursorCol = Params.CursorColor;
-%                 end
-%             end
-%             
             % start counting time if cursor is in target
             if TargetID==Data.TargetID,
                 InTargetTotalTime = InTargetTotalTime + dt;
@@ -208,60 +187,6 @@ if ~Data.ErrorID,
                 CursorCol', CursorRect')
             
             
-            %%%%% NN EDITS
-%             Params.ReachTargetPositions
-%             Data.TargetID
-%             
-%             [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker)
-%             
-%             if Click_Decision == 1
-%                 
-%             elseif Click_Decision == 2
-%                 
-%             elseif Click_Decision == 3
-%                 
-%             elseif Click_Decision == 4
-%                 
-%             end
-                
-                
-                %Cursor.ClickState = Cursor.ClickState+1
-            
-            
-            % get arrow length based on number of correct decodes
-%             len = Params.ReachTargetRadius * Cursor.ClickState/Params.ArrowLength;
-%             if len==0
-%                 len=1;
-%             end
-%             
-%             % get the cooridnates of the arrow to draw
-%             %theta = (-ReachTargetPos(2) - 500)/(ReachTargetPos(1) - 500);
-%             %theta = atan2d(ReachTargetPos(2) - Params.Center(2),ReachTargetPos(1) - Params.Center(2));
-%             theta=-90;
-%             %class_angle=atan2d(Cursor.ClassifierState(3),Cursor.ClassifierState(2));
-%             if theta<0
-%                 theta=360+theta;
-%             end
-%             
-%             Params.Center
-%             
-%             % draw the arrow
-%             ArrowStart = [960 540];
-%             ArrowEnd = [960+200 540+200];%len*[cosd(theta) sind(theta)];
-%             if Cursor.ClickState == Params.ArrowLength % green if reached
-%                 done=1;
-%                 Screen('DrawLine', Params.WPTR, [100 100 0],ArrowStart(1),ArrowStart(2),...
-%                     ArrowEnd(1),ArrowEnd(2),3);
-%                 Screen('FillOval',Params.WPTR,[100 100 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
-%                     ArrowEnd(1)+20,ArrowEnd(2)+20],3)
-%             else % red otherwise
-%                 Screen('DrawLine', Params.WPTR, [100 100 0],ArrowStart(1),ArrowStart(2),...
-%                     ArrowEnd(1),ArrowEnd(2),3);
-%                 Screen('FillOval',Params.WPTR,[100 100 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
-%                     ArrowEnd(1)+20,ArrowEnd(2)+20],3)
-%             end
-            
-            %%%%%%%%%% END EDITS %%%%%%
             
             Screen('DrawingFinished', Params.WPTR);
             Screen('Flip', Params.WPTR);
@@ -292,7 +217,7 @@ if ~Data.ErrorID,
         if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
             done = 1;
             Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
+            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);            
         end
         
     end % Reach Target Loop

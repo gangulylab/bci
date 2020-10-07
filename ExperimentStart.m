@@ -154,11 +154,17 @@ Neuro.UpdateFeatureStatsFlag = Params.UpdateFeatureStatsFlag;
 Neuro.ChMap             = Params.ChMap;
 Neuro.SpatialFiltering  = Params.SpatialFiltering;
 Neuro.FeatureMask       = Params.FeatureMask;
+Neuro.FeatureBufferSize = Params.FeatureBufferSize;
+Neuro.SmoothDataFlag = Params.SmoothDataFlag;
 
 % initialize filter bank state
 for i=1:length(Params.FilterBank),
     Neuro.FilterBank(i).state = [];
 end
+
+% initialize feature buffer
+Neuro.FeatureDataBuffer = zeros(Neuro.FeatureBufferSize,Neuro.NumFeatures*Neuro.NumChannels);
+Neuro.FilteredFeatures = zeros(Neuro.NumFeatures*Neuro.NumChannels,1);
 
 % initialize stats for each channel for z-scoring
 Neuro.ChStats.mean      = zeros(1,Params.NumChannels); % estimate of mean for each channel

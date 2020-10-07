@@ -23,10 +23,10 @@ if Neuro.Blackrock,
         Neuro = ZscoreFeatures(Neuro);
     end
     
-%     % smoothing option
-%     if Neuro.SmoothDataFlag
-%         Neuro = SmoothNeuro(Neuro);
-%     end
+    % smoothing option
+    if Neuro.SmoothDataFlag
+        Neuro = SmoothNeuro(Neuro);
+    end
     
 end
 
@@ -60,6 +60,7 @@ if exist('Data','var') && ~isempty(Data),
     end
     
     Data.NeuralFeatures{end+1} = Neuro.NeuralFeatures;
+    Data.SmoothedNeuralFeatures{end+1} = Neuro.FilteredFeatures;
     if Neuro.DimRed.Flag,
         Data.NeuralFactors{end+1} = Neuro.NeuralFactors;
     end

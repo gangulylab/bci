@@ -46,13 +46,17 @@ end
 %% Sync to Blackrock
 Params.ArduinoSync = true;
 
-%% Arrow length to hit the target
-% The number of bins of successful decodes to hit the target
-Params.ArrowLength = 1;
+%% Update rate in pixels if decoded correctly 
+% expressed as a percentage of the overall target distance
+Params.PixelLength = 0.05;
+
+%% Neural feature smoothing
+Params.SmoothDataFlag = true;
+Params.FeatureBufferSize = 4;
 
 %% Timing
-Params.ScreenRefreshRate = 3; % Hz
-Params.UpdateRate = 3; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;

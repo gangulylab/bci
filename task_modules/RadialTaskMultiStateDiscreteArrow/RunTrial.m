@@ -41,6 +41,7 @@ end
 
 Cursor.ClickState = 0;
 Cursor.Counter = 0;
+Cursor.ClickDistance = 0;
 
 %% Go to reach target
 if ~Data.ErrorID,
@@ -107,44 +108,7 @@ if ~Data.ErrorID,
                     Data.KalmanFilter{end}.Q = KF.Q;
                     Data.KalmanFilter{end}.Lambda = KF.Lambda;
                 end
-            end
-            
-            %             Cursor.Center = Params.Center;
-            %             TargetID = InTargetRadial(Cursor,Params.ReachTargetVerts,Params.InnerCircleRadius)
-            %             if TargetID == Data.TargetID
-            %                 Cursor.State = Cursor.State
-            %                 CursorCol = Params.InTargetColor;
-            %             else
-            %                 CursorCol = Params.CursorColor;
-            %                 [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker)
-            %                 if Click_Decision == 1
-            %                     temp_dir = 0.05*Params.ReachTargetPositions(1,:);
-            %                 elseif Click_Decision == 2
-            %                     temp_dir = 0.05*Params.ReachTargetPositions(2,:);
-            %                 elseif Click_Decision == 3
-            %                     temp_dir = 0.05*Params.ReachTargetPositions(3,:);
-            %                 elseif Click_Decision == 4
-            %                     temp_dir = 0.05*Params.ReachTargetPositions(4,:);
-            %                 end
-            %                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
-            %                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
-            %                 [Cursor.State(1) Cursor.State(2) Cursor.State(3) Cursor.State(4) 0];
-            %                 CursorRect = Params.CursorRect;
-            %                 CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) ; % add x-pos
-            %                 CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) ; % add y-pos
-            %                 Cursor.IntendedState = [0 0 0 0 0]';
-            %             end
-            
-            
-            %             % cursor
-            %             if TaskFlag==1, % imagined movements
-            %                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-            %                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-            %                 Cursor.Vcommand = Cursor.State(3:4);
-            %                 ct = ct + 1;
-            %             end
-            
-            
+            end    
             
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
@@ -158,7 +122,7 @@ if ~Data.ErrorID,
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
-            Data.ClickerState(1,end+1) = Cursor.ClickState;
+            
             
             % reach target
             TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
@@ -197,7 +161,11 @@ if ~Data.ErrorID,
             
             %get arrow location
             ArrowStart = Params.Center;
-            [Click_Decision,~] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            Cursor.ClickState = Click_Decision;
+            Cursor.ClickDistance = Click_Distance;
+            Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
             if Click_Decision == 1
                 temp_dir = .40*Params.ReachTargetPositions(1,:);
             elseif Click_Decision == 2
@@ -218,7 +186,9 @@ if ~Data.ErrorID,
             
             % decision for clikcing and finishng trial
             if Cursor.Counter == Params.ClickCounter
-                done=1;                           
+                done=1;                        
+                %Cursor.State(1:2) = Params.ReachTargetPositions(Click_Decision,:);
+                Data.SelectedTargetID = Click_Decision;
                 CursorCol = Params.InTargetColor';
                 CursorRect = Params.CursorRect;
                 reach_loc = 0.8*Params.ReachTargetPositions(Click_Decision,:);

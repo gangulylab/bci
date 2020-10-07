@@ -46,9 +46,12 @@ end
 %% Sync to Blackrock
 Params.ArduinoSync = true;
 
-%% Arrow length to hit the target
+%% Neural feature smoothing
+Params.SmoothDataFlag = true;
+Params.FeatureBufferSize = 4;
+
+%% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
-Params.ArrowLength = 1;
 Params.ClickCounter=4;
 
 %% Timing
