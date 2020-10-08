@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -167,9 +167,10 @@ end
 %% Hold Times
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1;
-Params.InstructedDelayTime = 2;
+Params.InstructedDelayTime = 1;
+Params.CueTime = 0.5;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 15;
+Params.MaxReachTime = 5 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

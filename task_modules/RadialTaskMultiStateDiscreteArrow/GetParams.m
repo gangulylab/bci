@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -55,8 +55,8 @@ Params.FeatureBufferSize = 4;
 Params.ClickCounter=4;
 
 %% Timing
-Params.ScreenRefreshRate = 3; % Hz
-Params.UpdateRate = 3; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
@@ -166,10 +166,11 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 3;
-Params.InstructedDelayTime = 2;
+Params.InterTrialInterval = 1;
+Params.InstructedDelayTime = 1;
+Params.CueTime = 0.5;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 15 ;
+Params.MaxReachTime = 5 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

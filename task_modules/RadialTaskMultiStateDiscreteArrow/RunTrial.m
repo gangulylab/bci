@@ -42,11 +42,223 @@ end
 Cursor.ClickState = 0;
 Cursor.Counter = 0;
 Cursor.ClickDistance = 0;
+Cursor.TaskState = 0;
+Data.TaskState(1,end+1)=Cursor.TaskState;
 
 
-%% Instructed delay
-% display all the final targets but dont show highlighted target or arrow
-% collect neural data
+%% Instructed Delay
+if ~Data.ErrorID && Params.InstructedDelayTime>0,
+    tstart  = GetSecs;
+    Data.Events(end+1).Time = tstart;
+    Data.Events(end).Str  = 'Instructed Delay';
+    if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+    
+    if TaskFlag==1,
+        OptimalCursorTraj = ...
+            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+        ct = 1;
+    end
+    
+    done = 0;
+    TotalTime = 0;
+    InTargetTotalTime = 0;
+    while ~done,
+        % Update Time & Position
+        tim = GetSecs;
+        
+        % for pausing and quitting expt
+        if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        
+        % Update Screen
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+            % time
+            dt = tim - Cursor.LastPredictTime;
+            TotalTime = TotalTime + dt;
+            dt_vec(end+1) = dt;
+            Cursor.LastPredictTime = tim;
+            Data.Time(1,end+1) = tim;
+            
+            % grab and process neural data
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+                dT = tim-Cursor.LastUpdateTime;
+                dT_vec(end+1) = dT;
+                Cursor.LastUpdateTime = tim;
+                
+                Data.NeuralTime(1,end+1) = tim;
+                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
+                
+            end
+            
+            % cursor
+            if TaskFlag==1, % imagined movements
+                Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
+                Cursor.State(1:2) = OptimalCursorTraj(ct,:);
+                Cursor.Vcommand = Cursor.State(3:4);
+                ct = ct + 1;
+            end
+            CursorRect = Params.CursorRect;
+            CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
+            CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
+            Data.CursorState(:,end+1) = Cursor.State;
+            Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
+            Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            Cursor.State= [0 0 0 0 0]';
+            
+            TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
+            % draw target triangles
+            for i=1:Params.NumReachTargets,
+                % center vertices to define triangle for each target
+                TargetVerts = Params.ReachTargetVerts{i};
+                TargetVerts(:,1) = TargetVerts(:,1) + Params.Center(1);
+                TargetVerts(:,2) = TargetVerts(:,2) + Params.Center(2);
+                
+                Screen('FillPoly', Params.WPTR, ...
+                    TargetsCol(i,:)', TargetVerts, 1);
+                Screen('FramePoly', Params.WPTR, ... % black frame around triangles
+                    0, TargetVerts, Params.TargetSpacing);
+            end
+            
+            % draw target circles
+            CircRect = Params.InnerCircleRect;
+            CircRect([1,3]) = CircRect([1,3]) + Params.Center(1); % add x-pos
+            CircRect([2,4]) = CircRect([2,4]) + Params.Center(2); % add y-pos
+            Screen('FillOval', Params.WPTR, ...
+                Params.InnerCircleColor, CircRect')
+            
+            Cursor.TaskState = 1;
+            Data.TaskState(1,end+1)=Cursor.TaskState;
+            
+            % draw
+            %Screen('FillOval', Params.WPTR, ...
+            %    cat(1,StartCol,ReachCol,Params.CursorColor)', ...
+            %    cat(1,StartRect,ReachRect,CursorRect)')
+           
+            
+            
+            Screen('DrawingFinished', Params.WPTR);
+            Screen('Flip', Params.WPTR);
+            
+            
+            % start counting time            
+            InTargetTotalTime = InTargetTotalTime + dt;
+           
+        end
+        
+        % end if in start target for hold time
+        if InTargetTotalTime > Params.InstructedDelayTime,
+            done = 1;
+        end
+    end % Instructed Delay Loop
+end % only complete if no errors
+
+
+
+%% Cue time
+if ~Data.ErrorID && Params.CueTime>0,
+    tstart  = GetSecs;
+    Data.Events(end+1).Time = tstart;
+    Data.Events(end).Str  = 'Cue';
+    if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+    
+    if TaskFlag==1,
+        OptimalCursorTraj = ...
+            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+        ct = 1;
+    end
+    
+    done = 0;
+    TotalTime = 0;
+    InTargetTotalTime = 0;
+    while ~done,
+        % Update Time & Position
+        tim = GetSecs;
+        
+        % for pausing and quitting expt
+        if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        
+        % Update Screen
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+            % time
+            dt = tim - Cursor.LastPredictTime;
+            TotalTime = TotalTime + dt;
+            dt_vec(end+1) = dt;
+            Cursor.LastPredictTime = tim;
+            Data.Time(1,end+1) = tim;
+            
+            % grab and process neural data
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+                dT = tim-Cursor.LastUpdateTime;
+                dT_vec(end+1) = dT;
+                Cursor.LastUpdateTime = tim;
+                
+                Data.NeuralTime(1,end+1) = tim;
+                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
+                
+            end
+            
+            % cursor
+            if TaskFlag==1, % imagined movements
+                Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
+                Cursor.State(1:2) = OptimalCursorTraj(ct,:);
+                Cursor.Vcommand = Cursor.State(3:4);
+                ct = ct + 1;
+            end
+            CursorRect = Params.CursorRect;
+            CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
+            CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
+            Data.CursorState(:,end+1) = Cursor.State;
+            Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
+            Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            Cursor.State= [0 0 0 0 0]';
+            
+            TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
+            TargetsCol(Data.TargetID,:) = Params.CuedTargetColor; % cue
+            
+            % draw target triangles
+            for i=1:Params.NumReachTargets,
+                % center vertices to define triangle for each target
+                TargetVerts = Params.ReachTargetVerts{i};
+                TargetVerts(:,1) = TargetVerts(:,1) + Params.Center(1);
+                TargetVerts(:,2) = TargetVerts(:,2) + Params.Center(2);
+                
+                Screen('FillPoly', Params.WPTR, ...
+                    TargetsCol(i,:)', TargetVerts, 1);
+                Screen('FramePoly', Params.WPTR, ... % black frame around triangles
+                    0, TargetVerts, Params.TargetSpacing);
+            end
+            
+            % draw target circles
+            CircRect = Params.InnerCircleRect;
+            CircRect([1,3]) = CircRect([1,3]) + Params.Center(1); % add x-pos
+            CircRect([2,4]) = CircRect([2,4]) + Params.Center(2); % add y-pos
+            Screen('FillOval', Params.WPTR, ...
+                Params.InnerCircleColor, CircRect')
+            
+            Cursor.TaskState = 2;
+            Data.TaskState(1,end+1)=Cursor.TaskState;
+            
+            % draw
+            %Screen('FillOval', Params.WPTR, ...
+            %    cat(1,StartCol,ReachCol,Params.CursorColor)', ...
+            %    cat(1,StartRect,ReachRect,CursorRect)')
+           
+            
+            
+            Screen('DrawingFinished', Params.WPTR);
+            Screen('Flip', Params.WPTR);
+            
+            
+            % start counting time            
+            InTargetTotalTime = InTargetTotalTime + dt;
+           
+        end
+        
+        % end if in start target for hold time
+        if InTargetTotalTime > Params.CueTime,
+            done = 1;
+        end
+    end % Instructed Delay Loop
+end % only complete if no errors
 
 %% Go to reach target
 if ~Data.ErrorID,
@@ -127,7 +339,7 @@ if ~Data.ErrorID,
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
-            
+            Cursor.State = [Params.Center(1),Params.Center(2),0,0,0]';
             
             % reach target
             TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
@@ -203,7 +415,8 @@ if ~Data.ErrorID,
                     CursorCol', CursorRect')
             end
             
-            
+            Cursor.TaskState = 3;
+            Data.TaskState(1,end+1)=Cursor.TaskState;
             % draw the arrow
             Screen('DrawLine', Params.WPTR, [255 0 0],ArrowStart(1),ArrowStart(2),...
                 ArrowEnd(1),ArrowEnd(2),3);
@@ -250,6 +463,110 @@ end % only complete if no errors
 %% Inter trial interval
 % blank screen at end of trial but continue collecting data
 
+if Params.InterTrialInterval>0,
+    tstart  = GetSecs;
+    Data.Events(end+1).Time = tstart;
+    Data.Events(end).Str  = 'Inter Trial Interval';
+    if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
+    
+    if TaskFlag==1,
+        OptimalCursorTraj = ...
+            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+        ct = 1;
+    end
+    
+    done = 0;
+    TotalTime = 0;
+    InTargetTotalTime = 0;
+    Screen('Flip', Params.WPTR);
+    while ~done,
+        % Update Time & Position
+        tim = GetSecs;
+        
+        % for pausing and quitting expt
+        if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        
+        % Update Screen
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+            % time
+            dt = tim - Cursor.LastPredictTime;
+            TotalTime = TotalTime + dt;
+            dt_vec(end+1) = dt;
+            Cursor.LastPredictTime = tim;
+            Data.Time(1,end+1) = tim;
+            
+            % grab and process neural data
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+                dT = tim-Cursor.LastUpdateTime;
+                dT_vec(end+1) = dT;
+                Cursor.LastUpdateTime = tim;
+                
+                Data.NeuralTime(1,end+1) = tim;
+                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
+                
+            end
+            
+            % cursor
+            if TaskFlag==1, % imagined movements
+                Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
+                Cursor.State(1:2) = OptimalCursorTraj(ct,:);
+                Cursor.Vcommand = Cursor.State(3:4);
+                ct = ct + 1;
+            end
+            CursorRect = Params.CursorRect;
+            CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
+            CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
+            Data.CursorState(:,end+1) = Cursor.State;
+            Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
+            Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            Cursor.State= [0 0 0 0 0]';
+            
+            TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
+            % draw target triangles
+            for i=1:Params.NumReachTargets,
+                % center vertices to define triangle for each target
+                TargetVerts = Params.ReachTargetVerts{i};
+                TargetVerts(:,1) = TargetVerts(:,1) + Params.Center(1);
+                TargetVerts(:,2) = TargetVerts(:,2) + Params.Center(2);
+                
+                Screen('FillPoly', Params.WPTR, ...
+                    TargetsCol(i,:)', TargetVerts, 1);
+                Screen('FramePoly', Params.WPTR, ... % black frame around triangles
+                    0, TargetVerts, Params.TargetSpacing);
+            end
+            
+            % draw target circles
+            CircRect = Params.InnerCircleRect;
+            CircRect([1,3]) = CircRect([1,3]) + Params.Center(1); % add x-pos
+            CircRect([2,4]) = CircRect([2,4]) + Params.Center(2); % add y-pos
+            Screen('FillOval', Params.WPTR, ...
+                Params.InnerCircleColor, CircRect')
+            
+            Cursor.TaskState = 4;
+            Data.TaskState(1,end+1)=Cursor.TaskState;
+            
+            % draw
+            %Screen('FillOval', Params.WPTR, ...
+            %    cat(1,StartCol,ReachCol,Params.CursorColor)', ...
+            %    cat(1,StartRect,ReachRect,CursorRect)')
+           
+            
+            
+            %Screen('DrawingFinished', Params.WPTR);
+            %Screen('Flip', Params.WPTR);
+            
+            
+            % start counting time            
+            InTargetTotalTime = InTargetTotalTime + dt;
+           
+        end
+        
+        % end if in start target for hold time
+        if InTargetTotalTime > Params.InterTrialInterval,
+            done = 1;
+        end
+    end % Instructed Delay Loop
+end % only complete if no errors
 
 %% Completed Trial - Give Feedback
 
