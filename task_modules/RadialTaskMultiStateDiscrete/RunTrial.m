@@ -330,8 +330,6 @@ if ~Data.ErrorID,
             if TargetID == Data.TargetID
                 Cursor.State = Cursor.State;
                 CursorCol = Params.InTargetColor;
-                Data.ClickerState(1,end+1) = Cursor.ClickState;
-                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
             else
                 CursorCol = Params.CursorColor;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
