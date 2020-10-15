@@ -42,7 +42,6 @@ end
 Cursor.ClickState = 0;
 Cursor.Counter = 0;
 Cursor.ClickDistance = 0;
-Cursor.TaskState = 0;
 Data.TaskState(1,end+1)=Cursor.TaskState;
 
 

@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -52,11 +52,11 @@ Params.FeatureBufferSize = 4;
 
 %% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
-Params.ClickCounter=4;
+Params.ClickCounter=5;
 
 %% Timing
-Params.ScreenRefreshRate = 5; % Hz
-Params.UpdateRate = 5; % Hz
+Params.ScreenRefreshRate = 4; % Hz
+Params.UpdateRate = 4; % Hz
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
