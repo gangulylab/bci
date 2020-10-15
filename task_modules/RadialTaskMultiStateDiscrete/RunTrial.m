@@ -41,7 +41,7 @@ end
 
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
-Data.TaskState(1,end+1)=Cursor.TaskState;
+Cursor.TaskState=0;
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
