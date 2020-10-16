@@ -55,8 +55,8 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 3;
 
 %% Timing
-Params.ScreenRefreshRate = 4; % Hz
-Params.UpdateRate = 4; % Hz
+Params.ScreenRefreshRate = 8; % Hz
+Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_Day3.mat';
