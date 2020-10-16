@@ -36,24 +36,24 @@ Dec_thresh=sum(Dec'<0);
 
 
 % decision based on distance 
-
-[aa1 bb1]=min(Dec_values);
-decision = bb1;
-distance_from_boundary = Dec_values(bb1);
-
-
-
 % 
-% % make decision on max-vote strategy
-% [aa bb]=max(Dec_thresh);
-% if length(find(Dec_thresh==aa)) == 1
-%     decision = bb;
-%     distance_from_boundary = Dec_values(bb);    
-% else
-%     [aa1 bb1]=min(Dec_values);
-%     decision = bb1;
-%     distance_from_boundary = Dec_values(bb1);        
-% end
+% [aa1 bb1]=min(Dec_values);
+% decision = bb1;
+% distance_from_boundary = Dec_values(bb1);
+
+
+
+
+% make decision on max-vote strategy
+[aa bb]=max(Dec_thresh);
+if length(find(Dec_thresh==aa)) == 1
+    decision = bb;
+    distance_from_boundary = Dec_values(bb);    
+else
+    [aa1 bb1]=min(Dec_values);
+    decision = bb1;
+    distance_from_boundary = Dec_values(bb1);        
+end
 
 
 end

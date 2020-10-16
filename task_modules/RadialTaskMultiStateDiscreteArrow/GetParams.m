@@ -48,18 +48,18 @@ Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 3;
 
 %% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
-Params.ClickCounter=5;
+Params.ClickCounter=4;
 
 %% Timing
 Params.ScreenRefreshRate = 4; % Hz
 Params.UpdateRate = 4; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_OfflineOnline.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_Day3.mat';
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
