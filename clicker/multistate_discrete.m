@@ -1,4 +1,4 @@
-function [decision, distance_from_boundary] = multistate_discrete(X,model)
+function [decision, distance_from_boundary] = multistate_discrete(X,model,dec_bound)
 %
 % INPUT: 
 % model - model weights
@@ -32,7 +32,7 @@ d4 = X*squeeze(model(4,:,:))';
 % store results
 Dec = [d1;d2;d3;d4];
 Dec_values=[sum(d1);sum(d2);sum(d3);sum(d4)];
-Dec_thresh=sum(Dec'<0);
+Dec_thresh=sum(Dec'<dec_bound);
 
 
 % decision based on distance 

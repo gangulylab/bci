@@ -18,7 +18,7 @@ Cursor.ControlMode = Params.ControlMode;
 % Load Clicker
 f = load(fullfile('clicker',Params.DiscreteDecoder)); % load the parallel decoders
 Clicker.Model = f.model;
-Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model); % calling function
+Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model,Params.MultiDecisionBoundary); % calling function
 
 
 switch TaskFlag,

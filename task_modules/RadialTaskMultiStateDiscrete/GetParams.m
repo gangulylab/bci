@@ -61,6 +61,10 @@ Params.UpdateRate = 4; % Hz
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_Day3.mat';
 
+%% Multi State Decision Boundary
+% set this to negative values. I would say -0.3 to -0.6 would be okay
+Params.MultiDecisionBoundary = 0; 
+
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
