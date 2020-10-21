@@ -1,13 +1,13 @@
 function [decision, distance_from_boundary] = multistate_discrete(X,model,dec_bound)
 %
-% INPUT: 
+% INPUT:
 % model - model weights
 % X - Feature vector (vector of length 896)
 %
-% OUTPUT: 
+% OUTPUT:
 % DECISION - for 1 of the 4 possible targets
 % DISTANCE_FROM_BOUNDARY - Mean distance away from the classifier and
-% towards the decoded class. 
+% towards the decoded class.
 % More negative values : greater confidence in decision
 
 % make it a row vector
@@ -32,29 +32,39 @@ d4 = X*squeeze(model(4,:,:))';
 % store results
 Dec = [d1;d2;d3;d4];
 Dec_values=[sum(d1);sum(d2);sum(d3);sum(d4)];
-Dec_thresh=sum(Dec'<dec_bound);
+Dec_thresh=sum(Dec'<0);
 
 
-% decision based on distance 
-% 
+% decision based on distance
+%
 % [aa1 bb1]=min(Dec_values);
 % decision = bb1;
 % distance_from_boundary = Dec_values(bb1);
 
 
-
-
-% make decision on max-vote strategy
-[aa bb]=max(Dec_thresh);
-if length(find(Dec_thresh==aa)) == 1
-    decision = bb;
-    distance_from_boundary = Dec_values(bb);    
-else
+if dec_bound == 0    
+    % make decision on max-vote strategy
+    [aa bb]=max(Dec_thresh);
+    if length(find(Dec_thresh==aa)) == 1
+        decision = bb;
+        distance_from_boundary = Dec_values(bb);
+    else
+        [aa1 bb1]=min(Dec_values);
+        decision = bb1;
+        distance_from_boundary = Dec_values(bb1);
+    end    
+else    
+    % make decision  based on distance from decision boundary
+    Dec_values(Dec_values>dec_bound)=0;
     [aa1 bb1]=min(Dec_values);
-    decision = bb1;
-    distance_from_boundary = Dec_values(bb1);        
+    if aa1~=0
+        decision = bb1;
+        distance_from_boundary = Dec_values(bb1);
+    else
+        decision = 0;
+        distance_from_boundary = 0;
+    end    
 end
-
 
 end
 

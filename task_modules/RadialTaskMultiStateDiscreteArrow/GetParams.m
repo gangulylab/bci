@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -52,7 +52,9 @@ Params.FeatureBufferSize = 3;
 
 %% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
-Params.ClickCounter=4;
+% Set this to 2/3 bins if enforcing a null class i.e.
+% Params.MultiDecisionBoundary <0
+Params.ClickCounter=3;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
@@ -61,10 +63,14 @@ Params.UpdateRate = 8; % Hz
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_Day3.mat';
 
-%% Multi State Decision Boundary
-% set this to negative values. I would say -0.3 to -0.6 would be okay
-Params.MultiDecisionBoundary = 0; 
+%% Multi State Decision Boundary for Null Class
 
+% set this to negative values between -2 and -4 IMPORTANT: if this is set
+% to large -ve values (enforcing a null class), don't set
+% Params.ClickCounter to be > 4 bins, else it might get too difficult for
+% subject.
+
+Params.MultiDecisionBoundary = 0; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;

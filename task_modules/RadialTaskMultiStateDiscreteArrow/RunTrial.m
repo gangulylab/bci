@@ -390,10 +390,12 @@ if ~Data.ErrorID,
                 temp_dir = 0.4*Params.ReachTargetPositions(3,:);
             elseif Click_Decision == 4
                 temp_dir = 0.4*Params.ReachTargetPositions(4,:);
+            elseif Click_Decision == 0 % null class
+                temp_dir = 0;
             end
             ArrowEnd = Params.Center + temp_dir;
             
-            % counter
+            % counter only if correct target is hit, training mode for now
             if Click_Decision == Data.TargetID
                 Cursor.Counter = Cursor.Counter+1;
             else
@@ -436,23 +438,23 @@ if ~Data.ErrorID,
             fprintf('ERROR: %s\n',Data.ErrorStr)
         end
         
-        % end if clicks in a target
-        if Cursor.ClickState==Params.ClickerBins && TargetID~=0,
-            done = 1;
-            Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
-            if TargetID~=Data.TargetID,
-                Data.ErrorID = 4;
-                Data.ErrorStr = 'WrongTarget';
-            end
-        end
+%         % end if clicks in a target
+%         if Cursor.ClickState==Params.ClickerBins && TargetID~=0,
+%             done = 1;
+%             Data.SelectedTargetID = TargetID;
+%             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
+%             if TargetID~=Data.TargetID,
+%                 Data.ErrorID = 4;
+%                 Data.ErrorStr = 'WrongTarget';
+%             end
+%         end
         
-        % end if in target for hold time (not using clicker)
-        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
-            done = 1;
-            Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
-        end
+%         % end if in target for hold time (not using clicker)
+%         if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
+%             done = 1;
+%             Data.SelectedTargetID = TargetID;
+%             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
+%         end
         
     end % Reach Target Loop
 end % only complete if no errors
