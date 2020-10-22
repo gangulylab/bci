@@ -42,7 +42,7 @@ end
 Cursor.ClickState = 0;
 Cursor.Counter = 0;
 Cursor.ClickDistance = 0;
-Cursor.TaskState=0;
+
 
 
 %% Instructed Delay

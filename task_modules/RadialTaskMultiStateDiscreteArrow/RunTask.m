@@ -23,6 +23,7 @@ Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model,Params.MultiDecisionBou
 %clicker_svm_mdl_4state_3BinSmothed
 %clicker_svm_mdl_multistate_4Target
 
+
 switch TaskFlag,
     case 1, % Imagined Movements
         Instructions = [...

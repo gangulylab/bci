@@ -142,7 +142,9 @@ for Block=1:NumBlocks, % Block Loop
             '-v7.3','-nocompression');
         
         % keep track of useful stats and params
-        SavePersistence(Params,Neuro,KF,TaskFlag)
+        if Params.ControlMode ~=2
+            SavePersistence(Params,Neuro,KF,TaskFlag)
+        end
         
     end % Trial Loop
     

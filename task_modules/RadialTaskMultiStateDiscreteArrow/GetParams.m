@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -54,14 +54,14 @@ Params.FeatureBufferSize = 3;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=3;
+Params.ClickCounter=4;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_Day3.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_Day4.mat';
 
 %% Multi State Decision Boundary for Null Class
 
