@@ -29,7 +29,8 @@ valid_tasks = {...
     'ExoControl1D',...
     'MultiStateDiscrete',...
     'RadialTaskMultiStateDiscrete',...
-    'RadialTaskMultiStateDiscreteArrow'};
+    'RadialTaskMultiStateDiscreteArrow',...
+    'Robot'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -50,6 +51,7 @@ elseif IsOSX,
 else,
     homedir = '~';
     projectdir = '~/Projects/bci/';
+%     projectdir = '/home/sarah/Documents/bci/bci';
     butter(1,[.1,.5]);
 end
 
@@ -251,17 +253,22 @@ if strcmpi(str,'n'),
 end
 
 %% Initialize Window
-% Screen('Preference', 'SkipSyncTests', 0);
-if DEBUG
-    [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 0 1750 1000]);
-else
-    [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', max(Screen('Screens')), 0);
-end
-Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
+Screen('Preference', 'SkipSyncTests', 0);
 
-% Font
-Screen('TextFont',Params.WPTR, 'Arial');
-Screen('TextSize',Params.WPTR, 28);
+if strcmp(Task, 'Robot')
+    Params.Center = [0,0];
+else
+    if DEBUG
+        [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 0 1750 1000]);
+    else
+        [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', max(Screen('Screens')), 0);
+    end
+    Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
+
+    % Font
+    Screen('TextFont',Params.WPTR, 'Arial');
+    Screen('TextSize',Params.WPTR, 28);
+end
 
 %% Initialze keyboard
 typing_tasks = {'RadialTyping','RadialTypingMultiClick', 'GridTyping'};
