@@ -35,14 +35,18 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
+
+%% Neural feature smoothing
+Params.SmoothDataFlag = true;
+Params.FeatureBufferSize = 4;
 
 %% Timing 
 Params.ScreenRefreshRate = 10; % Hz
 Params.UpdateRate = 10; % Hz
 
 %% Targets
-Params.TargetSize = 60;
+Params.TargetSize = 30;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -51,7 +55,7 @@ Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
 Params.ReachTargetAngles = (0:90:270)';
-Params.ReachTargetRadius = 200; 
+Params.ReachTargetRadius = 300; 
 Params.ReachTargetPositions = ...
     Params.StartTargetPosition ...
     + Params.ReachTargetRadius ...
@@ -88,9 +92,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 10;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles);
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
 switch Params.TargetSelectionFlag,
@@ -151,7 +155,7 @@ end
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 10;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 3.5;
+Params.ImaginedMvmtTime = 4.5;
 
 %% Feedback
 Params.FeedbackSound = false;
