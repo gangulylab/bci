@@ -18,6 +18,10 @@ end
 % ignore delta phase
 X = X(129:end);
 
+% only hG and hG^2
+% X = X(769:end);
+% X = [X X.^2];
+
 % evaluate neural features at this data point with all pairwise parallel
 % classifiers
 d1 = X*squeeze(model(1,:,:))';
