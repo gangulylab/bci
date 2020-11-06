@@ -11,13 +11,23 @@ class DiscreteActionsRobot():
                 setattr(self, _k, _v)
 
     def open(self):
-        self.robotenv = JacoEnv()
+        self.robotenv = JacoEnv(self.mode)
         self.robotenv.center_pos = np.array([-0.35, -0.3])
         self.pos = self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
 
     def create_target(self, pos):
         # self.targetPos = self.bci_to_robot_transform(pos)
-        self.robotenv.set_block_pos(pos)
+        if (pos[0] > 0) & (pos[1] == 0):
+            target = 1
+        elif (pos[0]  == 0) & (pos[1] > 0):
+            target = 2
+        elif (pos[0] < 0) & (pos[1] == 0):
+            target = 3
+        else:
+            target = 4
+        print("TARGET:", target)
+        self.target = target
+        self.robotenv.set_block_pos(pos, target)
 
     def render(self):
         self.robotenv.step()
@@ -26,16 +36,30 @@ class DiscreteActionsRobot():
         self.robotenv.bciRate = rate
 
     def update_joystick(self, key):
-        if key == 1:
-            self.key = 6
-        elif key == 2:
-            self.key = 8
-        elif key == 3:
-            self.key = 4
-        elif key == 4:
-            self.key = 2
-        else:
-            self.key = 0
+        if self.mode == 0:
+            if key == 1:
+                self.key = 6
+            elif key == 2:
+                self.key = 8
+            elif key == 3:
+                self.key = 4
+            elif key == 4:
+                self.key = 2
+            else:
+                self.key = 0
+        elif self.mode == 1:
+            if key == 1:
+                self.key = 16
+            elif key == 2:
+                self.key = 18
+            elif key == 3:
+                self.key = 14
+            elif key == 4:
+                self.key = 12
+            else:
+                self.key = 0
+                
+        # print(self.key)
         self.robotenv.updateCommand(self.key)
         # self.pos =self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
         # print(self.key)

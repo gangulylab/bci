@@ -8,6 +8,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
+interface.mode = 0
 interface.open()
 robot_open = 1
 target_pos = np.array([0.0, 300.0])
@@ -29,7 +30,6 @@ while True:
 			updateRate = 1.0 /val2;
 			interface.updateRefresh(updateRate);
 	if command == 1:	# Set Target
-		# interface.reset()
 		target_pos[0] = (val1 - 128) / 100
 		target_pos[1] = (val2 - 128) / 100
 		interface.create_target(target_pos)
