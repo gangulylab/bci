@@ -10,7 +10,7 @@ dd = pwd;
 imagine_data=A;
 non_imagine_data=B;
 % linear SVM
-cd('C:\Users\Nikhlesh\Documents\liblinear-2.1\liblinear-2.1\matlab')
+%cd('C:\Users\Nikhlesh\Documents\liblinear-2.1\liblinear-2.1\matlab')
 % preparing stuff
 % make the smaller dataset to be first i.e. imagine data and the larger
 % dataset to be non_imagine_data
