@@ -21,8 +21,13 @@ for i=1:length(expts)
     for j=1:length(expt.Imagined_hhmmss)
         display (['Session:',num2str(expt.Imagined_hhmmss{1,j})])
         % go through datafiles in fixed blocks
-        datadir = fullfile('E:\Bravo1\CursorPlatform\Data\',yymmdd,'GangulyServer',...
-            yymmdd,'CenterOut',expt.Imagined_hhmmss{1,j},'Imagined');
+        % for windows
+        % datadir = fullfile('E:\Bravo1\CursorPlatform\Data\',yymmdd,'GangulyServer',...
+        %    yymmdd,'CenterOut',expt.Imagined_hhmmss{1,j},'Imagined');
+        
+        % for server
+        datadir = fullfile('/home/ucsf/Data/bravo1/',yymmdd,...
+            'CenterOut',expt.Imagined_hhmmss{1,j},'Imagined');
         
         files = dir(fullfile(datadir,'Data*.mat'));
         for k=1:length(files)
