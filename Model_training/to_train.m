@@ -310,7 +310,7 @@ for iter=1:1
             else
                 B = [condn_data_train{j}];
                 B=[B ];
-                [res_acc, model,pval] = svm_linear(A',B',1,1);
+                [res_acc, model,pval] = svm_linear(A',B',4,1);
                 %[model] = svm_nonlinear(A',B',1);                
                 %no pruning 
                 svm_model{i,j} = mean(model,1);
