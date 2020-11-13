@@ -48,13 +48,13 @@ Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 3;
+Params.FeatureBufferSize = 5;
 
 %% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=4;
+Params.ClickCounter=5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
@@ -62,6 +62,8 @@ Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_Day4.mat';
+%clicker_svm_mdl_OnlineDays123_OnlyArrowForTraining
+%clicker_svm_mdl_Imagined_Smoothing_RtLeg
 
 %% Multi State Decision Boundary for Null Class
 
@@ -135,8 +137,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 3;
-Params.NumTrialsPerBlock    = 10;
+Params.NumFixedBlocks       = 2;
+Params.NumTrialsPerBlock    = 16;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -180,11 +182,11 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
-Params.InstructedDelayTime = 1;
-Params.CueTime = 0.5;
+Params.InterTrialInterval = 1.0;
+Params.InstructedDelayTime = 1.0;
+Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 5 ;
+Params.MaxReachTime = 10 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
