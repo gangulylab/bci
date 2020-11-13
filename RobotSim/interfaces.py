@@ -39,22 +39,22 @@ class DiscreteActionsRobot():
         if self.mode == 0:
             if key == 1:
                 self.key = 6
-            elif key == 2:
+            elif key == 4:
                 self.key = 8
             elif key == 3:
                 self.key = 4
-            elif key == 4:
+            elif key == 2:
                 self.key = 2
             else:
                 self.key = 0
         elif self.mode == 1:
             if key == 1:
                 self.key = 16
-            elif key == 2:
+            elif key == 4:
                 self.key = 18
             elif key == 3:
                 self.key = 14
-            elif key == 4:
+            elif key == 2:
                 self.key = 12
             else:
                 self.key = 0

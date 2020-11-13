@@ -8,7 +8,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 0
+interface.mode = 1
 interface.angle = 0
 interface.debugLines = 1
 interface.open()
@@ -33,7 +33,7 @@ while True:
 			interface.updateRefresh(updateRate);
 	if command == 1:	# Set Target
 		target_pos[0] = (val1 - 128) / 125
-		target_pos[1] = (val2 - 128) / 125
+		target_pos[1] = -(val2 - 128) / 125
 		interface.create_target(target_pos)
 		print(val1, val2)
 		print(target_pos)
