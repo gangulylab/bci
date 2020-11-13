@@ -90,26 +90,14 @@ class UI(object):
 				if  (self.xl[i]  <= m[0] <=  self.xu[i]) & (self.yl[i]  <= m[1] <=  self.yu[i]):
 					self.buttonState = i+1
 
-			if self.buttonState == 3:
-				self.state = -1
-			elif self.mode == 0:  # X-Y Position
-				if self.buttonState == 2:
+			if self.buttonState == 2:
 					self.state = 4
-				elif self.buttonState == 4:
-					self.state = 3
-				elif self.buttonState == 6:
-					self.state = 1
-				elif self.buttonState == 8:
-					self.state = 2
-			elif self.mode == 1:  # Z + Gripper
-				if self.buttonState == 2:
-					self.state = 4
-				elif self.buttonState == 4:
-					self.state = 3
-				elif self.buttonState == 6:
-					self.state = 1
-				elif self.buttonState == 8:
-					self.state = 2
+			elif self.buttonState == 4:
+				self.state = 3
+			elif self.buttonState == 6:
+				self.state = 1
+			elif self.buttonState == 8:
+				self.state = 2
 
 			# if self.buttonState == 3 and self.prevbuttonState != 3:
 			# 	if self.mode < 1:

@@ -11,7 +11,7 @@ class DiscreteActionsRobot():
                 setattr(self, _k, _v)
 
     def open(self):
-        self.robotenv = JacoEnv(self.mode)
+        self.robotenv = JacoEnv(self.mode, self.angle, self.debugLines)
         self.robotenv.center_pos = np.array([-0.35, -0.3])
         self.pos = self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
 
@@ -56,6 +56,17 @@ class DiscreteActionsRobot():
                 self.key = 14
             elif key == 4:
                 self.key = 12
+            else:
+                self.key = 0
+        elif self.mode == 2:
+            if key == 1:
+                self.key = 26
+            elif key == 2:
+                self.key = 28
+            elif key == 3:
+                self.key = 24
+            elif key == 4:
+                self.key = 22
             else:
                 self.key = 0
                 

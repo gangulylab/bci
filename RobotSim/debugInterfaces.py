@@ -4,10 +4,11 @@ import time
 from fourDir_UI import UI
 import pygame as pg
 
-from horizontalEnv_world import JacoEnv
 
 interface = interfaces.DiscreteActionsRobot()
 interface.mode = 1
+interface.angle = 0
+interface.debugLines = 1
 interface.open()
 robot_open = 1
 target_pos = np.array([0.0, 300.0])
@@ -35,18 +36,8 @@ while True:
 	pos[1] = interface.robotenv.pos[1] - interface.robotenv.center[1]
 	dist = np.linalg.norm(pos - current_target)
 	
-	if interface.mode == 0: 
-		while dist > 0.04:
-			pos[0] = interface.robotenv.pos[0] - interface.robotenv.center[0]
-			pos[1] = interface.robotenv.pos[1] - interface.robotenv.center[1]
-			dist = np.linalg.norm(pos - current_target)
-			time.sleep(0.125)
 
-			runUI.update()
-			key = runUI.state
-			interface.update_joystick(key)
-			interface.render()
-	elif interface.mode == 1:
+	if interface.mode == 1:
 		notdone = 1
 		while notdone == 1:
 			time.sleep(0.125)
@@ -69,6 +60,17 @@ while True:
 			if interface.target == 4:
 				if interface.robotenv.pos[2] < 0.05:
 					notdone = 0
+	else:
+		while dist > 0.04:
+			pos[0] = interface.robotenv.pos[0] - interface.robotenv.center[0]
+			pos[1] = interface.robotenv.pos[1] - interface.robotenv.center[1]
+			dist = np.linalg.norm(pos - current_target)
+			time.sleep(0.125)
+
+			runUI.update()
+			key = runUI.state
+			interface.update_joystick(key)
+			interface.render()
 	time.sleep(1.0)
 
 

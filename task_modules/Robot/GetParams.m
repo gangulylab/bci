@@ -52,14 +52,14 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 3;
+Params.FeatureBufferSize = 4;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_Day3.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_Day4.mat';
 
 %% Multi State Decision Boundary
 % set this to negative values. I would say -0.3 to -0.6 would be okay
@@ -131,7 +131,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 4;
+Params.NumTrialsPerBlock    = 10;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -177,9 +177,9 @@ end
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
-Params.CueTime = 0.5;
+Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 10 ;
+Params.MaxReachTime = 15 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -191,5 +191,9 @@ Params.ErrorSoundFs = 8192;
 [Params.RewardSound,Params.RewardSoundFs] = audioread('reward1.wav');
 % play sounds silently once so Matlab gets used to it
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
+
+%%
+Params.RobotTargetRadius = 50;
+Params.RobotTargetDim = 2;
 
 end % GetParams

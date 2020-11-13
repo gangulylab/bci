@@ -297,7 +297,8 @@ if ~Data.ErrorID,
             end
             
             Cursor.Center = Params.Center;
-            TargetID = InTargetRadial(Cursor,Params.ReachTargetVerts,Params.InnerCircleRadius);
+%             TargetID = InTargetRadial(Cursor,Params.ReachTargetVerts,Params.InnerCircleRadius);         
+            TargetID = InTargetRobot(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
             if TargetID == Data.TargetID
                 Cursor.State = Cursor.State;
                 CursorCol = Params.InTargetColor;
