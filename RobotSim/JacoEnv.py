@@ -137,12 +137,12 @@ class JacoEnv(object):
       c4 = [pos[0] + d, pos[1] - d, 0.0]
 
       
-      if self.dl:
+      # if self.dl:
       # Green x
-        p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
-        p.addUserDebugLine(c2, c3, [0,0,1], 3, 0)
-        p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
-        p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
+      p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
+      p.addUserDebugLine(c2, c3, [0,0,1], 3, 0)
+      p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
+      p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
     # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
 
   def updateCommand(self, key):
@@ -177,11 +177,13 @@ class JacoEnv(object):
     elif key == 16:
       self.fing = self.fing - self.distf
       self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-      p.addUserDebugText('OPEN', (self.pos2[0] + 0.05, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
+      if self.dl: 
+        p.addUserDebugText('OPEN', (self.pos2[0] + 0.05, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
     elif key == 14: 
       self.fing = self.fing + self.distf
       self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-      p.addUserDebugText('CLOSE', (self.pos2[0] - 0.3, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
+      if self.dl:  
+        p.addUserDebugText('CLOSE', (self.pos2[0] - 0.3, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
     elif key == 18:
       self.pos[2] = self.pos[2] + self.dist
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]

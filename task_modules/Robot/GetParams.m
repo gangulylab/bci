@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -192,8 +192,16 @@ Params.ErrorSoundFs = 8192;
 % play sounds silently once so Matlab gets used to it
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
-%%
-Params.RobotTargetRadius = 50;
-Params.RobotTargetDim = 1;
+%% Robotics 
 
+Params.RobotTargetRadius    = 50;
+Params.RobotMode            = 0;  % 0: Horizontal, 1: Vertical+Gripper
+Params.RobotDirectionLines  = 0;
+
+
+if Params.RobotMode == 0
+    Params.RobotTargetDim = 2;
+elseif Params.RobotMode == 1
+    Params.RobotTargetDim = 1;
+end
 end % GetParams

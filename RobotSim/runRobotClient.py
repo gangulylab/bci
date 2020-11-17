@@ -10,7 +10,7 @@ sock.bind(server_address)
 interface = interfaces.DiscreteActionsRobot()
 interface.mode = 1
 interface.angle = 0
-interface.debugLines = 1
+interface.debugLines = 0
 interface.open()
 robot_open = 1
 target_pos = np.array([0.0, 300.0])
@@ -31,6 +31,10 @@ while True:
 		if val1 == 2:		# Change hold time on debug lines
 			updateRate = 1.0 /val2;
 			interface.updateRefresh(updateRate);
+		if val1 == 3:		# Change hold time on debug lines
+			interface.updateMode(val2);
+		if val1 == 4:		# Change hold time on debug lines
+			interface.updateDebugLines(val2);
 	if command == 1:	# Set Target
 		target_pos[0] = (val1 - 128) / 125
 		target_pos[1] = -(val2 - 128) / 125

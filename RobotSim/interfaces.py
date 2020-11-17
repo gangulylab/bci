@@ -35,6 +35,14 @@ class DiscreteActionsRobot():
     def updateRefresh(self, rate):
         self.robotenv.bciRate = rate
 
+    def updateMode(self, mode):
+        self.mode = mode
+        self.robotenv.mode = self.mode
+
+    def updateDebugLines(self, dl):
+        self.debugLines = dl
+        self.robotenv.dl = self.debugLines
+
     def update_joystick(self, key):
         if self.mode == 0:
             if key == 1:
