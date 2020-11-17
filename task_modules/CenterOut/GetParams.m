@@ -13,7 +13,7 @@ switch Params.ControlMode,
 end
 
 %% Control
-Params.CenterReset      = true; % if true, cursor automatically is at center at trial start
+Params.CenterReset      = false; % if true, cursor automatically is at center at trial start
 Params.Assistance       = 0; %0.05; % value btw 0 and 1, 1 full assist
 Params.DaggerAssist 	= false;
 
@@ -39,11 +39,11 @@ Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Timing 
-Params.ScreenRefreshRate = 10; % Hz
-Params.UpdateRate = 10; % Hz
+Params.ScreenRefreshRate = 8; % Hz
+Params.UpdateRate = 8; % Hz
 
 %% Targets
 Params.TargetSize = 30;
@@ -148,7 +148,7 @@ end
 Params.TargetHoldTime = .1;
 Params.InterTrialInterval = 1.0;
 if Params.CenterReset,
-    Params.InstructedDelayTime = .6;
+    Params.InstructedDelayTime = 0;
 else,
     Params.InstructedDelayTime = 0;
 end

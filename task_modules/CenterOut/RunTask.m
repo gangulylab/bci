@@ -18,7 +18,8 @@ switch TaskFlag,
         Cursor.Assistance = Params.Assistance;
         Cursor.DeltaAssistance = 0;
         InstructedDelayTime = Params.InstructedDelayTime;
-        Params.InstructedDelayTime = .6;
+        %Params.InstructedDelayTime = .6;
+        Params.InstructedDelayTime = 0;
         mkdir(fullfile(Params.Datadir,'Imagined'));
         
         % output to screen

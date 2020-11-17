@@ -61,7 +61,7 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to5_4Dir.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
 %clicker_svm_mdl_OnlineDays123_OnlyArrowForTraining
 %clicker_svm_mdl_Imagined_Smoothing_RtLeg
 
@@ -72,7 +72,7 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to5_4Dir.mat';
 % Params.ClickCounter to be > 4 bins, else it might get too difficult for
 % subject.
 
-Params.MultiDecisionBoundary = 0; 
+Params.MultiDecisionBoundary =-3; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;

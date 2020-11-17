@@ -346,6 +346,8 @@ if ~Data.ErrorID,
                     temp_dir = Params.PixelLength*Params.ReachTargetPositions(3,:);
                 elseif Click_Decision == 4
                     temp_dir = Params.PixelLength*Params.ReachTargetPositions(4,:);
+                else
+                     temp_dir = [0 0];
                 end
                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
