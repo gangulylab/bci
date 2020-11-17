@@ -196,7 +196,9 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 Params.RobotTargetRadius    = 50;
 Params.RobotMode            = 0;  % 0: Horizontal, 1: Vertical+Gripper
-Params.RobotDirectionLines  = 0;
+Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+Params.RunningModeBinNum    = 4;  % 1: No filltering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 
 if Params.RobotMode == 0

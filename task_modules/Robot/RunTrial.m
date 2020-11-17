@@ -246,6 +246,11 @@ if ~Data.ErrorID,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
+    
+    ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
+    temp_dir = [0,0];
+    ClickToSend = 0;
+    
     while ~done,
         % Update Time & Position
         tim = GetSecs;
@@ -304,6 +309,7 @@ if ~Data.ErrorID,
                 CursorCol = Params.InTargetColor;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+                
             else
                 CursorCol = Params.CursorColor;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
@@ -311,15 +317,47 @@ if ~Data.ErrorID,
                 Cursor.ClickDistance = Click_Distance;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-                if Click_Decision == 1
-                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(1,:);
-                elseif Click_Decision == 2
-                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(2,:);
-                elseif Click_Decision == 3
-                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(3,:);
-                elseif Click_Decision == 4
-                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(4,:);
-                end
+                
+                
+%                 if Params.RunningMode == 1
+                    ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+                    ClickDec_Buffer(end) = Click_Decision;
+                    RunningMode_ClickDec = runningMode(ClickDec_Buffer);
+                    if RunningMode_ClickDec == 0
+                        if Params.RunningModeZero == 1
+                            temp_dir = [0,0];
+                            ClickToSend = 0;
+                        else
+                            temp_dir = temp_dir;
+                            ClickToSend = ClickToSend;
+                        end
+                    else
+                        ClickToSend = RunningMode_ClickDec;
+                        if RunningMode_ClickDec == 1
+                            temp_dir = Params.PixelLength*Params.ReachTargetPositions(1,:);
+                        elseif RunningMode_ClickDec == 2
+                            temp_dir = Params.PixelLength*Params.ReachTargetPositions(2,:);
+                        elseif RunningMode_ClickDec == 3
+                            temp_dir = Params.PixelLength*Params.ReachTargetPositions(3,:);
+                        elseif RunningMode_ClickDec == 4
+                            temp_dir = Params.PixelLength*Params.ReachTargetPositions(4,:);
+                        end
+                    end
+
+                Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+%                 else
+%                     if Click_Decision == 1
+%                         temp_dir = Params.PixelLength*Params.ReachTargetPositions(1,:);
+%                     elseif Click_Decision == 2
+%                         temp_dir = Params.PixelLength*Params.ReachTargetPositions(2,:);
+%                     elseif Click_Decision == 3
+%                         temp_dir = Params.PixelLength*Params.ReachTargetPositions(3,:);
+%                     elseif Click_Decision == 4
+%                         temp_dir = Params.PixelLength*Params.ReachTargetPositions(4,:);
+%                     end
+%                 end
+                
+                
                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
                 [Cursor.State(1) Cursor.State(2) Cursor.State(3) Cursor.State(4) 0];
@@ -333,7 +371,10 @@ if ~Data.ErrorID,
             %%%%% DIRECTION
            
                         
-            fwrite(Params.udp, [2, Click_Decision, 0])
+%             fwrite(Params.udp, [2, Click_Decision, 0])
+%             datestr(now,'dd-mm-yyyy HH:MM:SS FFF')
+            fwrite(Params.udp, [2, ClickToSend, 0])
+            
             
            % CursorRect = Params.CursorRect;
            % CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
@@ -447,6 +488,7 @@ if Params.InterTrialInterval>0,
                 Cursor.Vcommand = Cursor.State(3:4);
                 ct = ct + 1;
             end
+            
             CursorRect = Params.CursorRect;
             CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
             CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
@@ -454,6 +496,7 @@ if Params.InterTrialInterval>0,
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
            
+            
             
             TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
             
