@@ -64,7 +64,7 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
 %clicker_svm_mdl_Day4
 %% Multi State Decision Boundary
 % set this to negative values. I
-Params.MultiDecisionBoundary = -3; 
+Params.MultiDecisionBoundary = -2; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
@@ -129,7 +129,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 2;
+Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
