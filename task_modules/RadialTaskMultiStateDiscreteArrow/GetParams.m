@@ -61,7 +61,7 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_Day4.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
 %clicker_svm_mdl_OnlineDays123_OnlyArrowForTraining
 %clicker_svm_mdl_Imagined_Smoothing_RtLeg
 

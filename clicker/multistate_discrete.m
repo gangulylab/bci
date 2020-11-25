@@ -20,7 +20,7 @@ end
 X = X(129:end);
 
 % only hG 
-% X = X(769:end);
+ X = X(641:end);
 
 
 % evaluate neural features at this data point with all pairwise parallel

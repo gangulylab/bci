@@ -39,8 +39,8 @@ while ~done,
         
         % update screen with progress
         tex = sprintf('Computing Baseline: %.1f%% \n', 100*(tim-tstart)/Params.BaselineTime);
-        DrawFormattedText(Params.WPTR, tex,'center','center',255);
-        Screen('Flip', Params.WPTR);
+      %  DrawFormattedText(Params.WPTR, tex,'center','center',255);
+       % Screen('Flip', Params.WPTR);
         
     end
     

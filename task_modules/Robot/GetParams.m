@@ -59,11 +59,11 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to5_4Dir.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to7_4Dir_hG.mat';
 
 %% Multi State Decision Boundary
 % set this to negative values. I would say -0.3 to -0.6 would be okay
-Params.MultiDecisionBoundary = 0; 
+Params.MultiDecisionBoundary = -2; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
@@ -179,7 +179,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 15 ;
+Params.MaxReachTime = 25 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -194,11 +194,11 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotTargetRadius    = 50;
+Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 0;  % 0: Horizontal, 1: Vertical+Gripper
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 4;  % 1: No filltering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+Params.RunningModeBinNum    = 3;  % 1: No filltering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 
 if Params.RobotMode == 0
