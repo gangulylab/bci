@@ -69,9 +69,9 @@ Params.MultiDecisionBoundary = -2;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.8;
+   Params.NeuralNetSoftMaxThresh = 0.7;
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
