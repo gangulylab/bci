@@ -51,8 +51,8 @@ elseif IsOSX,
     projectdir = '/Users/daniel/Projects/bci/';
 else,
     homedir = '~';
-%     projectdir = '~/Projects/bci/';
-    projectdir = '/home/sarah/Documents/bci/bci';
+    projectdir = '~/Projects/bci/';
+%     projectdir = '/home/sarah/Documents/bci/bci';
 
 end
 

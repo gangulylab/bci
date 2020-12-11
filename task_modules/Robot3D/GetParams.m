@@ -105,7 +105,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 2;
+Params.NumTrialsPerBlock    = 10;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -171,7 +171,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 1;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -183,7 +183,7 @@ end
 Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:6];
+Params.ReachTargets      = [1,2,3,4];
+Params.ValidDir          = [1:4];
 
 end % GetParams
