@@ -52,19 +52,29 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_Day4.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
 
 %clicker_svm_mdl_Day4
 %% Multi State Decision Boundary
-% set this to negative values. I would say -0.3 to -0.6 would be okay
-Params.MultiDecisionBoundary = 0; 
+% set this to negative values. 
+Params.MultiDecisionBoundary = -2; 
+
+%% Neural network classifier option
+% set this to true to use neural network
+% also set the softmax option
+Params.NeuralNetFlag = true;
+if Params.NeuralNetFlag
+   Params.NeuralNetSoftMaxThresh = 0.7;
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
@@ -130,7 +140,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 20;
+Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
