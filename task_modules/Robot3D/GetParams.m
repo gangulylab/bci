@@ -65,6 +65,16 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+%% Neural network classifier option
+% set this to true to use neural network
+% also set the softmax option
+Params.NeuralNetFlag = true;
+if Params.NeuralNetFlag
+   Params.NeuralNetSoftMaxThresh = 0.7;
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
+
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
 Params.TargetSpacing     = 10; % px
@@ -172,7 +182,7 @@ Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;
@@ -180,10 +190,10 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 50;
+Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4];
-Params.ValidDir          = [1:4];
+Params.ReachTargets      = [1,2,3,4,5];
+Params.ValidDir          = [1:6];
 
 end % GetParams

@@ -335,7 +335,7 @@ catch ME, % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    keyboard;
+    lanekeyboard;
 end
 
 end % ExperimentStart
