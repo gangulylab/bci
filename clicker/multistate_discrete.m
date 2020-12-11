@@ -29,6 +29,8 @@ d1 = X*squeeze(model(1,:,:))';
 d2 = X*squeeze(model(2,:,:))';
 d3 = X*squeeze(model(3,:,:))';
 d4 = X*squeeze(model(4,:,:))';
+%d5 = X*squeeze(model(5,:,:))';
+%d6 = X*squeeze(model(6,:,:))';
 
 % store results
 Dec = [d1;d2;d3;d4];
