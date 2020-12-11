@@ -8,18 +8,24 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 1
+interface.mode = 3
 interface.angle = 0
 interface.debugLines = 0
 interface.open()
+
 robot_open = 1
-target_pos = np.array([0.0, 300.0])
+target_pos = np.array([0.0, 300.0, 0.0])
 
 while True:
 	data, address = sock.recvfrom(4096)
 	command = data[0]
 	val1 = data[1]
 	val2 = data[2]
+
+	if len(data) > 3:
+		val3 = data[3]
+	else:
+		val3 = 128
 
 	if command == 0:
 		if val1 == 0:		# Open Robot 
@@ -35,11 +41,14 @@ while True:
 			interface.updateMode(val2);
 		if val1 == 4:		# Change hold time on debug lines
 			interface.updateDebugLines(val2);
+		if val1 == 5:
+			interface.create_target3D(target_pos, 0)
 	if command == 1:	# Set Target
 		target_pos[0] = (val1 - 128) / 125
 		target_pos[1] = -(val2 - 128) / 125
-		interface.create_target(target_pos)
-		print(val1, val2)
+		target_pos[2] = (val3 - 128) / 125
+		interface.create_target3D(target_pos,1 )
+		print(val1, val2, val3)
 		print(target_pos)
 	if command == 2:	# Set Dirr
 		key = val1

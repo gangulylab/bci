@@ -30,7 +30,8 @@ valid_tasks = {...
     'MultiStateDiscrete',...
     'RadialTaskMultiStateDiscrete',...
     'RadialTaskMultiStateDiscreteArrow',...
-    'Robot'};
+    'Robot',...
+    'Robot3D'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -50,9 +51,9 @@ elseif IsOSX,
     projectdir = '/Users/daniel/Projects/bci/';
 else,
     homedir = '~';
-    projectdir = '~/Projects/bci/';
-%     projectdir = '/home/sarah/Documents/bci/bci';
-    butter(1,[.1,.5]);
+%     projectdir = '~/Projects/bci/';
+    projectdir = '/home/sarah/Documents/bci/bci';
+
 end
 
 % reset path
@@ -255,8 +256,8 @@ end
 %% Initialize Window
 Screen('Preference', 'SkipSyncTests', 0);
 
-if strcmp(Task, 'Robot')
-    Params.Center = [0,0];
+if strcmp(Task(1:5), 'Robot')
+    Params.Center = [0,0,0];
 else
     if DEBUG
         [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 0 1750 1000]);

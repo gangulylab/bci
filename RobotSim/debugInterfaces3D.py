@@ -1,7 +1,7 @@
 import interfaces
 import numpy as np
 import time
-from sixDir_UI import UI
+from sixDirLabels_UI import UI
 import pygame as pg
 
 interface = interfaces.DiscreteActionsRobot()
@@ -15,33 +15,28 @@ target_pos = np.array([0.0, 300.0])
 logCursor = 0
 updateRate = 0.125
 pg.init()
-pg.display.set_mode((500,500))
+pg.display.set_mode((600,500))
 pg.display.set_caption("Control Interface")
 runUI = UI(logCursor, updateRate)
 
-target_pos = np.array([[0., -0.25, 0.1], [0.25, 0.0, 0.1], [-0.25, 0.0, 0.1], [ 0.0, 0.25, 0.1]])
+target_pos = np.array([[0., -0.2, 0.0], [0.0, 0.2, 0.0],  [0.2, 0.0, 0.0], [-0.2, 0.0, 0.0], [ 0.0, 0.0, 0.2], [ 0.0, 0.0, -0.2]])
 interface.updateRefresh(0.125);
 
 runUI.mode = interface.mode
 
 while True:
-	i = np.random.randint(4)
+	i = np.random.randint(6)
 	current_target = target_pos[i]
 	print(current_target)
 	interface.reset()
+	interface.create_target3D(current_target,1)
 
-	for i in range(6):
-		interface.create_target3D(target_pos[i])
-
-		
 
 	pos = np.array([0., 0., 0.])
 	pos[0] = interface.robotenv.pos[0] - interface.robotenv.center[0]
 	pos[1] = interface.robotenv.pos[1] - interface.robotenv.center[1]
 	pos[2] = interface.robotenv.pos[2] 
 	dist = np.linalg.norm(pos - current_target)
-	print("B", current_target)
-	
 
 	if interface.mode == 1:
 		notdone = 1
@@ -70,9 +65,8 @@ while True:
 		while dist > 0.04:
 			pos[0] = interface.robotenv.pos[0] - interface.robotenv.center[0]
 			pos[1] = interface.robotenv.pos[1] - interface.robotenv.center[1]
-			pos[2] = interface.robotenv.pos[2] 
-			# print(pos)
-			print(current_target)
+			pos[2] = interface.robotenv.pos[2] - interface.robotenv.center[2]
+
 			dist = np.linalg.norm(pos - current_target)
 			# print(dist)
 			time.sleep(0.125)

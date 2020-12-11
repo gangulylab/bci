@@ -14,9 +14,11 @@ class DiscreteActionsRobot():
         self.robotenv = JacoEnv(self.mode, self.angle, self.debugLines)
         self.robotenv.center_pos = np.array([-0.35, -0.3])
         self.pos = self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
+        self.robotenv.drawAxes()
 
-    def create_target(self, pos):
+    def create_target(self, cpos):
         # self.targetPos = self.bci_to_robot_transform(pos)
+        pos = cpos.copy()
         if (pos[0] > 0) & (pos[1] == 0):
             target = 1
         elif (pos[0]  == 0) & (pos[1] > 0):
@@ -28,6 +30,23 @@ class DiscreteActionsRobot():
         print("TARGET:", target)
         self.target = target
         self.robotenv.set_block_pos(pos, target)
+
+
+    def create_target3D(self, cpos, st):
+
+        # self.targetPos = self.bci_to_robot_transform(pos)
+        pos = cpos.copy()
+        if st == 1:
+            color = [0,1,0];
+            self.robotenv.set_cubeTarget(pos, color)
+            self.newTarget = 1
+        else:
+            color = [1,0,0];
+            if self.newTarget ==1:
+                self.robotenv.set_cubeColor(pos, color)
+                self.newTarget = 0
+
+        
 
     def render(self):
         self.robotenv.step()
@@ -75,6 +94,21 @@ class DiscreteActionsRobot():
                 self.key = 24
             elif key == 4:
                 self.key = 22
+            else:
+                self.key = 0
+        if self.mode == 3:
+            if key == 1:
+                self.key = 6
+            elif key == 4:
+                self.key = 8
+            elif key == 3:
+                self.key = 4
+            elif key == 2:
+                self.key = 2
+            elif key == 5:
+                self.key = 7
+            elif key == 6:
+                self.key = 1
             else:
                 self.key = 0
                 
