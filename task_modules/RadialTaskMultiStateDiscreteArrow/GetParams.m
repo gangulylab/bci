@@ -85,6 +85,20 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+
+
+%% Neural network classifier option
+% set this to true to use neural network
+% also set the softmax option
+Params.NeuralNetFlag = true;
+if Params.NeuralNetFlag
+   Params.NeuralNetSoftMaxThresh = 0.7;
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
+
+
+
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px

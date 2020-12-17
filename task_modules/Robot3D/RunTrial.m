@@ -201,7 +201,7 @@ if ~Data.ErrorID,
     InTargetTotalTime = 0;
     
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
-    temp_dir = [0,0];
+    temp_dir = [0,0,0];
     ClickToSend = 0;
     
     while ~done,

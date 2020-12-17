@@ -14,7 +14,7 @@ else,
         X = Neuro.FilteredFeatures;
         X = X(:);
         X = X(769:end);
-        Decision_Prob = multilayer_perceptron_Day1to7(X);
+        Decision_Prob = multistate_discrete_6Target(X);
         [aa bb]=max(Decision_Prob);
         if aa >= Params.NeuralNetSoftMaxThresh
             Click_Decision = bb;
