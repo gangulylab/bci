@@ -77,6 +77,8 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.7;
+   Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpDown_ForZ';
+   %Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
