@@ -65,6 +65,21 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to7_4Dir_hG.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = -2; 
 
+
+%% Neural network classifier option
+% set this to true to use neural network
+% also set the softmax option
+Params.NeuralNetFlag = true;
+if Params.NeuralNetFlag
+   Params.NeuralNetSoftMaxThresh = 0.7;
+   Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpDown_ForY';
+   %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
+
+
+
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
