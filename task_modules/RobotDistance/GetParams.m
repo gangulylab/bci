@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot';
+Params.Task = 'RobotDistance';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -52,7 +52,13 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
+
+%% Bins for successful target selection
+% The number of bins of successful decodes to hit the target
+% Set this to 2/3 bins if enforcing a null class i.e.
+% Params.MultiDecisionBoundary <0
+Params.ClickCounter=5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
@@ -76,7 +82,7 @@ else
 end
 
 %% Targets: radial layout
-Params.NumReachTargets   = 6;
+Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
 Params.OuterCircleRadius = 350; % defines outer edge of target
 Params.InnerCircleRadius = 150; % defines inner edge of target
@@ -84,20 +90,13 @@ Params.InnerCircleRadius = 150; % defines inner edge of target
 
 Params.ReachTargetRadius = 250;
 
-d2 = sqrt(1/2);
-d3 = sqrt(1/2);
+y = -100;
+z  = -200;
 
-Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
-    0, Params.ReachTargetRadius, 0; ...
-    -Params.ReachTargetRadius, 0, 0;...
-    0, -Params.ReachTargetRadius, 0; ...
-    0,0,Params.ReachTargetRadius;...
-    0, 0,-Params.ReachTargetRadius;...
-    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0];
-
+Params.ReachTargetPositions = [250, y, z;...
+    50, y, z; ...
+    -150, y, z;...
+    -350, y ,z];
 
 %% Kalman Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -122,7 +121,11 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 10;
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:4, 1:4, 1:4];
+% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
+% Params.TargetOrder = Params.TargetOrder(randperm(length([1:4, 1:4, 1:4])));  % rand order
+Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -170,7 +173,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 20 ;
+Params.MaxReachTime = 5 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -186,7 +189,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.RobotTargetRadius    = 40;
-Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotMode            = 5;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D, 5: Distance
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -200,7 +203,10 @@ end
 Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4,5];
+Params.ReachTargets      = [1,2,3,4];
 Params.ValidDir          = [1:6];
+
+
+
 
 end % GetParams

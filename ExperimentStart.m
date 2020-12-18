@@ -31,7 +31,9 @@ valid_tasks = {...
     'RadialTaskMultiStateDiscrete',...
     'RadialTaskMultiStateDiscreteArrow',...
     'Robot',...
-    'Robot3D'};
+    'Robot3D',...
+    'Robot3DArrow',...
+    'RobotDistance'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -51,8 +53,8 @@ elseif IsOSX,
     projectdir = '/Users/daniel/Projects/bci/';
 else,
     homedir = '~';
-    projectdir = '~/Projects/bci/';
-%     projectdir = '/home/sarah/Documents/bci/bci';
+%     projectdir = '~/Projects/bci/';
+    projectdir = '/home/sarah/Documents/bci/bci';
 
 end
 
@@ -335,7 +337,7 @@ catch ME, % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    lanekeyboard;
+    keyboard;
 end
 
 end % ExperimentStart

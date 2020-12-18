@@ -6,7 +6,18 @@ function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro
 global Cursor
 
 if Params.ControlMode == 2 %mouse
-    Click_Decision = randperm(5,1)-1;
+%     Click_Decision = randperm(6,1)-1;
+    p = randi(4);
+    if p == 1
+        Click_Decision = randperm(7,1)-1;
+    else
+        if (Params.TargetID < 7)
+            Click_Decision = Params.TargetID;
+        else
+            Click_Decision = randperm(7,1)-1;
+        end
+    end
+    
     Click_Distance = 0;
 else,
     if Params.NeuralNetFlag == 1

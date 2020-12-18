@@ -73,7 +73,7 @@ for Block=1:NumBlocks, % Block Loop
     
     % first target
     NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1));
-%     NextTargetID = 0;
+    
     for TrialPerBlock=1:Params.NumTrialsPerBlock, % Trial Loop
         % if smooth batch on & enough time has passed, update KF btw trials
         if TaskFlag==2 && Neuro.CLDA.Type==2,
@@ -110,7 +110,7 @@ for Block=1:NumBlocks, % Block Loop
         % update target and next target
         TargetID = NextTargetID;
         while NextTargetID==TargetID,
-            NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1))
+            NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1));
         end
         
         % set up trial

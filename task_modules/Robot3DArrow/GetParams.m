@@ -52,7 +52,13 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
+
+%% Bins for successful target selection
+% The number of bins of successful decodes to hit the target
+% Set this to 2/3 bins if enforcing a null class i.e.
+% Params.MultiDecisionBoundary <0
+Params.ClickCounter=5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
@@ -84,19 +90,12 @@ Params.InnerCircleRadius = 150; % defines inner edge of target
 
 Params.ReachTargetRadius = 250;
 
-d2 = sqrt(1/2);
-d3 = sqrt(1/2);
-
 Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0, Params.ReachTargetRadius, 0; ...
     -Params.ReachTargetRadius, 0, 0;...
     0, -Params.ReachTargetRadius, 0; ...
     0,0,Params.ReachTargetRadius;...
-    0, 0,-Params.ReachTargetRadius;...
-    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0];
+    0, 0,-Params.ReachTargetRadius];
 
 
 %% Kalman Filter Properties
@@ -186,7 +185,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.RobotTargetRadius    = 40;
-Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -200,7 +199,7 @@ end
 Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4,5];
+Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6];
 
 end % GetParams

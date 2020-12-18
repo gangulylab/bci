@@ -68,6 +68,7 @@ class JacoEnv(object):
         p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=-45, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 3  or self.mode == 4:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+      # p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 0, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     # p.resetDebugVisualizerCamera(cameraDistance=0.8, cameraYaw=30, cameraPitch=-30, cameraTargetPosition=[-0.35,-0.3,0.0])
@@ -182,6 +183,25 @@ class JacoEnv(object):
     # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
 
 
+  def drawDistLines(self):
+    y1 = -0.05
+    y2 = 0.95
+
+    lw = 3
+    c = [0,0,1]
+
+    z = -.02
+
+    dist = 0.00
+    delta = 0.20
+
+    while dist > -1.0:
+      c1 = [dist, y1, z] 
+      c2 = [dist, y2, z]
+
+      p.addUserDebugLine(c1, c2, c, lw, 0)
+      dist = dist - delta
+
   def drawAxes(self):
     c1 = [0, 0, -0.2] + self.center
     c2 = [0, 0, 0.2] + self.center
@@ -229,6 +249,15 @@ class JacoEnv(object):
       self.l11 = p.addUserDebugLine(self.c3, self.c7, c, 6, 0)
       self.l12 = p.addUserDebugLine(self.c4, self.c8, c, 6, 0)
 
+      self.newPosInput = 1
+      self.inverseKin()
+      for i in self.jacoArmJoints:
+        p.resetJointState(self.jacoId,i, self.JP[i-2])
+
+      for i in  [9, 11, 13]:
+        p.setJointMotorControl2(self.jacoId, i, p.POSITION_CONTROL, self.fing)
+
+
   def set_cubeColor(self, pos, c):
     lw = 16
 
@@ -248,116 +277,6 @@ class JacoEnv(object):
     self.l12 = p.addUserDebugLine(self.c4, self.c8, c, lw, 0)
 
 
-  def updateCommand(self, key):
-    self.key = key
-    Rrm = R.from_quat(self.orn)
-    Rnew =  Rrm.as_dcm() 
-
-    baseTheta = self.JP[0]
-    s = math.sin(baseTheta)
-    c = math.cos(baseTheta)
-
-    n = np.sqrt(self.pos[0]*self.pos[0] + self.pos[1]*self.pos[1])
-    dx = -self.pos[1]/n
-    dy = self.pos[0]/n
-
-    if 0 < key < 30:
-      self.newPosInput = 1
-
-    # Position
-    if key == 6:
-      self.pos[0] = self.pos[0] + self.dist
-      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 4: 
-      self.pos[0] = self.pos[0] - self.dist
-      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 8:
-      self.pos[1] = self.pos[1] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
-    elif key == 2:
-      self.pos[1] = self.pos[1] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
-    elif key == 7:
-      self.pos[2] = self.pos[2] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
-    elif key == 1:
-      self.pos[2] = self.pos[2] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
-    elif key == 16:
-      self.fing = self.fing - self.distf
-      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-      if self.dl: 
-        p.addUserDebugText('OPEN', (self.pos2[0] + 0.05, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
-    elif key == 14: 
-      self.fing = self.fing + self.distf
-      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-      if self.dl:  
-        p.addUserDebugText('CLOSE', (self.pos2[0] - 0.3, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
-    elif key == 18:
-      self.pos[2] = self.pos[2] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
-    elif key == 12:
-      self.pos[2] = self.pos[2] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
-    elif key == 0:
-      self.pos2 = self.pos
-    elif key == 26:
-      self.pos[0] = self.pos[0] - self.dist*dx
-      self.pos[1] = self.pos[1] - self.dist*dy
-      self.pos2 = [self.pos[0] - self.debuglen*dx, self.pos[1] - self.debuglen*dy]
-
-    elif key == 24: 
-      self.pos[0] = self.pos[0] + self.dist*dx
-      self.pos[1] = self.pos[1] + self.dist*dy
-      self.pos2 = [self.pos[0] + self.debuglen*dx, self.pos[1] + self.debuglen*dy]
-
-    elif key == 28:
-      self.pos[0] = self.pos[0] + self.dist*c
-      self.pos[1] = self.pos[1] - self.dist*s
-      self.pos2 = [self.pos[0] + self.debuglen*c, self.pos[1] - self.debuglen*s]
-
-    elif key == 22:
-      self.pos[0] = self.pos[0] - self.dist*c
-      self.pos[1] = self.pos[1] + self.dist*s
-      self.pos2 = [self.pos[0] - self.debuglen*c, self.pos[1] + self.debuglen*s]
-
-    if key == 46:
-      # self.pos[0] = self.pos[0] + self.dist
-      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 44: 
-      # self.pos[0] = self.pos[0] - self.dist
-      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 48:
-      # self.pos[1] = self.pos[1] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
-    elif key == 42:
-      # self.pos[1] = self.pos[1] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
-    elif key == 47:
-      # self.pos[2] = self.pos[2] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
-    elif key == 41:
-      # self.pos[2] = self.pos[2] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
-
-    if self.pos[0] > self.wu[0]:
-      self.pos[0] =  self.wu[0]
-    if self.pos[0] < self.wl[0]:
-      self.pos[0] =  self.wl[0]
-    if self.pos[1] > self.wu[1]:
-      self.pos[1] =  self.wu[1]
-    if self.pos[1] < self.wl[1]:
-      self.pos[1] =  self.wl[1]
-    if self.pos[2] > self.wu[2]:
-      self.pos[2] =  self.wu[2]
-    if self.pos[2] < self.wl[2]:
-      self.pos[2] =  self.wl[2]
-
-    if self.fing > self.fu:
-      self.fing =  self.fu
-    if self.fing < self.fl:
-      self.fing =  self.fl
-
   def inverseKin(self):
     if (self.newPosInput == 1):
       self.jointPoses = p.calculateInverseKinematics(self.jacoId,
@@ -375,15 +294,18 @@ class JacoEnv(object):
     # p.resetSimulation()
     p.resetBasePositionAndOrientation(self.cube1Id, [-1., -1., -1.], [0,0,0,1])
     p.removeAllUserDebugItems()
-    self.drawAxes()
+    # self.drawAxes()
+    self.drawDistLines()
     rp = [0,math.pi/4,math.pi,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi]
 
-    if self.mode == 0:
-      self.pos =list([-0.35, 0.3, 0.2])
-    elif self.mode ==3:
-      self.pos =list([-0.35, 0.3, 0.25])
-    else:
-      self.pos =list([-0.35, 0.3, 0.2])
+    # if self.mode == 0:
+    #   self.pos =list([-0.35, 0.3, 0.2])
+    # elif self.mode ==3:
+    #   self.pos =list([-0.35, 0.3, 0.25])
+    # else:
+    #   self.pos =list([-0.35, 0.3, 0.2])
+
+    self.pos =list([-0.0, 0.2, 0.2])
 
     self.orn = p.getQuaternionFromEuler([0,math.pi,math.pi/2])
     self.fing = 0.675
