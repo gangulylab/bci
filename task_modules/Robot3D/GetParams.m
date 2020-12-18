@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -71,8 +71,8 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.7;
-   Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpDown_ForZ';
-   %Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';
+%    Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpDown_ForZ';
+   Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -202,7 +202,7 @@ end
 Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4,5];
+Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6];
 
 end % GetParams

@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -77,8 +77,8 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.7;
-   Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpDown_ForZ';
-   %Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';
+%    Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpDown_ForZ';
+   Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -123,7 +123,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 10;
+Params.NumTrialsPerBlock    = 16;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -171,7 +171,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 20 ;
+Params.MaxReachTime = 10 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
