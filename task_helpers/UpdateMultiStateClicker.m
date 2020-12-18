@@ -25,7 +25,8 @@ else,
         X = Neuro.FilteredFeatures;
         X = X(:);
         X = X(769:end);
-        Decision_Prob = multistate_discrete_6Target(X);
+        %Decision_Prob = multistate_discrete_6Target(X);
+        Decision_Prob = feval(Params.NeuralNetFunction,X);
         [aa bb]=max(Decision_Prob);
         if aa >= Params.NeuralNetSoftMaxThresh
             Click_Decision = bb;
