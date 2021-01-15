@@ -229,6 +229,12 @@ class JacoEnv(object):
       self.l11 = p.addUserDebugLine(self.c3, self.c7, c, 6, 0)
       self.l12 = p.addUserDebugLine(self.c4, self.c8, c, 6, 0)
 
+      d1 = [pos[0], pos[1], pos[2]]
+      d2 = [self.center[0],self.center[1] ,self.center[2] ]
+      self.l13 = p.addUserDebugLine(d1, d2, [0,0,0], 4, 0)
+
+
+
   def set_cubeColor(self, pos, c):
     lw = 16
 
@@ -357,6 +363,29 @@ class JacoEnv(object):
       self.fing =  self.fu
     if self.fing < self.fl:
       self.fing =  self.fl
+
+  def set_robotPos(self, rp, key):
+    self.pos[0] = self.center[0] + rp[0]
+    self.pos[1] = self.center[1] + rp[1]
+    self.pos[2] = self.center[2]  + rp[2]
+
+    # Position
+    if key == 6:
+      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 4: 
+      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 8:
+      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+    elif key == 2:
+      self.pos2 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 7:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+    elif key == 1:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+    else:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2]] 
+      
+    self.newPosInput = 1
 
   def inverseKin(self):
     if (self.newPosInput == 1):

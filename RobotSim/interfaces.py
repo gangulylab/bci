@@ -132,6 +132,23 @@ class DiscreteActionsRobot():
         # self.pos =self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
         # print(self.key)
 
+    def updateRobotPos(self, rp, key):
+        if key == 1:
+            self.key = 6
+        elif key == 4:
+            self.key = 8
+        elif key == 3:
+            self.key = 4
+        elif key == 2:
+            self.key = 2
+        elif key == 5:
+            self.key = 7
+        elif key == 6:
+            self.key = 1
+        else:
+            self.key = 0
+        self.robotenv.set_robotPos(rp, self.key)
+
     def bci_to_robot_transform(self, pos):
         robot_pos = pos / 1200.0 + self.robotenv.center_pos
         return robot_pos

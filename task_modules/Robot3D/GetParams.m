@@ -45,6 +45,7 @@ end
 
 %% Sync to Blackrock
 Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -98,7 +99,16 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
     -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
     -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0];
+    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
+    0,    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius;...
+    0, -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius;...
+    0, -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius;...
+    0, d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius;...
+        d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
+    -d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
+    -d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
+    d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius];
+    
 
 
 %% Kalman Filter Properties
@@ -124,7 +134,14 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 10;
+Params.NumTrialsPerBlock    = 12;
+
+Params.TargetOrder          = [1:6,1:6];
+
+Params.TargetOrder          = [7:18];
+% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -205,4 +222,17 @@ Params.RobotTargetDim = 1;
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6];
 
+Params.deltaT = 0.1;
+Params.k_v = 0.9;
+Params.k_i = 10.0;
+Params.dA = [1 0 0  Params.deltaT 0 0;...
+                    0 1 0 0 Params.deltaT 0;...
+                    0 0 1 0 0 Params.deltaT;...
+                    0 0 0 Params.k_v 0 0;...
+                    0 0 0 0 Params.k_v 0;...
+                    0 0 0 0 0 Params.k_v];
+                
+Params.dB = [zeros(3);...
+                    eye(3)];
+Params.dB = Params.dB*Params.k_i;
 end % GetParams

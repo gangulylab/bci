@@ -35,7 +35,7 @@ end
 
 % reset cursor
 if Params.CenterReset,    
-    Cursor.State = [Params.Center(1),Params.Center(2),Params.Center(3),0,0]';
+    Cursor.State = [Params.Center(1),Params.Center(2),Params.Center(3),0,0,0]';
     Cursor.IntendedState = [Params.Center(1),Params.Center(2),Params.Center(3),0,0]';
 end
 
@@ -127,7 +127,18 @@ if ~Data.ErrorID && Params.CueTime>0,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
-    fwrite(Params.udp,[1,ReachTargetPos(1)/10 + 128 ,ReachTargetPos(2)/10 + 128, ReachTargetPos(3)/10 + 128]);
+%     fwrite(Params.udp,[1,ReachTargetPos(1)/10 + 128 ,ReachTargetPos(2)/10 + 128, ReachTargetPos(3)/10 + 128]);
+%     fwrite(Params.udp,[1,(sign(ReachTargetPos(1)) +1), abs(ReachTargetPos(1)), (sign(ReachTargetPos(2)) +1), abs(ReachTargetPos(2)), (sign(ReachTargetPos(3)) +1), abs(ReachTargetPos(3))]);
+%     
+    
+    [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
+    [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
+    [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
+
+    fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
+
+    
+    
     while ~done,
         % Update Time & Position
         tim = GetSecs;
@@ -244,11 +255,12 @@ if ~Data.ErrorID,
             TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
             if TargetID == Data.TargetID
                 fwrite(Params.udp, [0, 5, 0])
-                Cursor.State = Cursor.State;
-                Data.ClickerState(1,end+1) = Cursor.ClickState;
-                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-                
-            else
+            end
+%                 Cursor.State = Cursor.State;
+%                 Data.ClickerState(1,end+1) = Cursor.ClickState;
+%                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+%                 
+%             else
                 Params.TargetID =  Data.TargetID;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
                 Cursor.ClickState = Click_Decision;
@@ -279,17 +291,35 @@ if ~Data.ErrorID,
 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
-                Cursor.State(1) = Cursor.State(1) + temp_dir(1);
-                Cursor.State(2) = Cursor.State(2) + temp_dir(2);
-                Cursor.State(3) = Cursor.State(3) + temp_dir(3);
+%                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
+%                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
+%                 Cursor.State(3) = Cursor.State(3) + temp_dir(3);
+                
+                A = Params.dA;
+                B = Params.dB;
+
+                
+                U = zeros(3,1);
+               U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
+               U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
+               U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
+                
+                Cursor.State = A*Cursor.State + B*U;
+
 
                 Cursor.IntendedState = [0 0 0 0 0]';                
-            end
+            
             
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
            
-            fwrite(Params.udp, [2, ClickToSend, 0])
+%             fwrite(Params.udp, [2, ClickToSend, 0])
+
+            [xa,xb,xc] = doubleToUDP(Cursor.State(1));
+            [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
+            [za,zb,zc] = doubleToUDP(Cursor.State(3)) ;
+            
+            fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]);
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -435,7 +465,7 @@ else,
     % reset cursor
     Cursor.ClickState = 0;
     % reset cursor
-    Cursor.State = [0,0,0,0,1]';
+    Cursor.State = [0,0,0,0,0,0]';
     Cursor.IntendedState = [0,0,0,0,1]';
     
     fprintf('ERROR: %s\n', Data.ErrorStr)

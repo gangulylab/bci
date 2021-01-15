@@ -66,13 +66,14 @@ Cursor.LastUpdateTime = tlast;
 for Block=1:NumBlocks, % Block Loop
 
     % initialize cursor state(s)
-    Cursor.State = [0,0,0,0,1]';
+    Cursor.State = [0,0,0,0,0,0]';
     Cursor.IntendedState = [0,0,0,0,1]';
     Cursor.Vcommand = [0,0]';
     Cursor.ClickState = 0;
     
     % first target
-    NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1));
+%     NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1));
+     NextTargetID =  Params.TargetOrder(Trial+1);
 %     NextTargetID = 0;
     for TrialPerBlock=1:Params.NumTrialsPerBlock, % Trial Loop
         % if smooth batch on & enough time has passed, update KF btw trials
@@ -110,7 +111,8 @@ for Block=1:NumBlocks, % Block Loop
         % update target and next target
         TargetID = NextTargetID;
         while NextTargetID==TargetID,
-            NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1))
+%             NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1))
+             NextTargetID =  Params.TargetOrder(Trial+1);
         end
         
         % set up trial
