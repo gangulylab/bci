@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot';
+Params.Task = 'Robot3DArrow';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -123,7 +123,15 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 16;
+Params.NumTrialsPerBlock    = 18;
+
+
+Params.TargetOrder          = [1:6, 1:6, 1:6];
+
+% Params.TargetOrder          = [7:18];
+% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};

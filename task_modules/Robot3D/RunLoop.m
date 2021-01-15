@@ -110,10 +110,10 @@ for Block=1:NumBlocks, % Block Loop
         
         % update target and next target
         TargetID = NextTargetID;
-        while NextTargetID==TargetID,
+%         while NextTargetID==TargetID,
 %             NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1))
              NextTargetID =  Params.TargetOrder(Trial+1);
-        end
+%         end
         
         % set up trial
         TrialData = DataFields;

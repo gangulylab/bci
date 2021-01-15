@@ -45,7 +45,7 @@ end
 
 %% Sync to Blackrock
 Params.ArduinoSync = true;
-Params.ArduinoSync = false;
+% Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -88,7 +88,7 @@ Params.InnerCircleRadius = 150; % defines inner edge of target
 Params.ReachTargetRadius = 250;
 
 d2 = sqrt(1/2);
-d3 = sqrt(1/2);
+d3 = sqrt(1/3);
 
 Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0, Params.ReachTargetRadius, 0; ...
@@ -107,7 +107,12 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
         d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
     -d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
     -d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
-    d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius];
+    d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
+        d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius];
+    
     
 
 
@@ -134,11 +139,11 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 12;
+Params.NumTrialsPerBlock    = 4;
 
-Params.TargetOrder          = [1:6,1:6];
+Params.TargetOrder          = [7,8,9,10];
 
-Params.TargetOrder          = [7:18];
+% Params.TargetOrder          = [7:18];
 % Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -225,6 +230,7 @@ Params.ValidDir          = [1:6];
 Params.deltaT = 0.1;
 Params.k_v = 0.9;
 Params.k_i = 10.0;
+
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
                     0 0 1 0 0 Params.deltaT;...

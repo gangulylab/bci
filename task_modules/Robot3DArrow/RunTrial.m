@@ -106,8 +106,15 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
 end % only complete if no errors
 
 %% Cue time
+% 
+% fwrite(Params.udp,[1,ReachTargetPos(1)/10 + 128 ,ReachTargetPos(2)/10 + 128, ReachTargetPos(3)/10 + 128]);
 
-fwrite(Params.udp,[1,ReachTargetPos(1)/10 + 128 ,ReachTargetPos(2)/10 + 128, ReachTargetPos(3)/10 + 128]);
+    
+    [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
+    [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
+    [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
+
+    fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
 
 if ~Data.ErrorID && Params.CueTime>0,
     tstart  = GetSecs;
