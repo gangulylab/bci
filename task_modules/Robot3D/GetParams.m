@@ -45,7 +45,6 @@ end
 
 %% Sync to Blackrock
 Params.ArduinoSync = true;
-% Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -111,7 +110,11 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
         d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
     -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
     -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
-    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius];
+    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+        d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
+    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius];
     
     
 
@@ -139,13 +142,18 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 4;
 
-Params.TargetOrder          = [7,8,9,10];
 
-% Params.TargetOrder          = [7:18];
-% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+% Cardinal Directions
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
+
+% Diagonals in the Horizontal Plane
+% Params.NumTrialsPerBlock    = 4;
+% Params.TargetOrder          = [7:10];
+
+
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -208,7 +216,7 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
-
+Params.limit = [-300, 300; -300 300; -300 300];
 Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
@@ -229,7 +237,7 @@ Params.ValidDir          = [1:6];
 
 Params.deltaT = 0.1;
 Params.k_v = 0.9;
-Params.k_i = 10.0;
+Params.k_i = 15.0;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...

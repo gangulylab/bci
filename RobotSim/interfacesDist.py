@@ -38,7 +38,8 @@ class DiscreteActionsRobot():
         pos = cpos.copy()
         if st == 1:
             color = [0,1,0];
-            self.robotenv.set_cubeTarget(pos, color)
+            # self.robotenv.set_cubeTarget(pos, color)
+            self.robotenv.set_block_pos(pos)
             self.newTarget = 1
         else:
             color = [1,0,0];
@@ -53,7 +54,8 @@ class DiscreteActionsRobot():
         if st == 1:
             color = [0,1,0];
             # self.robotenv.pos = pos
-            self.robotenv.set_cubeTarget(pos, color)
+            # self.robotenv.set_cubeTarget(pos, color)
+            self.robotenv.set_block_pos(pos)
             self.newTarget = 1
 
         else:
@@ -61,6 +63,14 @@ class DiscreteActionsRobot():
             if self.newTarget ==1:
                 self.robotenv.set_cubeColor(pos, color)
                 self.newTarget = 0
+
+    
+    def updateDistanceDec(self, ds, st):
+        if st == 1:
+            color = [0,1,0];
+        else: 
+            color = [1,0,0];    
+        self.robotenv.updateDist(ds, color)
 
 
         

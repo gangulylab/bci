@@ -299,6 +299,9 @@ try
         % save of useful stats and params
         SavePersistence(Params,Neuro,KF,0)
         
+        pause(5.0)
+        
+        
     else, % if baseline is set to 0, just load stats
         f=load(fullfile(Params.Persistencedir, 'ch_stats.mat'));
         Neuro.ChStats = f.ch_stats;

@@ -123,8 +123,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = 12;
 Params.TargetOrder          = [1:4, 1:4, 1:4];
-% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
-Params.TargetOrder = Params.TargetOrder(randperm(length([1:4, 1:4, 1:4])));  % rand order
+
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters

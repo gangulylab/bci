@@ -42,21 +42,18 @@ while True:
 		if val1 == 4:		# Change hold time on debug lines
 			interface.updateDebugLines(val2);
 		if val1 == 5:
-			interface.create_target3D_Dist(target_pos, 0)
+			interface.updateDistanceDec(key, 0)
 	if command == 1:	# Set Target
 		target_pos[0] = (val1 - 128) / 100
 		target_pos[1] = (val2 - 128) / 100
 		target_pos[2] = (val3 - 128) / 100
+		print(target_pos)
 		interface.create_target3D(target_pos,1 )
 		print(val1, val2, val3)
 		print(target_pos)
 	if command == 2:	# Set Dirr
 		key = val1
-		interface.update_joystick(key)
-		interface.render()
-	if command == 3:
-		key = val1
-		interface.update_joystick(key)
+		interface.updateDistanceDec(key, 1)
 		interface.render()
 
 sock.shutdown()

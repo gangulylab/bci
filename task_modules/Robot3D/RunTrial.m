@@ -291,25 +291,43 @@ if ~Data.ErrorID,
 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
-%                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
-%                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
-%                 Cursor.State(3) = Cursor.State(3) + temp_dir(3);
-                
+                if RunningMode_ClickDec == 7
+                    cs = 'STOP'
+                    Cursor.State(4:6) = [0;0;0];
+                    
+                else 
+
                 A = Params.dA;
                 B = Params.dB;
-
                 
                 U = zeros(3,1);
-               U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
-               U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
-               U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
+                U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
+                U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
+                U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
                 
                 Cursor.State = A*Cursor.State + B*U;
-
-
-                Cursor.IntendedState = [0 0 0 0 0]';                
-            
-            
+                Cursor.IntendedState = [0 0 0 0 0]';  
+                
+                if Cursor.State(1) <= Params.limit(1,1)
+                   Cursor.State(1) = Params.limit(1,1);
+                   Cursor.State(4) = 0;
+                elseif Cursor.State(1) >= Params.limit(1,2)
+                   Cursor.State(1) = Params.limit(1,2);
+                   Cursor.State(4) = 0;
+                elseif Cursor.State(2) <= Params.limit(2,1)
+                   Cursor.State(2) = Params.limit(2,1);
+                   Cursor.State(5) = 0;
+               elseif Cursor.State(2) >= Params.limit(2,2)
+                   Cursor.State(2) = Params.limit(2,2);
+                   Cursor.State(5) = 0;
+                elseif Cursor.State(3) <= Params.limit(3,1)
+                   Cursor.State(3) = Params.limit(3,1);
+                   Cursor.State(6) = 0;
+                elseif Cursor.State(3) >= Params.limit(3,2)
+                   Cursor.State(3) = Params.limit(3,2);
+                   Cursor.State(6) = 0;
+                end
+                
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
            

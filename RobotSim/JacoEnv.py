@@ -346,18 +346,18 @@ class JacoEnv(object):
       # self.pos[2] = self.pos[2] - self.dist
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
 
-    if self.pos[0] > self.wu[0]:
-      self.pos[0] =  self.wu[0]
-    if self.pos[0] < self.wl[0]:
-      self.pos[0] =  self.wl[0]
-    if self.pos[1] > self.wu[1]:
-      self.pos[1] =  self.wu[1]
-    if self.pos[1] < self.wl[1]:
-      self.pos[1] =  self.wl[1]
-    if self.pos[2] > self.wu[2]:
-      self.pos[2] =  self.wu[2]
-    if self.pos[2] < self.wl[2]:
-      self.pos[2] =  self.wl[2]
+    # if self.pos[0] > self.wu[0]:
+    #   self.pos[0] =  self.wu[0]
+    # if self.pos[0] < self.wl[0]:
+    #   self.pos[0] =  self.wl[0]
+    # if self.pos[1] > self.wu[1]:
+    #   self.pos[1] =  self.wu[1]
+    # if self.pos[1] < self.wl[1]:
+    #   self.pos[1] =  self.wl[1]
+    # if self.pos[2] > self.wu[2]:
+    #   self.pos[2] =  self.wu[2]
+    # if self.pos[2] < self.wl[2]:
+    #   self.pos[2] =  self.wl[2]
 
     if self.fing > self.fu:
       self.fing =  self.fu

@@ -217,13 +217,41 @@ if ~Data.ErrorID,
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             Cursor.State = [Params.Center(1),Params.Center(2),0,0,0]';
           
-            % start counting time if cursor is in target
+                       % start counting time if cursor is in target
+            if TargetID==Data.TargetID,
+                InTargetTotalTime = InTargetTotalTime + dt;
+            else
+                InTargetTotalTime = 0;
+            end
             
             Params.TargetID =  Data.TargetID;
-
+            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            Cursor.ClickState = Click_Decision;
+            Cursor.ClickDistance = Click_Distance;
+            Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
+                  
+            % counter only if correct target is hit, training mode for now
+            if Click_Decision == Data.TargetID
+                Cursor.Counter = Cursor.Counter+1;
+            else
+                Cursor.Counter = 0;
+            end
+            
+            % decision for clikcing and finishng trial
+            if Cursor.Counter == Params.ClickCounter
+                done=1;                        
+                %Cursor.State(1:2) = Params.ReachTargetPositions(Click_Decision,:);
+                Data.SelectedTargetID = Click_Decision;
+    
+               fwrite(Params.udp, [0, 5, 0])
+            end
+            
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
-
+            
+            % draw the arrow
+           fwrite(Params.udp, [2, Click_Decision, 0])
         end
         
         % end if takes too long

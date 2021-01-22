@@ -53,6 +53,8 @@ class JacoEnv(object):
     self.mode = mode
     self.angle  =angle
     self.dl  = dl
+    # self.distPos = [0.25, 0.05, -0.15, 0.35]
+    self.distPos = [-0.10, -.3, -0.5, -0.7]
 
     p.loadURDF("plane.urdf",[0,0,-.65])
     p.loadURDF("table/table.urdf", basePosition=[-0.6,0.45,-0.65])
@@ -83,113 +85,17 @@ class JacoEnv(object):
     self.cube1Id = p.loadURDF("cube_small.urdf",[-1., -1., -1.], [0,0,0,1])
     self.reset()
 
-
-  def set_block_pos(self, pos, target):
+  def set_block_pos(self, pos):
     pos[0] = self.center[0] + pos[0]
     pos[1] = self.center[1] + pos[1]
-
-    d = .08
-
-    if self.mode == 1:
-      pos = self.center
-      p.resetBasePositionAndOrientation(self.cube1Id, [-1., -1., -1.], [0,0,0,1])
-      if target == 2:
-        # high square
-        c1 = [pos[0] - d, pos[1] - d, 0.4]
-        c2 = [pos[0] - d, pos[1] + d, 0.4]
-        c3 = [pos[0] + d, pos[1] + d, 0.4]
-        c4 = [pos[0] + d, pos[1] - d, 0.4]
-
-        p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
-        p.addUserDebugLine(c2, c3, [0,0,1], 3, 0)
-        p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
-        p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
-
-      elif target == 4: 
-        c1 = [pos[0] - d, pos[1] - d, 0.05]
-        c2 = [pos[0] - d, pos[1] + d, 0.05]
-        c3 = [pos[0] + d, pos[1] + d, 0.05]
-        c4 = [pos[0] + d, pos[1] - d, 0.05]
-
-        p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
-        p.addUserDebugLine(c2, c3, [0,0,1], 3, 0)
-        p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
-        p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
-
-      elif target == 3:
-        c1 = [-0.335, 0.3, 0.0]
-        c2 = [-0.335, 0.3, 0.4]
-        c3 = [-0.365, 0.3, 0.0]
-        c4 = [-0.365, 0.3, 0.4]
-        p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
-        p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
-        # self.fing = 1.35
-
-
-      elif target == 1:
-        c1 = [-0.45, 0.3, 0.0]
-        c2 = [-0.45, 0.3, 0.5]
-        c3 = [-0.25, 0.3, 0.0]
-        c4 = [-0.25, 0.3, 0.5]
-        p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
-        p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
-        # self.fing = 0.0
-
-    elif self.mode == 3:
-      lw = 6
-      d = .05
-      # z = .1
-      pos[2] = 0.1
-      c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
-      c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
-      c3 = [pos[0] + d, pos[1]-d, pos[2]+d]
-      c4 = [pos[0] - d, pos[1]-d, pos[2]+d]
-      c5 = [pos[0] - d, pos[1]+d, pos[2]-d]
-      c6 = [pos[0] + d, pos[1]+d, pos[2]-d]
-      c7 = [pos[0] + d, pos[1]+d, pos[2]+d]
-      c8 = [pos[0] - d, pos[1]+d, pos[2]+d]
-
-      p.addUserDebugLine(c1, c2, [0,0,1], 6, 0)
-      p.addUserDebugLine(c2, c3, [0,0,1], 6, 0)
-      p.addUserDebugLine(c3, c4, [0,0,1], 6, 0)
-      p.addUserDebugLine(c4, c1, [0,0,1], 6, 0)
-
-      p.addUserDebugLine(c5, c6, [0,0,1], 6, 0)
-      p.addUserDebugLine(c6, c7, [0,0,1], 6, 0)
-      p.addUserDebugLine(c7, c8, [0,0,1], 6, 0)
-      p.addUserDebugLine(c8, c5, [0,0,1], 6, 0)
-
-      p.addUserDebugLine(c1, c5, [0,0,1], 6, 0)
-      p.addUserDebugLine(c2, c6, [0,0,1], 6, 0)
-      p.addUserDebugLine(c3, c7, [0,0,1], 6, 0)
-      p.addUserDebugLine(c4, c8, [0,0,1], 6, 0)
-
-      # p.loadURDF("box.urdf",[-0.6, 0.4, 0.0], [0,0,0, 1])
-
-    else:
-      p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
-      c1 = [pos[0] - d, pos[1] - d, 0.0]
-      c2 = [pos[0] - d, pos[1] + d, 0.0]
-      c3 = [pos[0] + d, pos[1] + d, 0.0]
-      c4 = [pos[0] + d, pos[1] - d, 0.0]
-
-      
-      # if self.dl:
-      # Green x
-      p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
-      p.addUserDebugLine(c2, c3, [0,0,1], 3, 0)
-      p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
-      p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
-    # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
+    p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
 
 
   def drawDistLines(self):
     y1 = -0.05
     y2 = 0.95
-
     lw = 3
     c = [0,0,1]
-
     z = -.02
 
     dist = 0.00
@@ -201,6 +107,25 @@ class JacoEnv(object):
 
       p.addUserDebugLine(c1, c2, c, lw, 0)
       dist = dist - delta
+
+  def updateDist(self, ds, c):
+    x = self.distPos[ds-1];
+    z = -.02
+    lw = 10
+
+    d = .06;
+
+    pos = [x, 0.2, z]
+
+    c1 = [pos[0] - d, pos[1] - d, z]
+    c2 = [pos[0] - d, pos[1] + d, z]
+    c3 = [pos[0] + d, pos[1] + d, z]
+    c4 = [pos[0] + d, pos[1] - d, z]
+
+    p.addUserDebugLine(c1, c2, c, lw, self.bciRate)
+    p.addUserDebugLine(c2, c3, c, lw, self.bciRate)
+    p.addUserDebugLine(c3, c4, c, lw, self.bciRate)
+    p.addUserDebugLine(c4, c1, c, lw, self.bciRate)
 
   def drawAxes(self):
     c1 = [0, 0, -0.2] + self.center
@@ -298,12 +223,6 @@ class JacoEnv(object):
     self.drawDistLines()
     rp = [0,math.pi/4,math.pi,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi]
 
-    # if self.mode == 0:
-    #   self.pos =list([-0.35, 0.3, 0.2])
-    # elif self.mode ==3:
-    #   self.pos =list([-0.35, 0.3, 0.25])
-    # else:
-    #   self.pos =list([-0.35, 0.3, 0.2])
 
     self.pos =list([-0.0, 0.2, 0.2])
 
@@ -363,16 +282,11 @@ class JacoEnv(object):
       p.stepSimulation()
 
     self.newPosInput = 0
-    
-    # p.addUserDebugLine(self.pos, self.pos2, [1,0,0,], 3, 0.3)
 
     p1 = [self.pos[0] - .02, self.pos[1], 0.002]
     p2 = [self.pos[0] + .02, self.pos[1], 0.002]
     p3 = [self.pos[0], self.pos[1] + .02, 0.002]
     p4 = [self.pos[0], self.pos[1] - .02, 0.002]
-
-    # p.addUserDebugLine(p1, p2, [0,1,0], 6, self.bciRate)
-    # p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate)
 
     if self.dl:
       if self.mode == 0:
