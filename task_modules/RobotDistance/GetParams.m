@@ -77,6 +77,7 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.7;
+   Params.NeuralNetFunction = 'MLP_DistanceEstimation';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
