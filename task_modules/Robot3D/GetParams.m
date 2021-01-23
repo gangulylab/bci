@@ -149,10 +149,9 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
+Params.NumTrialsPerBlock    = 18;
+Params.TargetOrder          = [1:6, 1:6, 1:6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;

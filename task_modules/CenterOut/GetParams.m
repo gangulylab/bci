@@ -54,7 +54,7 @@ Params.StartTargetPosition  = [0,0];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
-Params.ReachTargetAngles = (90:180:270)';
+Params.ReachTargetAngles = (0:90:270)';
 Params.ReachTargetRadius = 300; 
 Params.ReachTargetPositions = ...
     Params.StartTargetPosition ...
@@ -155,7 +155,7 @@ end
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 10;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 4.5;
+Params.ImaginedMvmtTime = 6.5;
 
 %% Feedback
 Params.FeedbackSound = false;
