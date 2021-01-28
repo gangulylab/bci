@@ -40,11 +40,18 @@ class DiscreteActionsRobot():
             color = [0,1,0];
             self.robotenv.set_cubeTarget(pos, color)
             self.newTarget = 1
-        else:
+        elif st == 0:
             color = [1,0,0];
             if self.newTarget ==1:
-                self.robotenv.set_cubeColor(pos, color)
+                self.robotenv.set_cubeColor(pos, color, 16)
                 self.newTarget = 0
+        elif st == 2:
+            color = [0,0,1];
+            self.robotenv.set_cubeColor(pos, color, 22)
+        else:
+            color = [0,1,0];
+            self.robotenv.set_cubeColor(pos, color, 22)
+
 
         
 
@@ -145,6 +152,8 @@ class DiscreteActionsRobot():
             self.key = 7
         elif key == 6:
             self.key = 1
+        elif key == 7:
+            self.key = 100
         else:
             self.key = 0
         self.robotenv.set_robotPos(rp, self.key)

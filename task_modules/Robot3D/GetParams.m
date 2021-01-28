@@ -150,8 +150,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 18;
-Params.TargetOrder          = [1:6, 1:6, 1:6];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6,];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -221,7 +221,7 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
-Params.limit = [-300, 300; -300 300; -300 300];
+Params.limit = [-400, 400; -400 400; -350 350];
 Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
@@ -238,7 +238,7 @@ Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:6];
+Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 0.1;
 Params.k_v = 0.9;
@@ -254,4 +254,19 @@ Params.dA = [1 0 0  Params.deltaT 0 0;...
 Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
+
+Params.LongTrial = 0;
+Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
+    Params.ReachTargetPositions(4,:);...
+    Params.ReachTargetPositions(1,:);...
+    Params.ReachTargetPositions(2,:);...
+    Params.ReachTargetPositions(6,:);...
+    Params.ReachTargetPositions(5,:);...
+    Params.ReachTargetPositions(9,:);...
+    Params.ReachTargetPositions(10,:);...
+    Params.ReachTargetPositions(7,:);...
+    Params.ReachTargetPositions(8,:)];
+
+Params.RobotClicker = 1;
+Params.TargetHoldTime = 5;
 end % GetParams

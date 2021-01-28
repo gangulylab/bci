@@ -15,17 +15,17 @@ if Params.ControlMode == 2 %mouse
         end
     else
 %     Click_Decision = randperm(6,1)-1;
-    p = randi(4);
-    if p < 5
-%         Click_Decision = 6;
-        Click_Decision = randperm(8,1)-1;
-    else
-        if (Params.TargetID < 7)
-            Click_Decision = Params.TargetID;
+        p = randi(4);
+        if p < 1
+            Click_Decision = 7;
+%             Click_Decision = randperm(8,1)-1;
         else
-            Click_Decision = randperm(8,1)-1;
+            if (Params.TargetID < 7)
+                Click_Decision = Params.TargetID;
+            else
+                Click_Decision = randperm(8,1)-1;
+            end
         end
-    end
     end
     Click_Distance = 0;
 else,

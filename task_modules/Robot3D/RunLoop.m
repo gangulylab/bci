@@ -64,16 +64,21 @@ tlast = GetSecs;
 Cursor.LastPredictTime = tlast;
 Cursor.LastUpdateTime = tlast;
 for Block=1:NumBlocks, % Block Loop
-
+    NextTargetID =  Params.TargetOrder(Trial+1);
     % initialize cursor state(s)
-    Cursor.State = [0,0,0,0,0,0]';
-    Cursor.IntendedState = [0,0,0,0,1]';
+    if Params.LongTrial
+        Cursor.State = [0,0,0,0,0,0]';
+        Cursor.State(1:3) = Params.LongStartPos(NextTargetID,:)
+    else
+        Cursor.State = [0,0,0,0,0,0]';
+        Cursor.IntendedState = [0,0,0,0,1]';
+    end
     Cursor.Vcommand = [0,0]';
     Cursor.ClickState = 0;
     
     % first target
 %     NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1));
-     NextTargetID =  Params.TargetOrder(Trial+1);
+     
 %     NextTargetID = 0;
     for TrialPerBlock=1:Params.NumTrialsPerBlock, % Trial Loop
         % if smooth batch on & enough time has passed, update KF btw trials
