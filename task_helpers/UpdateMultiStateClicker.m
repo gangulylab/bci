@@ -27,6 +27,7 @@ if Params.ControlMode == 2 %mouse
             end
         end
     end
+    Click_Decision = 7;
     Click_Distance = 0;
 else,
     if Params.NeuralNetFlag == 1

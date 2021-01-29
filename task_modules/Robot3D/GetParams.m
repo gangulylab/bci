@@ -151,7 +151,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6,];
+Params.TargetOrder          = [1:6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -207,7 +207,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 20 ;
+Params.MaxReachTime = 25 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -242,7 +242,7 @@ Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 0.1;
 Params.k_v = 0.9;
-Params.k_i = 15.0;
+Params.k_i = 10.0;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
@@ -268,5 +268,5 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker = 1;
-Params.TargetHoldTime = 5;
+Params.TargetHoldTime = 3;
 end % GetParams

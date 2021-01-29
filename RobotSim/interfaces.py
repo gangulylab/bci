@@ -116,6 +116,8 @@ class DiscreteActionsRobot():
                 self.key = 7
             elif key == 6:
                 self.key = 1
+            elif key == 7:
+                self.key = 100
             else:
                 self.key = 0
         if self.mode == 4:
@@ -131,6 +133,8 @@ class DiscreteActionsRobot():
                 self.key = 47
             elif key == 6:
                 self.key = 41
+            elif key == 7:
+                self.key = 100
             else:
                 self.key = 0
                 
