@@ -56,6 +56,10 @@ while True:
 			interface.updateDebugLines(val2);
 		if val1 == 5:
 			interface.create_target3D(target_pos, 0)
+		if val1 == 6:
+			interface.create_target3D(target_pos, 2)
+		if val1 == 7:
+			interface.create_target3D(target_pos, 3)
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
 		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250

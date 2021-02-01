@@ -34,13 +34,18 @@ if Params.BLACKROCK,
 end
 
 % reset cursor
-if Params.CenterReset,    
-    Cursor.State = [Params.Center(1),Params.Center(2),Params.Center(3),0,0,0]';
-    Cursor.IntendedState = [Params.Center(1),Params.Center(2),Params.Center(3),0,0]';
+if Params.LongTrial
+        Cursor.State = [0,0,0,0,0,0]';
+        Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
+else
+        Cursor.State = [0,0,0,0,0,0]';
 end
+    Cursor.IntendedState = [0,0,0,0,1]';
+
 
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
+inTargetOld = 0;
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
@@ -273,26 +278,29 @@ if ~Data.ErrorID,
                 RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
                 
                 
-                if ismember(RunningMode_ClickDec, Params.ValidDir)
-                    ClickToSend = RunningMode_ClickDec;
-                    temp_dir = Params.PixelLength*Params.ReachTargetPositions(RunningMode_ClickDec,:);
-                elseif RunningMode_ClickDec == 0
-                    if Params.RunningModeZero == 1
-                        temp_dir = [0,0,0];
-                        ClickToSend = 0;
-                    else
-                        temp_dir = temp_dir;
-                        ClickToSend = ClickToSend;
-                    end
-                else
-                    temp_dir = [0,0,0];
-                    ClickToSend = 0;
-                end
+%                 if ismember(RunningMode_ClickDec, Params.ValidDir)
+%                     ClickToSend = RunningMode_ClickDec;
+%                     temp_dir = Params.PixelLength*Params.ReachTargetPositions(RunningMode_ClickDec,:);
+%                 elseif RunningMode_ClickDec == 0
+%                     if Params.RunningModeZero == 1
+%                         temp_dir = [0,0,0];
+%                         ClickToSend = 0;
+%                     else
+%                         temp_dir = temp_dir;
+%                         ClickToSend = ClickToSend;
+%                     end
+%                 else
+%                     temp_dir = [0,0,0];
+%                     ClickToSend = 0;
+%                 end
+
+
+                ClickToSend = RunningMode_ClickDec;
 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
                 if RunningMode_ClickDec == 7
-                    cs = 'STOP'
+                    cs = 'STOP';
                     Cursor.State(4:6) = [0;0;0];
                     
                 else 
@@ -328,6 +336,8 @@ if ~Data.ErrorID,
                    Cursor.State(6) = 0;
                 end
                 
+                end
+                
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
            
@@ -348,12 +358,25 @@ if ~Data.ErrorID,
       
             % start counting time if cursor is in target
             if TargetID==Data.TargetID,
+                inTargetOld = 1;
                 InTargetTotalTime = InTargetTotalTime + dt;
+                if Params.RobotClicker
+                    if RunningMode_ClickDec == 7
+                        done = 1;
+                        Data.SelectedTargetID = TargetID;
+                        Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
+                        fwrite(Params.udp, [0, 6, 0])
+                    end
+                end
             else
                 InTargetTotalTime = 0;
+                if inTargetOld
+                    fwrite(Params.udp, [0, 7, 0])
+                end
+                inTargetOld = 0;
             end
           
-        end
+        
         
         % end if takes too long
         if TotalTime > Params.MaxReachTime,
@@ -386,7 +409,6 @@ if ~Data.ErrorID,
         
     end % Reach Target Loop
 end % only complete if no errors
-
 
 %% Inter trial interval
 % blank screen at end of trial but continue collecting data
@@ -431,8 +453,7 @@ if Params.InterTrialInterval>0,
                 Cursor.LastUpdateTime = tim;
                 
                 Data.NeuralTime(1,end+1) = tim;
-                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
-                
+                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);   
             end
             
             % cursor
@@ -483,7 +504,7 @@ else,
     % reset cursor
     Cursor.ClickState = 0;
     % reset cursor
-    Cursor.State = [0,0,0,0,0,0]';
+%     Cursor.State = [0,0,0,0,0,0]';
     Cursor.IntendedState = [0,0,0,0,1]';
     
     fprintf('ERROR: %s\n', Data.ErrorStr)

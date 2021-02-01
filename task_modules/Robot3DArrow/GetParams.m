@@ -82,9 +82,9 @@ if Params.NeuralNetFlag
    %Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';  
    
    % NEW OPTIONS 1/22/2021
-   Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData';
-   %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mAllData';
-   %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';   
+%    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData';
+%    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mAllData';
+   Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';   
    %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mAllData_PlusStop';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -106,7 +106,8 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     -Params.ReachTargetRadius, 0, 0;...
     0, -Params.ReachTargetRadius, 0; ...
     0,0,Params.ReachTargetRadius;...
-    0, 0,-Params.ReachTargetRadius];
+    0, 0,-Params.ReachTargetRadius;...
+    0,0,0];
 
 
 %% Kalman Filter Properties
@@ -133,9 +134,12 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = 18;
+Params.TargetOrder          = [1:6, 1:6, 7,7,7,7,7,7];
+
+Params.NumTrialsPerBlock    = 1;
+Params.TargetOrder          = [7];
 
 
-Params.TargetOrder          = [1:6, 1:6, 1:6];
 
 % Params.TargetOrder          = [7:18];
 % Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
@@ -218,7 +222,7 @@ end
 Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:6];
+Params.ReachTargets      = [1,2,3,4,5,6,7];
+Params.ValidDir          = [1:7];
 
 end % GetParams

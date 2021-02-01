@@ -44,8 +44,8 @@ class JacoEnv(object):
     self.distf = .0338
     self.debuglen = 0.3
 
-    self.wu = [0, 0.57, 0.45]
-    self.wl = [-0.6, 0, 0.03]
+    # self.wu = [0, 0.57, 0.45]
+    # self.wl = [-0.6, 0, 0.03]
     self.fu = 1.35
     self.fl = 0.
     self.center = np.array([-0.35, 0.3, 0.25])
@@ -235,10 +235,11 @@ class JacoEnv(object):
 
 
 
-  def set_cubeColor(self, pos, c):
-    lw = 16
+  def set_cubeColor(self, pos, c, lw):
+    # lw = 16
+    # print(c)
 
-    self.l1 = p.addUserDebugLine(self.c1, self.c2, c, lw, 0)
+    self.l1 = p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
     self.l2 = p.addUserDebugLine(self.c2, self.c3, c, lw, 0)
     self.l3 = p.addUserDebugLine(self.c3, self.c4, c, lw, 0)
     self.l4 = p.addUserDebugLine(self.c4, self.c1, c, lw, 0)
@@ -368,7 +369,7 @@ class JacoEnv(object):
     self.pos[0] = self.center[0] + rp[0]
     self.pos[1] = self.center[1] + rp[1]
     self.pos[2] = self.center[2]  + rp[2]
-
+    # print(key)
     # Position
     if key == 6:
       self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
@@ -384,7 +385,17 @@ class JacoEnv(object):
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
     else:
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2]] 
-      
+    
+    if key == 100:
+
+      c1 = [self.pos[0] + .02, self.pos[1], self.pos[2] - .05]
+      c2 = [self.pos[0] - .02, self.pos[1], self.pos[2] - .05]
+      c3 = [self.pos[0], self.pos[1] - .02, self.pos[2] - .05]
+      c4 = [self.pos[0], self.pos[1] + .02, self.pos[2] - .05]
+
+      p.addUserDebugLine(c1,c2, [0,1,1], 8, self.bciRate)
+      p.addUserDebugLine(c3,c4, [0,1,1], 8, self.bciRate)
+
     self.newPosInput = 1
 
   def inverseKin(self):
