@@ -77,8 +77,8 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;    
-    Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';
-    %Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
+    Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
+    %Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';    
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
         
     % LAST USED VERSION OF NN CLASSIFIER
