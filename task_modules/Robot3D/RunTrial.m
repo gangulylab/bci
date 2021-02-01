@@ -54,11 +54,11 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     Data.Events(end).Str  = 'Instructed Delay';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-    if TaskFlag==1,
-        OptimalCursorTraj = ...
-            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-        ct = 1;
-    end
+%     if TaskFlag==1,
+%         OptimalCursorTraj = ...
+%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+%         ct = 1;
+%     end
     
     done = 0;
     TotalTime = 0;
@@ -90,12 +90,12 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             end
             
             % cursor
-            if TaskFlag==1, % imagined movements
-                Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-                Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-                Cursor.Vcommand = Cursor.State(3:4);
-                ct = ct + 1;
-            end
+%             if TaskFlag==1, % imagined movements
+%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
+%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
+%                 Cursor.Vcommand = Cursor.State(3:4);
+%                 ct = ct + 1;
+%             end
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -103,6 +103,8 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             
             Cursor.TaskState = 1;
             Data.TaskState(1,end+1)=Cursor.TaskState;
+           
+            Data.StopState(1,end+1)=0;
             
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
@@ -123,12 +125,12 @@ if ~Data.ErrorID && Params.CueTime>0,
     Data.Events(end).Str  = 'Cue';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-    if TaskFlag==1,
-        OptimalCursorTraj = ...
-            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-        ct = 1;
-    end
-    
+%     if TaskFlag==1,
+%         OptimalCursorTraj = ...
+%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+%         ct = 1;
+%     end
+%     
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -171,19 +173,22 @@ if ~Data.ErrorID && Params.CueTime>0,
             end
             
             % cursor
-            if TaskFlag==1, % imagined movements
-                Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-                Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-                Cursor.Vcommand = Cursor.State(3:4);
-                ct = ct + 1;
-            end
+%             if TaskFlag==1, % imagined movements
+%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
+%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
+%                 Cursor.Vcommand = Cursor.State(3:4);
+%                 ct = ct + 1;
+%             end
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
             Cursor.TaskState = 2;
-            Data.TaskState(1,end+1)=Cursor.TaskState;   
+            Data.TaskState(1,end+1)=Cursor.TaskState;  
+            
+            Data.StopState(1,end+1)=0;
+            
             
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
@@ -203,13 +208,13 @@ if ~Data.ErrorID,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
-    
-    if TaskFlag==1,
-        OptimalCursorTraj = [...
-            GenerateCursorTraj(Cursor.State,ReachTargetPos,Params.ImaginedMvmtTime,Params);
-            GenerateCursorTraj(ReachTargetPos,ReachTargetPos,Params.TargetHoldTime,Params)];
-        ct = 1;
-    end
+%     
+%     if TaskFlag==1,
+%         OptimalCursorTraj = [...
+%             GenerateCursorTraj(Cursor.State,ReachTargetPos,Params.ImaginedMvmtTime,Params);
+%             GenerateCursorTraj(ReachTargetPos,ReachTargetPos,Params.TargetHoldTime,Params)];
+%         ct = 1;
+%     end
     
     done = 0;
     TotalTime = 0;
@@ -261,13 +266,26 @@ if ~Data.ErrorID,
             if TargetID == Data.TargetID
                 fwrite(Params.udp, [0, 5, 0])
             end
-%                 Cursor.State = Cursor.State;
-%                 Data.ClickerState(1,end+1) = Cursor.ClickState;
-%                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-%                 
-%             else
+
                 Params.TargetID =  Data.TargetID;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+                
+            if TaskFlag==1, % imagined movements
+                if TargetID == Data.TargetID
+                    Click_Decision = 0;
+                    Cursor.State(4:6) = [0;0;0];
+                    
+                    Data.StopState(1,end+1)=1;
+            
+                else
+                    Click_Decision = Params.TargetID;
+                    Data.StopState(1,end+1)=0;
+                end
+                
+            end
+                
+                
+                
                 Cursor.ClickState = Click_Decision;
                 Cursor.ClickDistance = Click_Distance;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
@@ -277,25 +295,10 @@ if ~Data.ErrorID,
                 ClickDec_Buffer(end) = Click_Decision;
                 RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
                 
-                
-%                 if ismember(RunningMode_ClickDec, Params.ValidDir)
-%                     ClickToSend = RunningMode_ClickDec;
-%                     temp_dir = Params.PixelLength*Params.ReachTargetPositions(RunningMode_ClickDec,:);
-%                 elseif RunningMode_ClickDec == 0
-%                     if Params.RunningModeZero == 1
-%                         temp_dir = [0,0,0];
-%                         ClickToSend = 0;
-%                     else
-%                         temp_dir = temp_dir;
-%                         ClickToSend = ClickToSend;
-%                     end
-%                 else
-%                     temp_dir = [0,0,0];
-%                     ClickToSend = 0;
-%                 end
-
 
                 ClickToSend = RunningMode_ClickDec;
+                
+                
 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
@@ -340,8 +343,6 @@ if ~Data.ErrorID,
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
-           
-%             fwrite(Params.udp, [2, ClickToSend, 0])
 
             [xa,xb,xc] = doubleToUDP(Cursor.State(1));
             [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
@@ -355,6 +356,8 @@ if ~Data.ErrorID,
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
+            
+            
       
             % start counting time if cursor is in target
             if TargetID==Data.TargetID,
@@ -375,9 +378,7 @@ if ~Data.ErrorID,
                 end
                 inTargetOld = 0;
             end
-          
-        
-        
+             
         % end if takes too long
         if TotalTime > Params.MaxReachTime,
             done = 1;
@@ -419,12 +420,12 @@ if Params.InterTrialInterval>0,
     Data.Events(end).Str  = 'Inter Trial Interval';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-    if TaskFlag==1,
-        OptimalCursorTraj = ...
-            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-        ct = 1;
-    end
-    
+%     if TaskFlag==1,
+%         OptimalCursorTraj = ...
+%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+%         ct = 1;
+%     end
+%     
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -457,12 +458,12 @@ if Params.InterTrialInterval>0,
             end
             
             % cursor
-            if TaskFlag==1, % imagined movements
-                Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-                Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-                Cursor.Vcommand = Cursor.State(3:4);
-                ct = ct + 1;
-            end
+%             if TaskFlag==1, % imagined movements
+%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
+%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
+%                 Cursor.Vcommand = Cursor.State(3:4);
+%                 ct = ct + 1;
+%             end
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -470,6 +471,8 @@ if Params.InterTrialInterval>0,
             
             Cursor.TaskState = 4;
             Data.TaskState(1,end+1)=Cursor.TaskState;
+            Data.StopState(1,end+1)=0;
+            
             
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
