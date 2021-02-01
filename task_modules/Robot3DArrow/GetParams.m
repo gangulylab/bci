@@ -76,16 +76,14 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.7;   
-   
-   % LAST USED VERSION OF NN CLASSIFIER
-   %Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ';  
-   
-   % NEW OPTIONS 1/22/2021
-%    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData';
-%    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mAllData';
-   Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';   
-   %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mAllData_PlusStop';
+    Params.NeuralNetSoftMaxThresh = 0.7;    
+    Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';
+    %Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
+        
+    % LAST USED VERSION OF NN CLASSIFIER
+    %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';
+
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
