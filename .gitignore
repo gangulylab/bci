@@ -2,3 +2,7 @@
 *.asv
 
 *.pyc
+
+RobotSim/plotEnv.py
+
+RobotSim/plotRobotTraj.py
