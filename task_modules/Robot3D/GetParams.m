@@ -70,13 +70,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.7;    
-    Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
-    %Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';    
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
-        
-    % LAST USED VERSION OF NN CLASSIFIER
-    %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';
+    Params.NeuralNetSoftMaxThresh = 0.7;       
+    Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mOnlineData_20210212';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
