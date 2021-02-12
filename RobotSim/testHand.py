@@ -108,7 +108,6 @@ while True:
   p.resetJointState(handId, 22, s)
   p.resetJointState(handId, 23, s)
 
-
   p.resetJointState(handId, 25, s+0.1)
   p.resetJointState(handId, 26, s+ 0.5)
   p.resetJointState(handId, 27, s+ 0.2)

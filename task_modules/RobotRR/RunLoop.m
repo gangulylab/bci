@@ -54,9 +54,9 @@ end
 Params.udp = udp("127.0.0.1", 5006);
 fopen(Params.udp)
 fwrite(Params.udp, [0,1,0])                  % reset robot
-% fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
-% fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
-% fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
+fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
+fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
+fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
 
 %%  Loop Through Blocks of Trials
 Trial = 0;

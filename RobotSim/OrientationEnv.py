@@ -49,6 +49,7 @@ class JacoEnv(object):
     self.fu = 1.35
     self.fl = 0.
     self.center = np.array([-0.35, 0.3, 0.25])
+
     self.bciRate = 0.125
     self.mode = mode
     self.angle  =angle
@@ -123,6 +124,7 @@ class JacoEnv(object):
         p.addUserDebugLine(c1, c2, [0,0,1], 3, 0)
         p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
         # self.fing = 1.35
+
 
       elif target == 1:
         c1 = [-0.45, 0.3, 0.0]
@@ -397,6 +399,51 @@ class JacoEnv(object):
 
     self.newPosInput = 1
 
+  def set_robotOrn(self, rp, key):
+
+    rot_theta = rp[0]
+    Rx = np.array([[1., 0., 0.],[0., np.cos(rot_theta), -np.sin(rot_theta)], [0., np.sin(rot_theta), np.cos(rot_theta)]])
+    rot_theta = rp[1]
+    Ry = np.array([[np.cos(rot_theta), 0., np.sin(rot_theta)], [0., 1., 0.], [-np.sin(rot_theta), 0., np.cos(rot_theta)]])
+    rot_theta = rp[2]
+    Rz = np.array([[np.cos(rot_theta), -np.sin(rot_theta), 0.], [np.sin(rot_theta), np.cos(rot_theta), 0.], [0., 0., 1.]])
+
+
+    Rnew = Rx @ Ry @Rz
+
+
+    Rn = R.from_matrix(Rnew)
+    self.orn = Rn.as_quat()
+
+    print(rp)
+
+    if key == 6:
+      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 4: 
+      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 8:
+      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+    elif key == 2:
+      self.pos2 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 7:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+    elif key == 1:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+    else:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2]] 
+    
+    if key == 100:
+
+      c1 = [self.pos[0] + .02, self.pos[1], self.pos[2] - .05]
+      c2 = [self.pos[0] - .02, self.pos[1], self.pos[2] - .05]
+      c3 = [self.pos[0], self.pos[1] - .02, self.pos[2] - .05]
+      c4 = [self.pos[0], self.pos[1] + .02, self.pos[2] - .05]
+
+      p.addUserDebugLine(c1,c2, [0,1,1], 8, self.bciRate)
+      p.addUserDebugLine(c3,c4, [0,1,1], 8, self.bciRate)
+
+    self.newPosInput = 1
+
   def inverseKin(self):
     if (self.newPosInput == 1):
       self.jointPoses = p.calculateInverseKinematics(self.jacoId,
@@ -424,7 +471,9 @@ class JacoEnv(object):
     else:
       self.pos =list([-0.35, 0.3, 0.2])
 
+
     self.orn = p.getQuaternionFromEuler([0,math.pi,math.pi/2])
+
     self.fing = 0.675
 
     for i in range(8):
@@ -480,16 +529,12 @@ class JacoEnv(object):
       p.stepSimulation()
 
     self.newPosInput = 0
-    
-    # p.addUserDebugLine(self.pos, self.pos2, [1,0,0,], 3, 0.3)
 
     p1 = [self.pos[0] - .02, self.pos[1], 0.002]
     p2 = [self.pos[0] + .02, self.pos[1], 0.002]
     p3 = [self.pos[0], self.pos[1] + .02, 0.002]
     p4 = [self.pos[0], self.pos[1] - .02, 0.002]
 
-    # p.addUserDebugLine(p1, p2, [0,1,0], 6, self.bciRate)
-    # p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate)
 
     if self.dl:
       if self.mode == 0:

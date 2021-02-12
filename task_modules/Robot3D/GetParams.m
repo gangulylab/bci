@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -144,9 +144,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
@@ -220,6 +220,7 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
+
 Params.limit = [-400, 400; -400 400; -350 350];
 Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
