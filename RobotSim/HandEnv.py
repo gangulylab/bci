@@ -71,9 +71,9 @@ class HandEnv(object):
 	def displayCue(self, cue,c):
 		p.removeAllUserDebugItems()
 		if cue == 7:
-			p.addUserDebugText('OPEN', [-0.65,0.25,0.2],  [0,0,c], 12)
+			p.addUserDebugText('OPEN', [-0.6,0.25,0.2],  [0,0,c], 12)
 		elif cue == 8:
-			p.addUserDebugText('CLOSE', [-0.65,0.25,0.2],  [0,0,c], 12)
+			p.addUserDebugText('CLOSE', [-0.61,0.25,0.2],  [0,0,c], 12)
 		elif cue == 3:
 			p.addUserDebugText('PALM UP', [-0.65,0.25,0.2],  [0,0,c], 12)
 		elif cue == 6:

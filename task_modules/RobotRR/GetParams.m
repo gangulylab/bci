@@ -71,17 +71,11 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;    
-    Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
-    %Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';    
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
-        
-    % LAST USED VERSION OF NN CLASSIFIER
-    %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';
-
+    Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mOnlineData_20210212';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';        
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
-
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
 Params.TargetSpacing     = 10; % px
@@ -172,8 +166,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 3;
-Params.TargetOrder          = [2,3 4];
+Params.NumTrialsPerBlock    = 1;
+Params.TargetOrder          = [4];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -229,7 +223,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 30 ;
+Params.MaxReachTime =45 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

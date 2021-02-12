@@ -153,53 +153,53 @@ Params.NumFixedBlocks       = 1;
 % Params.TargetOrder          = [1:6];
 % 
 % % Diagonals in the Horizontal Plane
-% % Params.NumTrialsPerBlock    = 4;
+Params.NumTrialsPerBlock    = 20;
 % % Params.TargetOrder          = [7:10];
 % 
 % 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 % Params.TargetOrder          = [Params.TargetOrder, 1];
 
-% %% CLDA Parameters
-% TypeStrs                = {'none','refit','smooth_batch','rml'};
-% Params.CLDA.TypeStr     = TypeStrs{Params.CLDA.Type+1};
-% 
-% Params.CLDA.UpdateTime = 80; % secs, for smooth batch
-% Params.CLDA.Alpha = exp(log(.5) / (120/Params.CLDA.UpdateTime)); % for smooth batch
-%  
-% % Lambda
-% Params.CLDA.Lambda = 5000; % for RML
-% FinalLambda = 5000; % for RML
-% DeltaLambda = (FinalLambda - Params.CLDA.Lambda) ...
-%     / ((Params.NumAdaptBlocks-3)...
-%     *Params.NumTrialsPerBlock...
-%     *Params.UpdateRate * 3); % bins/trial;
-% 
-% Params.CLDA.DeltaLambda = DeltaLambda; % for RML
-% Params.CLDA.FinalLambda = FinalLambda; % for RML
-% 
-% Params.CLDA.FixedRmlFlag = false; % for RML during fixed
-% Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
-% 
-% switch Params.CLDA.AdaptType,
-%     case 'none',
-%         Params.CLDA.DeltaLambda = 0;
-%         Params.CLDA.DeltaAssistance = 0;
-%     case 'linear',
-%         switch Params.CLDA.Type,
-%             case 2, % smooth batch
-%                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
-%                     Params.Assistance...
-%                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
-%             case 3, % RML
-%                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
-%                     Params.Assistance...
-%                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-%             otherwise, % none or refit
-%                 Params.CLDA.DeltaAssistance = 0;
-%         end
-% end
-% 
+%% CLDA Parameters
+TypeStrs                = {'none','refit','smooth_batch','rml'};
+Params.CLDA.TypeStr     = TypeStrs{Params.CLDA.Type+1};
+
+Params.CLDA.UpdateTime = 80; % secs, for smooth batch
+Params.CLDA.Alpha = exp(log(.5) / (120/Params.CLDA.UpdateTime)); % for smooth batch
+ 
+% Lambda
+Params.CLDA.Lambda = 5000; % for RML
+FinalLambda = 5000; % for RML
+DeltaLambda = (FinalLambda - Params.CLDA.Lambda) ...
+    / ((Params.NumAdaptBlocks-3)...
+    *Params.NumTrialsPerBlock...
+    *Params.UpdateRate * 3); % bins/trial;
+
+Params.CLDA.DeltaLambda = DeltaLambda; % for RML
+Params.CLDA.FinalLambda = FinalLambda; % for RML
+
+Params.CLDA.FixedRmlFlag = false; % for RML during fixed
+Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
+
+switch Params.CLDA.AdaptType,
+    case 'none',
+        Params.CLDA.DeltaLambda = 0;
+        Params.CLDA.DeltaAssistance = 0;
+    case 'linear',
+        switch Params.CLDA.Type,
+            case 2, % smooth batch
+                Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
+                    Params.Assistance...
+                    /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
+            case 3, % RML
+                Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
+                    Params.Assistance...
+                    /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
+            otherwise, % none or refit
+                Params.CLDA.DeltaAssistance = 0;
+        end
+end
+
 %% Hold Times
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1;
@@ -272,7 +272,7 @@ Params.TargetHoldTime = 3;
 
 %% Hand
 Params.NumTrialsPerBlock    = 20;
-% Params.TargetOrder          = [7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8];
+Params.TargetOrder          = [7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8];
 Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -286,14 +286,14 @@ Params.wristAxisLim = [-0.5, 0.5;...
                         3.15, -0.5;
                         -1.0, 0.1;...
                         0.1, -1.0];
-Params.TrialDur = 3;                        
+Params.TrialDur = 4;                        
 mult = abs(Params.wristAxisLim(:,1) - Params.wristAxisLim(:,2))/Params.UpdateRate/Params.TrialDur;                 
 
 Params.axes         = [1,2,3,1,2,3,1,1];
 Params.rotInc       = [1,1,1,-1,-1,-1,1,-1].*mult';
 Params.rotDir       = 1;
 Params.trialRepeat  = 1;
-Params.trialPause   = 0.0;
+Params.trialPause   = 0.5;
 Params.handVis = 0;
 
 for i = 1:8
