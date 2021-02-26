@@ -10,6 +10,8 @@ import os
 import csv
 from scipy.spatial.transform import Rotation as R
 
+from scipy.interpolate import interp1d
+
 class JacoEnv(object):
   def __init__(self, mode,angle, dl):
     p.connect(p.GUI)
@@ -103,6 +105,49 @@ class JacoEnv(object):
     self.l3 = p.addUserDebugLine(c3, c4, [0,0,1], 3, 0)
     self.l4 = p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
     # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
+
+    n = 20
+    a = np.array([-0.15, 0.1])
+    b = np.array([pos[0], pos[1]])
+    mid  = (b - a)
+    c = np.array([mid[0] - mid[1]/2, mid[1], + mid[0]/2])
+    
+    l = np.linalg.norm(mid)
+
+    x = np.array([0, l/2,l])
+    y = np.array([0 , -l/3, 0])
+
+    f = interp1d(x, y, kind='quadratic')
+
+
+    uv = mid/l
+
+    X = np.linspace(0, l, num = n, endpoint=True)
+
+    unitVec = uv
+
+    c1 = [-0.15, 0.1,0]
+    j = 0
+    for x in range(1,n):
+      j = j + 1
+      y = f(X[x])
+      print(j)
+      print(x)
+      print(y)
+
+      
+      c2 = [0,0,0]
+      c2[0] = unitVec[0]*l/(n)*j - unitVec[1]*y -.15
+      c2[1] = unitVec[1]*l/(n)*j + unitVec[0]*y + .1
+      c2[2] = 0
+
+      lw = 3
+      c = [1,0,0]
+
+      p.addUserDebugLine(c1, c2, c, lw, 0)
+      c1 = c2
+
+
 
   def draw_bound(self, pos):
     col = [0,0,0]
@@ -245,6 +290,7 @@ class JacoEnv(object):
     self.l10 = p.addUserDebugLine(self.c2, self.c6, c, lw, 0)
     self.l11 = p.addUserDebugLine(self.c3, self.c7, c, lw, 0)
     self.l12 = p.addUserDebugLine(self.c4, self.c8, c, lw, 0)
+
 
 
   def updateCommand(self, key):
