@@ -239,19 +239,19 @@ class JacoEnv(object):
     # print(c)
 
     self.l1 = p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
-    self.l2 = p.addUserDebugLine(self.c2, self.c3, c, lw, 0)
-    self.l3 = p.addUserDebugLine(self.c3, self.c4, c, lw, 0)
-    self.l4 = p.addUserDebugLine(self.c4, self.c1, c, lw, 0)
+    self.l2 = p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+    self.l3 = p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+    self.l4 = p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
 
-    self.l5 = p.addUserDebugLine(self.c5, self.c6, c, lw, 0)
-    self.l6 = p.addUserDebugLine(self.c6, self.c7, c, lw, 0)
-    self.l7 = p.addUserDebugLine(self.c7, self.c8, c, lw, 0)
-    self.l8 = p.addUserDebugLine(self.c8, self.c5, c, lw, 0)
+    self.l5 = p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
+    self.l6 = p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
+    self.l7 = p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
+    self.l8 = p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
 
-    self.l9 = p.addUserDebugLine(self.c1, self.c5, c, lw, 0)
-    self.l10 = p.addUserDebugLine(self.c2, self.c6, c, lw, 0)
-    self.l11 = p.addUserDebugLine(self.c3, self.c7, c, lw, 0)
-    self.l12 = p.addUserDebugLine(self.c4, self.c8, c, lw, 0)
+    self.l9 = p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
+    self.l10 = p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
+    self.l11 = p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
+    self.l12 = p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
 
 
   def updateCommand(self, key):

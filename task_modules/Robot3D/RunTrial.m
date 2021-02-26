@@ -322,20 +322,32 @@ if ~Data.ErrorID,
                 if Cursor.State(1) <= Params.limit(1,1)
                    Cursor.State(1) = Params.limit(1,1);
                    Cursor.State(4) = 0;
+                   Cursor.State(5) = 0;
+                   Cursor.State(6) = 0;
                 elseif Cursor.State(1) >= Params.limit(1,2)
                    Cursor.State(1) = Params.limit(1,2);
                    Cursor.State(4) = 0;
+                   Cursor.State(5) = 0;
+                   Cursor.State(6) = 0;
                 elseif Cursor.State(2) <= Params.limit(2,1)
                    Cursor.State(2) = Params.limit(2,1);
+                   Cursor.State(4) = 0;
                    Cursor.State(5) = 0;
+                   Cursor.State(6) = 0;
                elseif Cursor.State(2) >= Params.limit(2,2)
                    Cursor.State(2) = Params.limit(2,2);
+                   Cursor.State(4) = 0;
                    Cursor.State(5) = 0;
+                   Cursor.State(6) = 0;
                 elseif Cursor.State(3) <= Params.limit(3,1)
                    Cursor.State(3) = Params.limit(3,1);
+                   Cursor.State(4) = 0;
+                   Cursor.State(5) = 0;
                    Cursor.State(6) = 0;
                 elseif Cursor.State(3) >= Params.limit(3,2)
                    Cursor.State(3) = Params.limit(3,2);
+                   Cursor.State(4) = 0;
+                   Cursor.State(5) = 0;
                    Cursor.State(6) = 0;
                 end
                 
