@@ -6,3 +6,5 @@
 RobotSim/plotEnv.py
 
 RobotSim/plotRobotTraj.py
+
+*.m~
