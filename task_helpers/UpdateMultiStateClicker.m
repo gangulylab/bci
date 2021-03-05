@@ -6,28 +6,47 @@ function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro
 global Cursor
 
 if Params.ControlMode == 2 %mouse
-    if strcmp(Params.Task, 'RobotDistance')
-        p = randi(2);
-        if p == 1
-            Click_Decision = randi(5)-1;
-        else
-                Click_Decision = Params.TargetID;
-        end
+    val = 0;
+    
+    val = double(get(gcf,'CurrentCharacter'));
+    pause(0.1)
+    if val == 49
+        Click_Decision = 6;
+    elseif val == 50
+        Click_Decision = 2;
+    elseif val == 52
+        Click_Decision = 3;
+    elseif val == 54
+        Click_Decision = 1;
+    elseif val == 55
+        Click_Decision = 5;
+    elseif val == 56
+        Click_Decision = 4;
     else
-%     Click_Decision = randperm(6,1)-1;
-        p = randi(4);
-        if p < 1
-            Click_Decision = 7;
-%             Click_Decision = randperm(8,1)-1;
-        else
-            if (Params.TargetID < 7)
-                Click_Decision = Params.TargetID;
-            else
-                Click_Decision = randperm(8,1)-1;
-            end
-        end
+        Click_Decision = 0;
     end
-    Click_Decision = 7;
+%     if strcmp(Params.Task, 'RobotDistance')
+%         p = randi(2);
+%         if p == 1
+%             Click_Decision = randi(5)-1;
+%         else
+%                 Click_Decision = Params.TargetID;
+%         end
+%     else
+% %     Click_Decision = randperm(6,1)-1;
+%         p = randi(4);
+%         if p < 2
+% %             Click_Decision = 7;
+%             Click_Decision = randperm(7,1)-1;
+%         else
+%             if (Params.TargetID < 7)
+%                 Click_Decision = Params.TargetID
+%             else
+%                 Click_Decision = randperm(8,1)-1;
+%             end
+%         end
+%     end
+% %     Click_Decision = 7;
     Click_Distance = 0;
 else,
     if Params.NeuralNetFlag == 1

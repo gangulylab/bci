@@ -6,6 +6,11 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 
 global Cursor
 
+set(gcf,'CurrentCharacter','0')
+
+val = double(get(gcf,'CurrentCharacter'));
+pause(0.01)
+
 %% Set up trial
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
@@ -33,16 +38,9 @@ if Params.BLACKROCK,
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
 
-% reset cursor
-% if Params.LongTrial
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
-% else
+
 Cursor.State = [0,0,0,0,0,0]';
 Cursor.State = [Params.StartPos, 0,0,0]';
-% end
-%     Cursor.IntendedState = [0,0,0,0,1]';
-
 
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
@@ -125,8 +123,6 @@ if ~Data.ErrorID && Params.CueTime>0,
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
 
     fwrite(Params.udp, [11, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
-
-    
     
     while ~done,
         % Update Time & Position
@@ -183,7 +179,6 @@ if ~Data.ErrorID,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
-
     
     done = 0;
     TotalTime = 0;
@@ -237,20 +232,6 @@ if ~Data.ErrorID,
                 Params.TargetID =  Data.TargetID;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
                 
-%             if TaskFlag==1, % imagined movements
-%                 if TargetID == Data.TargetID
-%                     Click_Decision = 0;
-%                     Cursor.State(4:6) = [0;0;0];
-%                     
-%                     Data.StopState(1,end+1)=1;
-%             
-%                 else
-%                     Click_Decision = Params.TargetID;
-%                     Data.StopState(1,end+1)=0;
-%                 end
-%                 
-%             end
-                
                 Cursor.ClickState = Click_Decision;
                 Cursor.ClickDistance = Click_Distance;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
@@ -260,10 +241,7 @@ if ~Data.ErrorID,
                 ClickDec_Buffer(end) = Click_Decision;
                 RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
                 
-
                 ClickToSend = RunningMode_ClickDec;
-                
-                
 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
@@ -281,29 +259,48 @@ if ~Data.ErrorID,
                 U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
                 U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
                 
-                Cursor.State = A*Cursor.State + B*U;
+                vTarget = (ReachTargetPos' - Cursor.State(1:3));
+                norm_vTarget = vTarget/norm(vTarget);
+                
+                AssistVel = Params.AssistAlpha*B*norm_vTarget;
+                Data.AssistVel(:,end+1) = AssistVel;
+                
+                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
                 Cursor.IntendedState = [0 0 0 0 0]';  
                 
-                if Cursor.State(1) <= Params.limit(1,1)
-                   Cursor.State(1) = Params.limit(1,1);
-                   Cursor.State(4) = 0;
-                elseif Cursor.State(1) >= Params.limit(1,2)
-                   Cursor.State(1) = Params.limit(1,2);
-                   Cursor.State(4) = 0;
-                elseif Cursor.State(2) <= Params.limit(2,1)
-                   Cursor.State(2) = Params.limit(2,1);
-                   Cursor.State(5) = 0;
-               elseif Cursor.State(2) >= Params.limit(2,2)
-                   Cursor.State(2) = Params.limit(2,2);
-                   Cursor.State(5) = 0;
-                elseif Cursor.State(3) <= Params.limit(3,1)
-                   Cursor.State(3) = Params.limit(3,1);
-                   Cursor.State(6) = 0;
-                elseif Cursor.State(3) >= Params.limit(3,2)
-                   Cursor.State(3) = Params.limit(3,2);
-                   Cursor.State(6) = 0;
-                end
+                % Stop robot at boundaries
                 
+                if Cursor.State(1) <= Params.limit(1,1)
+                   Cursor.State(1) = Params.limit(1,1) + Params.boundaryDist;
+                   if Cursor.State(4) < 0
+                        Cursor.State(4) = Params.boundaryVel; 
+                   end
+                elseif Cursor.State(1) >= Params.limit(1,2)
+                   Cursor.State(1) = Params.limit(1,2) - Params.boundaryDist;
+                   if Cursor.State(4) > 0
+                        Cursor.State(4) = -Params.boundaryVel;
+                   end   
+                elseif Cursor.State(2) <= Params.limit(2,1)
+                   Cursor.State(2) = Params.limit(2,1) + Params.boundaryDist;
+                    if Cursor.State(5) < 0
+                       Cursor.State(5) =  Params.boundaryVel;
+                    end
+                elseif Cursor.State(2) >= Params.limit(2,2)
+                   Cursor.State(2) = Params.limit(2,2) - Params.boundaryDist;
+                   if Cursor.State(5) > 044
+                        Cursor.State(5) =  -Params.boundaryVel; 
+                   end
+                elseif Cursor.State(3) <= Params.limit(3,1)
+                   Cursor.State(3) = Params.limit(3,1) + Params.boundaryDist;
+                   if Cursor.State(6) < 0
+                        Cursor.State(6) =  Params.boundaryVel;
+                   end
+                elseif Cursor.State(3) >= Params.limit(3,2)
+                   Cursor.State(3) = Params.limit(3,2) - Params.boundaryDist;
+                   if Cursor.State(6) > 0
+                        Cursor.State(6) = -Params.boundaryVel;
+                   end
+                end                               
                 end
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
@@ -321,11 +318,10 @@ if ~Data.ErrorID,
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
-            
-            
-      
+  
             % start counting time if cursor is in target
-            if TargetID==Data.TargetID,
+            
+             if TargetID==Data.TargetID,
                 if inTargetOld == 0
                     if targetNum == 1
                         fwrite(Params.udp, [0, 15, 1])
@@ -350,7 +346,6 @@ if ~Data.ErrorID,
                 end
                 inTargetOld = 0;
             end
-             
         % end if takes too long
         if TotalTime > Params.MaxReachTime,
             done = 1;

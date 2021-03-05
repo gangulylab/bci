@@ -6,6 +6,8 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 
 global Cursor
 
+set(gcf,'CurrentCharacter','0')
+
 %% Set up trial
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
@@ -54,12 +56,6 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     Data.Events(end).Str  = 'Instructed Delay';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-%     if TaskFlag==1,
-%         OptimalCursorTraj = ...
-%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-%         ct = 1;
-%     end
-    
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -88,14 +84,6 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
                 Data.NeuralTime(1,end+1) = tim;
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params); 
             end
-            
-            % cursor
-%             if TaskFlag==1, % imagined movements
-%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-%                 Cursor.Vcommand = Cursor.State(3:4);
-%                 ct = ct + 1;
-%             end
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -125,26 +113,16 @@ if ~Data.ErrorID && Params.CueTime>0,
     Data.Events(end).Str  = 'Cue';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-%     if TaskFlag==1,
-%         OptimalCursorTraj = ...
-%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-%         ct = 1;
-%     end
-%     
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
-%     fwrite(Params.udp,[1,ReachTargetPos(1)/10 + 128 ,ReachTargetPos(2)/10 + 128, ReachTargetPos(3)/10 + 128]);
-%     fwrite(Params.udp,[1,(sign(ReachTargetPos(1)) +1), abs(ReachTargetPos(1)), (sign(ReachTargetPos(2)) +1), abs(ReachTargetPos(2)), (sign(ReachTargetPos(3)) +1), abs(ReachTargetPos(3))]);
-%     
     
+    % Send target position
     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
 
-    fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
-
-    
+    fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);  
     
     while ~done,
         % Update Time & Position
@@ -171,14 +149,6 @@ if ~Data.ErrorID && Params.CueTime>0,
                 Data.NeuralTime(1,end+1) = tim;
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);           
             end
-            
-            % cursor
-%             if TaskFlag==1, % imagined movements
-%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-%                 Cursor.Vcommand = Cursor.State(3:4);
-%                 ct = ct + 1;
-%             end
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -188,8 +158,7 @@ if ~Data.ErrorID && Params.CueTime>0,
             Data.TaskState(1,end+1)=Cursor.TaskState;  
             
             Data.StopState(1,end+1)=0;
-            
-            
+                       
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
            
@@ -208,14 +177,7 @@ if ~Data.ErrorID,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
-%     
-%     if TaskFlag==1,
-%         OptimalCursorTraj = [...
-%             GenerateCursorTraj(Cursor.State,ReachTargetPos,Params.ImaginedMvmtTime,Params);
-%             GenerateCursorTraj(ReachTargetPos,ReachTargetPos,Params.TargetHoldTime,Params)];
-%         ct = 1;
-%     end
-    
+
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -263,6 +225,7 @@ if ~Data.ErrorID,
             Cursor.Center = Params.Center;
     
             TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
+            
             if TargetID == Data.TargetID
                 fwrite(Params.udp, [0, 5, 0])
             end
@@ -280,11 +243,8 @@ if ~Data.ErrorID,
                 else
                     Click_Decision = Params.TargetID;
                     Data.StopState(1,end+1)=0;
-                end
-                
-            end
-                
-                
+                end 
+            end              
                 
                 Cursor.ClickState = Click_Decision;
                 Cursor.ClickDistance = Click_Distance;
@@ -293,19 +253,14 @@ if ~Data.ErrorID,
                                 
                 ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
                 ClickDec_Buffer(end) = Click_Decision;
-                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
-                
+                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
 
                 ClickToSend = RunningMode_ClickDec;
                 
-                
-
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
                 if RunningMode_ClickDec == 7
-                    cs = 'STOP';
-                    Cursor.State(4:6) = [0;0;0];
-                    
+                    Cursor.State(4:6) = [0;0;0];          
                 else 
 
                 A = Params.dA;
@@ -316,41 +271,50 @@ if ~Data.ErrorID,
                 U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
                 U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
                 
-                Cursor.State = A*Cursor.State + B*U;
+                vTarget = (Data.TargetPosition'- Cursor.State(1:3));
+                norm_vTarget = vTarget/norm(vTarget);
+                
+                AssistVel = Params.AssistAlpha*B*norm_vTarget;
+                Data.AssistVel(:,end+1) = AssistVel;
+                
+                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
                 Cursor.IntendedState = [0 0 0 0 0]';  
                 
-                if Cursor.State(1) <= Params.limit(1,1)
-                   Cursor.State(1) = Params.limit(1,1);
-                   Cursor.State(4) = 0;
-                   Cursor.State(5) = 0;
-                   Cursor.State(6) = 0;
-                elseif Cursor.State(1) >= Params.limit(1,2)
-                   Cursor.State(1) = Params.limit(1,2);
-                   Cursor.State(4) = 0;
-                   Cursor.State(5) = 0;
-                   Cursor.State(6) = 0;
-                elseif Cursor.State(2) <= Params.limit(2,1)
-                   Cursor.State(2) = Params.limit(2,1);
-                   Cursor.State(4) = 0;
-                   Cursor.State(5) = 0;
-                   Cursor.State(6) = 0;
-               elseif Cursor.State(2) >= Params.limit(2,2)
-                   Cursor.State(2) = Params.limit(2,2);
-                   Cursor.State(4) = 0;
-                   Cursor.State(5) = 0;
-                   Cursor.State(6) = 0;
-                elseif Cursor.State(3) <= Params.limit(3,1)
-                   Cursor.State(3) = Params.limit(3,1);
-                   Cursor.State(4) = 0;
-                   Cursor.State(5) = 0;
-                   Cursor.State(6) = 0;
-                elseif Cursor.State(3) >= Params.limit(3,2)
-                   Cursor.State(3) = Params.limit(3,2);
-                   Cursor.State(4) = 0;
-                   Cursor.State(5) = 0;
-                   Cursor.State(6) = 0;
-                end
                 
+                
+                % Stop robot at boundaries
+                
+                if Cursor.State(1) <= Params.limit(1,1)
+                   Cursor.State(1) = Params.limit(1,1) + Params.boundaryDist;
+                   if Cursor.State(4) < 0
+                        Cursor.State(4) = Params.boundaryVel; 
+                   end
+                elseif Cursor.State(1) >= Params.limit(1,2)
+                   Cursor.State(1) = Params.limit(1,2) - Params.boundaryDist;
+                   if Cursor.State(4) > 0
+                        Cursor.State(4) = -Params.boundaryVel;
+                   end   
+                elseif Cursor.State(2) <= Params.limit(2,1)
+                   Cursor.State(2) = Params.limit(2,1) + Params.boundaryDist;
+                    if Cursor.State(5) < 0
+                       Cursor.State(5) =  Params.boundaryVel;
+                    end
+                elseif Cursor.State(2) >= Params.limit(2,2)
+                   Cursor.State(2) = Params.limit(2,2) - Params.boundaryDist;
+                   if Cursor.State(5) > 0
+                        Cursor.State(5) =  -Params.boundaryVel; 
+                   end
+                elseif Cursor.State(3) <= Params.limit(3,1)
+                   Cursor.State(3) = Params.limit(3,1) + Params.boundaryDist;
+                   if Cursor.State(6) < 0
+                        Cursor.State(6) =  Params.boundaryVel;
+                   end
+                elseif Cursor.State(3) >= Params.limit(3,2)
+                   Cursor.State(3) = Params.limit(3,2) - Params.boundaryDist;
+                   if Cursor.State(6) > 0
+                        Cursor.State(6) = -Params.boundaryVel;
+                   end
+                end                
                 end
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
@@ -368,9 +332,7 @@ if ~Data.ErrorID,
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
-            
-            
-      
+             
             % start counting time if cursor is in target
             if TargetID==Data.TargetID,
                 inTargetOld = 1;
@@ -431,13 +393,7 @@ if Params.InterTrialInterval>0,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Inter Trial Interval';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
-    
-%     if TaskFlag==1,
-%         OptimalCursorTraj = ...
-%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-%         ct = 1;
-%     end
-%     
+  
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -469,13 +425,6 @@ if Params.InterTrialInterval>0,
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);   
             end
             
-            % cursor
-%             if TaskFlag==1, % imagined movements
-%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-%                 Cursor.Vcommand = Cursor.State(3:4);
-%                 ct = ct + 1;
-%             end
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -484,8 +433,7 @@ if Params.InterTrialInterval>0,
             Cursor.TaskState = 4;
             Data.TaskState(1,end+1)=Cursor.TaskState;
             Data.StopState(1,end+1)=0;
-            
-            
+                     
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
            
