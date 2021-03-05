@@ -34,7 +34,12 @@ else,
         %if Params.SmoothDataFlag==1
         X = Neuro.FilteredFeatures;
         X = X(:);
-        X = X(769:end);
+        if Params.Use3Features
+            idx = [1:128 385:512 641:768]+128; 
+            X = X(idx);
+        else
+            X = X(769:end);
+        end
         %Decision_Prob = multistate_discrete_6Target(X);
         Decision_Prob = feval(Params.NeuralNetFunction,X);
         [aa bb]=max(Decision_Prob);
