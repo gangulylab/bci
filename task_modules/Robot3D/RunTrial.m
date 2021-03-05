@@ -225,6 +225,7 @@ if ~Data.ErrorID,
             Cursor.Center = Params.Center;
     
             TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
+            
             if TargetID == Data.TargetID
                 fwrite(Params.udp, [0, 5, 0])
             end
@@ -270,8 +271,13 @@ if ~Data.ErrorID,
                 U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
                 U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
                 
+                vTarget = (Data.TargetPosition'- Cursor.State(1:3));
+                norm_vTarget = vTarget/norm(vTarget);
                 
-                Cursor.State = A*Cursor.State + B*U;
+                AssistVel = Params.AssistAlpha*B*norm_vTarget;
+                Data.AssistVel(:,end+1) = AssistVel;
+                
+                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
                 Cursor.IntendedState = [0 0 0 0 0]';  
                 
                 
@@ -387,13 +393,7 @@ if Params.InterTrialInterval>0,
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Inter Trial Interval';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
-    
-%     if TaskFlag==1,
-%         OptimalCursorTraj = ...
-%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-%         ct = 1;
-%     end
-%     
+  
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -425,13 +425,6 @@ if Params.InterTrialInterval>0,
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);   
             end
             
-            % cursor
-%             if TaskFlag==1, % imagined movements
-%                 Cursor.State(3:4) = (OptimalCursorTraj(ct,:)'-Cursor.State(1:2))/dt;
-%                 Cursor.State(1:2) = OptimalCursorTraj(ct,:);
-%                 Cursor.Vcommand = Cursor.State(3:4);
-%                 ct = ct + 1;
-%             end
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -440,8 +433,7 @@ if Params.InterTrialInterval>0,
             Cursor.TaskState = 4;
             Data.TaskState(1,end+1)=Cursor.TaskState;
             Data.StopState(1,end+1)=0;
-            
-            
+                     
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
            

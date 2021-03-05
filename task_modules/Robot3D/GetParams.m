@@ -268,4 +268,5 @@ Params.TargetHoldTime = 3;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
+Params.AssistAlpha = 0.0;
 end % GetParams
