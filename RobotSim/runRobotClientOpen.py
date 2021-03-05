@@ -2,6 +2,8 @@ import socket
 import interfacesOpen
 import numpy as np
 
+drawPath = 1
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_address = ('localhost', 5006)
 print('starting up on {} port {}'.format(*server_address))
@@ -68,8 +70,11 @@ while True:
 		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
 
 		interface.create_target(target_pos)
-		print(val1, val2, val3, val4, val5, val6)
-		print(target_pos)
+
+		# if drawPath:c1 = [-0.15, 0.15,0]
+		# 	interface.drawPath(target_pos)
+		# print(val1, val2, val3, val4, val5, val6)
+		# print(target_pos)
 
 	if command == 12:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
