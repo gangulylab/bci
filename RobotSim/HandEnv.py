@@ -75,9 +75,9 @@ class HandEnv(object):
 		elif cue == 8:
 			p.addUserDebugText('CLOSE', [-0.61,0.25,0.2],  [0,0,c], 12)
 		elif cue == 3:
-			p.addUserDebugText('PALM UP', [-0.65,0.25,0.2],  [0,0,c], 12)
+			p.addUserDebugText('UNITED STATES', [-0.80,0.25,0.2],  [0,0,c], 12)
 		elif cue == 6:
-			p.addUserDebugText('PALM DOWN', [-0.75,0.25,0.2],  [0,0,c], 12)
+			p.addUserDebugText('SOUTH AMERICA', [-0.80,0.25,0.2],  [0,0,c], 12)
 
 	def step(self):
 		

@@ -170,7 +170,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [3];
+Params.TargetOrder          = [2];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -297,5 +297,5 @@ Params.StartPos(3) = 0;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
-Params.AssistAlpha = 1.0;
+Params.AssistAlpha = 0.2;
 end % GetParams

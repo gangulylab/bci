@@ -146,8 +146,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:6, 1:6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -269,5 +269,5 @@ Params.TargetHoldTime = 3;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
-Params.AssistAlpha = 0.0;
+Params.AssistAlpha = 0.2;
 end % GetParams

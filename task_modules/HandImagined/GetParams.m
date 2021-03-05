@@ -71,6 +71,7 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;    
+    Params.Use3Features = true;
     Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
     %Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';    
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
@@ -273,7 +274,7 @@ Params.TargetHoldTime = 3;
 %% Hand
 Params.NumTrialsPerBlock    = 20;
 Params.TargetOrder          = [7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8];
-Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
+% Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -286,7 +287,8 @@ Params.wristAxisLim = [-0.5, 0.5;...
                         3.15, -0.5;
                         -1.0, 0.1;...
                         0.1, -1.0];
-Params.TrialDur = 4;                        
+                    
+Params.TrialDur = 1.5;                        
 mult = abs(Params.wristAxisLim(:,1) - Params.wristAxisLim(:,2))/Params.UpdateRate/Params.TrialDur;                 
 
 Params.axes         = [1,2,3,1,2,3,1,1];

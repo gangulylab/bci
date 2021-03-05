@@ -239,7 +239,9 @@ if ~Data.ErrorID,
             end
 
             Params.TargetID =  Data.TargetID;
-            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+%             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+Click_Decision = 0;
+Click_Distance = 0;
                 
 %             if TaskFlag==1, % imagined movements
             Cursor.State(axis) = Params.angles{Data.TargetID}(step);
