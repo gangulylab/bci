@@ -68,10 +68,11 @@ class JacoEnv(object):
         p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=-45, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 3  or self.mode == 4:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 5:
+      p.resetDebugVisualizerCamera(cameraDistance=0.4, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
-    # p.resetDebugVisualizerCamera(cameraDistance=0.8, cameraYaw=30, cameraPitch=-30, cameraTargetPosition=[-0.35,-0.3,0.0])
-    
+
     self.jacoEndEffectorIndex = 8
     self.jacoArmJoints = [2, 3, 4, 5, 6, 7]
     self.jacofingerJoints = [9, 11, 13]
@@ -180,7 +181,6 @@ class JacoEnv(object):
       p.addUserDebugLine(c4, c1, [0,0,1], 3, 0)
     # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
 
-
   def drawAxes(self):
     c1 = [0, 0, -0.2] + self.center
     c2 = [0, 0, 0.2] + self.center
@@ -231,7 +231,6 @@ class JacoEnv(object):
       d1 = [pos[0], pos[1], pos[2]]
       d2 = [self.center[0],self.center[1] ,self.center[2] ]
       self.l13 = p.addUserDebugLine(d1, d2, [0,0,0], 4, 0)
-
 
 
   def set_cubeColor(self, pos, c, lw):
@@ -346,30 +345,40 @@ class JacoEnv(object):
       # self.pos[2] = self.pos[2] - self.dist
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
 
-    # if self.pos[0] > self.wu[0]:
-    #   self.pos[0] =  self.wu[0]
-    # if self.pos[0] < self.wl[0]:
-    #   self.pos[0] =  self.wl[0]
-    # if self.pos[1] > self.wu[1]:
-    #   self.pos[1] =  self.wu[1]
-    # if self.pos[1] < self.wl[1]:
-    #   self.pos[1] =  self.wl[1]
-    # if self.pos[2] > self.wu[2]:
-    #   self.pos[2] =  self.wu[2]
-    # if self.pos[2] < self.wl[2]:
-    #   self.pos[2] =  self.wl[2]
-
     if self.fing > self.fu:
       self.fing =  self.fu
     if self.fing < self.fl:
       self.fing =  self.fl
 
+  def setFing(self, fp):
+    self.fing = fp
+
+  def displayCue(self, cue, c):
+    p.removeAllUserDebugItems()
+
+    if c == 0:
+      color = [0,0,0]
+    elif c == 1:
+      color = [0,0,1]
+    elif c == 2:
+      color = [0, 1, 0]
+    elif c == 3:
+      color = [1, 0, 0]
+
+    if cue == 7:
+        p.addUserDebugText('OPEN', [-0.45,0.3,0.01],  color, 12)
+    elif cue == 8:
+        p.addUserDebugText('CLOSE', [-0.47,0.3,0.01],  color, 12)
+    elif cue == 3:
+        p.addUserDebugText('UNITED STATES', [-0.80,0.25,0.2],  color, 12)
+    elif cue == 6:
+        p.addUserDebugText('SOUTH AMERICA', [-0.80,0.25,0.2], color, 12)
+
   def set_robotPos(self, rp, key):
     self.pos[0] = self.center[0] + rp[0]
     self.pos[1] = self.center[1] + rp[1]
     self.pos[2] = self.center[2]  + rp[2]
-    # print(key)
-    # Position
+
     if key == 6:
       self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
     elif key == 4: 
@@ -414,7 +423,22 @@ class JacoEnv(object):
     # p.resetSimulation()
     p.resetBasePositionAndOrientation(self.cube1Id, [-1., -1., -1.], [0,0,0,1])
     p.removeAllUserDebugItems()
-    self.drawAxes()
+
+    if self.mode == 0 or self.mode == 2: 
+      if self.angle == 0:
+        p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
+      else:
+        p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=-45, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 3  or self.mode == 4:
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 5:
+      p.resetDebugVisualizerCamera(cameraDistance=0.25, cameraYaw= 0, cameraPitch=0, cameraTargetPosition=[-0.35,0.3,0.2])  
+    else: 
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
+    
+
+    if self.mode <5:
+        self.drawAxes()
     rp = [0,math.pi/4,math.pi,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi]
 
     if self.mode == 0:

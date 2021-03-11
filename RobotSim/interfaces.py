@@ -14,7 +14,7 @@ class DiscreteActionsRobot():
         self.robotenv = JacoEnv(self.mode, self.angle, self.debugLines)
         self.robotenv.center_pos = np.array([-0.35, -0.3])
         self.pos = self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
-        self.robotenv.drawAxes()
+
 
     def create_target(self, cpos):
         # self.targetPos = self.bci_to_robot_transform(pos)
@@ -33,7 +33,6 @@ class DiscreteActionsRobot():
 
 
     def create_target3D(self, cpos, st):
-
         # self.targetPos = self.bci_to_robot_transform(pos)
         pos = cpos.copy()
         if st == 1:
@@ -51,9 +50,7 @@ class DiscreteActionsRobot():
         else:
             color = [0,1,0];
             self.robotenv.set_cubeColor(pos, color, 22)
-
-
-        
+      
 
     def render(self):
         self.robotenv.step()
@@ -64,6 +61,7 @@ class DiscreteActionsRobot():
     def updateMode(self, mode):
         self.mode = mode
         self.robotenv.mode = self.mode
+        self.robotenv.reset()
 
     def updateDebugLines(self, dl):
         self.debugLines = dl
@@ -173,5 +171,11 @@ class DiscreteActionsRobot():
     def reset(self, arrow=True, target=False, all_objects=False):
         self.robotenv.reset()
 
+    def displayCue(self, cue, c):
+        self.robotenv.displayCue(cue, c)
 
+    def setFing(self, fing):
+        self.robotenv.setFing(fing)
 
+    def setMode(self, mode):
+        self.robotenv.mode = mode

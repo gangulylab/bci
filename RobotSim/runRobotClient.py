@@ -60,6 +60,8 @@ while True:
 			interface.create_target3D(target_pos, 2)
 		if val1 == 7:
 			interface.create_target3D(target_pos, 3)
+		if val1 == 8:
+			interface.setMode(val2)
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
 		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
@@ -81,10 +83,17 @@ while True:
 		robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
 		robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
 		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
-		# robot_pos[2] = (val3 - 128) / 125
-		# print(val1, val2, val3)
-		# print(robot_pos)
 		interface.updateRobotPos(robot_pos,key )
+		interface.render()
+
+	if command == 5:
+		interface.displayCue(val1,val2)
+		print("DISPLAY CUE")
+
+	if command == 6:	# Set Target
+		fing = ((val1-1) *val2 + val3/100)/80
+		interface.setFing(fing)
+		print(fing)
 		interface.render()
 
 sock.shutdown()
