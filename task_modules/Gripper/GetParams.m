@@ -204,7 +204,7 @@ end
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
-Params.CueTime = 0.75;
+Params.CueTime = 1.0;
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 2.125 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
