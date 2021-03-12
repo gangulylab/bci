@@ -6,7 +6,7 @@ idx = find(kinax==3);
 
 if length(idx)<17
     l = 17 - length(idx);
-    idx = [idx(1)-l:idx idx];    
+    idx = [idx(1)-l:idx(1)-1 idx];    
 end
 
 features = Data.SmoothedNeuralFeatures(idx);
