@@ -82,6 +82,9 @@ class JacoEnv(object):
     self.jd = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
 
     self.cube1Id = p.loadURDF("cube_small.urdf",[-1., -1., -1.], [0,0,0,1])
+
+    self.cube2Id = p.loadURDF("cube_small.urdf",[-0.3, 0.25, 0.0], [0,0,0,1])
+    self.cube3Id = p.loadURDF("cube_small.urdf",[-0.1, 0.2, 0.0], [0,0,0,1])
     self.reset()
 
 
@@ -128,24 +131,24 @@ class JacoEnv(object):
 
     c1 = [-0.15, 0.1,0]
     j = 0
-    for x in range(1,n):
-      j = j + 1
-      y = f(X[x])
-      print(j)
-      print(x)
-      print(y)
+    # for x in range(1,n):
+    #   j = j + 1
+    #   y = f(X[x])
+    #   print(j)
+    #   print(x)
+    #   print(y)
 
       
-      c2 = [0,0,0]
-      c2[0] = unitVec[0]*l/(n)*j - unitVec[1]*y -.15
-      c2[1] = unitVec[1]*l/(n)*j + unitVec[0]*y + .1
-      c2[2] = 0
+    #   c2 = [0,0,0]
+    #   c2[0] = unitVec[0]*l/(n)*j - unitVec[1]*y -.15
+    #   c2[1] = unitVec[1]*l/(n)*j + unitVec[0]*y + .1
+    #   c2[2] = 0
 
-      lw = 3
-      c = [1,0,0]
+    #   lw = 3
+    #   c = [1,0,0]
 
-      p.addUserDebugLine(c1, c2, c, lw, 0)
-      c1 = c2
+    #   p.addUserDebugLine(c1, c2, c, lw, 0)
+    #   c1 = c2
 
 
 
@@ -452,15 +455,15 @@ class JacoEnv(object):
   def reset(self):
     # p.resetSimulation()
     p.resetBasePositionAndOrientation(self.cube1Id, [-1., -1., -1.], [0,0,0,1])
+    p.resetBasePositionAndOrientation(self.cube2Id, [-0.3, 0.25, 0.0], [0,0,0,1])
+    p.resetBasePositionAndOrientation(self.cube3Id, [-0.1, 0.2, 0.0], [0,0,0,1])
     p.removeAllUserDebugItems()
     # self.drawAxes()
     rp = [0,math.pi/4,math.pi,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi]
 
-    # if self.mode == 0:
-    #   self.pos =list([-0.35, 0.3, 0.2])
-    # elif self.mode ==3:
-    #   self.pos =list([-0.35, 0.3, 0.25])
-    # else:
+   
+
+
     self.pos =list([-0.15, 0.15, 0.2])
 
     self.orn = p.getQuaternionFromEuler([0,math.pi,math.pi/2])
