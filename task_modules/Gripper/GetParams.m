@@ -83,6 +83,10 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% LOAD HAND OPENING CLOSING DISCRETE DECODER
+tmp=load(fullfile(pwd, 'clicker', 'hand_open_close.mat'));
+Params.HandOpenCloseDecoder = tmp.hand_open_close;
+
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
 Params.TargetSpacing     = 10; % px
