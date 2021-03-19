@@ -6,25 +6,26 @@ function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro
 global Cursor
 
 if Params.ControlMode == 2 %mouse
-    val = 0;
-    
-    val = double(get(gcf,'CurrentCharacter'));
-    pause(0.1)
-    if val == 49
-        Click_Decision = 6;
-    elseif val == 50
-        Click_Decision = 2;
-    elseif val == 52
-        Click_Decision = 3;
-    elseif val == 54
-        Click_Decision = 1;
-    elseif val == 55
-        Click_Decision = 5;
-    elseif val == 56
-        Click_Decision = 4;
-    else
-        Click_Decision = 0;
-    end
+%     val = 0;
+%     
+%     val = double(get(gcf,'CurrentCharacter'));
+%     pause(0.1)
+%     if val == 49
+%         Click_Decision = 6;
+%     elseif val == 50
+%         Click_Decision = 2;
+%     elseif val == 52
+%         Click_Decision = 3;
+%     elseif val == 54
+%         Click_Decision = 1;
+%     elseif val == 55
+%         Click_Decision = 5;
+%     elseif val == 56
+%         Click_Decision = 4;
+%     else
+%         Click_Decision = 0;
+%     end
+Click_Decision = randi(4);
 %     if strcmp(Params.Task, 'RobotDistance')
 %         p = randi(2);
 %         if p == 1
@@ -35,9 +36,9 @@ if Params.ControlMode == 2 %mouse
 %     else
 % %     Click_Decision = randperm(6,1)-1;
 %         p = randi(4);
-%         if p < 2
+%         if p < 1
 % %             Click_Decision = 7;
-%             Click_Decision = randperm(7,1)-1;
+%             Click_Decision = randperm(5,1)-1;
 %         else
 %             if (Params.TargetID < 7)
 %                 Click_Decision = Params.TargetID

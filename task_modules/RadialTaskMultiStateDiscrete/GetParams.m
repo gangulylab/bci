@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -200,5 +200,27 @@ Params.ErrorSoundFs = 8192;
 [Params.RewardSound,Params.RewardSoundFs] = audioread('reward1.wav');
 % play sounds silently once so Matlab gets used to it
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
+
+%%
+Params.deltaT = 0.1;
+Params.k_v = 0.9;
+Params.k_i = 10.0;
+
+Params.dA = [1 0 Params.deltaT 0;...
+                    0 1 0 Params.deltaT;...
+                    0 0 Params.k_v 0 ;...
+                    0 0 0 Params.k_v ];
+                
+Params.dB = [zeros(2);...
+                    eye(2)];
+Params.dB = Params.dB*Params.k_i;
+
+Params.SmoothCursor = 0;
+
+Params.RunningMode          = 1;
+Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+
+
 
 end % GetParams

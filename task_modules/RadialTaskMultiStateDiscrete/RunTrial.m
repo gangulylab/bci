@@ -274,6 +274,8 @@ if ~Data.ErrorID,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
+    ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
+    
     while ~done,
         % Update Time & Position
         tim = GetSecs;
@@ -338,6 +340,31 @@ if ~Data.ErrorID,
                 Cursor.ClickDistance = Click_Distance;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+                
+                
+                % running mode
+                
+                ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+                ClickDec_Buffer(end) = Click_Decision;
+                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+                Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+                
+                if Params.RunningMode == 1
+                    Click_Decision = RunningMode_ClickDec;
+                end
+                
+           if Params.SmoothCursor == 1
+                A = Params.dA;
+                B = Params.dB;
+                
+                U = zeros(2,1);
+                U(1) = int8(Click_Decision== 1) - int8(Click_Decision == 3);
+                U(2) = int8(Click_Decision == 2) - int8(Click_Decision == 4);
+                
+                Cursor.State(1:4) = A*Cursor.State(1:4) + B*U;
+                                        
+           else    
+                
                 if Click_Decision == 1
                     temp_dir = Params.PixelLength*Params.ReachTargetPositions(1,:);
                 elseif Click_Decision == 2
@@ -352,6 +379,8 @@ if ~Data.ErrorID,
                 Cursor.State(1) = Cursor.State(1) + temp_dir(1);
                 Cursor.State(2) = Cursor.State(2) + temp_dir(2);
                 [Cursor.State(1) Cursor.State(2) Cursor.State(3) Cursor.State(4) 0];
+                
+            end
                 CursorRect = Params.CursorRect;
                 CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) ; % add x-pos
                 CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) ; % add y-pos
@@ -462,7 +491,7 @@ if Params.InterTrialInterval>0,
             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
         ct = 1;
     end
-    
+   
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
