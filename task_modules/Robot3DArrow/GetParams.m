@@ -78,7 +78,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210305';
+    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else

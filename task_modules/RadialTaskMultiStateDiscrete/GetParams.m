@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -71,7 +71,10 @@ Params.MultiDecisionBoundary = -2;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.7;
+    Params.NeuralNetSoftMaxThresh = 0.7;
+    Params.Use3Features = true;
+    Params.NeuralNetFunction = 'MLP_4DoF_Trained4mOnlineData_3Features_20210319';
+    % 1 - x-right (rt hand), 2 - y-down (tongue in), 3 - x-left (lt hand), 4 - y-up (mime up)
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
