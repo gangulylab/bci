@@ -274,21 +274,34 @@ Params.TargetHoldTime = 3;
 %% Hand
 Params.NumTrialsPerBlock    = 20;
 Params.TargetOrder          = [7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8];
-% Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
+
+Params.NumTrialsPerBlock    = 20;
+Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
+% Params.wristAxisLim = [-0.5, 0.5;...
+%                         -0.5, 1.2;...
+%                         -0.5, 3.15;...
+%                         0.5, -0.5;...
+%                          1.2, -0.5;...
+%                         3.15, -0.5;
+%                         -1.0, 0.1;...
+%                         0.1, -1.0];
+%                     
+
 Params.wristAxisLim = [-0.5, 0.5;...
                         -0.5, 1.2;...
-                        -0.5, 3.15;...
+                        -0.3, 1.7;...
                         0.5, -0.5;...
                          1.2, -0.5;...
-                        3.15, -0.5;
+                        1.7, -0.3;
                         -1.0, 0.1;...
                         0.1, -1.0];
                     
-Params.TrialDur = 1.5;                        
+
+Params.TrialDur = 2.5;                        
 mult = abs(Params.wristAxisLim(:,1) - Params.wristAxisLim(:,2))/Params.UpdateRate/Params.TrialDur;                 
 
 Params.axes         = [1,2,3,1,2,3,1,1];
@@ -296,7 +309,7 @@ Params.rotInc       = [1,1,1,-1,-1,-1,1,-1].*mult';
 Params.rotDir       = 1;
 Params.trialRepeat  = 1;
 Params.trialPause   = 0.5;
-Params.handVis = 0;
+Params.handVis = 1;
 
 for i = 1:8
     Params.angles{i} = [];
