@@ -238,14 +238,18 @@ end
 %  INSERT function call for open/close classifier
 
 ClickDecision = HandDecoder(Data,Params); % outputs 7 for open, 8 for close
-%ClickDecision = randi(2)+6; %
+% ClickDecision = [3,6];
+% ClickDecision = ClickDecision(randi(2))
+
 
 if ClickDecision == Data.TargetID
     fwrite(Params.udp, [5, Data.TargetID, 2])
     fprintf('CORRECT')
+    correct = 1;
 else
     fwrite(Params.udp, [5, Data.TargetID, 3])
     fprintf('INCORRECT')
+    correct = 0;
 end
 
 
@@ -269,7 +273,7 @@ if ~Data.ErrorID,
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
         
         % Update Screen
-        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+        if (tim-Cursor.LastPredictTime) > 1/Params.DisplayRate,
             step = step + 1;
             % time
             dt = tim - Cursor.LastPredictTime;
@@ -299,7 +303,13 @@ if ~Data.ErrorID,
             [ya,yb,yc] = doubleToUDP(Cursor.State(2)*80);
             [za,zb,zc] = doubleToUDP(Cursor.State(3)*80) ;
             
-            fwrite(Params.udp, [6, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
+            if Params.TargetID < 7
+                if correct ==1
+                    fwrite(Params.udp, [6, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
+                end
+            else
+                fwrite(Params.udp, [6, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
+            end
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
