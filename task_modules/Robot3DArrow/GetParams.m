@@ -128,6 +128,9 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    =18;
 Params.TargetOrder          = [1:6,1:6,1:6];
+
+% Params.NumTrialsPerBlock    =6;
+% Params.TargetOrder          = [1:6];
 % 
 % Params.NumTrialsPerBlock    = 1;
 % Params.TargetOrder          = [7];

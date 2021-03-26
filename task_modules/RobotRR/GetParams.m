@@ -291,5 +291,5 @@ Params.StartPos = [400, -100, -100];
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
-Params.AssistAlpha = 0.5;
+Params.AssistAlpha = 0.2;
 end % GetParams

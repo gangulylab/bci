@@ -343,7 +343,7 @@ catch ME, % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    keyboard;
+    rojects/bci/Rotokeyboard;
 end
 
 end % ExperimentStart
