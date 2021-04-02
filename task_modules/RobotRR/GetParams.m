@@ -79,6 +79,21 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% CONVOLUTIONAL NEURAL NET OPTION
+% set this to true to use neural network
+% also set the softmax option
+Params.ConvNeuralNetFlag = true;
+if Params.ConvNeuralNetFlag
+    Params.ConvNeuralNetSoftMaxThresh = 0.7;       
+    Params.ConvUse3Features = true;
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier';    
+    Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
+
+
+
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
 Params.TargetSpacing     = 10; % px
