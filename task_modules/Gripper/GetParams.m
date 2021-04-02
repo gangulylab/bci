@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync =true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -273,24 +273,30 @@ Params.TargetHoldTime = 3;
 Params.NumTrialsPerBlock    = 20;
 Params.TargetOrder          = [7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8];
 % Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
+% Params.NumTrialsPerBlock    = 2;
+% Params.TargetOrder          = [7,8];
+% Params.NumTrialsPerBlock    = 2;
+% Params.TargetOrder          = [3,6];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.wristAxisLim = [-0.5, 0.5;...
                         -0.5, 1.2;...
-                        -0.5, 3.15;...
+                        0, pi/2;...
                         0.5, -0.5;...
                          1.2, -0.5;...
-                        3.15, -0.5;
+                        pi/2, 0;
                         0.675, 0.0;...
                         0.675, 1.35
                         ];
-                    
-Params.TrialDur = 1.5;                        
-mult = abs(Params.wristAxisLim(:,1) - Params.wristAxisLim(:,2))/Params.UpdateRate/Params.TrialDur;                 
 
-Params.axes         = [1,2,3,1,2,3,1,1];
+
+Params.TrialDur = 2.5;     
+Params.DisplayRate = 200;
+mult = abs(Params.wristAxisLim(:,1) - Params.wristAxisLim(:,2))/Params.DisplayRate/Params.TrialDur;                 
+
+Params.axes         = [1,2,1,1,2,1,1,1];
 Params.rotInc       = [1,1,1,-1,-1,-1,-1,1].*mult';
 Params.rotDir       = 1;
 Params.trialRepeat  = 1;
@@ -324,6 +330,11 @@ for i = 1:8
    end
     end
 end
+
+tmp1 = Params.angles{3}; 
+tmp2 = Params.angles{6};
+Params.angles{3} = tmp1; 
+Params.angles{6} = tmp2; 
 
 a = 1;
 end % GetParams

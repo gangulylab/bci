@@ -53,6 +53,35 @@ class HandEnv(object):
 		
 	def setJointPosition(self, joint, angle):
 		self.jointState[joint] = angle
+		p.resetJointState(self.handId,0,1)
+
+		# s = -0.5;
+
+		# p.resetJointState(self.handId, 5, -0.5-0.2*s )
+		# p.resetJointState(self.handId, 6, s)
+		# p.resetJointState(self.handId, 7, s)
+		# p.resetJointState(self.handId, 8, s)
+
+
+		# p.resetJointState(self.handId, 10, -0.2-0.1*s )
+		# p.resetJointState(self.handId, 11, s)
+		# p.resetJointState(self.handId, 12, s)
+		# p.resetJointState(self.handId, 13, s)
+
+		# p.resetJointState(self.handId, 15, 0.1+0.1*s )
+		# p.resetJointState(self.handId, 16, s)
+		# p.resetJointState(self.handId, 17, s)
+		# p.resetJointState(self.handId, 18, s)
+
+		# p.resetJointState(self.handId, 20, 0.4+0.2*s )
+		# p.resetJointState(self.handId, 21, s)
+		# p.resetJointState(self.handId, 22, s)
+		# p.resetJointState(self.handId, 23, s)
+
+		# p.resetJointState(self.handId, 25, 0)
+		# p.resetJointState(self.handId, 26, 0)
+		# p.resetJointState(self.handId, 27, 0)
+		
 
 	def reset(self):
 		# p.resetJointState(self.handId, 3, -0.4)
@@ -74,10 +103,20 @@ class HandEnv(object):
 			p.addUserDebugText('OPEN', [-0.6,0.25,0.2],  [0,0,c], 12)
 		elif cue == 8:
 			p.addUserDebugText('CLOSE', [-0.61,0.25,0.2],  [0,0,c], 12)
+		# elif cue == 3:
+		# 	p.addUserDebugText('UNITED STATES', [-0.80,0.25,0.2],  [0,0,c], 12)
+		# elif cue == 6:
+		# 	p.addUserDebugText('SOUTH AMERICA', [-0.80,0.25,0.2],  [0,0,c], 12)
+
+		# elif cue == 3:
+		# 	p.addUserDebugText('Side', [-0.60,0.25,0.2],  [0,0,c], 12)
+		# elif cue == 6:
+		# 	p.addUserDebugText('Top', [-0.65,0.25,0.2],  [0,0,c], 12)
+
 		elif cue == 3:
-			p.addUserDebugText('UNITED STATES', [-0.80,0.25,0.2],  [0,0,c], 12)
+			p.addUserDebugText('PALM UP', [-0.65,0.25,0.2],  [0,0,c], 12)
 		elif cue == 6:
-			p.addUserDebugText('SOUTH AMERICA', [-0.80,0.25,0.2],  [0,0,c], 12)
+			p.addUserDebugText('PALM DOWN', [-0.65,0.25,0.2],  [0,0,c], 12)
 
 	def step(self):
 		

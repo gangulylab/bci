@@ -151,12 +151,12 @@ R = [cos(t), -sin(t); sin(t), cos(t) ];
 t3 = R*v;
 t3(2) = -t3(2);
 
-t0 = [250, 250, -250];
-    
-Params.ReachTargetPositions = [t0;
-    t0 + [t1;0]';
-    t0 + [t2;0]';
-    t0 + [t3;0]'];
+t0 = [300, -100, -250];
+
+Params.ReachTargetPositions = [t0, 
+  t0 - [600;0;0]';
+  t0 - [600;300;0]';
+  t0 - [600; -300;0]'];
 
 
 %% Kalman Filter Properties
@@ -269,7 +269,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 100;
+Params.RobotTargetRadius = 20;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -291,24 +291,18 @@ Params.dB = [zeros(3);...
 Params.dB = Params.dB*Params.k_i;
 
 Params.LongTrial = 0;
-% Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
-%     Params.ReachTargetPositions(4,:);...
-%     Params.ReachTargetPositions(1,:);...
-%     Params.ReachTargetPositions(2,:);...
-%     Params.ReachTargetPositions(6,:);...
-%     Params.ReachTargetPositions(5,:);...
-%     Params.ReachTargetPositions(9,:);...
-%     Params.ReachTargetPositions(10,:);...
-%     Params.ReachTargetPositions(7,:);...
-%     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker = 0;
 Params.TargetHoldTime = 1;
 % 
 % Params.StartPos = [0.15, -0.15,0];
 
-Params.StartPos = t0;
-Params.StartPos(3) = 0;
+Params.StartPos = [400, -100, -100];
+% Params.StartPos(3) = 0;
+
+
+% Params.StartPos = t0;
+% Params.StartPos(3) = 0;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
