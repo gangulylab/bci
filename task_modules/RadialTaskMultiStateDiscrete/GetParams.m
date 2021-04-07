@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -55,8 +55,8 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
 
 %% Timing
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 6; % Hz
+Params.UpdateRate = 6; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
@@ -72,6 +72,9 @@ Params.MultiDecisionBoundary = -2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.7;
+   Params.NeuralNetFunction = 'MLP_4Dir_Actions_AllOnline_20210331c';
+   %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
+   %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -79,8 +82,8 @@ end
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 350; % defines outer edge of target
-Params.InnerCircleRadius = 150; % defines inner edge of target
+Params.OuterCircleRadius = 1200; % defines outer edge of target
+Params.InnerCircleRadius = 500; % defines inner edge of target
 Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
 Params.TargetsColor        = [100,100,100]; % all targets
@@ -113,7 +116,7 @@ Params.TargetSize = Params.OuterCircleRadius - Params.InnerCircleRadius;
 %% Cursor
 Params.CursorColor = [0,102,255];
 Params.InTargetColor    = [255,55,0];
-Params.CursorSize = 10;
+Params.CursorSize = 30;
 Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
 
