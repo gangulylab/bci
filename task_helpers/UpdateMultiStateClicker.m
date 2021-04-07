@@ -8,7 +8,7 @@ global Cursor
 if Params.ControlMode == 2 %mouse
     Click_Decision = randperm(5,1)-1;
     Click_Distance = 0;
-else,
+else
     if Params.NeuralNetFlag == 1
         %if Params.SmoothDataFlag==1
         X = Neuro.FilteredFeatures;
@@ -58,12 +58,12 @@ else,
             Click_Decision = bb;
             Click_Distance = aa;
         end
-    else
-        if Params.SmoothDataFlag ==1
-            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
-        else
-            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
-        end
+    %else
+%         if Params.SmoothDataFlag ==1
+%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+%         else
+%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+%         end
     end
 end
 
