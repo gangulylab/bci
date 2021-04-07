@@ -1,4 +1,4 @@
-function Params = GetParams(Params)
+ function Params = GetParams(Params)
 % Experimental Parameters
 % These parameters are meant to be changed as necessary (day-to-day,
 % subject-to-subject, experiment-to-experiment)
@@ -20,7 +20,7 @@ Params.DaggerAssist 	= false;
 Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
-Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
+Params.InitializationMode   = 3; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
@@ -35,18 +35,18 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
 
 %% Timing 
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 6; % Hz
+Params.UpdateRate = 6; % Hz
 
 %% Targets
-Params.TargetSize = 30;
+Params.TargetSize = 90;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -54,8 +54,8 @@ Params.StartTargetPosition  = [0,0];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
-Params.ReachTargetAngles = (90:180:270)';
-Params.ReachTargetRadius = 300; 
+Params.ReachTargetAngles = (0:90:270)';
+Params.ReachTargetRadius = 700; 
 Params.ReachTargetPositions = ...
     Params.StartTargetPosition ...
     + Params.ReachTargetRadius ...
@@ -68,7 +68,7 @@ Params.ReachTargetSamplingVec = Params.ReachTargetSamplingVec ...
 
 %% Cursor
 Params.CursorColor = [0,102,255];
-Params.CursorSize = 10;
+Params.CursorSize = 30;
 Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
 
@@ -92,10 +92,10 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 10;
+Params.NumImaginedBlocks    = 7;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 0;
-Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles);
+Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles)*3;
 Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
 switch Params.TargetSelectionFlag,
     case 1, Params.TargetFunc = @(n) mod(randperm(n),Params.NumReachTargets)+1;
@@ -155,7 +155,7 @@ end
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 10;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 4.5;
+Params.ImaginedMvmtTime = 6.0;
 
 %% Feedback
 Params.FeedbackSound = false;
