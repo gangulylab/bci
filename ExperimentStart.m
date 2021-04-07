@@ -26,7 +26,10 @@ valid_tasks = {...
     'RadialTask',...
     'RadialTyping',...
     'RadialTypingMultiClick',...
-    'ExoControl1D'};
+    'ExoControl1D',...
+    'MultiStateDiscrete',...
+    'RadialTaskMultiStateDiscrete',...
+    'RadialTaskMultiStateDiscreteArrow'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -37,8 +40,10 @@ if strcmpi(Subject,'Test'), Subject = 'Test'; end % ignore case
 
 %% Set up path for running task dependent code
 if IsWin,
-    homedir = 'C:\Users\ganguly-lab2';
-    projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
+    %homedir = 'C:\Users\ganguly-lab2\Documents\bci_data_test';
+    %projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
+    homedir='C:\Users\Nikhlesh\Documents\bci_data_test';
+    projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\bci');
 elseif IsOSX,
     homedir = '/Users/daniel/';
     projectdir = '/Users/daniel/Projects/bci/';
@@ -151,11 +156,17 @@ Neuro.UpdateFeatureStatsFlag = Params.UpdateFeatureStatsFlag;
 Neuro.ChMap             = Params.ChMap;
 Neuro.SpatialFiltering  = Params.SpatialFiltering;
 Neuro.FeatureMask       = Params.FeatureMask;
+Neuro.FeatureBufferSize = Params.FeatureBufferSize;
+Neuro.SmoothDataFlag = Params.SmoothDataFlag;
 
 % initialize filter bank state
 for i=1:length(Params.FilterBank),
     Neuro.FilterBank(i).state = [];
 end
+
+% initialize feature buffer
+Neuro.FeatureDataBuffer = zeros(Neuro.FeatureBufferSize,Neuro.NumFeatures*Neuro.NumChannels);
+Neuro.FilteredFeatures = zeros(Neuro.NumFeatures*Neuro.NumChannels,1);
 
 % initialize stats for each channel for z-scoring
 Neuro.ChStats.mean      = zeros(1,Params.NumChannels); % estimate of mean for each channel
@@ -177,6 +188,10 @@ if Neuro.NumFeatureBins>1,
     Neuro.NeuralFeaturesBuf = zeros(Neuro.NumFeatures*Neuro.NumChannels,...
         Neuro.NumFeatureBins);
 end
+
+% create buffer to smooth neural features over 100s of ms
+
+
 
 %% Kalman Filter
 if Params.ControlMode>=3,

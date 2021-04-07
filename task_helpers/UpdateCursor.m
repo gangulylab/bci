@@ -69,6 +69,7 @@ switch Cursor.ControlMode,
         
     case {3,4}, % Kalman Filter Input
         X0 = Cursor.State; % initial state, useful for assistance
+        %X0 =[ .1 .1 .1 .1 .1]';
         
         % Kalman Predict Step
         X = X0;

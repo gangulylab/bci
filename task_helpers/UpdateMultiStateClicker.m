@@ -1,0 +1,40 @@
+function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro, Clicker)
+% Multistate Clicker update
+% Checks the current decoded target
+% If it is the correct target, it updates the Cursor.ClickState
+
+global Cursor
+
+if Params.ControlMode == 2 %mouse
+    Click_Decision = randperm(5,1)-1;
+    Click_Distance = 0;
+else,
+    if Params.NeuralNetFlag == 1
+        %if Params.SmoothDataFlag==1
+        X = Neuro.FilteredFeatures;
+        X = X(:);
+        X = X(129:end);% all features
+        %X = X(769:end);% only hG
+        %Decision_Prob = multilayer_perceptron_Day1to7(X);
+        Decision_Prob = feval(Params.NeuralNetFunction,X);
+        [aa bb]=max(Decision_Prob);
+        if aa >= Params.NeuralNetSoftMaxThresh
+            Click_Decision = bb;
+            Click_Distance = aa;
+        else
+            Click_Decision = 0;
+            Click_Distance = 0;
+        end            
+        %else
+        %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);        
+        %end
+    else        
+        if Params.SmoothDataFlag ==1
+            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+        else
+            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+        end        
+    end
+end
+
+end % UpdateMultiClicker

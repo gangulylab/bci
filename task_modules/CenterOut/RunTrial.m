@@ -294,6 +294,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
+            
             % start target
             StartRect = Params.TargetRect; % centered at (0,0)
             StartRect([1,3]) = StartRect([1,3]) + StartTargetPos(1) + Params.Center(1); % add x-pos
