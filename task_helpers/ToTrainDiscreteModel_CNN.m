@@ -1,7 +1,379 @@
 
+%% TRAIN CNN
+
+
+clc;clear
+root_path = '/home/ucsf/Data/Bravo2/20210324/CenterOut';
+foldernames = {'140739'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'Imagined');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = length(features)-30:length(features);
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+% DATA FROM ONLINE TASKS 24th MAR
+root_path = '/home/ucsf/Data/Bravo2/20210324/DiscreteArrow/';
+cd(root_path)
+clear foldernames
+D = dir(root_path);
+k=1;
+for i=3:length(D)
+    foldernames{k} = D(i).name;
+    k=k+1;
+end
+    
+cd(root_path)
+foldernames = foldernames(1:3);
+
+% online successful data
+for k=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{k},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        %if TrialData.SelectedTargetID == TrialData.TargetID
+            features  = TrialData.SmoothedNeuralFeatures;
+            kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+            %idx = length(kinax)+1 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx = length(kinax)+-2 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx=idx(idx>0);
+            %kinax = kinax(idx);
+            temp = cell2mat(features(kinax));
+            temp = temp(129:end,:);
+            
+            if TrialData.TargetID == 1
+                D1 = [D1 temp];
+            elseif TrialData.TargetID == 2
+                D2 = [D2 temp];
+            elseif TrialData.TargetID == 3
+                D3 = [D3 temp];
+            elseif TrialData.TargetID == 4
+                D4 = [D4 temp];
+            end
+        %end
+    end
+end
 
 
 
+% DATA FROM ONLINE TASKS 31 MAR
+root_path = '/home/ucsf/Data/Bravo2/20210331/DiscreteArrow/';
+cd(root_path)
+clear foldernames
+D = dir(root_path);
+k=1;
+for i=3:length(D)
+    foldernames{k} = D(i).name;
+    k=k+1;
+end
+    
+cd(root_path)
+
+
+% online successful data
+for k=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{k},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        %if TrialData.SelectedTargetID == TrialData.TargetID
+            features  = TrialData.SmoothedNeuralFeatures;
+            kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+            %idx = length(kinax)+1 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx = length(kinax)+-2 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx=idx(idx>0);
+            %kinax = kinax(idx);
+            temp = cell2mat(features(kinax));
+            temp = temp(129:end,:);
+            
+            if TrialData.TargetID == 1
+                D1 = [D1 temp];
+            elseif TrialData.TargetID == 2
+                D2 = [D2 temp];
+            elseif TrialData.TargetID == 3
+                D3 = [D3 temp];
+            elseif TrialData.TargetID == 4
+                D4 = [D4 temp];
+            end
+        %end
+    end
+end
+
+% PIXELATED CURSOR 31 mar
+root_path = '/home/ucsf/Data/Bravo2/20210331/PixelatedCursor/';
+cd(root_path)
+clear foldernames
+D = dir(root_path);
+k=1;
+for i=3:length(D)
+    foldernames{k} = D(i).name;
+    k=k+1;
+end
+    
+cd(root_path)
+foldernames = foldernames(1:2);
+
+% online successful data
+for k=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{k},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        %if TrialData.SelectedTargetID == TrialData.TargetID
+            features  = TrialData.SmoothedNeuralFeatures;
+            kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+            %idx = length(kinax)+1 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx = length(kinax)+-2 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx=idx(idx>0);
+            %kinax = kinax(idx);
+            temp = cell2mat(features(kinax));
+            temp = temp(129:end,:);
+            
+            if TrialData.TargetID == 1
+                D1 = [D1 temp];
+            elseif TrialData.TargetID == 2
+                D2 = [D2 temp];
+            elseif TrialData.TargetID == 3
+                D3 = [D3 temp];
+            elseif TrialData.TargetID == 4
+                D4 = [D4 temp];
+            end
+        %end
+    end
+end
+
+
+
+% DATA FROM ONLINE TASKS 7 APR
+root_path = '/home/ucsf/Data/Bravo2/20210407/DiscreteArrow/';
+cd(root_path)
+clear foldernames
+D = dir(root_path);
+k=1;
+for i=3:length(D)
+    foldernames{k} = D(i).name;
+    k=k+1;
+end
+    
+cd(root_path)
+
+
+% online successful data
+for k=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{k},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        %if TrialData.SelectedTargetID == TrialData.TargetID
+            features  = TrialData.SmoothedNeuralFeatures;
+            kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+            %idx = length(kinax)+1 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx = length(kinax)+-2 - TrialData.Params.ClickCounter:length(kinax) ;
+            %idx=idx(idx>0);
+            %kinax = kinax(idx);
+            temp = cell2mat(features(kinax));
+            temp = temp(129:end,:);
+            
+            if TrialData.TargetID == 1
+                D1 = [D1 temp];
+            elseif TrialData.TargetID == 2
+                D2 = [D2 temp];
+            elseif TrialData.TargetID == 3
+                D3 = [D3 temp];
+            elseif TrialData.TargetID == 4
+                D4 = [D4 temp];
+            end
+        %end
+    end
+end
+
+
+
+clc;clear
+root_path = '/home/ucsf/Data/Bravo2/20210407/CenterOut';
+foldernames = {'153243'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'Imagined');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = length(features)-30:length(features);
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+
+
+clear condn_data
+% combing both onlien plus offline
+idx=1;
+condn_data{1}=[D1(idx:end,:) ]'; % right hand
+condn_data{2}= [D2(idx:end,:)]'; % both feet
+condn_data{3}=[D3(idx:end,:)]'; % left hand
+condn_data{4}=[D4(idx:end,:)]';
+
+
+cd('/home/ucsf/Projects/bci')
+load('/home/ucsf/Projects/bci/clicker/ECOG_Grid_8596-002131.mat')
+chmap = ecog_grid;
+
+
+condn_data_train={};
+condn_data_test={};
+for i=1:length(condn_data)
+    temp = condn_data{i};
+    % resize into images
+    tmp_resized=[];
+    for j=1:128:size(temp,2)
+        chdata = temp(:,j:j+127);
+        chdata = zscore(chdata')';
+        % reshape as a grid
+        chtemp=[];
+        for k=1:size(chdata,1)
+            t = chdata(k,:);
+            chtemp(:,:,k) = t(chmap);            
+        end
+        tmp_resized = cat(4,tmp_resized,chtemp);        
+    end
+    temp = permute(tmp_resized,[1 2 4 3]);
+    % splitting the data
+    l = round(0.97*size(temp,4));
+    idx = randperm(size(temp,4),l);
+    % setting aside training trials
+    condn_data_train{i} = temp(:,:,:,idx);
+    % setting aside testing trials
+    I = ones(size(temp,4),1);
+    I(idx)=0;
+    I=logical(I);
+    condn_data_test{i} = temp(:,:,:,I);
+end
+
+% getting the data ready
+XTrain = [];
+YTrain = [];
+for i=1:length(condn_data_train)
+    tmp = condn_data_train{i};
+    XTrain = cat(4,XTrain,tmp);
+    YTrain = [YTrain;i*ones(size(tmp,4),1)];
+end
+YTrain = categorical(YTrain);
+XTest = [];
+YTest = [];
+for i=1:length(condn_data_test)
+    tmp = condn_data_test{i};
+    XTest = cat(4,XTest,tmp);
+    YTest = [YTest;i*ones(size(tmp,4),1)];
+end
+YTest = categorical(YTest);
+
+
+%%%%%% CNN construction %%%%%
+layers = [
+    imageInputLayer([8 16 6])
+    
+    convolution2dLayer(2,16,'Padding','same')
+    batchNormalizationLayer
+    reluLayer
+    maxPooling2dLayer(2,'Stride',1)
+    
+    convolution2dLayer(2,32,'Padding','same')
+    batchNormalizationLayer
+    reluLayer
+    maxPooling2dLayer(2,'Stride',1)
+    
+    %     convolution2dLayer(2,32,'Padding','same')
+    %     batchNormalizationLayer
+    % %    dropoutLayer(0.2)
+    %     reluLayer
+    %     maxPooling2dLayer(2,'Stride',1)
+    %
+    %     convolution2dLayer(3,32,'Padding','same')
+    %     batchNormalizationLayer
+    %     reluLayer
+    %     maxPooling2dLayer(3,'Stride',1)
+    
+    fullyConnectedLayer(32)
+    batchNormalizationLayer
+    dropoutLayer(0.2)
+    reluLayer
+    
+    fullyConnectedLayer(16)
+    batchNormalizationLayer
+    dropoutLayer(0.2)
+    reluLayer
+    
+    fullyConnectedLayer(4)
+    softmaxLayer
+    classificationLayer];
+
+options = trainingOptions('adam', ...
+    'InitialLearnRate',0.01, ...
+    'MaxEpochs',20, ...
+    'Shuffle','every-epoch', ...
+    'Verbose',true, ...
+    'Plots','training-progress',...    
+    'MiniBatchSize',80,...
+    'ValidationData',{XTest,YTest}, ...
+    'ValidationFrequency',30,...
+    'L2Regularization',1e-4);
+
+%%%%%% CNN construction %%%%%
+% build the classifier
+net = trainNetwork(XTrain,YTrain,layers,options);
+
+cd('/home/ucsf/Projects/bci/clicker')
+save CNN_classifier_B2_new_C net
+
+
+%% need imagined mvmt data and online data
 clc;clear
 close all
 cd('E:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker')
@@ -84,8 +456,7 @@ options = trainingOptions('adam', ...
     'MaxEpochs',10, ...
     'Shuffle','every-epoch', ...
     'Verbose',true, ...
-    'Plots','training-progress',...
-    'ValidationData',{XTest,YTest},...
+    'Plots','training-progress',...    
     'MiniBatchSize',32,...
     'ValidationFrequency',30,...
     'L2Regularization',1e-4);

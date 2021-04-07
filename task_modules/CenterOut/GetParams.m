@@ -35,7 +35,7 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -92,7 +92,7 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 7;
+Params.NumImaginedBlocks    = 8;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 0;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles)*3;

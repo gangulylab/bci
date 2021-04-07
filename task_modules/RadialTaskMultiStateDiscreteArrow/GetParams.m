@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -93,9 +93,9 @@ end
 % also set the softmax option
 Params.ConvNeuralNetFlag = true;
 if Params.ConvNeuralNetFlag
-    Params.ConvNeuralNetSoftMaxThresh = 0.7;       
+    Params.ConvNeuralNetSoftMaxThresh = 0.4;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B2_new_C';    
     Params.ConvNeuralNet = load(fullfile('clicker',...
          Params.ConvNeuralNetFunctionName));
 else
