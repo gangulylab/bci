@@ -95,16 +95,14 @@ Params.ConvNeuralNetFlag = true;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.7;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B2';    
-    Params.ConvNeuralNet = load(fullfile('clicker',...
-         Params.ConvNeuralNetFunctionName));
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier';    
+    Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
 %% LOAD THE CHMAP FILE
-tmp = load(fullfile('clicker','ECOG_Grid_8596-002131.mat'));
-Params.ChMapB2 = tmp.ecog_grid;
+Params.ChMapB2
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;

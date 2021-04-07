@@ -24,16 +24,46 @@ else,
         else
             Click_Decision = 0;
             Click_Distance = 0;
-        end            
+        end
         %else
-        %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);        
+        %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);
         %end
-    else        
+        
+    elseif Params.ConvNeuralNetFlag == 1
+        chtemp=[];
+        chmap=Params.ChMapB2;
+        X = Neuro.FilteredFeatures;
+        X = X(:);
+        feat_idx = [129:256 257:384 385:512 513:640 641:768 769:896];
+        X = X(feat_idx);
+        f1 = (X(1:128));
+        f2 = (X(129:256));
+        f3 = (X(257:384));
+        f4 = (X(385:512));
+        f5 = (X(513:640));
+        f6 = (X(641:768));
+        chtemp(:,:,1) = f1(chmap);
+        chtemp(:,:,2) = f2(chmap);
+        chtemp(:,:,3) = f3(chmap);
+        chtemp(:,:,4) = f4(chmap);
+        chtemp(:,:,5) = f5(chmap);
+        chtemp(:,:,6) = f6(chmap);
+        %act = squeeze(activations(Params.ConvNeuralNet.net,chtemp,20));
+        act = predict(Params.ConvNeuralNet.net,chtemp);
+        [aa bb]=max(act);
+        if aa<  Params.ConvNeuralNetSoftMaxThresh
+            Click_Decision = 0;
+            Click_Distance = aa;
+        else
+            Click_Decision = bb;
+            Click_Distance = aa;
+        end
+    else
         if Params.SmoothDataFlag ==1
             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
         else
             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
-        end        
+        end
     end
 end
 
