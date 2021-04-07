@@ -97,12 +97,12 @@ else,
             Click_Distance = aa;
         end
         
-    else
-        if Params.SmoothDataFlag ==1
-            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
-        else
-            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
-        end
+%     else
+%         if Params.SmoothDataFlag ==1
+%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+%         else
+%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+%         end
     end
 end
 
