@@ -87,7 +87,7 @@ else,
         chtemp(:,:,2) = f2(chmap);
         chtemp(:,:,3) = f3(chmap);                
         %act = squeeze(activations(Params.ConvNeuralNet.net,chtemp,20));
-        act = predict(Params.ConvNeuralNet.net,chtemp);
+        act = predict(Params.ConvNeuralNet.net,chtemp,'ExecutionEnvironment','cpu');        
         [aa bb]=max(act);
         if aa<  Params.ConvNeuralNetSoftMaxThresh
             Click_Decision = 0;

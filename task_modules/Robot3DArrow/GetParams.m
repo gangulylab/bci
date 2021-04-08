@@ -90,9 +90,10 @@ end
 % also set the softmax option
 Params.ConvNeuralNetFlag = true;
 if Params.ConvNeuralNetFlag
-    Params.ConvNeuralNetSoftMaxThresh = 0.7;       
+    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
+    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
     Params.NeuralNetSoftMaxThresh = 0;
