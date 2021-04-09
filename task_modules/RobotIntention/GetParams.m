@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot';
+Params.Task = 'RobotIntention';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -84,10 +84,9 @@ end
 % also set the softmax option
 Params.ConvNeuralNetFlag = true;
 if Params.ConvNeuralNetFlag
-    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
+    Params.ConvNeuralNetSoftMaxThresh = 0.7;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -162,8 +161,9 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 12;
-Params.TargetOrder          = [1:6, 1:6];
+Params.NumTrialsPerBlock    = 1;
+Params.TargetOrder          = [8];
+
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -236,7 +236,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 Params.limit = [-400, 400; -400 400; -350 350];
 Params.RobotTargetRadius    = 40;
-Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotMode            = 7;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -254,7 +254,7 @@ Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.9;
+Params.k_v = 0.90;
 Params.k_i = 10.0;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
@@ -268,7 +268,7 @@ Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
-Params.LongTrial = 0;
+Params.LongTrial = 1;
 Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(4,:);...
     Params.ReachTargetPositions(1,:);...
@@ -280,10 +280,22 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(7,:);...
     Params.ReachTargetPositions(8,:)];
 
+Params.LongStartPos(8,:) = [200, -200,-250];
+Params.ReachTargetPositions(8,3) = -250;
+Params.ReachTargetPositions(9,3) = -250;
+
 Params.RobotClicker = 1;
 Params.TargetHoldTime = 3;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
 Params.AssistAlpha = 0.0;
+
+Params.intDur = 0.5*Params.UpdateRate;
+Params.coastDur = 1.0*Params.UpdateRate;
+Params.blockSequence = [1,2,1,2,0,0,0,2,1,2,1,0,0,0,6,6,6,0,0,0];
+Params.blockSequence = [3,4,3,4,0,0,0,3,4,3,4,0,0,0,6,6,6,0,0,0];
+Params.blockSequence = [0,0,3,3,2,2,3,3,2,2,0,0,0,3,3,2,2,3,2,0,0,0,6,6,6,6,6,0,0,0];
+Params.blockSequence = [0,0,5,5,5,5,0,0,3,3,3,3,0,0,2,2,2,2,0,0,3,3,3,3,0,0,2,2,2,2,0,0,6,6,6,6,0,0,0,0,5,5,5,5,0,0,4,4,4,4,0,0,1,1,1,1,0,0,4,4,4,4,0,0,1,1,1,1,0,0,6,6,6,6,0,0];
+
 end % GetParams

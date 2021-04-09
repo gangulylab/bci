@@ -512,10 +512,10 @@ class JacoEnv(object):
     
     # p.addUserDebugLine(self.pos, self.pos2, [1,0,0,], 3, 0.3)
 
-    p1 = [self.pos[0] - .02, self.pos[1], 0.002]
-    p2 = [self.pos[0] + .02, self.pos[1], 0.002]
-    p3 = [self.pos[0], self.pos[1] + .02, 0.002]
-    p4 = [self.pos[0], self.pos[1] - .02, 0.002]
+    p1 = [self.pos[0] - .02, self.pos[1], 0.000]
+    p2 = [self.pos[0] + .02, self.pos[1], 0.000]
+    p3 = [self.pos[0], self.pos[1] + .02, 0.000]
+    p4 = [self.pos[0], self.pos[1] - .02, 0.000]
 
     p.addUserDebugLine(p1, p2, [0,1,0], 6, self.bciRate)
     p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate)
@@ -529,6 +529,6 @@ class JacoEnv(object):
         p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
       elif self.mode == 3 or self.mode == 4:
         # if self.key == 1 or self.key == 7:
-        p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
+        p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] ], [self.pos2[0], self.pos2[1], self.pos2[2] ], [1,0,0,], 8, self.bciRate)
         # else:
         #   p.addUserDebugLine([self.pos[0], self.pos[1], 0.001], [self.pos2[0], self.pos2[1], 0], [1,0,0,], 8, self.bciRate)
