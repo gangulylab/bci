@@ -59,7 +59,7 @@ elseif IsOSX,
 else,
     homedir = '~';
     projectdir = '~/Projects/bci/';
-    projectdir = '/home/sarah/Documents/bci';
+    %projectdir = '/home/sarah/Documents/bci';
 
 end
 

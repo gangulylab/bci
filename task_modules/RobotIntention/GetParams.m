@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -68,7 +68,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
@@ -82,7 +82,7 @@ end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = true;
+Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.7;       
     Params.ConvUse3Features = true;

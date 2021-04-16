@@ -1,4 +1,4 @@
-function Params = GetParams(Params)
+mat function Params = GetParams(Params)
 % Experimental Parameters
 % These parameters are meant to be changed as necessary (day-to-day,
 % subject-to-subject, experiment-to-experiment)
@@ -82,7 +82,7 @@ end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = true;
+Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.7;       
     Params.ConvUse3Features = true;
@@ -256,7 +256,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.limit = [-400, 400; -400 400; -350 350];
+Params.limit = [-400, 400; -400 400; -350 250];
 Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines

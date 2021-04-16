@@ -85,9 +85,9 @@ else,
         f3 = (X(257:384));
         chtemp(:,:,1) = f1(chmap);
         chtemp(:,:,2) = f2(chmap);
-        chtemp(:,:,3) = f3(chmap);                
+        chtemp(:,:,3) = f3(chmap);
         %act = squeeze(activations(Params.ConvNeuralNet.net,chtemp,20));
-        act = predict(Params.ConvNeuralNet.net,chtemp,'ExecutionEnvironment','cpu');        
+        act = predict(Params.ConvNeuralNet.net,chtemp,'ExecutionEnvironment','cpu');
         [aa bb]=max(act);
         if aa<  Params.ConvNeuralNetSoftMaxThresh
             Click_Decision = 0;
@@ -98,16 +98,17 @@ else,
         end
         
     elseif Params.UseSVM ==1
-         [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+        [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+        %disp(Click_Decision)
     end
-        
-%     else
-%         if Params.SmoothDataFlag ==1
-%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
-%         else
-%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
-%         end
-    end
+    
+    %     else
+    %         if Params.SmoothDataFlag ==1
+    %             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+    %         else
+    %             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+    %         end
 end
+
 
 end % UpdateMultiClicker

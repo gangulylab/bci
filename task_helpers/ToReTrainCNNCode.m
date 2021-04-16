@@ -3,17 +3,16 @@
 % run from the BCI folder 
 
 clc;clear
-root_path = 'E:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker';
-foldernames = {'20201218','20210108','20210115','20210128','20210201','20210212','20210219','20210226',...
-    '20210305','20210312','20210319','20210402','20210409'};
-cd(root_path)
+root_path = '/home/ucsf/Data/bravo1';
+foldernames = {'20210115','20210128','20210201','20210212','20210219','20210226',...
+    '20210305','20210312','20210319','20210326','20210402','20210409','20210416'};
 addpath(fullfile('task_helpers'))
 
 files=[];
-for i=1:length(foldernames)
+for i=length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'Robot3DArrow');
     D=dir(folderpath);
-    for j=3:length(D)
+    for j=8:length(D)
         filepath=fullfile(folderpath,D(j).name,'BCI_Fixed');
         files = [files;findfiles('',filepath)'];
     end
@@ -35,13 +34,14 @@ for i=1:length(files)
     if kinax(1) == 0
         kinax=kinax(2:end);
     end
-    idx = [find(kinax==2) find(kinax==3)];
-    l = idx(end)-7:idx(end);
-    idx=l(l>0);    
-     kinax =  (idx);
-%     kinax = find(kinax==3);
-%     l=length(kinax)+1;
-%     kinax = kinax(l-TrialData.Params.ClickCounter:end);
+    idx = [find(kinax==2)];
+    %l = idx(end)-7:idx(end);
+    %idx=l(l>0);    
+    % kinax =  (idx);
+     kinax = find(kinax==3);
+     %l=length(kinax)+1;
+     %kinax = kinax(l-TrialData.Params.ClickCounter:end);
+     kinax = [idx kinax];
     
     temp = cell2mat(features(kinax));
     temp = temp(129:end,:);
@@ -156,10 +156,10 @@ layers = [
     reluLayer
     maxPooling2dLayer(3,'Stride',1)   
     
-%     fullyConnectedLayer(128)
-%     batchNormalizationLayer
-%     reluLayer
-%     dropoutLayer(.5)
+    fullyConnectedLayer(128)
+    batchNormalizationLayer
+    reluLayer
+    dropoutLayer(.5)
     
 %     fullyConnectedLayer(64)
 %     batchNormalizationLayer
@@ -177,7 +177,7 @@ options = trainingOptions('adam', ...
     'Shuffle','every-epoch', ...
     'Verbose',true, ...
     'Plots','training-progress',...    
-    'MiniBatchSize',96,...
+    'MiniBatchSize',64,...
     'ValidationFrequency',30,...
     'L2Regularization',1e-4,...
     'ValidationData',{XTest,YTest},...
@@ -190,7 +190,8 @@ options = trainingOptions('adam', ...
 net = trainNetwork(XTrain,YTrain,layers,options);
 %analyzeNetwork(net)
 % save this in the clicker folder
-save CNN_classifier net
+cd('/home/ucsf/Projects/bci/clicker')
+save CNN_classifier_Online_Apr16_2021_C net
 
 
 %% TO TRAIN MULTI LAYER PERCEPTRON
@@ -266,8 +267,10 @@ T(aa(1):aa(end),6)=1;
 
 % code to train a neural network
 net = patternnet([128 128 128 ]) ;
-net.performParam.regularization=0.1;
-net = train(net,N,T','useGPU','yes','UseParallel','yes');
-genFunction(net,'multilayer_perceptron_6DoF_MimeUpTongueInDown_ForZ')
+net.performParam.regularization=0.2;
+net = train(net,N,T','UseParallel','yes');
+cd('/home/ucsf/Projects/bci/clicker')
+genFunction(net,'multilayer_perceptron_6DoF_Online_Apr16_2021')
+delete(gcp)
 %genFunction(net,'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData')
 

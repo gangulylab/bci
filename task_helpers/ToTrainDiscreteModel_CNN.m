@@ -3,7 +3,7 @@
 
 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo2/20210324/CenterOut';
+root_path = '/home/ucsf/Data/bravo1/20210324/CenterOut';
 foldernames = {'140739'};
 cd(root_path)
 

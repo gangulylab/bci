@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -65,8 +65,8 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.UseSVM = false;
-Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
+Params.UseSVM = true;
+Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 
 %% Multi State Decision Boundary
 % set this to negative values. I would say -0.3 to -0.6 would be okay
@@ -79,7 +79,7 @@ Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
+    Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -89,12 +89,12 @@ end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = true;
+Params.ConvNeuralNetFlag =false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;

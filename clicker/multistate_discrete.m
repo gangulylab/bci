@@ -20,7 +20,7 @@ end
 X = X(129:end);
 
 % only hG 
-X = X(641:end);
+%X = X(641:end);
 
 % delta, beta and hG
 idx = [1:128 385:512 641:768];

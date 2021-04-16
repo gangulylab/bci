@@ -70,7 +70,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
@@ -84,12 +84,12 @@ end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = true;
+Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;
@@ -165,8 +165,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 12;
-Params.TargetOrder          = [1:6, 1:6];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -287,5 +287,5 @@ Params.TargetHoldTime = 3;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
-Params.AssistAlpha = 0.0;
+Params.AssistAlpha = 0.2;
 end % GetParams

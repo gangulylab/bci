@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -59,6 +59,7 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
+Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 
 %% Multi State Decision Boundary
@@ -86,7 +87,7 @@ Params.ConvNeuralNetFlag = true;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_C';    
     %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
