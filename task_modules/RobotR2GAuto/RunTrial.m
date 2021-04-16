@@ -48,7 +48,8 @@ end
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
-
+fing = 0.0;
+AutoComplete = 0;
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
     tstart  = GetSecs;
@@ -122,8 +123,8 @@ if ~Data.ErrorID && Params.CueTime>0,
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
 
-%     fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);  
     fwrite(Params.udp, [11, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
+    
     while ~done,
         % Update Time & Position
         tim = GetSecs;
@@ -165,17 +166,14 @@ if ~Data.ErrorID && Params.CueTime>0,
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > Params.CueTime,
+        if InTargetTotalTime > Params.CueTime
             done = 1;
         end
     end % Instructed Delay Loop
 end % only complete if no errors
 
 %% Go to reach target
-inBlock = 0;
-blockInd = 1;
-
-if ~Data.ErrorID,
+if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -189,7 +187,7 @@ if ~Data.ErrorID,
     temp_dir = [0,0,0];
     ClickToSend = 0;
     
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -226,16 +224,17 @@ if ~Data.ErrorID,
             end
             
             Cursor.Center = Params.Center;
-    
             TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
             
             if TargetID == Data.TargetID
-                fwrite(Params.udp, [0, 15, 1])
+                if AutoComplete == 0
+                    fwrite(Params.udp, [0, 15, 1])
+                end
             end
 
                 Params.TargetID =  Data.TargetID;
-                [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);            
-                
+                [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+                               
                 Cursor.ClickState = Click_Decision;
                 Cursor.ClickDistance = Click_Distance;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
@@ -243,37 +242,10 @@ if ~Data.ErrorID,
                                 
                 ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
                 ClickDec_Buffer(end) = Click_Decision;
-                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);     
-                
-                
-                if inBlock
-                    blockCount = blockCount + 1;
-                    
-                    if blockCount >= blockLen
-                        inBlock = 0;
-                    end
-                    
-                else
-%                     blockType = randi(2) - 1;
-                    
-                    blockOutput = Params.blockSequence(blockInd);
-                    blockType = blockOutput>0;
+                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
 
-                    if blockType == 0
-                        blockLen = Params.coastDur;
-                        blockOutput = 0;
-                    else
-                        blockLen = Params.intDur;
-%                         blockOutput = 1;
-                    end   
-                    
-                    blockInd = blockInd + 1;
-                    blockCount = 1;
-                    inBlock = 1;
-                end
-                ClickToSend = blockOutput;
+                ClickToSend = RunningMode_ClickDec;
                 
-
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
                 if RunningMode_ClickDec == 7
@@ -284,9 +256,9 @@ if ~Data.ErrorID,
                 B = Params.dB;
                 
                 U = zeros(3,1);
-                U(1) = int8(ClickToSend  == 1) - int8(ClickToSend  == 3);
-                U(2) = int8(ClickToSend  == 2) - int8(ClickToSend  == 4);
-                U(3) = int8(ClickToSend  == 5) - int8(ClickToSend == 6);
+                U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
+                U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
+                U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
                 
                 vTarget = (Data.TargetPosition'- Cursor.State(1:3));
                 norm_vTarget = vTarget/norm(vTarget);
@@ -294,12 +266,39 @@ if ~Data.ErrorID,
                 AssistVel = Params.AssistAlpha*B*norm_vTarget;
                 Data.AssistVel(:,end+1) = AssistVel;
                 
-                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-                Cursor.IntendedState = [0 0 0 0 0]';  
+                 
+                if norm(vTarget) < 15
+                    if fing < 0.9
+                        fing = fing + .1;
+                     
+                        [xa,xb,xc] = doubleToUDP(fing*80);
+
+                        fwrite(Params.udp, [6, xa,xb,xc,0,0,0,0,0,0,0]);
+                        
+                        countRemoveBlock = 0;
+                        ClickToSend = 0;
+    
+                    else
+                         countRemoveBlock = countRemoveBlock + 1;
+                         ClickToSend = 0;
+                         if countRemoveBlock > 16
+                             ClickToSend = 0;
+                            done = 1;
+                         end
+                     end
+
+                elseif norm(vTarget) < 100
+                    AutoComplete = 1;
+                    Cursor.State(1:3) = Cursor.State(1:3) + norm_vTarget*norm(vTarget)/10;
+                    ClickToSend = 0;
+                else
                 
+                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
+                Cursor.IntendedState = [0 0 0 0 0]';              
                 
                 % Stop robot at boundaries
                 
+                end
                 if Cursor.State(1) <= Params.limit(1,1)
                    Cursor.State(1) = Params.limit(1,1) + Params.boundaryDist;
                    if Cursor.State(4) < 0
@@ -342,55 +341,46 @@ if ~Data.ErrorID,
             
             fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]);
 
-            Data.StateCue(:,end+1) = blockOutput;
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
+            Data.AutoComplete(1,end+1) = AutoComplete;
+            Data.FingerOpening(1,end+1) = fing;
              
             % start counting time if cursor is in target
-%             if TargetID==Data.TargetID,
-%                 inTargetOld = 1;
-%                 InTargetTotalTime = InTargetTotalTime + dt;
-%                 if Params.RobotClicker
-%                     if RunningMode_ClickDec == 7
-%                         done = 1;
-%                         Data.SelectedTargetID = TargetID;
-%                         Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
-%                         fwrite(Params.udp, [0, 6, 0])
-%                     end
-%                 end
-%             else
-%                 InTargetTotalTime = 0;
-%                 if inTargetOld
-%                     fwrite(Params.udp, [0, 7, 0])
-%                 end
-%                 inTargetOld = 0;
-%             end
-             
-      
-        
-        % end if clicks in a target
-        if Cursor.ClickState==Params.ClickerBins && TargetID~=0,
-            done = 1;
-            Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
-            if TargetID~=Data.TargetID,
-                Data.ErrorID = 4;
-                Data.ErrorStr = 'WrongTarget';
+            if TargetID==Data.TargetID
+                inTargetOld = 1;
+                InTargetTotalTime = InTargetTotalTime + dt;
+            else
+                InTargetTotalTime = 0;
+                if inTargetOld
+                    fwrite(Params.udp, [0, 7, 0])
+                end
+                inTargetOld = 0;
             end
+             
+        % end if takes too long
+        if TotalTime > Params.MaxReachTime
+            done = 1;
+            Data.ErrorID = 3;
+            Data.ErrorStr = 'ReachTarget';
+            Data.SelectedTargetID = 0;
+            Data.SelectedTargetPosition = NaN;
+            fprintf('ERROR: %s\n',Data.ErrorStr)
         end
         
         % end if in target for hold time (not using clicker)
-
-    
-    if blockInd >= length(Params.blockSequence)
-        done = 1;
-    end
+        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1)
+            Data.SelectedTargetID = TargetID;
+            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);     
+        end
+        
     end % Reach Target Loop
 end % only complete if no errors
+
 
 %% Inter trial interval
 % blank screen at end of trial but continue collecting data
@@ -431,7 +421,7 @@ if Params.InterTrialInterval>0,
                 Data.NeuralTime(1,end+1) = tim;
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);   
             end
-            
+  
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
