@@ -97,6 +97,10 @@ else,
             Click_Distance = aa;
         end
         
+    elseif Params.UseSVM ==1
+        
+    end
+        
 %     else
 %         if Params.SmoothDataFlag ==1
 %             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);

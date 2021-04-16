@@ -92,10 +92,11 @@ for i=1:length(condn_data)
         tmp_resized = cat(4,tmp_resized,chtemp);        
     end
     temp = permute(tmp_resized,[1 2 4 3]);
+    %temp = temp(:,:,1,:);
     
     
     % splitting the data
-    l = round(0.95*size(temp,4));
+    l = round(0.98*size(temp,4));
     idx = randperm(size(temp,4),l);
     
     % setting aside training trials
@@ -142,15 +143,25 @@ layers = [
     reluLayer    
     maxPooling2dLayer(2,'Stride',1)
     
-    convolution2dLayer(3,16,'Padding','same')
+    convolution2dLayer(2,16,'Padding','same')
     batchNormalizationLayer
     reluLayer
     maxPooling2dLayer(2,'Stride',1)    
-    
-    convolution2dLayer(3,32,'Padding','same')
+%     
+    convolution2dLayer(3,32,'Padding','same')    
     batchNormalizationLayer
     reluLayer
-    maxPooling2dLayer(2,'Stride',1)
+    maxPooling2dLayer(3,'Stride',1)   
+    
+%     fullyConnectedLayer(128)
+%     batchNormalizationLayer
+%     reluLayer
+%     dropoutLayer(.5)
+    
+%     fullyConnectedLayer(64)
+%     batchNormalizationLayer
+%     reluLayer
+%     dropoutLayer(.5)
         
     fullyConnectedLayer(6)
     softmaxLayer
@@ -163,7 +174,7 @@ options = trainingOptions('adam', ...
     'Shuffle','every-epoch', ...
     'Verbose',true, ...
     'Plots','training-progress',...    
-    'MiniBatchSize',64,...
+    'MiniBatchSize',96,...
     'ValidationFrequency',30,...
     'L2Regularization',1e-4,...
     'ValidationData',{XTest,YTest},...
@@ -174,6 +185,7 @@ options = trainingOptions('adam', ...
 
 % build the classifier
 net = trainNetwork(XTrain,YTrain,layers,options);
+%analyzeNetwork(net)
 % save this in the clicker folder
 save CNN_classifier net
 

@@ -65,6 +65,7 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
+Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 
 %% Multi State Decision Boundary
@@ -96,7 +97,7 @@ if Params.ConvNeuralNetFlag
     %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
-    Params.NeuralNetSoftMaxThresh = 0;
+    Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
 
