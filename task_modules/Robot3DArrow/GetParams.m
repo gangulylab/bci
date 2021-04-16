@@ -222,8 +222,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;

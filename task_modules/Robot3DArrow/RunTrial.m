@@ -180,6 +180,10 @@ if ~Data.ErrorID,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
+    
+    ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
+    ClickToSend = 0;
+    
     while ~done,
         % Update Time & Position
         tim = GetSecs;
@@ -237,28 +241,34 @@ if ~Data.ErrorID,
             Cursor.ClickDistance = Click_Distance;
             Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
             Data.ClickerState(1,end+1) = Cursor.ClickState;
+            
+            % Running Mode
+            ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+            ClickDec_Buffer(end) = Click_Decision;
+            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+            ClickToSend = RunningMode_ClickDec;
+            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                   
             % counter only if correct target is hit, training mode for now
-            if Click_Decision == Data.TargetID
+            if RunningMode_ClickDec == Data.TargetID
                 Cursor.Counter = Cursor.Counter+1;
             else
                 Cursor.Counter = 0;
             end
             
-            % decision for clikcing and finishng trial
+            % decision for clicking and finishng trial
             if Cursor.Counter == Params.ClickCounter
                 done=1;                        
                 %Cursor.State(1:2) = Params.ReachTargetPositions(Click_Decision,:);
-                Data.SelectedTargetID = Click_Decision;
-    
-               fwrite(Params.udp, [0, 5, 0])
+                Data.SelectedTargetID = RunningMode_ClickDec;
+                fwrite(Params.udp, [0, 5, 0])
             end
             
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
             
             % draw the arrow
-           fwrite(Params.udp, [2, Click_Decision, 0])
+           fwrite(Params.udp, [2, ClickToSend, 0])
         end
         
         % end if takes too long
