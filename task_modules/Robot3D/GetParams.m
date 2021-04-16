@@ -235,7 +235,6 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.limit = [-400, 400; -400 400; -350 350];
-Params.RobotTargetRadius    = 40;
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
@@ -247,7 +246,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 100;
+Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
