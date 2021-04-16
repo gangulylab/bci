@@ -5,7 +5,7 @@
 clc;clear
 root_path = 'E:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker';
 foldernames = {'20201218','20210108','20210115','20210128','20210201','20210212','20210219','20210226',...
-    '20210305','20210312','20210319'};
+    '20210305','20210312','20210319','20210402','20210409'};
 cd(root_path)
 addpath(fullfile('task_helpers'))
 
@@ -38,7 +38,10 @@ for i=1:length(files)
     idx = [find(kinax==2) find(kinax==3)];
     l = idx(end)-7:idx(end);
     idx=l(l>0);    
-    kinax =  (idx);
+     kinax =  (idx);
+%     kinax = find(kinax==3);
+%     l=length(kinax)+1;
+%     kinax = kinax(l-TrialData.Params.ClickCounter:end);
     
     temp = cell2mat(features(kinax));
     temp = temp(129:end,:);
@@ -192,12 +195,10 @@ save CNN_classifier net
 
 %% TO TRAIN MULTI LAYER PERCEPTRON
 
-% to do it in the 2D case but with mime up and down
-A = condn_data{1}; % right is T1 as usual right hand
-%B = condn_data{6}; % down is T2 this is mime down
-B = D9_2a(641:end,:)'; % this is all the online data of the tongue movement
-C = condn_data{3}; % left is T3 as usual left hand
-D = condn_data{5}; % up is T4 which is mime up
+clear N
+idx = [1:128 385:514 641:768];
+A = condn_data{1};B = condn_data{2};C = condn_data{3};D = condn_data{4};
+E = condn_data{5};F = condn_data{6};
 
 clear N
 N = [A' B' C' D' E' F'];
@@ -221,47 +222,47 @@ T(aa(1):aa(end),5)=1;
 [aa bb]=find(T1==6);[aa(1) aa(end)]
 T(aa(1):aa(end),6)=1;
 
-
-% All 12D of control
-clear N
-idx = [1:128 385:514 641:768];
-A = condn_data{1};B = condn_data{2};C = condn_data{3};D = condn_data{4};
-E = condn_data{5};F = condn_data{6};G = condn_data{7};H = condn_data{8};
-I = condn_data{9};J = condn_data{10};K = condn_data{11};L = condn_data{12};
-N = [A(:,idx)' B(:,idx)' C(:,idx)' D(:,idx)' E(:,idx)' F(:,idx)'...
-    G(:,idx)' H(:,idx)' I(:,idx)' J(:,idx)' K(:,idx)' L(:,idx)'];
-%N = [A' B' C' D'];
-T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
-    5*ones(size(E,1),1);6*ones(size(F,1),1);7*ones(size(G,1),1);8*ones(size(H,1),1);...
-    9*ones(size(I,1),1);10*ones(size(J,1),1);11*ones(size(K,1),1);12*ones(size(L,1),1)];
-%T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1)];
-
-
-T = zeros(size(T1,1),12);
-[aa bb]=find(T1==1);[aa(1) aa(end)]
-T(aa(1):aa(end),1)=1;
-[aa bb]=find(T1==2);[aa(1) aa(end)]
-T(aa(1):aa(end),2)=1;
-[aa bb]=find(T1==3);[aa(1) aa(end)]
-T(aa(1):aa(end),3)=1;
-[aa bb]=find(T1==4);[aa(1) aa(end)]
-T(aa(1):aa(end),4)=1;
-[aa bb]=find(T1==5);[aa(1) aa(end)]
-T(aa(1):aa(end),5)=1;
-[aa bb]=find(T1==6);[aa(1) aa(end)]
-T(aa(1):aa(end),6)=1;
-[aa bb]=find(T1==7);[aa(1) aa(end)]
-T(aa(1):aa(end),7)=1;
-[aa bb]=find(T1==8);[aa(1) aa(end)]
-T(aa(1):aa(end),8)=1;
-[aa bb]=find(T1==9);[aa(1) aa(end)]
-T(aa(1):aa(end),9)=1;
-[aa bb]=find(T1==10);[aa(1) aa(end)]
-T(aa(1):aa(end),10)=1;
-[aa bb]=find(T1==11);[aa(1) aa(end)]
-T(aa(1):aa(end),11)=1;
-[aa bb]=find(T1==12);[aa(1) aa(end)]
-T(aa(1):aa(end),12)=1;
+% 
+% % All 12D of control
+% clear N
+% idx = [1:128 385:514 641:768];
+% A = condn_data{1};B = condn_data{2};C = condn_data{3};D = condn_data{4};
+% E = condn_data{5};F = condn_data{6};G = condn_data{7};H = condn_data{8};
+% I = condn_data{9};J = condn_data{10};K = condn_data{11};L = condn_data{12};
+% N = [A(:,idx)' B(:,idx)' C(:,idx)' D(:,idx)' E(:,idx)' F(:,idx)'...
+%     G(:,idx)' H(:,idx)' I(:,idx)' J(:,idx)' K(:,idx)' L(:,idx)'];
+% %N = [A' B' C' D'];
+% T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
+%     5*ones(size(E,1),1);6*ones(size(F,1),1);7*ones(size(G,1),1);8*ones(size(H,1),1);...
+%     9*ones(size(I,1),1);10*ones(size(J,1),1);11*ones(size(K,1),1);12*ones(size(L,1),1)];
+% %T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1)];
+% 
+% 
+% T = zeros(size(T1,1),12);
+% [aa bb]=find(T1==1);[aa(1) aa(end)]
+% T(aa(1):aa(end),1)=1;
+% [aa bb]=find(T1==2);[aa(1) aa(end)]
+% T(aa(1):aa(end),2)=1;
+% [aa bb]=find(T1==3);[aa(1) aa(end)]
+% T(aa(1):aa(end),3)=1;
+% [aa bb]=find(T1==4);[aa(1) aa(end)]
+% T(aa(1):aa(end),4)=1;
+% [aa bb]=find(T1==5);[aa(1) aa(end)]
+% T(aa(1):aa(end),5)=1;
+% [aa bb]=find(T1==6);[aa(1) aa(end)]
+% T(aa(1):aa(end),6)=1;
+% [aa bb]=find(T1==7);[aa(1) aa(end)]
+% T(aa(1):aa(end),7)=1;
+% [aa bb]=find(T1==8);[aa(1) aa(end)]
+% T(aa(1):aa(end),8)=1;
+% [aa bb]=find(T1==9);[aa(1) aa(end)]
+% T(aa(1):aa(end),9)=1;
+% [aa bb]=find(T1==10);[aa(1) aa(end)]
+% T(aa(1):aa(end),10)=1;
+% [aa bb]=find(T1==11);[aa(1) aa(end)]
+% T(aa(1):aa(end),11)=1;
+% [aa bb]=find(T1==12);[aa(1) aa(end)]
+% T(aa(1):aa(end),12)=1;
 
 % code to train a neural network
 net = patternnet([128 128 128 ]) ;
