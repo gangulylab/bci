@@ -8,7 +8,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 4
+interface.mode = 10
 interface.angle = 0
 interface.debugLines = 0
 interface.open()
@@ -62,14 +62,22 @@ while True:
 			interface.create_target3D(target_pos, 3)
 		if val1 == 8:
 			interface.setMode(val2)
+		if val1 == 9:
+			interface.grabCube()
+		if val1 == 15:
+			interface.update_color(target_pos, val2)
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
 		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
 		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
-
 		interface.create_target3D(target_pos,1 )
-		print(val1, val2, val3, val4, val5, val6)
-		print(target_pos)
+
+	if command == 11:	# Set Target
+		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
+		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
+		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
+
+		interface.create_target(target_pos)
 	if command == 2:	# Set Dirr
 		key = val1
 		interface.update_joystick(key)

@@ -36,7 +36,9 @@ valid_tasks = {...
     'RobotDistance',...
     'HandImagined',...
     'Gripper',...
-    'RobotRR'};
+    'RobotRR',...
+    'RobotIntention',...
+    'RobotR2GAuto'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -57,7 +59,7 @@ elseif IsOSX,
 else,
     homedir = '~';
     projectdir = '~/Projects/bci/';
-%     projectdir = '/home/sarah/Documents/bci/bci';
+    projectdir = '/home/sarah/Documents/bci';
 
 end
 
@@ -343,7 +345,8 @@ catch ME, % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    rojects/bci/Rotokeyboard;
+    
+    keyboard;
 end
 
 end % ExperimentStart

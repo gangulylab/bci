@@ -31,7 +31,6 @@ class DiscreteActionsRobot():
         self.target = target
         self.robotenv.set_block_pos(pos, target)
 
-
     def create_target3D(self, cpos, st):
         # self.targetPos = self.bci_to_robot_transform(pos)
         pos = cpos.copy()
@@ -179,3 +178,23 @@ class DiscreteActionsRobot():
 
     def setMode(self, mode):
         self.robotenv.mode = mode
+
+    def grabCube(self):
+        self.robotenv.grabCube()
+        self.render()
+
+    def update_color(self, cpos, c):
+        # self.targetPos = self.bci_to_robot_transform(pos)
+        pos = cpos.copy()
+        if (pos[0] > 0) & (pos[1] == 0):
+            target = 1
+        elif (pos[0]  == 0) & (pos[1] > 0):
+            target = 2
+        elif (pos[0] < 0) & (pos[1] == 0):
+            target = 3
+        else:
+            target = 4
+        # print("TARGET:", target)
+        self.target = target
+        self.robotenv.set_bound_color(pos, c)
+

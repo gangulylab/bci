@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot3DArrow';
+Params.Task = 'RobotR2GAuto';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -52,20 +52,13 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 5;
-
-%% Bins for successful target selection
-% The number of bins of successful decodes to hit the target
-% Set this to 2/3 bins if enforcing a null class i.e.
-% Params.MultiDecisionBoundary <0
-Params.ClickCounter=5;
+Params.FeatureBufferSize = 4;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 
 %% Multi State Decision Boundary
@@ -97,10 +90,8 @@ if Params.ConvNeuralNetFlag
     %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
-    Params.ConvNeuralNetSoftMaxThresh = 0;
+    Params.NeuralNetSoftMaxThresh = 0;
 end
-
-
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
@@ -111,14 +102,13 @@ Params.InnerCircleRadius = 150; % defines inner edge of target
 
 Params.ReachTargetRadius = 250;
 
-Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
-    0, Params.ReachTargetRadius, 0; ...
-    -Params.ReachTargetRadius, 0, 0;...
-    0, -Params.ReachTargetRadius, 0; ...
-    0,0,Params.ReachTargetRadius;...
-    0, 0,-Params.ReachTargetRadius;...
-    0,0,0];
+d2 = sqrt(1/2);
+d3 = sqrt(1/3);
 
+Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, -250;...
+    0, Params.ReachTargetRadius, -250; ...
+    -Params.ReachTargetRadius, 0, -250;...
+    0, -Params.ReachTargetRadius, -250];
 
 %% Kalman Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -143,20 +133,12 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    =18;
-Params.TargetOrder          = [1:6,1:6,1:6];
 
-% Params.NumTrialsPerBlock    =6;
-% Params.TargetOrder          = [1:6];
-% 
-% Params.NumTrialsPerBlock    = 1;
-% Params.TargetOrder          = [7];
+% Cardinal Directions
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [1:4];
 
-
-
-% Params.TargetOrder          = [7:18];
-% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -201,11 +183,11 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
+Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 10 ;
+Params.MaxReachTime = 50;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -220,10 +202,11 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotTargetRadius    = 40;
-Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D 
+Params.limit = [-400, 400; -400 400; -400 350];
+Params.RobotMode            = 7;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;
@@ -234,7 +217,29 @@ end
 Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
-Params.ReachTargets      = [1,2,3,4,5,6,7];
-Params.ValidDir          = [1:7];
+Params.ReachTargets      = [1,2,3,4,5,6];
+Params.ValidDir          = [1:6,7];
 
+Params.deltaT = 1/Params.UpdateRate;
+Params.k_v = 0.9;
+Params.k_i = 10.0;
+
+Params.dA = [1 0 0  Params.deltaT 0 0;...
+                    0 1 0 0 Params.deltaT 0;...
+                    0 0 1 0 0 Params.deltaT;...
+                    0 0 0 Params.k_v 0 0;...
+                    0 0 0 0 Params.k_v 0;...
+                    0 0 0 0 0 Params.k_v];
+                
+Params.dB = [zeros(3);...
+                    eye(3)];
+Params.dB = Params.dB*Params.k_i;
+
+Params.LongTrial = 0;
+
+Params.RobotClicker = 1;
+Params.TargetHoldTime = 3;
+Params.boundaryDist = 0;
+Params.boundaryVel = 0;
+Params.AssistAlpha = 0.2;
 end % GetParams

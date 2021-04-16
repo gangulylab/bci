@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Gripper';
+Params.Task = 'RobotIntention';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -68,24 +68,31 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.7;    
+    Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
-    %Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';    
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
-        
-    % LAST USED VERSION OF NN CLASSIFIER
-    %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';
+    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
-%% LOAD HAND OPENING CLOSING DISCRETE DECODER
-tmp=load(fullfile(pwd, 'clicker', 'hand_open_close.mat'));
-Params.HandOpenCloseDecoder = tmp.hand_open_close;
+%% CONVOLUTIONAL NEURAL NET OPTION
+% set this to true to use neural network
+% also set the softmax option
+Params.ConvNeuralNetFlag = true;
+if Params.ConvNeuralNetFlag
+    Params.ConvNeuralNetSoftMaxThresh = 0.7;       
+    Params.ConvUse3Features = true;
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier';    
+    Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
+
+
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
@@ -126,7 +133,8 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
     d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius];
     
-   
+    
+
 
 %% Kalman Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -153,12 +161,17 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-% Params.NumTrialsPerBlock    = 6;
-% Params.TargetOrder          = [1:6];
-% 
-% % Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 20;
-% % Params.TargetOrder          = [7:10];
+Params.NumTrialsPerBlock    = 1;
+Params.TargetOrder          = [8];
+
+
+% Diagonals in the Horizontal Plane
+% Params.NumTrialsPerBlock    = 4;
+% Params.TargetOrder          = [7:10];
+
+
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -204,9 +217,9 @@ end
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
-Params.CueTime = 1.0;
+Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 2.125 ;
+Params.MaxReachTime = 25 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -220,9 +233,10 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
+
 Params.limit = [-400, 400; -400 400; -350 350];
 Params.RobotTargetRadius    = 40;
-Params.RobotMode            = 5;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotMode            = 7;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 3;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -233,14 +247,14 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 10;
+Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
-Params.deltaT = 0.1;
-Params.k_v = 0.9;
+Params.deltaT = 1/Params.UpdateRate;
+Params.k_v = 0.90;
 Params.k_i = 10.0;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
@@ -254,7 +268,7 @@ Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
-Params.LongTrial = 0;
+Params.LongTrial = 1;
 Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(4,:);...
     Params.ReachTargetPositions(1,:);...
@@ -266,75 +280,22 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(7,:);...
     Params.ReachTargetPositions(8,:)];
 
+Params.LongStartPos(8,:) = [200, -200,-250];
+Params.ReachTargetPositions(8,3) = -250;
+Params.ReachTargetPositions(9,3) = -250;
+
 Params.RobotClicker = 1;
 Params.TargetHoldTime = 3;
 
-%% Hand
-Params.NumTrialsPerBlock    = 20;
-Params.TargetOrder          = [7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8,7,8];
-% Params.TargetOrder          = [3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6,3,6];
-% Params.NumTrialsPerBlock    = 2;
-% Params.TargetOrder          = [7,8];
-% Params.NumTrialsPerBlock    = 2;
-% Params.TargetOrder          = [3,6];
+Params.boundaryDist = 0;
+Params.boundaryVel = 0;
+Params.AssistAlpha = 0.0;
 
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-Params.TargetOrder          = [Params.TargetOrder, 1];
+Params.intDur = 0.5*Params.UpdateRate;
+Params.coastDur = 1.0*Params.UpdateRate;
+Params.blockSequence = [1,2,1,2,0,0,0,2,1,2,1,0,0,0,6,6,6,0,0,0];
+Params.blockSequence = [3,4,3,4,0,0,0,3,4,3,4,0,0,0,6,6,6,0,0,0];
+Params.blockSequence = [0,0,3,3,2,2,3,3,2,2,0,0,0,3,3,2,2,3,2,0,0,0,6,6,6,6,6,0,0,0];
+Params.blockSequence = [0,0,5,5,5,5,0,0,3,3,3,3,0,0,2,2,2,2,0,0,3,3,3,3,0,0,2,2,2,2,0,0,6,6,6,6,0,0,0,0,5,5,5,5,0,0,4,4,4,4,0,0,1,1,1,1,0,0,4,4,4,4,0,0,1,1,1,1,0,0,6,6,6,6,0,0];
 
-Params.wristAxisLim = [-0.5, 0.5;...
-                        -0.5, 1.2;...
-                        0, pi/2;...
-                        0.5, -0.5;...
-                         1.2, -0.5;...
-                        pi/2, 0;
-                        0.675, 0.0;...
-                        0.675, 1.35
-                        ];
-
-
-Params.TrialDur = 2.5;     
-Params.DisplayRate = 200;
-mult = abs(Params.wristAxisLim(:,1) - Params.wristAxisLim(:,2))/Params.DisplayRate/Params.TrialDur;                 
-
-Params.axes         = [1,2,1,1,2,1,1,1];
-Params.rotInc       = [1,1,1,-1,-1,-1,-1,1].*mult';
-Params.rotDir       = 1;
-Params.trialRepeat  = 1;
-Params.trialPause   = 0.5;
-Params.handVis = 1;
-
-for i = 1:8
-    Params.angles{i} = [];
-    Params.dir{i} = [];
-    for j = 1:Params.trialRepeat
-       if Params.rotDir == 1 
-            Params.angles{i} = [Params.angles{i} , Params.wristAxisLim(i,1):Params.rotInc(i):Params.wristAxisLim(i,2)];
-            Params.dir{i} = [Params.dir{i}, ones(1,length(Params.wristAxisLim(i,1):Params.rotInc(i):Params.wristAxisLim(i,2)))*1];
-            Params.angles{i} = [Params.angles{i}, ones(1, round(Params.trialPause* Params.UpdateRate))*Params.angles{i}(end)];
-            Params.dir{i} = [Params.dir{i}, zeros(1, round(Params.trialPause* Params.UpdateRate))];
-       else if Params.rotDir == -1
-            Params.angles{i} = [Params.angles{i} , Params.wristAxisLim(i,2):-Params.rotInc(i):Params.wristAxisLim(i,1)];
-            Params.dir{i} = [Params.dir{i}, ones(1,length(Params.wristAxisLim(i,2):-Params.rotInc(i):Params.wristAxisLim(i,1)))*-1];
-            Params.angles{i} = [Params.angles{i}, ones(1, round(Params.trialPause* Params.UpdateRate))*Params.angles{i}(end)];
-            Params.dir{i} = [Params.dir{i}, zeros(1, round(Params.trialPause* Params.UpdateRate))];
-       else
-            Params.angles{i} = [Params.angles{i} , Params.wristAxisLim(i,1):Params.rotInc(i):Params.wristAxisLim(i,2)];
-            Params.dir{i} = [Params.dir{i}, ones(1,length(Params.wristAxisLim(i,1):Params.rotInc(i):Params.wristAxisLim(i,2)))*1];
-            Params.angles{i} = [Params.angles{i}, ones(1, round(Params.trialPause* Params.UpdateRate))*Params.angles{i}(end)];
-            Params.dir{i} = [Params.dir{i}, zeros(1, round(Params.trialPause* Params.UpdateRate))];
-            Params.angles{i} = [Params.angles{i} , Params.wristAxisLim(i,2):-Params.rotInc(i):Params.wristAxisLim(i,1)];
-            Params.dir{i} = [Params.dir{i}, ones(1,length(Params.wristAxisLim(i,2):-Params.rotInc(i):Params.wristAxisLim(i,1)))*-1];
-            Params.angles{i} = [Params.angles{i}, ones(1, round(Params.trialPause* Params.UpdateRate))*Params.angles{i}(end)];
-            Params.dir{i} = [Params.dir{i}, zeros(1, round(Params.trialPause* Params.UpdateRate))];
-       end
-   end
-    end
-end
-
-tmp1 = Params.angles{3}; 
-tmp2 = Params.angles{6};
-Params.angles{3} = tmp1; 
-Params.angles{6} = tmp2; 
-
-a = 1;
 end % GetParams
