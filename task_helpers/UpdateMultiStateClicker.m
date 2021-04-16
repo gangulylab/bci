@@ -98,7 +98,7 @@ else,
         end
         
     elseif Params.UseSVM ==1
-        
+         [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
     end
         
 %     else
