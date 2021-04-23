@@ -15,8 +15,11 @@ else,
         X = X(:);
         X = X(129:end);% all features
         %X = X(769:end);% only hG
+        idx=[1:128 385:512 641:768];
+        X=X(idx);
         %Decision_Prob = multilayer_perceptron_Day1to7(X);
         Decision_Prob = feval(Params.NeuralNetFunction,X);
+        disp(Decision_Prob)
         [aa bb]=max(Decision_Prob);
         if aa >= Params.NeuralNetSoftMaxThresh
             Click_Decision = bb;

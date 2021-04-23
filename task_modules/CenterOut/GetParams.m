@@ -35,18 +35,18 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
 
 %% Timing 
-Params.ScreenRefreshRate = 6; % Hz
-Params.UpdateRate = 6; % Hz
+Params.ScreenRefreshRate = 8; % Hz
+Params.UpdateRate = 8; % Hz
 
 %% Targets
-Params.TargetSize = 90;
+Params.TargetSize = 75;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -55,7 +55,7 @@ Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
 Params.ReachTargetAngles = (0:90:270)';
-Params.ReachTargetRadius = 700; 
+Params.ReachTargetRadius = 400; 
 Params.ReachTargetPositions = ...
     Params.StartTargetPosition ...
     + Params.ReachTargetRadius ...
@@ -155,7 +155,7 @@ end
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 10;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 6.0;
+Params.ImaginedMvmtTime = 5.0;
 
 %% Feedback
 Params.FeedbackSound = false;

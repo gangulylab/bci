@@ -58,7 +58,7 @@ Params.ClickCounter=5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz   
+Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_Hand.mat';
@@ -81,7 +81,7 @@ Params.MultiDecisionBoundary =0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_Tong_Lips_PinchHand';
+   Params.NeuralNetFunction = 'MLP_Hand';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -89,7 +89,7 @@ else
 end
 
 %% To get ERPs
-% freezes updates and points arrow towards the target for trial duration
+% freezes 
 Params.ERPs=false;
 
 %% Targets: radial layout
@@ -155,8 +155,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 16;
+Params.NumFixedBlocks       = 2;
+Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -204,7 +204,7 @@ Params.InterTrialInterval = 1.0;
 Params.InstructedDelayTime = 1.0;
 Params.CueTime = 1;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 5 ;
+Params.MaxReachTime = 8 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

@@ -380,6 +380,13 @@ if ~Data.ErrorID,
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
             Cursor.ClickState = Click_Decision;
             Cursor.ClickDistance = Click_Distance;
+            
+            % for training and getting ERPs
+            if Params.ERPs
+                Click_Decision = Data.TargetID;
+            end
+            %%%%
+            
             Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
             Data.ClickerState(1,end+1) = Cursor.ClickState;
             if Click_Decision == 1
@@ -401,6 +408,12 @@ if ~Data.ErrorID,
             else
                 Cursor.Counter = 0;
             end
+            
+            % for training and getting ERPs
+            if Params.ERPs
+                Cursor.Counter = 0;
+            end
+            %%%
             
             % decision for clikcing and finishng trial
             if Cursor.Counter == Params.ClickCounter

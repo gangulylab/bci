@@ -19,8 +19,9 @@ end
 % ignore delta phase
 X = X(129:end);
 
-% only hG 
-X = X(641:end);
+% only delta and beta hG 
+idx=[1:128 385:512 641:768];
+X = X(idx);
 
 
 % evaluate neural features at this data point with all pairwise parallel
@@ -36,7 +37,7 @@ d4 = X*squeeze(model(4,:,:))';
 Dec = [d1;d2;d3;d4];
 Dec_values=[sum(d1);sum(d2);sum(d3);sum(d4)];
 Dec_thresh=sum(Dec'<0);
-
+Dec
 
 if dec_bound == 0    
     % make decision on max-vote strategy
