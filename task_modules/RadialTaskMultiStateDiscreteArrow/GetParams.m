@@ -43,7 +43,7 @@ if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
-%% Sync to Blackrock
+%% Sync to Blackrock    
 Params.ArduinoSync = true;
 
 %% Neural feature smoothing
@@ -58,10 +58,10 @@ Params.ClickCounter=5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.UpdateRate = 8; % Hz   
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_Hand.mat';
 %clicker_svm_mdl_OnlineDays123_OnlyArrowForTraining
 %clicker_svm_mdl_Imagined_Smoothing_RtLeg
 
@@ -72,7 +72,7 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
 % Params.ClickCounter to be > 4 bins, else it might get too difficult for
 % subject.
 
-Params.MultiDecisionBoundary =-2; 
+Params.MultiDecisionBoundary =0; 
 
 
 %% Neural network classifier option
@@ -80,30 +80,23 @@ Params.MultiDecisionBoundary =-2;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.7;
+   Params.NeuralNetSoftMaxThresh = 0.4;
+   Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2';
+   %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
+   %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
-
-
-%% Neural network classifier option
-% set this to true to use neural network
-% also set the softmax option
-Params.NeuralNetFlag = true;
-if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.7;
-else
-    Params.NeuralNetSoftMaxThresh = 0;
-end
-
-
+%% To get ERPs
+% freezes updates and points arrow towards the target for trial duration
+Params.ERPs=false;
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 550; % defines outer edge of target
-Params.InnerCircleRadius = 200; % defines inner edge of target
+Params.OuterCircleRadius = 600; % defines outer edge of target
+Params.InnerCircleRadius = 300; % defines inner edge of target
 Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
 Params.TargetsColor        = [100,100,100]; % all targets
@@ -163,7 +156,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 2;
-Params.NumTrialsPerBlock    = 16;
+Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -209,9 +202,9 @@ end
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1.0;
 Params.InstructedDelayTime = 1.0;
-Params.CueTime = 0.75;
+Params.CueTime = 1;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 10 ;
+Params.MaxReachTime = 5 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

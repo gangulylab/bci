@@ -1,7 +1,7 @@
 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo2/20210203/CenterOut';
-foldernames = {'145654','150544'};
+root_path = '/home/ucsf/Data/bravo1/20210423/CenterOut';
+foldernames = {'111360','111935'};
 cd(root_path)
 
 % load the data for each target
@@ -31,38 +31,19 @@ for i=1:length(foldernames)
     end
 end
 
-%Day2
-root_path = '/home/ucsf/Data/Bravo2/20210210/CenterOut';
-foldernames = {'143225'};
+
+
+% Day 1 online data right hand focus
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210423/DiscreteArrow';
+foldernames = {'133658','134143','134512','140049','140144'};
 cd(root_path)
 
-for i=1:length(foldernames)
-    folderpath = fullfile(root_path, foldernames{i},'Imagined');
-    D=dir(folderpath);
-    for j=3:length(D)
-        filepath=fullfile(folderpath,D(j).name);
-        load(filepath)
-        features  = TrialData.SmoothedNeuralFeatures;
-        kinax = length(features)-20:length(features);
-        temp = cell2mat(features(kinax));
-        temp = temp(129:end,:);
-        if TrialData.TargetID == 1
-            D1 = [D1 temp];
-        elseif TrialData.TargetID == 2
-            D2 = [D2 temp];
-        elseif TrialData.TargetID == 3
-            D3 = [D3 temp];
-        elseif TrialData.TargetID == 4
-            D4 = [D4 temp];
-        end
-    end
-end
-
-% Day 1 online data
-root_path = '/home/ucsf/Data/Bravo2/20210203/DiscreteArrow';
-foldernames = {'154256'};
-cd(root_path)
-
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
     D=dir(folderpath);
@@ -70,7 +51,7 @@ for i=1:length(foldernames)
         filepath=fullfile(folderpath,D(j).name);
         load(filepath)
         features  = TrialData.SmoothedNeuralFeatures;
-        kinax = find(TrialData.TaskState==3);
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
         temp = cell2mat(features(kinax));
         temp = temp(129:end,:);
         if TrialData.TargetID == 1
@@ -87,11 +68,17 @@ end
 
 
 
-%Day2 online data
-root_path = '/home/ucsf/Data/Bravo2/20210210/DiscreteArrow';
-foldernames = {'151341','151744','154405'};
+% Day 1 online data left hand focus
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210423/DiscreteArrow';
+foldernames = {'142444','143729'};
 cd(root_path)
 
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
     D=dir(folderpath);
@@ -99,7 +86,7 @@ for i=1:length(foldernames)
         filepath=fullfile(folderpath,D(j).name);
         load(filepath)
         features  = TrialData.SmoothedNeuralFeatures;
-        kinax = find(TrialData.TaskState==3);
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
         temp = cell2mat(features(kinax));
         temp = temp(129:end,:);
         if TrialData.TargetID == 1
@@ -113,17 +100,152 @@ for i=1:length(foldernames)
         end
     end
 end
+
+
+
+
+% Day 1 online data tongue pinch hand pinch hand focus
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210423/DiscreteArrow';
+foldernames = {'145606'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+% Day 2 online data tongue pinch hand pinch hand focus
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
+foldernames = {'110916','112213'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+% Day 2 erp data rt thumb (rt) lt thumb (lt) lips (up)  rt middle(down)
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
+foldernames = {'113936'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+
+
+% 
+% %Day2 online data
+% root_path = '/home/ucsf/Data/Bravo2/20210210/DiscreteArrow';
+% foldernames = {'151341','151744','154405'};
+% cd(root_path)
+% 
+% for i=1:length(foldernames)
+%     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+%     D=dir(folderpath);
+%     for j=3:length(D)
+%         filepath=fullfile(folderpath,D(j).name);
+%         load(filepath)
+%         features  = TrialData.SmoothedNeuralFeatures;
+%         kinax = find(TrialData.TaskState==3);
+%         temp = cell2mat(features(kinax));
+%         temp = temp(129:end,:);
+%         if TrialData.TargetID == 1
+%             D1 = [D1 temp];
+%         elseif TrialData.TargetID == 2
+%             D2 = [D2 temp];
+%         elseif TrialData.TargetID == 3
+%             D3 = [D3 temp];
+%         elseif TrialData.TargetID == 4
+%             D4 = [D4 temp];
+%         end
+%     end
+% end
 
 
 
 
 clear condn_data
 % combing both onlien plus offline
-idx=1;
-condn_data{1}=[D1(idx:end,:) ]'; % right hand
-condn_data{2}= [D2(idx:end,:)]'; % both feet
-condn_data{3}=[D3(idx:end,:)]'; % left hand
-condn_data{4}=[D4(idx:end,:)]'; % head
+idx=[1:128 385:512 641:768];
+condn_data{1}=[D1(idx,:) ]'; % right hand
+condn_data{2}= [D2(idx,:)]'; % both feet
+condn_data{3}=[D3(idx,:)]'; % left hand
+condn_data{4}=[D4(idx,:)]'; % head
 
 
 A = condn_data{1};
@@ -146,11 +268,11 @@ T(aa(1):aa(end),3)=1;
 T(aa(1):aa(end),4)=1;
 
 % code to train a neural network
-net = patternnet([256 256 256 ]) ;
+net = patternnet([128 128 128 ]) ;
 net.performParam.regularization=0.2;
-net = train(net,N,T','UseGPU','yes','UseParallel','yes');
+net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_4Dir_Imagined_20210210_Days12_Online_AllFeat')
+genFunction(net,'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2')
 
 %% DAY 3 REINIT
 
@@ -1119,5 +1241,90 @@ net = train(net,N,T','useParallel','yes');
 cd('/home/ucsf/Projects/bci/clicker')
 genFunction(net,'MLP_4Dir_Actions_AllOnline_20210331c')
 delete(gcp)
+
+
+%% WITH CNN
+
+condn_data_train={};
+condn_data_test={};
+for i=1:length(condn_data)
+    temp = condn_data{i};
+    % resize into images
+    tmp_resized=[];
+    for j=1:128:size(temp,2)
+        chdata = temp(:,j:j+127);
+        chdata = zscore(chdata')';
+        % reshape as a grid
+        chtemp=[];
+        for k=1:size(chdata,1)
+            t = chdata(k,:);
+            chtemp(:,:,k) = t(chmap);            
+        end
+        tmp_resized = cat(4,tmp_resized,chtemp);        
+    end
+    temp = permute(tmp_resized,[1 2 4 3]);
+    % splitting the data
+    l = round(0.95*size(temp,4));
+    idx = randperm(size(temp,4),l);
+    % setting aside training trials
+    condn_data_train{i} = temp(:,:,:,idx);
+    % setting aside testing trials
+    I = ones(size(temp,4),1);
+    I(idx)=0;
+    I=logical(I);
+    condn_data_test{i} = temp(:,:,:,I);
+end
+% getting the data ready
+XTrain = [];
+YTrain = [];
+for i=1:length(condn_data_train)
+    tmp = condn_data_train{i};
+    XTrain = cat(4,XTrain,tmp);
+    YTrain = [YTrain;i*ones(size(tmp,4),1)];
+end
+YTrain = categorical(YTrain);
+XTest = [];
+YTest = [];
+for i=1:length(condn_data_test)
+    tmp = condn_data_test{i};
+    XTest = cat(4,XTest,tmp);
+    YTest = [YTest;i*ones(size(tmp,4),1)];
+end
+YTest = categorical(YTest);
+%%%%%% CNN construction %%%%%
+layers = [
+    imageInputLayer([8 16 3])
+    convolution2dLayer(2,4,'Padding','same')
+    batchNormalizationLayer
+    reluLayer    
+    maxPooling2dLayer(2,'Stride',1)
+    convolution2dLayer(2,8,'Padding','same')
+    batchNormalizationLayer
+    reluLayer    
+    maxPooling2dLayer(2,'Stride',1)
+    convolution2dLayer(3,16,'Padding','same')
+    batchNormalizationLayer
+    reluLayer
+    maxPooling2dLayer(3,'Stride',1)    
+    convolution2dLayer(3,32,'Padding','same')
+    batchNormalizationLayer
+    reluLayer
+    maxPooling2dLayer(3,'Stride',1)
+    fullyConnectedLayer(4)
+    softmaxLayer
+    classificationLayer];
+options = trainingOptions('adam', ...
+    'InitialLearnRate',0.01, ...
+    'MaxEpochs',10, ...
+    'Shuffle','every-epoch', ...
+    'Verbose',true, ...
+    'Plots','training-progress',...
+    'ValidationData',{XTest,YTest},...
+    'MiniBatchSize',32,...
+    'ValidationFrequency',30,...
+    'L2Regularization',1e-4);
+%%%%%% CNN construction %%%%%
+% build the classifier
+net = trainNetwork(XTrain,YTrain,layers,options);
 
 

@@ -1,100 +1,81 @@
-function [file_names f_names] = findfiles(entry, directory, isRecursive)
-% function [file_names f_names] = findfiles(entry, directory, isRecursive)
-% findfiles - finds files with the specified entry in specified director and
-% subdirectories (if recursive).
-% Arguments: entry - the string which must be included in the file names
-%            directory - the directory specified by user
-%            isRecursive - search subdirectories or not; 1 - yes; 0 - no;
-% Returns:  a cell array with the fully specified file names
+function fnames = findfiles(extension,directory,recurse)
+% Finds all files with the specified extension in the current directory and 
+% subdirectories (recursive). Returns a cell array with the fully specified 
+% file names.
+%
+%    files = findfiles( ext )
+%       searches in the current directory and subdirectories.
+%
+%    files = findfiles( ext, directory)
+%       starts search in directory specified.
+%
+%    files = findfiles( ext, directory, searchSubdirectories )
+%       If searchSubdirectories == 0, the function will not descend 
+%       subdirectories. The default is that searchSubdirectories ~= 0.
+%
+% Note: if this function causes your recursion limit to be exceeded, then 
+% it is most probably trying to follow a symbolic link to a directory that 
+% has a symbolic link back to the directory it came from.
+%
 % Examples:
-%    1. file_names = findfiles(entry, directory)
-%       searches in the specified directory, not in subdirectories.
-%    2. file_names = findfiles(entry, directory, 1)
-%       searches in the specified directory and all its subdirectories.
-% Notes:
-%    1. directory is complusory, use pwd for the current directory;
-%    2. special entries:
-%       if entry = '' then return all files
-%       use entry = '.???' for extension matching, for example, '.txt'
-%       use entry = '~???' for names not including '???'
-%       entry is case sensitive
-%    3. level limitation applies when recursive
-
-% Copyright (C) 2005 Bioeng Institute, University of Auckland
-% Author: Xiang Lin, x.lin@auckland.ac.nz
-% Modified by J.C. Mizelle 03/02/2006
-
-% check inputs
-if nargin < 2
-    error('findfiles.m: You must define entry and directory.');
-elseif nargin == 2
-    oldDir = pwd;
-    if(~isdir(directory))
-        error('findfiles.m: No such directory found.');
-    end;
-    isRecursive = (1==0);
-elseif nargin == 3
-    oldDir = pwd;
-    if(~isdir(directory))
-        error('findfiles.m: No such directory found.');
-    end;
-    if(~(isRecursive == 1))
-        error('findfiles.m: isRecursive = 1 if searching subdirectories wanted.');
-    end;
+% 
+%    bmpfiles = findfiles('bmp')
+%    dllfiles = findfiles('dll','C:\WinNT')
+%    mfiles = findfiles('m',matlabroot)
+% Copyright (C) 2001 Quester Tangent Corporation
+% Author: Tony Christney, tchristney@questertangent.com
+% $Id: findfiles.m 1.5 2001/05/25 01:54:17 tchristney Exp $
+% $Log: findfiles.m $
+% Revision 1.5  2001/05/25 01:54:17  tchristney
+% Fixed bug where numMatches was not updated after recursive call, causing
+% potential overwrites in the fnames cell array.
+%
+% Revision 1.4  2001/05/24 20:46:09  tchristney
+% Recursion on/off support courtesy Brett Shoelson.
+% <Brett.Shoelson@joslin.harvard.edu>
+%
+% Revision 1.2  2001/03/16 21:28:37  tchristney
+% added some comments for external release, i.e. examples.
+%
+% Revision 1.1  2001/03/07 22:38:52  tchristney
+% Initial revision
+%
+if nargin == 1
+    directory = cd;
     recurse = (1==1);
-else
-    error('findfiles.m: No more than three inputs ');
+elseif nargin == 2
+    oldDir = cd;
+    cd(directory);
+    directory = cd;
+    cd(oldDir);
+    recurse = (1==1);
+elseif nargin >= 3
+    oldDir = cd;
+    cd(directory);
+    directory = cd;
+    cd(oldDir);
 end
-
 d = dir(directory);
-
-
-file_names = {};
-f_names = {};
+fnames = {};
 numMatches = 0;
 for i=1:length(d)
-  
-    a_name = d(i).name;
-    a_dir = d(i).isdir;
-  
-    % if the file is not a directory, and there is at least one
-    % occurence in the file name or entry = ''
-    if(~a_dir & isempty(findstr('.lnk', a_name)))
-      
-        if(~isempty(findstr(entry,a_name)) | isempty(entry) | (strcmp(entry(1),'~') & isempty(findstr(entry(2:end),a_name))))
-            % add the file name to the list.
+    % look for occurences of ['.' extension] in the file name
+    extIndices = findstr(['.' extension],d(i).name);
+    
+    % if the file is not a directory, and the file has at least one occurence
+    if ~d(i).isdir & ~isempty(extIndices)
+        
+        % then if the last occurrence is at the end of the file name,
+        % add the file name to the list.
+        if length(d(i).name) == (extIndices(length(extIndices)) + length(extension))
             numMatches = numMatches + 1;
-            file_names{numMatches} = fullfile(directory, a_name);
-          
-            for ii = 1:length(file_names);
-                [temp1 temp2] = fileparts(char(file_names(ii)));
-                f_names{numMatches} = strcat(temp1,'\',temp2);
-            end
-
-
-        end;
-          
-    % if recursive is required and the file is a directory but not '.', '..' and links
-    elseif(isRecursive & a_dir & ~strcmp(a_name,'.') & ~strcmp(a_name,'..') & isempty(findstr('.lnk',a_name)))
-      
-        % solved link problem in windows, not sure in Linux
-        file_names = [file_names findfiles(entry, fullfile(directory,a_name), isRecursive)];
-
-        for iii = 1:length(file_names);
-        [temp3 temp4] = fileparts(char(file_names(iii)));
-        f_names{iii} = strcat(temp3,'\',temp4);
+            fnames{numMatches} = fullfile(directory,d(i).name);
         end
-          
-
-        numMatches = length(file_names);
-      
+    % otherwise, descend directories appropriately.
+    % note that this could result in a recursion limit error if it tries to 
+    % follow symbolic links that loop back on themselves...
+    elseif recurse & d(i).isdir & ~strcmp(d(i).name,'.') & ~strcmp(d(i).name,'..')
+        fnames = [fnames findfiles(extension,fullfile(directory,d(i).name),recurse)];
+        numMatches = length(fnames);
     end
-
-
-end
-
-for i = 1:size(file_names,2);
-    [idx idx2] = fileparts(file_names{i}) ;
-    f_names{i} = idx2;
-end
-
+end 
