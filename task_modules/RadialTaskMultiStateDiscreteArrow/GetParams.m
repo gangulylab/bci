@@ -43,7 +43,7 @@ if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
-%% Sync to Blackrock
+%% Sync to Blackrock    
 Params.ArduinoSync = true;
 
 %% Neural feature smoothing
@@ -81,7 +81,7 @@ Params.MultiDecisionBoundary =0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_Tong_Lips_PinchHand';
+   Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -155,8 +155,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
-Params.NumTrialsPerBlock    = 16;
+Params.NumFixedBlocks       = 2;
+Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};

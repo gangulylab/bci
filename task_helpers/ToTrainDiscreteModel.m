@@ -138,6 +138,75 @@ for i=1:length(foldernames)
 end
 
 
+% Day 2 online data tongue pinch hand pinch hand focus
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
+foldernames = {'110916','112213'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+% Day 2 erp data rt thumb (rt) lt thumb (lt) lips (up)  rt middle(down)
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
+foldernames = {'113936'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+
 
 % 
 % %Day2 online data
@@ -201,9 +270,9 @@ T(aa(1):aa(end),4)=1;
 % code to train a neural network
 net = patternnet([128 128 128 ]) ;
 net.performParam.regularization=0.2;
-net = train(net,N,T','UseGPU','yes');
+net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_Tong_Lips_PinchHand')
+genFunction(net,'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2')
 
 %% DAY 3 REINIT
 
