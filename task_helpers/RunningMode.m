@@ -9,7 +9,6 @@ n(6) = sum(v == 6);
 n(7) = sum(v == 7);
 n(8) = sum(v == 0);
 
-
 maxVal = max(n);
 idx = find(n == maxVal);
 

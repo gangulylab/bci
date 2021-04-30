@@ -38,7 +38,8 @@ valid_tasks = {...
     'Gripper',...
     'RobotRR',...
     'RobotIntention',...
-    'RobotR2GAuto'};
+    'RobotR2GAuto',...
+    'RealRobot3D'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -263,7 +264,7 @@ end
 %% Initialize Window
 Screen('Preference', 'SkipSyncTests', 0);
 
-if strcmp(Task(1:5), 'Robot') || strcmp(Task(1:4), 'Hand') || strcmp(Task(1:4), 'Grip') 
+if strcmp(Task(1:5), 'Robot') || strcmp(Task(1:4), 'Hand') || strcmp(Task(1:4), 'Grip') || strcmp(Task(1:4), 'Real') 
     Params.Center = [0,0,0];
 else
     if DEBUG

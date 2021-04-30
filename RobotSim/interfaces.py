@@ -3,7 +3,6 @@ import numpy as np
 
 class DiscreteActionsRobot():
     """Interface for discrete action classification."""
-    # TODO: Optimize for srpites. Currently drawing a new arrow when changing size/rotation.
     def __init__(self, *args, **kwargs):  
         
         for _k, _v in kwargs.items():
