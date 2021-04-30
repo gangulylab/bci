@@ -7,16 +7,21 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
+
+
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
-fprintf('  Target: %i\n',Data.TargetPosition)
-if Params.Verbose,
-    if TaskFlag==2,
+
+TargetName = {'Right Thumb', 'Down - Middle Finger', 'Left Thumb', 'Up - Lips', 'Up', 'Down'};
+ fprintf('TARGET: %s\n',TargetName{Data.TargetID})
+% fprintf('  Target: %i\n',Data.TargetPosition)
+if Params.Verbose
+    if TaskFlag==2
         fprintf('    Cursor Assistance: %.2f%%\n',100*Cursor.Assistance)
-        if Params.CLDA.Type==3,
+        if Params.CLDA.Type==3
             fprintf('    Lambda 1/2 life: %.2fsecs\n',KF.Lambda)
         end
     end
@@ -27,7 +32,7 @@ dt_vec = [];
 dT_vec = [];
 
 % grab blackrock data and run through processing pipeline
-if Params.BLACKROCK,
+if Params.BLACKROCK
     Cursor.LastPredictTime = GetSecs;
     Cursor.LastUpdateTime = Cursor.LastPredictTime;
     Neuro = NeuroPipeline(Neuro,[],Params);
@@ -39,7 +44,7 @@ if Params.LongTrial
         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
 else
         Cursor.State = [0,0,0,0,0,0]';
-        Cursor.State(1:3) = Params.StartPos
+        Cursor.State(1:3) = Params.StartPos;
 end
     Cursor.IntendedState = [0,0,0,0,1]';
 
@@ -49,7 +54,7 @@ Cursor.ClickDistance = 0;
 inTargetOld = 0;
 
 %% Instructed Delay
-if ~Data.ErrorID && Params.InstructedDelayTime>0,
+if ~Data.ErrorID && Params.InstructedDelayTime>0
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Instructed Delay';
@@ -58,7 +63,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -66,7 +71,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
         
         % Update Screen
-        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
             % time
             dt = tim - Cursor.LastPredictTime;
             TotalTime = TotalTime + dt;
@@ -75,7 +80,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             Data.Time(1,end+1) = tim;
             
             % grab and process neural data
-            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate)
                 dT = tim-Cursor.LastUpdateTime;
                 dT_vec(end+1) = dT;
                 Cursor.LastUpdateTime = tim;
@@ -98,7 +103,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > Params.InstructedDelayTime,
+        if InTargetTotalTime > Params.InstructedDelayTime
             done = 1;
         end
     end % Instructed Delay Loop
@@ -106,7 +111,7 @@ end % only complete if no errors
 
 
 %% Cue time
-if ~Data.ErrorID && Params.CueTime>0,
+if ~Data.ErrorID && Params.CueTime>0
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Cue';
@@ -226,6 +231,10 @@ if ~Data.ErrorID,
 
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            
+            if Click_Decision == 5
+                Click_Decision = 6;
+            end
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -248,7 +257,7 @@ if ~Data.ErrorID,
                 ClickDec_Buffer(end) = Click_Decision;
                 RunningMode_ClickDec = RunningMode(ClickDec_Buffer);  
                 
-                RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec % Filter by allowable directions
+                RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
                 ClickToSend = RunningMode_ClickDec;        
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
@@ -312,7 +321,7 @@ if ~Data.ErrorID,
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
-            Cursor.State(1:3)
+            Cursor.State(1:3);
             
             [xa,xb,xc] = doubleToUDP(Cursor.State(1));
             [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
@@ -371,7 +380,7 @@ if ~Data.ErrorID,
         end
         
         % end if in target for hold time (not using clicker)
-        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
+        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1)
             done = 1;
             Data.SelectedTargetID = TargetID;
             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
@@ -381,13 +390,10 @@ if ~Data.ErrorID,
     end % Reach Target Loop
 end % only complete if no errors
 
-
-Cursor.State(1:3)
-
 %% Inter trial interval
 % blank screen at end of trial but continue collecting data
 
-if Params.InterTrialInterval>0,
+if Params.InterTrialInterval>0
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Inter Trial Interval';
@@ -398,7 +404,7 @@ if Params.InterTrialInterval>0,
     InTargetTotalTime = 0;
 
     fwrite(Params.udp, [0,1,0,0,0,0,0,0,0,0,0])
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -406,7 +412,7 @@ if Params.InterTrialInterval>0,
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
         
         % Update Screen
-        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
             % time
             dt = tim - Cursor.LastPredictTime;
             TotalTime = TotalTime + dt;
@@ -415,7 +421,7 @@ if Params.InterTrialInterval>0,
             Data.Time(1,end+1) = tim;
             
             % grab and process neural data
-            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate)
                 dT = tim-Cursor.LastUpdateTime;
                 dT_vec(end+1) = dT;
                 Cursor.LastUpdateTime = tim;
@@ -439,7 +445,7 @@ if Params.InterTrialInterval>0,
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > Params.InterTrialInterval,
+        if InTargetTotalTime > Params.InterTrialInterval
             done = 1;
         end
     end % Instructed Delay Loop
@@ -449,7 +455,7 @@ end % only complete if no errors
 %% Completed Trial - Give Feedback
 
 % output update times
-if Params.Verbose,
+if Params.Verbose
     fprintf('      Screen Update: Goal=%iHz, Actual=%.2fHz (+/-%.2fHz)\n',...
         Params.ScreenRefreshRate,mean(1./dt_vec),std(1./dt_vec))
     fprintf('      System Update: Goal=%iHz, Actual=%.2fHz (+/-%.2fHz)\n',...
@@ -457,12 +463,12 @@ if Params.Verbose,
 end
 
 % output feedback
-if Data.ErrorID==0,
+if Data.ErrorID==0
     fprintf('SUCCESS\n')
     if Params.FeedbackSound,
         sound(Params.RewardSound,Params.RewardSoundFs)
     end
-else,
+else
     % reset cursor
     Cursor.ClickState = 0;
     % reset cursor
@@ -471,7 +477,7 @@ else,
     
     fprintf('ERROR: %s\n', Data.ErrorStr)
     
-    if Params.FeedbackSound,
+    if Params.FeedbackSound
         sound(Params.ErrorSound,Params.ErrorSoundFs)
     end
     WaitSecs(Params.ErrorWaitTime);

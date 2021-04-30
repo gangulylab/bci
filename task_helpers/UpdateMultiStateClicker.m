@@ -60,7 +60,7 @@ else,
         X=X(idx);
         %Decision_Prob = multilayer_perceptron_Day1to7(X);
         Decision_Prob = feval(Params.NeuralNetFunction,X);
-        disp(Decision_Prob)
+        %disp(Decision_Prob);
         [aa bb]=max(Decision_Prob);
         if aa >= Params.NeuralNetSoftMaxThresh
             Click_Decision = bb;
@@ -95,9 +95,9 @@ else,
             Click_Decision = bb;
             Click_Distance = aa;
         end
-        
-    elseif Params.UseSVM ==1
-        [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+%         
+%     elseif Params.UseSVM ==1
+%         [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
         %disp(Click_Decision)
     end
     

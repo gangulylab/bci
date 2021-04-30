@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot';
+Params.Task = 'RealRobot3D';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -68,13 +68,14 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.7;       
+    Params.NeuralNetSoftMaxThresh = 0.4;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
+    Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
+%MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -82,7 +83,7 @@ end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = true;
+Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
@@ -209,18 +210,18 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 1;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 3;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
     Params.StartPos             = [0,0, 150];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [3];
+    Params.NumTrialsPerBlock    = 4;
+    Params.TargetOrder          = [1:4];
 elseif Params.RobotMode == 2
     Params.ValidDir          = [5:6];
     Params.StartPos          = [0,0, 250];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [5];
+    Params.NumTrialsPerBlock    = 2;
+    Params.TargetOrder          = [5,6];
 elseif Params.RobotMode == 3
     Params.ValidDir          = [1:6];
     Params.StartPos          = [0,0, 300];
@@ -269,7 +270,7 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker     = 1;
-Params.TargetHoldTime   = 3;
+Params.TargetHoldTime   = 1;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;

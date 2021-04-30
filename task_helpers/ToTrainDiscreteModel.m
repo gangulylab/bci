@@ -172,10 +172,11 @@ for i=1:length(foldernames)
 end
 
 
-% Day 2 erp data rt thumb (rt) lt thumb (lt) lips (up)  rt middle(down)
+% Day 2 erp data rt thumb (rt) lt thumb (lt) lips (up)  rt middle(down) and
+% online
 clc;clear
 root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
-foldernames = {'113936'};
+foldernames = {'113936','114912','140406'};
 cd(root_path)
 
 % load the data for each target
@@ -238,7 +239,6 @@ end
 
 
 
-
 clear condn_data
 % combing both onlien plus offline
 idx=[1:128 385:512 641:768];
@@ -272,7 +272,109 @@ net = patternnet([128 128 128 ]) ;
 net.performParam.regularization=0.2;
 net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2')
+genFunction(net,'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A')
+
+%% TRAINING 5DOF USING DAY 2 DATA
+
+
+
+% Day 2 data rt thumb lt thumb lips rt middle finger for down
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
+foldernames = {'113936','114912','140406','141341'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+
+%, getting tongue data alone for Target 5
+root_path = '/home/ucsf/Data/bravo1/20210430/DiscreteArrow';
+foldernames = {'110916','112213','113029','142040'};
+cd(root_path)
+D5=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 2
+            D5 = [D5 temp];        
+        end
+    end
+end
+
+
+
+
+clear condn_data
+% combing both onlien plus offline
+idx=[1:128 385:512 641:768];
+condn_data{1}=[D1(idx,:) ]'; % right hand
+condn_data{2}= [D2(idx,:)]'; % both feet
+condn_data{3}=[D3(idx,:)]'; % left hand
+condn_data{4}=[D4(idx,:)]'; % head
+condn_data{5}=[D5(idx,:)]'; % head
+
+A = condn_data{1};
+B = condn_data{2};
+C = condn_data{3};
+D = condn_data{4};
+E = condn_data{5};
+
+clear N
+N = [A' B' C' D' E'];
+T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
+    5*ones(size(E,1),1)];
+T = zeros(size(T1,1),4);
+[aa bb]=find(T1==1);[aa(1) aa(end)]
+T(aa(1):aa(end),1)=1;
+[aa bb]=find(T1==2);[aa(1) aa(end)]
+T(aa(1):aa(end),2)=1;
+[aa bb]=find(T1==3);[aa(1) aa(end)]
+T(aa(1):aa(end),3)=1;
+[aa bb]=find(T1==4);[aa(1) aa(end)]
+T(aa(1):aa(end),4)=1;
+[aa bb]=find(T1==5);[aa(1) aa(end)]
+T(aa(1):aa(end),5)=1;
+
+% code to train a neural network
+net = patternnet([128 128 128 ]) ;
+net.performParam.regularization=0.2;
+net = train(net,N,T');
+cd('/home/ucsf/Projects/bci/clicker')
+genFunction(net,'MLP_5DoF_Apr30')
+
 
 %% DAY 3 REINIT
 

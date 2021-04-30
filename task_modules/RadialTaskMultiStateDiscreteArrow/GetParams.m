@@ -81,7 +81,7 @@ Params.MultiDecisionBoundary =0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2';
+   Params.NeuralNetFunction = 'MLP_Tong_Lips_PinchHand_Day2A';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
