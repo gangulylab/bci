@@ -50,12 +50,6 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     Data.Events(end).Str  = 'Instructed Delay';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-    if TaskFlag==1,
-        OptimalCursorTraj = ...
-            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-        ct = 1;
-    end
-    
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -88,7 +82,6 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
-            Data.CursorAssist(1,end+1) = Cursor.Assistance;
             Cursor.State= [0 0 0 0 0]';
             
             Cursor.TaskState = 1;
@@ -154,7 +147,6 @@ if ~Data.ErrorID && Params.CueTime>0,
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
-            Data.CursorAssist(1,end+1) = Cursor.Assistance;
             Cursor.State= [0 0 0 0 0]';
             Cursor.TaskState = 2;
             Data.TaskState(1,end+1)=Cursor.TaskState;
@@ -171,7 +163,7 @@ if ~Data.ErrorID && Params.CueTime>0,
 end % only complete if no errors
 
 %% Go to reach target
-if ~Data.ErrorID,
+if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -184,7 +176,7 @@ if ~Data.ErrorID,
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
     ClickToSend = 0;
     
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -192,7 +184,7 @@ if ~Data.ErrorID,
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
         
         % Update Screen
-        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
             % time
             dt = tim - Cursor.LastPredictTime;
             TotalTime = TotalTime + dt;
@@ -201,7 +193,7 @@ if ~Data.ErrorID,
             Data.Time(1,end+1) = tim;
             
             % grab and process neural data
-            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate)
                 dT = tim-Cursor.LastUpdateTime;
                 dT_vec(end+1) = dT;
                 Cursor.LastUpdateTime = tim;
@@ -209,7 +201,7 @@ if ~Data.ErrorID,
                 Data.NeuralTime(1,end+1) = tim;
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
                 
-                % save kalman filter
+                % save kalman filter          
                 if Params.ControlMode>=3 && TaskFlag>1 && Params.SaveKalmanFlag,
                     Data.KalmanGain{end+1} = [];
                     Data.KalmanGain{end}.K = KF.K;
@@ -225,11 +217,10 @@ if ~Data.ErrorID,
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
-            Data.CursorAssist(1,end+1) = Cursor.Assistance;
             Cursor.State = [Params.Center(1),Params.Center(2),0,0,0]';
-          
+
             % start counting time if cursor is in target
-            if TargetID==Data.TargetID,
+            if TargetID==Data.TargetID
                 InTargetTotalTime = InTargetTotalTime + dt;
             else
                 InTargetTotalTime = 0;
@@ -250,16 +241,20 @@ if ~Data.ErrorID,
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                   
             % counter only if correct target is hit, training mode for now
-            if RunningMode_ClickDec == Data.TargetID
-                Cursor.Counter = Cursor.Counter+1;
-            else
+            if TaskFlag == 1
                 Cursor.Counter = 0;
+                ClickToSend = Data.TargetID;
+            else
+                if RunningMode_ClickDec == Data.TargetID
+                    Cursor.Counter = Cursor.Counter+1;
+                else
+                    Cursor.Counter = 0;
+                end
             end
             
-            % decision for clicking and finishng trial
+            % decision for clicking and finishing trial
             if Cursor.Counter == Params.ClickCounter
                 done=1;                        
-                %Cursor.State(1:2) = Params.ReachTargetPositions(Click_Decision,:);
                 Data.SelectedTargetID = RunningMode_ClickDec;
                 fwrite(Params.udp, [0, 5, 0])
             end
@@ -268,11 +263,13 @@ if ~Data.ErrorID,
             Data.TaskState(1,end+1)=Cursor.TaskState;
             
             % draw the arrow
+            
+           
            fwrite(Params.udp, [2, ClickToSend, 0])
         end
         
         % end if takes too long
-        if TotalTime > Params.MaxReachTime,
+        if TotalTime > Params.MaxReachTime
             done = 1;
             Data.ErrorID = 3;
             Data.ErrorStr = 'ReachTarget';
@@ -326,7 +323,6 @@ if Params.InterTrialInterval>0,
             
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
-            Data.CursorAssist(1,end+1) = Cursor.Assistance;
             Cursor.State= [0 0 0 0 0]';           
             
             Cursor.TaskState = 4;

@@ -23,18 +23,7 @@ Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model,Params.MultiDecisionBou
 
 switch TaskFlag,
     case 1, % Imagined Movements
-        Instructions = [...
-            '\n\nImagined Cursor Control\n\n'...
-            'Imagine moving a mouse with your hand to move the\n'...
-            'into the targets.\n'...
-            '\nAt any time, you can press ''p'' to briefly pause the task.'...
-            '\n\nPress the ''Space Bar'' to begin!' ];
-        
-        InstructionScreen(Params,Instructions);
-        Cursor.Assistance = Params.Assistance;
-        Cursor.DeltaAssistance = 0;
-        InstructedDelayTime = Params.InstructedDelayTime;
-        Params.InstructedDelayTime = .6;
+
         mkdir(fullfile(Params.Datadir,'Imagined'));
         
         % output to screen
@@ -46,7 +35,6 @@ switch TaskFlag,
         
         Neuro.DimRed.Flag = false; % set to false for imagined mvmts
         [Neuro,~,Params,~] = RunLoop(Params,Neuro,TaskFlag,fullfile(Params.Datadir,'Imagined'),[],[]);
-        Params.InstructedDelayTime = InstructedDelayTime;
         
     case 2, % Control Mode with Assist & CLDA
         switch Params.ControlMode,

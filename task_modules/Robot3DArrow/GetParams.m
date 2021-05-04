@@ -6,7 +6,7 @@ function Params = GetParams(Params)
 
 %% Experiment
 Params.Task = 'Robot3DArrow';
-switch Params.ControlMode,
+switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
     case 3, Params.ControlModeStr = 'KalmanPosVel';
@@ -39,12 +39,12 @@ Params.MaxVelocity              = 200;
 Params.ClickerBins = -1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
 Params.ClickerDataCollection = true; % if true, does not use clicker, freezes cursor when in target
-if Params.ClickerDataCollection,
+if Params.ClickerDataCollection
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -126,12 +126,12 @@ G = Params.Gain;
 t = 1/Params.UpdateRate;
 a = 0.91;%.825;
 w = 120;
-if Params.ControlMode>=3,
+if Params.ControlMode>=3
     Params = LoadKF2dDynamics(Params, G, t, a, w);
 end
 
 %% LQR Optimal Velocity Controller
-if Params.OptimalVeloctityMode==2,
+if Params.OptimalVeloctityMode==2
     Params = LoadLQR2dDynamics(Params, G, t, a);
 end
 
@@ -140,22 +140,13 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
+
 Params.NumTrialsPerBlock    =18;
 Params.TargetOrder          = [1:6,1:6,1:6];
 
-% Params.NumTrialsPerBlock    =6;
-% Params.TargetOrder          = [1:6];
-% 
-% Params.NumTrialsPerBlock    = 1;
-% Params.TargetOrder          = [7];
-
-
-
-% Params.TargetOrder          = [7:18];
-% Params.TargetOrder          = flip([1:4, 1:4, 1:4]);
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
@@ -180,21 +171,21 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType,
-    case 'none',
+switch Params.CLDA.AdaptType
+    case 'none'
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear',
-        switch Params.CLDA.Type,
-            case 2, % smooth batch
+    case 'linear'
+        switch Params.CLDA.Type
+            case 2 % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
-            case 3, % RML
+            case 3 % RML
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise, % none or refit
+            otherwise % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
@@ -205,7 +196,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 10 ;
+Params.MaxReachTime = 5 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

@@ -233,7 +233,7 @@ if ~Data.ErrorID,
                 Params.TargetID =  Data.TargetID;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
                 
-            if TaskFlag==1, % imagined movements
+            if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
                     Click_Decision = 0;
                     Cursor.State(4:6) = [0;0;0];
