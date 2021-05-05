@@ -75,11 +75,12 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
+    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2';
+%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -140,9 +141,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 1;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 
 Params.NumTrialsPerBlock    =18;
 Params.TargetOrder          = [1:6,1:6,1:6];

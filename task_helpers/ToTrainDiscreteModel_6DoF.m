@@ -1,10 +1,11 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210430/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210505/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
-foldernames = {'110916','112213'};
+
+foldernames = {'112042','112411', '112656', '112950', '114532', '114827', '115036', '115436', '135020', '135433', '135647'};
 cd(root_path)
 
 % load the data for each target
@@ -14,6 +15,32 @@ D3=[];
 D4=[];
 D5=[];
 D6=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'Imagined');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        elseif TrialData.TargetID == 5
+            D5 = [D5 temp];
+        elseif TrialData.TargetID == 6
+            D6 = [D6 temp];
+        end
+    end
+end
+
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
     D=dir(folderpath);
@@ -39,6 +66,7 @@ for i=1:length(foldernames)
         end
     end
 end
+
 
 
 clear condn_data

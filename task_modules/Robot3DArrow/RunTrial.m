@@ -228,6 +228,8 @@ if ~Data.ErrorID
             
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+%             Click_Decision = 0;
+%             Click_Distance = 0;
             Cursor.ClickState = Click_Decision;
             Cursor.ClickDistance = Click_Distance;
             Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;

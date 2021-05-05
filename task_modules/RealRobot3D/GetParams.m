@@ -72,7 +72,8 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.4;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
+%     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
+    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
@@ -234,7 +235,7 @@ end
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
-Params.limit = [-200, 200; -200 200; 100 450];
+Params.limit = [-200, 200; -200 200; 180 450];
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -272,10 +273,10 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker     = 1;
-Params.TargetHoldTime   = 1;
+Params.TargetHoldTime   = 3;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 1.0;
+Params.AssistAlpha      = 0.0;
 
 end % GetParams
