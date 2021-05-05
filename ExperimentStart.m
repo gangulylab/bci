@@ -97,7 +97,19 @@ end
 %% Data Saving
 now = datetime; % get today's date
 Params.YYYYMMDD = sprintf('%i',yyyymmdd(now));
-Params.HHMMSS = sprintf('%02i%02i%02i',now.Hour,now.Minute,round(now.Second));
+
+H = now.Hour;
+M = now.Minute;
+S = round(now.Second);
+
+Params.HHMMSS = sprintf('%02i%02i%02i',H,M,S);
+
+if  strcmp(Task(1:4), 'Real')
+    Params.udp = udpport("LocalPort", 43210);
+    Params.pythonPort = 5006;
+    write(Params.udp, [0,6,H,M,S,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
+end
+
 
 % if Subject is 'Test' or 'test' then can write over previous test
 if strcmpi(Params.Subject,'Test'),

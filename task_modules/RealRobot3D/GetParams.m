@@ -6,7 +6,7 @@ function Params = GetParams(Params)
 
 %% Experiment
 Params.Task = 'RealRobot3D';
-switch Params.ControlMode,
+switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
     case 3, Params.ControlModeStr = 'KalmanPosVel';
@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -100,10 +100,12 @@ Params.ReachTargetRadius = 200;
 d2 = sqrt(1/2);
 d3 = sqrt(1/3);
 
-Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 150;...
-    0, Params.ReachTargetRadius, 150; ...
-    -Params.ReachTargetRadius, 0, 150;...
-    0, -Params.ReachTargetRadius, 150; ...
+h = 180;
+
+Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, h;...
+    0, Params.ReachTargetRadius, h; ...
+    -Params.ReachTargetRadius, 0, h;...
+    0, -Params.ReachTargetRadius, h; ...
     0,0,450;...
     0, 0, 100;...
     d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
@@ -210,11 +212,11 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 3;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 1;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
-    Params.StartPos             = [0,0, 150];
+    Params.StartPos             = [0,0, 180];
     Params.NumTrialsPerBlock    = 4;
     Params.TargetOrder          = [1:4];
 elseif Params.RobotMode == 2
@@ -237,7 +239,7 @@ Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
-Params.RobotTargetRadius = 50;
+Params.RobotTargetRadius = 30;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -274,6 +276,6 @@ Params.TargetHoldTime   = 1;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 0.0;
+Params.AssistAlpha      = 1.0;
 
 end % GetParams

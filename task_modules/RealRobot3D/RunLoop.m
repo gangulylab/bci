@@ -52,21 +52,25 @@ switch TaskFlag,
 end
 
 %% Open UDP
-Params.udp = udp("127.0.0.1", 5006);
-fopen(Params.udp)
-fwrite(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0])                  % reset robot
-
+% Params.udp = udpport("LocalPort", 43210);
+% Params.pythonPort = 5006;
+write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 
 [xa,xb,xc] = doubleToUDP(Params.StartPos(1));
 [ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
 [za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
 
-fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0]); % send pos
-fwrite(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0])
+write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 pause(2.0)
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 % fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
+
+
 
 %%  Loop Through Blocks of Trials
 Trial = 0;
@@ -165,6 +169,8 @@ for Block=1:NumBlocks, % Block Loop
             fullfile(DataDir,sprintf('Data%04i.mat',Trial)),...
             'TrialData',...
             '-v7.3','-nocompression');
+        
+        
         
         % keep track of useful stats and params
 %         SavePersistence(Params,Neuro,KF,TaskFlag)

@@ -8,6 +8,7 @@ global Cursor
 
 %% Set up trial
 
+write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
 
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
@@ -121,12 +122,12 @@ if ~Data.ErrorID && Params.CueTime>0
     TotalTime = 0;
     InTargetTotalTime = 0;
     
-    % Send target position
-%     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
-%     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
-%     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
-% 
-%     fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);  
+%     Send target position
+    [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
+    [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
+    [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
+
+    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0], "127.0.0.1", Params.pythonPort); ;  
     
     while ~done,
         % Update Time & Position
@@ -327,13 +328,13 @@ if ~Data.ErrorID,
             [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
             [za,zb,zc] = doubleToUDP(Cursor.State(3)-256) ;
             
-            fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]); % send pos
+            write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send pos
 
             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
             
-            fwrite(Params.udp, [5, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]); % send vel
+            write(Params.udp, [5, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -368,24 +369,26 @@ if ~Data.ErrorID,
             fprintf('ERROR: %s\n',Data.ErrorStr)
         end
         
-        % end if clicks in a target
-        if Cursor.ClickState==Params.ClickerBins && TargetID~=0,
-            done = 1;
-            Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:);
-            if TargetID~=Data.TargetID,
-                Data.ErrorID = 4;
-                Data.ErrorStr = 'WrongTarget';
+        if Params.udp.NumBytesAvailable > 0
+            u = read(Params.udp,Params.udp.NumBytesAvailable);
+            u = u(end);
+            
+            if u == 1
+                fprintf("In Target\n")
+            elseif u == 2
+                done = 1;
+                fprintf("SUCCESS\n")
             end
+            u = 0;
         end
         
-        % end if in target for hold time (not using clicker)
-        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1)
-            done = 1;
-            Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
-
-        end
+        
+%         % end if in target for hold time (not using clicker)
+%         if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1)
+%             done = 1;
+%             Data.SelectedTargetID = TargetID;
+%             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
+%         end
         end 
     end % Reach Target Loop
 end % only complete if no errors
@@ -403,7 +406,7 @@ if Params.InterTrialInterval>0
     TotalTime = 0;
     InTargetTotalTime = 0;
 
-    fwrite(Params.udp, [0,1,0,0,0,0,0,0,0,0,0])
+    write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -464,7 +467,7 @@ end
 
 % output feedback
 if Data.ErrorID==0
-    fprintf('SUCCESS\n')
+%     fprintf('SUCCESS\n')
     if Params.FeedbackSound,
         sound(Params.RewardSound,Params.RewardSoundFs)
     end
