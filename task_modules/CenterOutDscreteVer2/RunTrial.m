@@ -1,4 +1,4 @@
-function [Data, Neuro, KF, Params] = RunTrial(Data,Params,Neuro,TaskFlag,KF)
+function [Data, Neuro, KF, Params,Clicker] = RunTrial(Data,Params,Neuro,TaskFlag,KF,Clicker)
 % Runs a trial, saves useful data along the way
 % Each trial contains the following pieces
 % 1) Inter-trial interval
@@ -43,6 +43,17 @@ if Params.BLACKROCK,
     Cursor.LastUpdateTime = Cursor.LastPredictTime;
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
+
+
+% reset cursor
+if Params.CenterReset,    
+    Cursor.State = [Params.Center(1),Params.Center(2),0,0,0]';
+    Cursor.IntendedState = [Params.Center(1),Params.Center(2),0,0,0]';
+end
+
+Cursor.ClickState = 0;
+Cursor.ClickDistance = 0;
+
 
 %% Inter Trial Interval
 if ~Data.ErrorID && Params.InterTrialInterval>0,
@@ -392,7 +403,7 @@ if ~Data.ErrorID,
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
                 
                 % dont need this 
-                KF = UpdateCursor(Params,Neuro,TaskFlag,ReachTargetPos,KF);
+                %KF = UpdateCursor(Params,Neuro,TaskFlag,ReachTargetPos,KF);
                 
                 
                 % save kalman filter
@@ -405,6 +416,32 @@ if ~Data.ErrorID,
                     Data.KalmanFilter{end}.Lambda = KF.Lambda;
                 end
             end
+            
+            % update via discrete 
+            CursorCol = Params.CursorColor;
+            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            Cursor.ClickState = Click_Decision;
+            Cursor.ClickDistance = Click_Distance;
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
+            Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+            if Click_Decision == 1
+                temp_dir = Params.PixelLength*Params.ReachTargetPositions(1,:);
+            elseif Click_Decision == 2
+                temp_dir = Params.PixelLength*Params.ReachTargetPositions(2,:);
+            elseif Click_Decision == 3
+                temp_dir = Params.PixelLength*Params.ReachTargetPositions(3,:);
+            elseif Click_Decision == 4
+                temp_dir = Params.PixelLength*Params.ReachTargetPositions(4,:);
+            else
+                temp_dir = [0 0];
+            end
+            Cursor.State(1) = Cursor.State(1) + temp_dir(1);
+            Cursor.State(2) = Cursor.State(2) + temp_dir(2);
+            [Cursor.State(1) Cursor.State(2) Cursor.State(3) Cursor.State(4) 0];
+            CursorRect = Params.CursorRect;
+            CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) ; % add x-pos
+            CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) ; % add y-pos
+            Cursor.IntendedState = [0 0 0 0 0]';
             
             % cursor
             if TaskFlag==1, % imagined movements
