@@ -1,9 +1,16 @@
-function [Neuro,KF,Params,Clicker] = RunTask(Params,Neuro,TaskFlag,KF,Clicker)
+function [Neuro,KF,Params] = RunTask(Params,Neuro,TaskFlag,KF)
 % Explains the task to the subject, and serves as a reminder for pausing
 % and quitting the experiment (w/o killing matlab or something)
 
 global Cursor 
 Cursor.ControlMode = Params.ControlMode;
+
+
+% Load Clicker
+f = load(fullfile('clicker',Params.DiscreteDecoder)); % load the parallel decoders
+Clicker.Model = f.model;
+Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model,Params.MultiDecisionBoundary); % calling function
+
 
 switch TaskFlag,
     case 1, % Imagined Movements

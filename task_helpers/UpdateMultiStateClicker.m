@@ -32,11 +32,11 @@ else,
         %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);        
         %end
     else        
-        if Params.SmoothDataFlag ==1
-            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
-        else
-            [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
-        end        
+%         if Params.SmoothDataFlag ==1
+%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+%         else
+%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+%         end        
     end
 end
 

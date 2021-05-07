@@ -439,8 +439,8 @@ if ~Data.ErrorID,
             Cursor.State(2) = Cursor.State(2) + temp_dir(2);
             [Cursor.State(1) Cursor.State(2) Cursor.State(3) Cursor.State(4) 0];
             CursorRect = Params.CursorRect;
-            CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1) ; % add x-pos
-            CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) ; % add y-pos
+            CursorRect([1,3]) = CursorRect([1,3]) + Cursor.State(1)+ Params.Center(1);  % add x-pos
+            CursorRect([2,4]) = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
             Cursor.IntendedState = [0 0 0 0 0]';
             
             % cursor
@@ -467,9 +467,19 @@ if ~Data.ErrorID,
             if inFlag, ReachCol = Params.InTargetColor;
             else, ReachCol = Params.OutTargetColor;
             end
+%                         Screen('FillOval', Params.WPTR, ...
+%                             cat(1,ReachCol,Params.CursorColor)', ...
+%                             cat(1,ReachRect,CursorRect)')
+            
             Screen('FillOval', Params.WPTR, ...
-                cat(1,ReachCol,Params.CursorColor)', ...
-                cat(1,ReachRect,CursorRect)')
+                ReachCol',ReachRect')
+            
+            Screen('FillOval', Params.WPTR, ...
+                CursorCol', CursorRect')
+            
+            CursorRect
+            
+            
             if Params.DrawVelCommand.Flag && TaskFlag>1,
                 VelRect = Params.DrawVelCommand.Rect;
                 VelRect([1,3]) = VelRect([1,3]) + Params.Center(1);

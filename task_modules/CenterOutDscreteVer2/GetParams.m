@@ -20,7 +20,7 @@ Params.DaggerAssist 	= false;
 Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
-Params.InitializationMode   = 3; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
+Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
@@ -39,15 +39,15 @@ Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
-Params.PixelLength = 0.05;
+Params.PixelLength = 0.09;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
 
 %% Timing 
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 6; % Hz
+Params.UpdateRate = 6; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
@@ -64,7 +64,7 @@ Params.MultiDecisionBoundary = -2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.8;
-   Params.NeuralNetFunction = 'MLP_4Dir_Actions_AllOnline_20210331c';
+   Params.NeuralNetFunction = 'MLP_RtPinch_LtPinch_Lips_Tong_5721_C';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -72,7 +72,7 @@ else
 end
 
 %% Targets
-Params.TargetSize = 75;
+Params.TargetSize = 60;
 Params.OutTargetColor = [55,255,0];
 Params.InTargetColor = [255,55,0];
 
@@ -81,7 +81,7 @@ Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
 Params.ReachTargetAngles = (0:90:270)';
-Params.ReachTargetRadius = 400; 
+Params.ReachTargetRadius = 150; 
 Params.ReachTargetPositions = ...
     Params.StartTargetPosition ...
     + Params.ReachTargetRadius ...
@@ -93,10 +93,18 @@ Params.ReachTargetSamplingVec = Params.ReachTargetSamplingVec ...
     / sum(Params.ReachTargetSamplingVec);
 
 %% Cursor
+ 
+% Params.CursorColor = [0,102,255];
+% Params.CursorSize = 30;
+% Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
+%     +Params.CursorSize +Params.CursorSize];
+
+
 Params.CursorColor = [0,102,255];
-Params.CursorSize = 30;
+Params.CursorSize = 20;
 Params.CursorRect = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
+
 
 %% Kalman Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -120,7 +128,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 5;
+Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles)*3;
 Params.TargetSelectionFlag  = 2; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
 switch Params.TargetSelectionFlag,
@@ -171,7 +179,7 @@ switch Params.CLDA.AdaptType,
 end
 
 %% Hold Times
-Params.TargetHoldTime = 1;
+Params.TargetHoldTime = 3;
 Params.InterTrialInterval = 1.0;
 if Params.CenterReset,
     Params.InstructedDelayTime = 0;
@@ -179,7 +187,7 @@ else,
     Params.InstructedDelayTime = 0;
 end
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 15;     
+Params.MaxReachTime = 25;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 5.0;
 

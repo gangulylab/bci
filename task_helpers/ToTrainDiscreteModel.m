@@ -237,6 +237,40 @@ end
 % end
 
 
+% 5/7/2021
+%  erp data rt thumb (rt) lt thumb (lt) right index (up)  both hands (down)
+clc;clear
+root_path = '/home/ucsf/Data/bravo1/20210507/DiscreteArrow';
+foldernames = {'112705','113930','114657'};
+cd(root_path)
+
+% load the data for each target
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        temp = temp(129:end,:);
+        if TrialData.TargetID == 1
+            %D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            %D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            %D4 = [D4 temp];
+        end
+    end
+end
+
 
 
 clear condn_data
@@ -272,7 +306,7 @@ net = patternnet([128 128 128 ]) ;
 net.performParam.regularization=0.2;
 net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2')
+genFunction(net,'MLP_RtPinch_LtPinch_Lips_BothHand_5721')
 
 %% DAY 3 REINIT
 
