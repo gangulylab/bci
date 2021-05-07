@@ -13,7 +13,7 @@ switch Params.ControlMode,
 end
 
 %% Control
-Params.CenterReset      = false; % if true, cursor automatically is at center at trial start
+Params.CenterReset      = true; % if true, cursor automatically is at center at trial start
 Params.Assistance       = 0; %0.05; % value btw 0 and 1, 1 full assist
 Params.DaggerAssist 	= false;
 
@@ -63,16 +63,13 @@ Params.MultiDecisionBoundary = -2;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.7;
+   Params.NeuralNetSoftMaxThresh = 0.8;
    Params.NeuralNetFunction = 'MLP_4Dir_Actions_AllOnline_20210331c';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
-
-
-
 
 %% Targets
 Params.TargetSize = 75;
@@ -117,15 +114,15 @@ if Params.OptimalVeloctityMode==2,
 end
 
 %% Velocity Command Online Feedback
-Params.DrawVelCommand.Flag = true;
+Params.DrawVelCommand.Flag = false;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 7;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 0;
+Params.NumFixedBlocks       = 5;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles)*3;
-Params.TargetSelectionFlag  = 1; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
+Params.TargetSelectionFlag  = 2; % 1-pseudorandom, 2-random, 3-repeat, 4-sample vector
 switch Params.TargetSelectionFlag,
     case 1, Params.TargetFunc = @(n) mod(randperm(n),Params.NumReachTargets)+1;
     case 2, Params.TargetFunc = @(n) mod(randi(n,1,n),Params.NumReachTargets)+1;
@@ -174,7 +171,7 @@ switch Params.CLDA.AdaptType,
 end
 
 %% Hold Times
-Params.TargetHoldTime = .1;
+Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1.0;
 if Params.CenterReset,
     Params.InstructedDelayTime = 0;
@@ -182,7 +179,7 @@ else,
     Params.InstructedDelayTime = 0;
 end
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 10;     
+Params.MaxReachTime = 15;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 5.0;
 
