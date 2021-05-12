@@ -8,39 +8,43 @@ root_path = '/home/ucsf/Data/bravo1/20210505/Robot3DArrow';
 foldernames = {'112042','112411', '112656', '112950', '114532', '114827', '115036', '115436', '135020', '135433', '135647'};
 cd(root_path)
 
-% load the data for each target
+% FOR IMAGINED MOVEMENT DATA, REDUNDANT
+% for i=1:length(foldernames)
+%     folderpath = fullfile(root_path, foldernames{i},'Imagined');
+%     D=dir(folderpath);
+%     for j=3:length(D)
+%         filepath=fullfile(folderpath,D(j).name);
+%         load(filepath)
+%         features  = TrialData.SmoothedNeuralFeatures;
+%         kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
+%         temp = cell2mat(features(kinax));
+%         temp = temp(129:end,:);
+%         if TrialData.TargetID == 1
+%             D1 = [D1 temp];
+%         elseif TrialData.TargetID == 2
+%             D2 = [D2 temp];
+%         elseif TrialData.TargetID == 3
+%             D3 = [D3 temp];
+%         elseif TrialData.TargetID == 4
+%             D4 = [D4 temp];
+%         elseif TrialData.TargetID == 5
+%             D5 = [D5 temp];
+%         elseif TrialData.TargetID == 6
+%             D6 = [D6 temp];
+%         elseif TrialData.TargetID == 7
+%             D7 = [D7 temp];
+%         end
+%     end
+% end
+
+
 D1=[];
 D2=[];
 D3=[];
 D4=[];
 D5=[];
 D6=[];
-for i=1:length(foldernames)
-    folderpath = fullfile(root_path, foldernames{i},'Imagined');
-    D=dir(folderpath);
-    for j=3:length(D)
-        filepath=fullfile(folderpath,D(j).name);
-        load(filepath)
-        features  = TrialData.SmoothedNeuralFeatures;
-        kinax = [find(TrialData.TaskState==2) find(TrialData.TaskState==3)];
-        temp = cell2mat(features(kinax));
-        temp = temp(129:end,:);
-        if TrialData.TargetID == 1
-            D1 = [D1 temp];
-        elseif TrialData.TargetID == 2
-            D2 = [D2 temp];
-        elseif TrialData.TargetID == 3
-            D3 = [D3 temp];
-        elseif TrialData.TargetID == 4
-            D4 = [D4 temp];
-        elseif TrialData.TargetID == 5
-            D5 = [D5 temp];
-        elseif TrialData.TargetID == 6
-            D6 = [D6 temp];
-        end
-    end
-end
-
+D7=[];
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
     D=dir(folderpath);
@@ -63,6 +67,8 @@ for i=1:length(foldernames)
             D5 = [D5 temp];
         elseif TrialData.TargetID == 6
             D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
         end
     end
 end
@@ -78,6 +84,7 @@ condn_data{3}=[D3(idx,:)]';
 condn_data{4}=[D4(idx,:)]'; 
 condn_data{5}=[D5(idx,:)]'; 
 condn_data{6}=[D6(idx,:)]'; 
+condn_data{7}=[D7(idx,:)]'; 
 
 A = condn_data{1};
 B = condn_data{2};
@@ -85,12 +92,14 @@ C = condn_data{3};
 D = condn_data{4};
 E = condn_data{5};
 F = condn_data{6};
+G = condn_data{7};
 
 clear N
-N = [A' B' C' D' E' F'];
+N = [A' B' C' D' E' F' G'];
 T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
-    5*ones(size(E,1),1);6*ones(size(F,1),1)];
-T = zeros(size(T1,1),6);
+    5*ones(size(E,1),1);6*ones(size(F,1),1);7*ones(size(G,1),1)];
+
+T = zeros(size(T1,1),7);
 [aa bb]=find(T1==1);
 T(aa(1):aa(end),1)=1;
 [aa bb]=find(T1==2);
@@ -103,6 +112,9 @@ T(aa(1):aa(end),4)=1;
 T(aa(1):aa(end),5)=1;
 [aa bb]=find(T1==6);
 T(aa(1):aa(end),6)=1;
+[aa bb]=find(T1==7);
+T(aa(1):aa(end),8)=1;
+
 
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
