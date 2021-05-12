@@ -69,11 +69,12 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
+    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_SquezeHands_2';
+%     Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -83,7 +84,7 @@ end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = true;
+Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
@@ -95,7 +96,7 @@ else
 end
 
 %% Targets: radial layout
-Params.NumReachTargets   = 6;
+Params.NumReachTargets   = 7;
 Params.TargetSpacing     = 10; % px
 Params.OuterCircleRadius = 350; % defines outer edge of target
 Params.InnerCircleRadius = 150; % defines inner edge of target
@@ -190,7 +191,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 50;
+Params.MaxReachTime = 75;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -249,7 +250,7 @@ Params.AssistAlpha = 0.0;
 Params.StopHoldTime     = 2.0;
 Params.StopTriggerCount = 1;
 Params.GoHoldTime       = 2.0;
-Params.StartTrialHold   = 1;
+Params.StartTrialHold   = 0;
 
 
 end % GetParams
