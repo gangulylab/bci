@@ -53,6 +53,7 @@ class JacoEnv(object):
     self.mode = mode
     self.angle  =angle
     self.dl  = dl
+    self.key = 0
 
     p.loadURDF("plane.urdf",[0,0,-.65])
     p.loadURDF("table/table.urdf", basePosition=[-0.6,0.45,-0.65])
@@ -138,7 +139,7 @@ class JacoEnv(object):
     pos[0] = self.center[0] + pos[0]
     pos[1] = self.center[1] + pos[1]
 
-    d = .08
+    d = .05
 
     p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
     c1 = [pos[0] - d, pos[1] - d, 0.0]
@@ -157,14 +158,15 @@ class JacoEnv(object):
   def set_bound_color(self, pos, c):
 
     if c == 1:
-
       col = [1,0,0]
+    elif c == 2:
+      col = [0,0,1]
     else:
       col = [0,1,0] 
     pos[0] = self.center[0] + pos[0]
     pos[1] = self.center[1] + pos[1]
 
-    d = .08
+    d = .05
 
     p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
     c1 = [pos[0] - d, pos[1] - d, 0.0]
@@ -395,6 +397,7 @@ class JacoEnv(object):
 
 
   def set_robotPos(self, rp, key):
+    self.key = key;
     self.pos[0] = self.center[0] + rp[0]
     self.pos[1] = self.center[1] + rp[1]
     self.pos[2] = self.center[2]  + rp[2]
@@ -414,15 +417,15 @@ class JacoEnv(object):
     else:
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2]] 
     
-    if key == 100:
+    # if key == 100:
 
-      c1 = [self.pos[0] + .02, self.pos[1], self.pos[2] - .05]
-      c2 = [self.pos[0] - .02, self.pos[1], self.pos[2] - .05]
-      c3 = [self.pos[0], self.pos[1] - .02, self.pos[2] - .05]
-      c4 = [self.pos[0], self.pos[1] + .02, self.pos[2] - .05]
+    #   c1 = [self.pos[0] + .02, self.pos[1], self.pos[2] - .05]
+    #   c2 = [self.pos[0] - .02, self.pos[1], self.pos[2] - .05]
+    #   c3 = [self.pos[0], self.pos[1] - .02, self.pos[2] - .05]
+    #   c4 = [self.pos[0], self.pos[1] + .02, self.pos[2] - .05]
 
-      p.addUserDebugLine(c1,c2, [0,1,1], 8, self.bciRate)
-      p.addUserDebugLine(c3,c4, [0,1,1], 8, self.bciRate)
+    #   p.addUserDebugLine(c1,c2, [0,1,1], 8, self.bciRate)
+    #   p.addUserDebugLine(c3,c4, [0,1,1], 8, self.bciRate)
 
     self.newPosInput = 1
 
@@ -522,9 +525,9 @@ class JacoEnv(object):
     for i in  [9, 11, 13]:
       p.setJointMotorControl2(self.jacoId, i, p.POSITION_CONTROL, self.fing)
 
-    # ls = p.getLinkState(self.jacoId, self.jacoEndEffectorIndex)
-    # p.setRealTimeSimulation(self.useRealTimeSimulation)
-    # p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
+    ls = p.getLinkState(self.jacoId, self.jacoEndEffectorIndex)
+    p.setRealTimeSimulation(self.useRealTimeSimulation)
+    p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
 
     self.updateT = time.time()
     self.pos2 = self.pos
@@ -574,7 +577,7 @@ class JacoEnv(object):
 
     if self.mode == 7:
       p.addUserDebugLine(p1, p2, [0,1,0], 6, self.bciRate)
-      p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate)
+      p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate) 
 
     if self.dl:
       if self.mode == 0:
@@ -584,7 +587,15 @@ class JacoEnv(object):
       elif self.mode ==1:
         p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
       elif self.mode == 3 or self.mode == 4 or self.mode == 6 or self.mode == 7:
-        # if self.key == 1 or self.key == 7:
-        p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
+        if self.key == 100:
+          p1 = [self.pos[0] - .15, self.pos[1], self.pos2[2]]
+          p2 = [self.pos[0] + .15, self.pos[1], self.pos2[2]]
+          p3 = [self.pos[0], self.pos[1] + .15, self.pos2[2]]
+          p4 = [self.pos[0], self.pos[1] - .15, self.pos2[2]]
+
+          p.addUserDebugLine(p1, p2, [0,1,1], 8, self.bciRate)
+          p.addUserDebugLine(p3, p4, [0,1,1], 8, self.bciRate)
+        else:
+          p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
         # else:
         #   p.addUserDebugLine([self.pos[0], self.pos[1], 0.001], [self.pos2[0], self.pos2[1], 0], [1,0,0,], 8, self.bciRate)

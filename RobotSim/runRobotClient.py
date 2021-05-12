@@ -88,9 +88,9 @@ while True:
 		interface.render()
 	if command == 4:	
 		key = val10
-		robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
-		robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
-		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
+		robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
+		robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
+		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
 		interface.updateRobotPos(robot_pos,key )
 		interface.render()
 
