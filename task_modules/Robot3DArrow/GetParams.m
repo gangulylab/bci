@@ -65,7 +65,7 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.UseSVM = true;
+Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 
 %% Multi State Decision Boundary
