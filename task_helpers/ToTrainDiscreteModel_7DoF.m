@@ -5,8 +5,10 @@ root_path = '/home/ucsf/Data/bravo1/20210514/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
+% foldernames = {'111533', '112105', '112436', '112747', '113524',
+% '113817', '114114',  '115402'}; %morning
 
-foldernames = {'134509', '134821', '135145', '135525'}; 
+foldernames = {'134509', '134821', '135145', '135525', '140741'}; 
 cd(root_path)
 
 %FOR IMAGINED MOVEMENT DATA, 
@@ -39,6 +41,8 @@ for i=1:length(foldernames)
             D5 = [D5 temp];
         elseif TrialData.TargetID == 6
             D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
         end
     end
 end
@@ -66,6 +70,8 @@ for i=1:length(foldernames)
             D5 = [D5 temp];
         elseif TrialData.TargetID == 6
             D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
         end
     end
 end
@@ -81,6 +87,7 @@ condn_data{3}=[D3(idx,:)]';
 condn_data{4}=[D4(idx,:)]'; 
 condn_data{5}=[D5(idx,:)]'; 
 condn_data{6}=[D6(idx,:)]'; 
+condn_data{7}=[D7(idx,:)]'; 
 
 A = condn_data{1};
 B = condn_data{2};
@@ -88,14 +95,14 @@ C = condn_data{3};
 D = condn_data{4};
 E = condn_data{5};
 F = condn_data{6};
-
+G = condn_data{7};
 
 clear N
-N = [A' B' C' D' E' F' ];
+N = [A' B' C' D' E' F' G'];
 T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
-    5*ones(size(E,1),1);6*ones(size(F,1),1)];
+    5*ones(size(E,1),1);6*ones(size(F,1),1);7*ones(size(G,1),1)];
 
-T = zeros(size(T1,1),6);
+T = zeros(size(T1,1),7);
 [aa bb]=find(T1==1);
 T(aa(1):aa(end),1)=1;
 [aa bb]=find(T1==2);
@@ -108,6 +115,8 @@ T(aa(1):aa(end),4)=1;
 T(aa(1):aa(end),5)=1;
 [aa bb]=find(T1==6);
 T(aa(1):aa(end),6)=1;
+[aa bb]=find(T1==7);
+T(aa(1):aa(end),7)=1;
 
 
 % training a simple MLP
@@ -118,7 +127,7 @@ net.performParam.regularization=0.2;
 net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 % classifier name
-classifier_name = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_5';
+classifier_name = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_SquezeHands_5';
 % generates the MLP as function in the clikcer folder. Make sure to update
 % the MLP classifier name in GetParams.m in the Neural Network section. 
 genFunction(net,classifier_name);

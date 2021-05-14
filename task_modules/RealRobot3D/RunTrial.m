@@ -18,7 +18,7 @@ fprintf('\nTrial: %i\n',Data.Trial)
 
 TargetName = {'Right Thumb', 'Down - Middle Finger', 'Left Thumb', 'Up - Lips', 'Up', 'Down'};
 
-TargetName = {'Blue', 'Green', 'Red', 'Orange', 'Up', 'Down'};
+TargetName = {'Blue', 'Green', 'Red', 'Yellow', 'Up', 'Down'};
  fprintf('TARGET: %s\n',TargetName{Data.TargetID})
 % fprintf('  Target: %i\n',Data.TargetPosition)
 if Params.Verbose
