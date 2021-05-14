@@ -64,6 +64,9 @@ write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pytho
 write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,7,Params.AssistAlpha*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,8,Params.AutoGrasp,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 
 pause(2.0)
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate

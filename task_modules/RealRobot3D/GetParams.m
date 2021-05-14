@@ -97,11 +97,11 @@ end
 
 %% Targets: radial layout
 
-Params.ReachTargetRadius = 200;
+Params.ReachTargetRadius = 180;
 d2 = sqrt(1/2);
 d3 = sqrt(1/3);
 
-h = 180;
+h = 240;
 
 Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, h;...
     0, Params.ReachTargetRadius, h; ...
@@ -213,13 +213,13 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 1;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 3;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
-    Params.StartPos             = [0,0, 180];
-    Params.NumTrialsPerBlock    = 4;
-    Params.TargetOrder          = [1:4];
+    Params.StartPos             = [0,0, h];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [2];
 elseif Params.RobotMode == 2
     Params.ValidDir          = [5:6];
     Params.StartPos          = [0,0, 250];
@@ -227,7 +227,12 @@ elseif Params.RobotMode == 2
     Params.TargetOrder          = [5,6];
 elseif Params.RobotMode == 3
     Params.ValidDir          = [1:6];
-    Params.StartPos          = [0,0, 300];
+    Params.StartPos          = [0,0, 350];
+    Params.NumTrialsPerBlock    = 4;
+    Params.TargetOrder          = [1:4];
+elseif Params.RobotMode == 4
+    Params.ValidDir          = [1:7];
+    Params.StartPos          = [0,0, 350];
     Params.NumTrialsPerBlock    = 4;
     Params.TargetOrder          = [1:4];
 end
@@ -240,7 +245,7 @@ Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
-Params.RobotTargetRadius = 30;
+Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -273,10 +278,11 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker     = 1;
-Params.TargetHoldTime   = 3;
+Params.TargetHoldTime   = 2;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 0.0;
+Params.AssistAlpha      = 1.0;
+Params.AutoGrasp = 0;
 
 end % GetParams

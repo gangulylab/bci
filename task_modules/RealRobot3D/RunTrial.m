@@ -129,9 +129,9 @@ if ~Data.ErrorID && Params.CueTime>0
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
 
-    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0], "127.0.0.1", Params.pythonPort); ;  
+    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0], "127.0.0.1", Params.pythonPort); 
     
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -139,7 +139,7 @@ if ~Data.ErrorID && Params.CueTime>0
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
         
         % Update Screen
-        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
             % time
             dt = tim - Cursor.LastPredictTime;
             TotalTime = TotalTime + dt;
@@ -148,7 +148,7 @@ if ~Data.ErrorID && Params.CueTime>0
             Data.Time(1,end+1) = tim;
             
             % grab and process neural data
-            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate)
                 dT = tim-Cursor.LastUpdateTime;
                 dT_vec(end+1) = dT;
                 Cursor.LastUpdateTime = tim;
@@ -172,14 +172,14 @@ if ~Data.ErrorID && Params.CueTime>0
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > Params.CueTime,
+        if InTargetTotalTime > Params.CueTime
             done = 1;
         end
     end % Instructed Delay Loop
 end % only complete if no errors
 
 %% Go to reach target
-if ~Data.ErrorID,
+if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -250,7 +250,6 @@ if ~Data.ErrorID,
                 end 
             end              
                 
-
                 Cursor.ClickState = Click_Decision;
                 Cursor.ClickDistance = Click_Distance;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
@@ -345,24 +344,8 @@ if ~Data.ErrorID,
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
              
-            % start counting time if cursor is in target
-            if TargetID==Data.TargetID
-                inTargetOld = 1;
-                InTargetTotalTime = InTargetTotalTime + dt;
-                if Params.RobotClicker
-                    if RunningMode_ClickDec == 7
-                        done = 1;
-                        Data.SelectedTargetID = TargetID;
-                        Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
-                    end
-                end
-            else
-                InTargetTotalTime = 0;
-                inTargetOld = 0;
-            end
-             
         % end if takes too long
-        if TotalTime > Params.MaxReachTime,
+        if TotalTime > Params.MaxReachTime
             done = 1;
             Data.ErrorID = 3;
             Data.ErrorStr = 'ReachTarget';
@@ -384,13 +367,6 @@ if ~Data.ErrorID,
             u = 0;
         end
         
-        
-%         % end if in target for hold time (not using clicker)
-%         if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1)
-%             done = 1;
-%             Data.SelectedTargetID = TargetID;
-%             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
-%         end
         end 
     end % Reach Target Loop
 end % only complete if no errors
