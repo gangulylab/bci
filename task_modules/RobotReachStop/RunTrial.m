@@ -263,6 +263,9 @@ if ~Data.ErrorID
              if TargetID == Data.TargetID
                  fwrite(Params.udp, [0, 15, 1])
                  inTargetOld = 1;
+                 if Params.bypassClicker == 1
+                     done = 1;
+                 end
                 if RunningMode_ClickDec == 7
                     done = 1;
                     fwrite(Params.udp, [0, 15, 0])

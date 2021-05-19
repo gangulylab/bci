@@ -1,14 +1,21 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210514/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210519/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
 % foldernames = {'111533', '112105', '112436', '112747', '113524',
 % '113817', '114114',  '115402'}; %morning
 
-foldernames = {'134509', '134821', '135145', '135525', '140741'}; 
+% foldernames = {'134509', '134821', '135145', '135525', '140741'}; 
+% 
+% foldernames = {'111602', '112055', '112427', '112811', '113337', '113552', '113924', '114205'...
+%     '114800', '115132', '115413', '132949', '133554', '133844'};
+
+
+foldernames = {'132949', '133554', '133844', '134859', '135041', '135057', '135324', '135652', '140726', '144542', '144754', '145042'};
+
 cd(root_path)
 
 %FOR IMAGINED MOVEMENT DATA, 
@@ -127,7 +134,7 @@ net.performParam.regularization=0.2;
 net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 % classifier name
-classifier_name = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_SquezeHands_5';
+classifier_name = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_SquezeHands_10';
 % generates the MLP as function in the clikcer folder. Make sure to update
 % the MLP classifier name in GetParams.m in the Neural Network section. 
 genFunction(net,classifier_name);

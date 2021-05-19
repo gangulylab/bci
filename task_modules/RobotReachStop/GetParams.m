@@ -73,7 +73,8 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_SquezeHands_2';
+%     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMid_SquezeHands_10';
+     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_6';
 %     Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -139,8 +140,8 @@ Params.NumFixedBlocks       = 1;
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 4;
 Params.TargetOrder          = [1:4];
-Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [1];
+% Params.NumTrialsPerBlock    = 1;
+% Params.TargetOrder          = [1];
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -226,7 +227,7 @@ Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
 Params.k_v = 0.9;
-Params.k_i = 10.0;
+Params.k_i = 5.0;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
@@ -249,8 +250,10 @@ Params.AssistAlpha = 0.0;
 
 Params.StopHoldTime     = 2.0;
 Params.StopTriggerCount = 1;
-Params.GoHoldTime       = 2.0;
+Params.GoHoldTime       = 60.0;
 Params.StartTrialHold   = 0;
+
+Params.bypassClicker = 1;
 
 
 end % GetParams
