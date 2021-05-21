@@ -80,6 +80,8 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
                 
             end
             
+            
+            
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Cursor.State= [0 0 0 0 0]';
@@ -226,8 +228,17 @@ if ~Data.ErrorID
                 InTargetTotalTime = 0;
             end
             
+            % get baseline data            
+            idx = find(Data.TaskState==1);
+            bl_data = cell2mat(Data.SmoothedNeuralFeatures(idx));
+            bl_mean = mean(bl_data,2);
+            bl_std = std(bl_data')';
+            % end of baseline data code
+            
+            
             Params.TargetID =  Data.TargetID;
-            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            [Click_Decision,Click_Distance] = ...
+                UpdateMultiStateClicker(Params,Neuro,Clicker,bl_mean,bl_std);
 %             Click_Decision = 0;
 %             Click_Distance = 0;
             Cursor.ClickState = Click_Decision;
