@@ -96,6 +96,12 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+
+%% ADAPTIVE BASELINE FLAG 
+% data is baseline to state 1 data
+Params.AdaptiveBaseline = false;
+
+
 %% Targets: radial layout
 Params.NumReachTargets   = 7;
 Params.TargetSpacing     = 10; % px

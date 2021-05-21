@@ -232,11 +232,20 @@ if ~Data.ErrorID
                 end
             end
             
+             % get baseline data            
+            idx = find(Data.TaskState==1);
+            bl_data = cell2mat(Data.SmoothedNeuralFeatures(idx));
+            bl_mean = mean(bl_data,2);
+            bl_std = std(bl_data')';
+            % end of baseline data code
+            
             Cursor.Center = Params.Center;
             TargetID = InTargetRobot2D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius);
             
             Params.TargetID =  Data.TargetID;
-            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+             [Click_Decision,Click_Distance] = ...
+                UpdateMultiStateClicker(Params,Neuro,Clicker,bl_mean,bl_std);
+            %[Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
 
             Cursor.ClickState = Click_Decision;
             Cursor.ClickDistance = Click_Distance;
