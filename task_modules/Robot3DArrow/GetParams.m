@@ -44,7 +44,7 @@ if Params.ClickerDataCollection
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -77,9 +77,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.7;       
+    Params.NeuralNetSoftMaxThresh = 0.8;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMid_SquezeHands_10';
+    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtHand_RtMiddle_Tongue_Thighs_PM_Adapt_2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -148,8 +148,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 
-Params.NumTrialsPerBlock    =21;
-Params.TargetOrder          = [ 1:7, 1:7, 1:7];
+Params.NumTrialsPerBlock    =18;
+Params.TargetOrder          = [ 1:6, 1:6, 1:6  ];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
