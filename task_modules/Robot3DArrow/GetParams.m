@@ -77,9 +77,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.8;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtHand_RtMiddle_Tongue_Thighs_PM_Adapt_2';
+    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL3';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -103,7 +103,7 @@ end
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
-Params.AdaptiveBaseline = false;
+Params.AdaptiveBaseline = true;
 
 %% Targets: radial layout
 Params.NumReachTargets   = 7;
@@ -148,8 +148,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 
-Params.NumTrialsPerBlock    =18;
-Params.TargetOrder          = [ 1:6, 1:6, 1:6  ];
+Params.NumTrialsPerBlock    =24;
+Params.TargetOrder          = [ 1:6, 1:6, 1:6 , 1:6 ];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order

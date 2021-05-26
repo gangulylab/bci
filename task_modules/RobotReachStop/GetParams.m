@@ -60,7 +60,7 @@ Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
 Params.UseSVM = false;
-Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 
 %% Multi State Decision Boundary
 % set this to negative values. I would say -0.3 to -0.6 would be okay
@@ -71,10 +71,10 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.8;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMid_SquezeHands_10';
-     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtHand_RtMiddle_Tongue_Thighs_PM_Adapt';
+     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
 %     Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_3Features_20210319';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -248,7 +248,7 @@ Params.dB = Params.dB*Params.k_i;
 
 Params.LongTrial = 0;
 
-Params.RobotClicker = 1;
+Params.RobotClicker = 0;
 Params.TargetHoldTime = 3;
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;

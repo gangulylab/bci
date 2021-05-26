@@ -1,14 +1,14 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210521/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210526/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
 
 
 
-foldernames = {'134354', '134910', '135225'};
+foldernames = {'141031', '141660'};
 
 cd(root_path)
 
@@ -31,13 +31,13 @@ for i=1:length(foldernames)
         temp = cell2mat(features(kinax));
         temp = temp(129:end,:);
         
-        %adaptive baseline training
-        idx_bl = find(TrialData.TaskState==1);
-        temp_bl = cell2mat(features(idx_bl));
-        temp_bl = temp_bl(129:end,:);
-        m = mean(temp_bl,2);
-        s = std(temp_bl')';
-        temp = (temp-m)./s;
+%         %adaptive baseline training
+%         idx_bl = find(TrialData.TaskState==1);
+%         temp_bl = cell2mat(features(idx_bl));
+%         temp_bl = temp_bl(129:end,:);
+%         m = mean(temp_bl,2);
+%         s = std(temp_bl')';
+%         temp = (temp-m)./s;
         
         
         if TrialData.TargetID == 1
@@ -60,7 +60,7 @@ end
 
 
 
-foldernames = {'140043','140256','140947', '141240','141737','142603'};
+foldernames = {'143458'};
 
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
@@ -73,13 +73,13 @@ for i=1:length(foldernames)
         temp = cell2mat(features(kinax));
         temp = temp(129:end,:);
         
-        %adaptive baseline training
-        idx_bl = find(TrialData.TaskState==1);
-        temp_bl = cell2mat(features(idx_bl));
-        temp_bl = temp_bl(129:end,:);
-        m = mean(temp_bl,2);
-        s = std(temp_bl')';
-        temp = (temp-m)./s;
+%         %adaptive baseline training
+%         idx_bl = find(TrialData.TaskState==1);
+%         temp_bl = cell2mat(features(idx_bl));
+%         temp_bl = temp_bl(129:end,:);
+%         m = mean(temp_bl,2);
+%         s = std(temp_bl')';
+%         temp = (temp-m)./s;
         
         
         if TrialData.TargetID == 1
@@ -146,7 +146,7 @@ net.performParam.regularization=0.2;
 net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 % classifier name
-classifier_name = 'MLP_Lips_RtThumb_LtHand_RtMiddle_Tongue_Thighs_PM_AdaptBl';
+classifier_name = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
 % generates the MLP as function in the clikcer folder. Make sure to update
 % the MLP classifier name in GetParams.m in the Neural Network section. 
 genFunction(net,classifier_name);
@@ -160,6 +160,7 @@ save net2 net2 % at the the end of second adaption
 clear
 clc
 cd('/home/ucsf/Projects/bci')
-ExperimentStart('RobotReachStop','bravo1',4,1,0)
+ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 
+ExperimentStart('RobotReachStop','bravo1',4,1,0)
 
