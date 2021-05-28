@@ -59,7 +59,7 @@ Params.ScreenRefreshRate = 8; % Hz
 Params.UpdateRate = 8; % Hz
 
 %% Discrete Decoder name
-Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
+Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 
 %% Multi State Decision Boundary
 % set this to negative values. I would say -0.3 to -0.6 would be okay
