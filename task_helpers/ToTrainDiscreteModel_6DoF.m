@@ -1,14 +1,14 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210526/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210528/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
 
 
 
-foldernames = {'141031', '141660'};
+foldernames = {'134331', '135005', '135339'};
 
 cd(root_path)
 
@@ -60,7 +60,7 @@ end
 
 
 % FOR ONLINE DATA
-foldernames = {'143458'};
+foldernames = {'134331', '135005', '135339'};
 
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');

@@ -74,7 +74,7 @@ if Params.NeuralNetFlag
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
-    Params.NeuralNetFunction = 'MLP_4D_Lips_RtThumb_LtThumb_RtMiddle_2';
+    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
 
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
@@ -94,6 +94,10 @@ if Params.ConvNeuralNetFlag
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% ADAPTIVE BASELINE FLAG 
+% data is baseline to state 1 data
+Params.AdaptiveBaseline = false;
 
 %% Targets: radial layout
 
@@ -245,8 +249,8 @@ elseif Params.RobotMode == 5
     0, 0, 240;...
     0, 0. 0];
     
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [2];
+    Params.NumTrialsPerBlock    = 3;
+    Params.TargetOrder          = [1:3];
     
 end
 
