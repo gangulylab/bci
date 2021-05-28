@@ -59,7 +59,7 @@ end
 
 
 
-
+% FOR ONLINE DATA
 foldernames = {'143458'};
 
 for i=1:length(foldernames)
@@ -138,25 +138,30 @@ T(aa(1):aa(end),5)=1;
 T(aa(1):aa(end),6)=1;
 
 
+%%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
 % TEST VALIDATION DOESN'T HAVE NaNs AND THAT PERFORMANCE IS REASONABLE
-net = patternnet([128 128 128 ]) ;
-net.performParam.regularization=0.2;
-net = train(net,N,T');
+%net = patternnet([128 128 128 ]) ;
+%net.performParam.regularization=0.2;
+%net = train(net,N,T');
+%%%%%%% END CODE SNIPPET %%%%%%%%%%%%%%%
+
+
+%%%%%%% UPDATING THE WEIGHTS OF A PRETRAINED MODEL %%%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
+load net % pretrained model
+net = train(net,N,T'); % updates the weights
+
 % classifier name
 classifier_name = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
-% generates the MLP as function in the clikcer folder. Make sure to update
-% the MLP classifier name in GetParams.m in the Neural Network section. 
-genFunction(net,classifier_name);
+genFunction(net,classifier_name); % make sure to update GetParams
 
-% also save the network
-save net net  % at the end of first  adpation
-net2 = net;
-save net2 net2 % at the the end of second adaption
 
-% to restart exp
+
+
+
+% to restart exp run following lines
 clear
 clc
 cd('/home/ucsf/Projects/bci')
