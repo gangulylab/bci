@@ -1,14 +1,17 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210528/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210602/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
 
 
 
-foldernames = {'134331', '135005', '135339'};
+foldernames = {'110816', '111415', '111725', '112739', '133417', '134037', '134340'};
+
+% foldernames = {'133417', '134037', '134340'};
+
 
 cd(root_path)
 
@@ -60,7 +63,7 @@ end
 
 
 % FOR ONLINE DATA
-foldernames = {'134331', '135005', '135339'};
+% foldernames = {'134331', '135005', '135339'};
 
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
@@ -154,7 +157,7 @@ load net % pretrained model
 net = train(net,N,T'); % updates the weights
 
 % classifier name
-classifier_name = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
+classifier_name = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
 genFunction(net,classifier_name); % make sure to update GetParams
 
 
@@ -165,7 +168,7 @@ genFunction(net,classifier_name); % make sure to update GetParams
 clear
 clc
 cd('/home/ucsf/Projects/bci')
-ExperimentStart('Robot3DArrow','bravo1',4,1,0)
-
-ExperimentStart('RobotReachStop','bravo1',4,1,0)
+% ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% 
+% ExperimentStart('RobotReachStop','bravo1',4,1,0)
 

@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
+    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL5';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -107,7 +107,7 @@ Params.OuterCircleRadius = 350; % defines outer edge of target
 Params.InnerCircleRadius = 150; % defines inner edge of target
 % Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
-Params.ReachTargetRadius = 250;
+Params.ReachTargetRadius = 150;
 
 d2 = sqrt(1/2);
 d3 = sqrt(1/3);
@@ -167,8 +167,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [1:4];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -272,7 +272,7 @@ Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
-Params.LongTrial = 0;
+Params.LongTrial = 1;
 Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(4,:);...
     Params.ReachTargetPositions(1,:);...

@@ -74,7 +74,7 @@ if Params.NeuralNetFlag
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
-    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL4';
+    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
 
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
@@ -242,7 +242,7 @@ elseif Params.RobotMode == 4
 elseif Params.RobotMode == 5
     Params.ValidDir          = [1:6];
     Params.StartPos          = [-200, -200, 350];
-    Params.StartPos          = [150, 150, 350];
+%     Params.StartPos          = [150, 150, 350];
     
     Params.ReachTargetPositions = [180, 0, 240;...
     0, 180, 240;...
