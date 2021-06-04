@@ -52,7 +52,7 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 8; % Hz
@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL5';
+    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL3_0604';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -83,6 +83,7 @@ end
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
@@ -167,8 +168,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [1:4];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -289,5 +290,5 @@ Params.TargetHoldTime = 3;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;
-Params.AssistAlpha = 0.2;
+Params.AssistAlpha = 0.0;
 end % GetParams
