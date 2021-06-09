@@ -1,14 +1,14 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210604/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210609/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
 
 
 
-foldernames = {'135519', '135952', '140605','141058'};
+foldernames = {'132824', '133615', '134307'};
 
 % foldernames = {'133417', '134037', '134340'};
 
@@ -63,7 +63,7 @@ end
 
 
 % FOR ONLINE DATA
- foldernames = {'142158','142617','142848'};
+ foldernames = {'135314','140629'};
 
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
@@ -157,7 +157,7 @@ load net % pretrained model
 net = train(net,N,T'); % updates the weights
 
 % classifier name
-classifier_name = 'MLP_Letters_0604_A';
+classifier_name = 'MLP_Imag_Actions_0609_B';
 genFunction(net,classifier_name); % make sure to update GetParams
 
 

@@ -52,11 +52,11 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 5;
+Params.FeatureBufferSize = 4;
 
 %% Timing
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 6; % Hz
+Params.UpdateRate = 6; % Hz
 
 
 %% Discrete Decoder name
@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL3_0604';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0609_B';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -221,7 +221,7 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
+Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
@@ -285,8 +285,8 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(7,:);...
     Params.ReachTargetPositions(8,:)];
 
-Params.RobotClicker = 1;
-Params.TargetHoldTime = 3;
+Params.RobotClicker = 0;
+Params.TargetHoldTime = 1;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;

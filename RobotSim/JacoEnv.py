@@ -150,7 +150,7 @@ class JacoEnv(object):
 
     # print(letter)
 
-    letters = ["A", "E", "B", "F", "C", "D"]
+    letters = ["A", "F", "B", "E", "C", "D"]
     offset = [[0,0,0], [0, -0.05, -0.05],  [0, -0.05, -0.05], [-.1, -0.05, -0.1], [0,0,-0.1], [0.1,-0.2,0.02], [0.05,-0.15,-0.1]]
 
     letter = letters[targetID-1]
@@ -170,7 +170,7 @@ class JacoEnv(object):
 
     # print(letter)
 
-    letters = ["A", "E", "B", "F", "C", "D"]
+    letters = ["A", "F", "B", "E", "C", "D"]
     offset = [[0,0,0], [0, -0.05, -0.0],  [0, -0.05, -0.05], [-.1, -0.05, -0.1], [0,0,-0.1], [0.1,-0.2,0.02], [0.05,-0.15,-0.1]]
 
     letter = letters[targetID-1]

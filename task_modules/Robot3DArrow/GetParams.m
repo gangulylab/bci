@@ -52,7 +52,7 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 5;
+Params.FeatureBufferSize = 4;
 
 %% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
@@ -61,8 +61,8 @@ Params.FeatureBufferSize = 5;
 Params.ClickCounter=5;
 
 %% Timing
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 6; % Hz
+Params.UpdateRate = 6; % Hz
 
 %% Discrete Decoder name
 Params.UseSVM = false;
@@ -79,7 +79,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.2;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Letters_0604';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0609';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -143,13 +143,13 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 1;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 
 
 Params.NumTrialsPerBlock    =24;
-Params.TargetOrder          = [1:6, 1:6, 1:6, 1:6 ,1:6];
+Params.TargetOrder          = [1:6, 1:6, 1:6,1:6];
 
 
 
@@ -198,7 +198,7 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
+Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 1.0;
 Params.MaxStartTime = 25;
@@ -217,7 +217,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.LetterMode           = 1;  % 1: letter cues, 0: box cues
+Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
 Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D 
 Params.RobotTargetRadius    = 40;
 
