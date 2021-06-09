@@ -48,35 +48,54 @@ while True:
 		if val1 == 1:		# Reset 
 			interface.reset()
 		if val1 == 2:		# Change hold time on debug lines
-			updateRate = 1.0 /val2;
-			interface.updateRefresh(updateRate);
+			updateRate = 1.0 /val2
+			interface.updateRefresh(updateRate)
+
+			interface.updateRefresh(.15)
 		if val1 == 3:		# Change hold time on debug lines
-			interface.updateMode(val2);
+			interface.updateMode(val2)
 		if val1 == 4:		# Change hold time on debug lines
-			interface.updateDebugLines(val2);
+			interface.updateDebugLines(val2)
 		if val1 == 5:
-			interface.create_target3D(target_pos, 0)
+			if interface.letterMode == 1:
+				interface.create_targetLetter(target_pos, 0)
+			else:
+				interface.create_target3D(target_pos,0 )
 		if val1 == 6:
-			interface.create_target3D(target_pos, 2)
+			if interface.letterMode == 1:
+				interface.create_targetLetter(target_pos, 2)
+			else:
+				interface.create_target3D(target_pos,2)
 		if val1 == 7:
-			interface.create_target3D(target_pos, 3)
+			if interface.letterMode == 1:
+				interface.create_targetLetter(target_pos, 3)
+			else:
+				interface.create_target3D(target_pos,3)
 		if val1 == 8:
 			interface.setMode(val2)
 		if val1 == 9:
 			interface.grabCube()
 		if val1 == 15:
 			interface.update_color(target_pos, val2)
+		if val1 == 16:
+			interface.targetID = val2
+		if val1 == 17:
+			interface.letterMode = val2
+
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
 		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
 		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
-		interface.create_target3D(target_pos,1 )
+		if interface.letterMode == 1:
+			interface.create_targetLetter(target_pos, 1)
+		else:
+			interface.create_target3D(target_pos,1 )
 
 	if command == 11:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
 		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
 		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
-
+		print(target_pos)
 		interface.create_target(target_pos)
 	if command == 2:	# Set Dirr
 		key = val1

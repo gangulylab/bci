@@ -143,13 +143,14 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 
 Params.NumTrialsPerBlock    =24;
 Params.TargetOrder          = [1:6, 1:6, 1:6, 1:6 ,1:6];
+
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
@@ -216,10 +217,13 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotTargetRadius    = 40;
+Params.LetterMode           = 1;  % 1: letter cues, 0: box cues
 Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D 
+Params.RobotTargetRadius    = 40;
+
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins
+
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;

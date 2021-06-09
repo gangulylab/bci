@@ -43,6 +43,9 @@ Cursor.ClickState = 0;
 Cursor.Counter = 0;
 Cursor.ClickDistance = 0;
 
+fwrite(Params.udp, [0,16,Data.TargetID]);
+
+
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
     tstart  = GetSecs;

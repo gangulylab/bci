@@ -48,8 +48,26 @@ class DiscreteActionsRobot():
         else:
             color = [0,1,0];
             self.robotenv.set_cubeColor(pos, color, 22)
-      
 
+    def create_targetLetter(self, cpos, st):
+        # self.targetPos = self.bci_to_robot_transform(pos)
+        pos = cpos.copy()
+        if st == 1:
+            color = [0,0,1];
+            self.robotenv.write_letter(pos, color, self.targetID)
+            self.newTarget = 1
+        elif st == 0:
+            color = [1,0,0];
+            # if self.newTarget ==1:
+            self.robotenv.set_letterColor(pos, color, self.targetID)
+                # self.newTarget = 0
+        elif st == 2:
+            color = [0,0,1];
+            self.robotenv.set_letterColor(pos, color, self.targetID)
+        else:
+            color = [0,1,0];
+            self.robotenv.set_letterColor(pos, color, self.targetID)
+      
     def render(self):
         self.robotenv.step()
 
