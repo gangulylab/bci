@@ -82,6 +82,12 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% POOLING CHANNELS FOR CONTROL
+% set this 1 only during online control
+Params.ChPooling = false; 
+
+
+
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
 Params.TargetSpacing     = 10; % px

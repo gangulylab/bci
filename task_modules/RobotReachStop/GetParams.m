@@ -101,6 +101,10 @@ end
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
 
+%% POOLING CHANNELS FOR CONTROL
+% set this 1 only during online control
+Params.ChPooling = false; 
+
 
 %% Targets: radial layout
 Params.NumReachTargets   = 7;
