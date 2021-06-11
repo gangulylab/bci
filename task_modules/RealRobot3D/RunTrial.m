@@ -18,7 +18,11 @@ fprintf('\nTrial: %i\n',Data.Trial)
 
 TargetName = {'Right Thumb', 'Down - Middle Finger', 'Left Thumb', 'Up - Lips', 'Up', 'Down'};
 
+if Params.GraspTask == 1
+    TargetName = {'Close', 'Rotate Red', 'Open', 'Rotate Blue', 'Up', 'Down'};
+else
 TargetName = {'Blue', 'Green', 'Red', 'Yellow', 'Up', 'Down'};
+end
  fprintf('TARGET: %s\n',TargetName{Data.TargetID})
 % fprintf('  Target: %i\n',Data.TargetPosition)
 if Params.Verbose
@@ -129,7 +133,7 @@ if ~Data.ErrorID && Params.CueTime>0
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
 
-    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0], "127.0.0.1", Params.pythonPort); 
+    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID], "127.0.0.1", Params.pythonPort); 
     
     while ~done
         % Update Time & Position
@@ -235,9 +239,6 @@ if ~Data.ErrorID
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
             
-            if Click_Decision == 5
-                Click_Decision = 6;
-            end
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -323,19 +324,17 @@ if ~Data.ErrorID
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
-            Cursor.State(1:3);
-            
-            [xa,xb,xc] = doubleToUDP(Cursor.State(1));
-            [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
-            [za,zb,zc] = doubleToUDP(Cursor.State(3)-256) ;
-            
-            write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send pos
-
-            [xa,xb,xc] = doubleToUDP(Cursor.State(4));
-            [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
-            [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
-            
-            write(Params.udp, [5, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
+%             
+%             [xa,xb,xc] = doubleToUDP(Cursor.State(1));
+%             [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
+%             [za,zb,zc] = doubleToUDP(Cursor.State(3)-256) ;
+%             
+%             write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send pos
+% 
+%             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
+%             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
+%             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
+            write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
@@ -463,6 +462,8 @@ else
     end
     WaitSecs(Params.ErrorWaitTime);
 end
+
+pause()
 
 end % RunTrial
 

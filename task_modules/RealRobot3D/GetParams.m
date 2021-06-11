@@ -55,8 +55,8 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 4;
 
 %% Timing
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
@@ -217,7 +217,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 7;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -232,8 +232,8 @@ elseif Params.RobotMode == 2
 elseif Params.RobotMode == 3
     Params.ValidDir          = [1:6];
     Params.StartPos          = [0,0, 350];
-    Params.NumTrialsPerBlock    = 4;
-    Params.TargetOrder          = [1:4];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];
 elseif Params.RobotMode == 4
     Params.ValidDir          = [1:7];
     Params.StartPos          = [0,0, 350];
@@ -249,12 +249,20 @@ elseif Params.RobotMode == 5
     0, 0, 240;...
     0, 0. 0];
     
-    Params.NumTrialsPerBlock    = 3;
-    Params.TargetOrder          = [1:3];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];
     
+elseif Params.RobotMode == 7
+    Params.ValidDir          = [1:6];
+    Params.StartPos          = [0,0, 300];
+    Params.NumTrialsPerBlock    = 6;
+    Params.TargetOrder          = [1,3,2,4,5,6];
+%     Params.NumTrialsPerBlock    = 1;
+%     Params.TargetOrder          = [5];
+%     
 end
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.limit = [-200, 200; -200 200; 180 450];
@@ -295,11 +303,13 @@ Params.LongTrial = 0;
 %     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker     = 1;
-Params.TargetHoldTime   = 2;
+Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
+
+Params.GraspTask = 1;
 
 end % GetParams
