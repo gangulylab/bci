@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
 %     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
-Params.NeuralNetFunction = 'MLP_Imag_Actions_0611_D';
+Params.NeuralNetFunction = 'MLP_Imag_Actions_0615_PF';
 
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
@@ -98,12 +98,12 @@ end
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
-Params.AdaptiveBaseline = false;
+Params.AdaptiveBaseline = true;
 
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = false; 
+Params.ChPooling = true; 
 
 
 %% Targets: radial layout
@@ -226,7 +226,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 8;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 7;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -262,7 +262,7 @@ elseif Params.RobotMode == 5
     Params.TargetOrder          = [1];
     
 elseif Params.RobotMode == 7
-    Params.ValidDir          = [1:6];
+    Params.ValidDir          = [1:7];
     Params.StartPos          = [0,0, 300];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [5];

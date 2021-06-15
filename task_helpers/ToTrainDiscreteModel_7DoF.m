@@ -1,7 +1,7 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210519/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210615/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -14,7 +14,13 @@ root_path = '/home/ucsf/Data/bravo1/20210519/Robot3DArrow';
 %     '114800', '115132', '115413', '132949', '133554', '133844'};
 
 
-foldernames = {'132949', '133554', '133844', '134859', '135041', '135057', '135324', '135652', '140726', '144542', '144754', '145042'};
+% foldernames = {'132949', '133554', '133844', '134859', '135041', '135057', '135324', '135652', '140726', '144542', '144754', '145042'};
+
+% foldernames = {'110604', '111123', '111649', '112201', '113524',
+% '113754', '113909', '114318', '114537'}; % 
+
+foldernames = {'110604', '111123', '111649', '112201', '113524','113754', '113909', '114318', '114537', ...
+'132843', '133545', '134131', '134735', '135913', '140642', '140904'};
 
 cd(root_path)
 
@@ -158,7 +164,7 @@ net = train(net,N,T');
 %%% SAVING %%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0609_B';
+classifier_name = 'MLP_Imag_Actions_0615_E';
 genFunction(net,classifier_name); % make sure to update GetParams
 
 
@@ -166,7 +172,7 @@ genFunction(net,classifier_name); % make sure to update GetParams
 clear
 clc
 cd('/home/ucsf/Projects/bci')
- ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+%  ExperimentStart('Robot3DArrow','bravo1',4,1,0)
  
  %ExperimentStart('Robot3D','bravo1',4,1,0)
 % 
@@ -179,11 +185,11 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210609/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210615/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
+foldernames = {'132843', '133545', '134131', '134735', '145829', '150031', '150224'};
 
-foldernames = {'132824', '133615', '134307'};
 
 % foldernames = {'133417', '134037', '134340'};
 
@@ -251,7 +257,7 @@ end
 
 
 % FOR ONLINE DATA
- foldernames = {'135314','140629'};
+%  foldernames = {'135314','140629'};
  
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -302,8 +308,6 @@ for ii=1:length(foldernames)
         end
     end
 end
-
-
 
 clear condn_data
 % combing delta beta and high gamma
@@ -361,13 +365,13 @@ net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0609_B';
+classifier_name = 'MLP_Imag_Actions_0615_PF';
 genFunction(net,classifier_name); % make sure to update GetParams
-
-
-% to restart exp run following lines
-clear
-clc
-cd('/home/ucsf/Projects/bci')
- ExperimentStart('Robot3DArrow','bravo1',4,1,0)
- 
+% 
+% 
+% % to restart exp run following lines
+% clear
+% clc
+% cd('/home/ucsf/Projects/bci')
+%  ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+%  

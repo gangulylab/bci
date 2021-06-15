@@ -79,7 +79,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.2;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0611_C';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0615_PF';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -107,7 +107,7 @@ Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = false; 
+Params.ChPooling = true; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 7;
@@ -152,8 +152,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 
-Params.NumTrialsPerBlock    = 24;
-Params.TargetOrder          = [1:6, 1:6, 1:6,1:6];
+Params.NumTrialsPerBlock    = 7;
+Params.TargetOrder          = [1:7];
 
 
 
