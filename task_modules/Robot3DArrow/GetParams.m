@@ -52,7 +52,7 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Bins for successful target selection
 % The number of bins of successful decodes to hit the target
@@ -61,8 +61,8 @@ Params.FeatureBufferSize = 4;
 Params.ClickCounter=5;
 
 %% Timing
-Params.ScreenRefreshRate = 6; % Hz
-Params.UpdateRate = 6; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Discrete Decoder name
 Params.UseSVM = false;
@@ -79,7 +79,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.2;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0609';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0611_C';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -152,7 +152,7 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 
-Params.NumTrialsPerBlock    =24;
+Params.NumTrialsPerBlock    = 24;
 Params.TargetOrder          = [1:6, 1:6, 1:6,1:6];
 
 

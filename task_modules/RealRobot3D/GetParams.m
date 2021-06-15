@@ -74,7 +74,8 @@ if Params.NeuralNetFlag
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
-    Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
+%     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
+Params.NeuralNetFunction = 'MLP_Imag_Actions_0611_D';
 
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
@@ -127,6 +128,8 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, h;...
 Params.ReachTargetPositions = [Params.ReachTargetPositions;...
     Params.ReachTargetPositions(1,1:2),-150;...
     Params.ReachTargetPositions(2,1:2),-150;...
+    Params.ReachTargetPositions(3,1:2),-150;...
+    Params.ReachTargetPositions(4,1:2),-150;
     Params.ReachTargetPositions(3,1:2),-150;...
     Params.ReachTargetPositions(4,1:2),-150];
 
@@ -208,7 +211,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 50 ;
+Params.MaxReachTime = 180 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -261,8 +264,8 @@ elseif Params.RobotMode == 5
 elseif Params.RobotMode == 7
     Params.ValidDir          = [1:6];
     Params.StartPos          = [0,0, 300];
-    Params.NumTrialsPerBlock    = 6;
-    Params.TargetOrder          = [1,3,2,4,5,6];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [5];
 %     Params.NumTrialsPerBlock    = 1;
 %     Params.TargetOrder          = [5];
 %     
