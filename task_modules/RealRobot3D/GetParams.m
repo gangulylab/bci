@@ -226,7 +226,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 7;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 8;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -268,8 +268,19 @@ elseif Params.RobotMode == 7
     Params.TargetOrder          = [5];
 %     Params.NumTrialsPerBlock    = 1;
 %     Params.TargetOrder          = [5];
+
+elseif Params.RobotMode == 8
+    Params.ValidDir          = [1:7];
+    Params.StartPos          = [-200,-200, 300];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [5];
+%     Params.NumTrialsPerBlock    = 1;
+%     Params.TargetOrder          = [5];
 %     
 end
+
+Params.index = 1;
+Params.clickOrder = [1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6, 7,7,7,7,7,7,7,7,7,7,7,1,1,1,1,1,1,1,1,1,1,];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
