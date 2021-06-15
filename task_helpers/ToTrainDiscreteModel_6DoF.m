@@ -156,6 +156,9 @@ cd('/home/ucsf/Projects/bci/clicker')
 load net % pretrained model
 net = train(net,N,T'); % updates the weights
 
+
+%%% SAVING %%%%%%%
+cd('/home/ucsf/Projects/bci/clicker')
 % classifier name
 classifier_name = 'MLP_Imag_Actions_0609_B';
 genFunction(net,classifier_name); % make sure to update GetParams
