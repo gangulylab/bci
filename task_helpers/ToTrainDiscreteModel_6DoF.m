@@ -168,10 +168,10 @@ genFunction(net,classifier_name); % make sure to update GetParams
 
 
 % to restart exp run following lines
-% clear
-% clc
-% cd('/home/ucsf/Projects/bci')
-%  ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+clear
+clc
+cd('/home/ucsf/Projects/bci')
+ ExperimentStart('Robot3DArrow','bravo1',4,1,0)
  
  %ExperimentStart('Robot3D','bravo1',4,1,0)
 % 

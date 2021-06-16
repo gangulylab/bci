@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0611_D';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0616_7DoF_PM4';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -101,7 +101,7 @@ end
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = false; 
+Params.ChPooling = true; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
@@ -287,8 +287,8 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(7,:);...
     Params.ReachTargetPositions(8,:)];
 
-Params.RobotClicker = 0;
-Params.TargetHoldTime = 1;
+Params.RobotClicker = 1;
+Params.TargetHoldTime = 1.5;
 
 Params.boundaryDist = 0;
 Params.boundaryVel = 0;

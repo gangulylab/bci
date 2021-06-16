@@ -71,13 +71,17 @@ Params.MultiDecisionBoundary = -2;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.7;
-   Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpDown_ForY';
+   Params.NeuralNetSoftMaxThresh = 0.6;
+   Params.NeuralNetFunction = 'MLP_Imag_Actions_0616_7DoF_PM2';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+
+%% POOLING CHANNELS FOR CONTROL
+% set this 1 only during online control
+Params.ChPooling = true; 
 
 
 %% Targets: radial layout

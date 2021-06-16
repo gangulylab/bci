@@ -77,9 +77,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.2;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0615_PF';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0616_7DoF_PM2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -149,11 +149,11 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 2;
 
 
 Params.NumTrialsPerBlock    = 7;
-Params.TargetOrder          = [1:7];
+Params.TargetOrder          = [1:7,1:7];
 
 
 
