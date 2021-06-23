@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.7;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0611_D';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0623_7DoF_PM4';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -101,7 +101,7 @@ end
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = false; 
+Params.ChPooling = true; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
@@ -180,8 +180,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [1];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1 2 5 3 4 6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -237,7 +237,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 25 ;
+Params.MaxReachTime = 35 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -253,9 +253,9 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.limit = [-400, 400; -400 400; -300 350];
-Params.RobotMode            = 9;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 6;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -287,12 +287,12 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 % Target
-Params.RobotTargetRadius = 20;  % increase radius if task too hard
+Params.RobotTargetRadius = 75;  % increase radius if task too hard
 Params.TargetHoldTime = 2;
 
 % Clicker
-Params.RobotClicker = 0;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 10;
+Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.ClickerBinNum = 3;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
