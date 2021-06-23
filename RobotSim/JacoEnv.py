@@ -55,6 +55,8 @@ class JacoEnv(object):
     self.dl  = dl
     self.key = 0
 
+    self.robotTargetRad = .02
+
     p.loadURDF("plane.urdf",[0,0,-.65])
     p.loadURDF("table/table.urdf", basePosition=[-0.6,0.45,-0.65])
     self.jacoId = p.loadURDF("URDFs/jaco/j2n6s300.urdf", [0,0,0],  useFixedBase=True)
@@ -71,6 +73,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 5:
       p.resetDebugVisualizerCamera(cameraDistance=0.4, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 9:
+      p.resetDebugVisualizerCamera(cameraDistance=5., cameraYaw= 0, cameraPitch= 80, cameraTargetPosition=[-0.35,0.3,0.3])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -239,6 +243,76 @@ class JacoEnv(object):
     p.addUserDebugLine(c3, c4, [0,0,0], lw, 0)
     p.addUserDebugLine(c5, c6, [0,0,0], lw, 0)
 
+
+  def set_ringTarget(self, pos, c):
+
+      pos[0] = self.center[0] + pos[0]
+      pos[1] = self.center[1] + pos[1]
+      pos[2] = self.center[2] + pos[2]
+      lw = 6
+      # d = .06
+      # d = .02
+      d = self.robotTargetRad
+      dz = .03
+      # z = .1
+      # self.c1 = [pos[0] + dy, pos[1]-dy, pos[2]-dz]
+      # self.c2 = [pos[0] + dy, pos[1]+dy, pos[2]-dz]
+      # self.c3 = [pos[0] - dy, pos[1]+dy, pos[2]-dz]
+      # self.c4 = [pos[0] - dy, pos[1]-dy, pos[2]-dz]
+ 
+
+      # p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+      # p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+      # p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+      # p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
+  
+      self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d - dz]
+      self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d - dz]
+      self.c3 = [pos[0] + d, pos[1]-d, pos[2]+d - dz]
+      self.c4 = [pos[0] - d, pos[1]-d, pos[2]+d - dz]
+      self.c5 = [pos[0] - d, pos[1]+d, pos[2]-d - dz]
+      self.c6 = [pos[0] + d, pos[1]+d, pos[2]-d - dz]
+      self.c7 = [pos[0] + d, pos[1]+d, pos[2]+d - dz]
+      self.c8 = [pos[0] - d, pos[1]+d, pos[2]+d - dz]
+
+      p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+      p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+      p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+      p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
+
+      p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
+      p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
+      p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
+      p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
+
+      p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
+      p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
+      p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
+      p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
+      d1 = [pos[0], pos[1], pos[2]]
+      d2 = [self.center[0],self.center[1] ,self.center[2] ]
+
+  def set_ringColor(self, pos, c, lw):
+      # p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+      # p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+      # p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+      # p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
+
+      p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+      p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+      p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+      p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
+
+      p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
+      p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
+      p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
+      p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
+
+      p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
+      p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
+      p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
+      p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
+  
   def set_cubeTarget(self, pos, c):
 
       pos[0] = self.center[0] + pos[0]
@@ -334,10 +408,6 @@ class JacoEnv(object):
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
     elif key == 16:
       self.fing = self.fing - self.distf
-      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-      if self.dl: 
-        p.addUserDebugText('OPEN', (self.pos2[0] + 0.05, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
-    elif key == 14: 
       self.fing = self.fing + self.distf
       self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
       if self.dl:  
@@ -504,6 +574,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.25, cameraYaw= 0, cameraPitch=0, cameraTargetPosition=[-0.35,0.3,0.2])  
     elif self.mode == 7:
       p.resetDebugVisualizerCamera(cameraDistance=0.5, cameraYaw= 25, cameraPitch=-20, cameraTargetPosition=[-0.35,0.3,0.2])    
+    elif self.mode == 9:
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -543,11 +615,13 @@ class JacoEnv(object):
 
     if self.mode < 5:
         self.drawAxes()
+    if self.mode == 9:
+      self.drawAxes()
     rp = [0,math.pi/4,math.pi,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi]
 
     if self.mode == 0:
       self.pos =list([-0.35, 0.3, 0.2])
-    elif self.mode ==3:
+    elif self.mode ==3 or self.mode == 9:
       self.pos =list([-0.35, 0.3, 0.25])
     else:
       self.pos =list([-0.35, 0.3, 0.2])
@@ -555,8 +629,11 @@ class JacoEnv(object):
     self.orn = p.getQuaternionFromEuler([math.pi,0,math.pi/2])
     if self.mode == 7:
       self.fing = 0.0
+    elif self.mode == 9:
+      self.fing = 1.35
     else:
-      self.fing = 0.675;
+      self.fing = 0.675
+      
 
     # for i in range(8):
     #   p.resetJointState(self.jacoId,i, rp[i])
@@ -630,7 +707,7 @@ class JacoEnv(object):
         p.addUserDebugLine([self.pos[0], self.pos[1], 0.001], [self.pos2[0], self.pos2[1], 0], [1,0,0,], 8, self.bciRate)
       elif self.mode ==1:
         p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
-      elif self.mode == 3 or self.mode == 4 or self.mode == 6 or self.mode == 7 or self.mode == 8:
+      elif self.mode == 3 or self.mode == 4 or self.mode > 5:
         if self.key == 100:
           p1 = [self.pos[0] - .15, self.pos[1], self.pos2[2]]
           p2 = [self.pos[0] + .15, self.pos[1], self.pos2[2]]

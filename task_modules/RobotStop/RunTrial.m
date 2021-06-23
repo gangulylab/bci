@@ -36,13 +36,15 @@ if Params.BLACKROCK,
 end
 
 % reset cursor
-if Params.LongTrial
-        Cursor.State = [0,0,0,0,0,0]';
-        Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
-else
-        Cursor.State = [0,0,0,0,0,0]';
-end
-    Cursor.IntendedState = [0,0,0,0,1]';
+% if Params.LongTrial
+%         Cursor.State = [0,0,0,0,0,0]';
+%         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
+% else
+%         Cursor.State = [0,0,0,0,0,0]';
+%         
+% end
+Cursor.State = [0,0,0,0,0,0]';
+Cursor.IntendedState    = [0,0,0,0,1]';
 
 
 Cursor.ClickState = 0;
@@ -183,6 +185,7 @@ if ~Data.ErrorID,
     InTargetTotalTime = 0;
     
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
+    StopClicker_Buffer = zeros(Params.ClickerBinNum, 1);
     temp_dir = [0,0,0];
     ClickToSend = 0;
     
@@ -255,13 +258,18 @@ if ~Data.ErrorID,
                                 
                 ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
                 ClickDec_Buffer(end) = Click_Decision;
-                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
+                
+                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);  
+                                
+                StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
+                StopClicker_Buffer(end) = Click_Decision == 7;
 
                 ClickToSend = RunningMode_ClickDec;
                 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
-                if RunningMode_ClickDec == 7
+
+                if Params.RobotClickerStop == 1 && RunningMode_ClickDec == 7
                     Cursor.State(4:6) = [0;0;0];          
                 else 
 
@@ -336,11 +344,13 @@ if ~Data.ErrorID,
             Data.TaskState(1,end+1)=Cursor.TaskState;
              
             % start counting time if cursor is in target
-            if TargetID==Data.TargetID,
+            if TargetID==Data.TargetID
                 inTargetOld = 1;
                 InTargetTotalTime = InTargetTotalTime + dt;
                 if Params.RobotClicker
-                    if RunningMode_ClickDec == 7
+                    mean(StopClicker_Buffer)
+                    if mean(StopClicker_Buffer) > Params.ClickerBinThresh
+                        
                         done = 1;
                         Data.SelectedTargetID = TargetID;
                         Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
@@ -377,7 +387,7 @@ if ~Data.ErrorID,
         end
         
         % end if in target for hold time (not using clicker)
-        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
+        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.RobotClicker ==0),
             done = 1;
             Data.SelectedTargetID = TargetID;
             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
@@ -386,6 +396,8 @@ if ~Data.ErrorID,
         
     end % Reach Target Loop
 end % only complete if no errors
+
+pause(0.5)
 
 %% Inter trial interval
 % blank screen at end of trial but continue collecting data

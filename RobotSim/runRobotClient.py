@@ -12,6 +12,7 @@ interface.mode = 10
 interface.angle = 0
 interface.debugLines = 0
 interface.open()
+interface.letterMode = 0
 
 robot_open = 1
 target_pos = np.array([0.0, 300.0, 0.0])
@@ -59,16 +60,24 @@ while True:
 		if val1 == 5:
 			if interface.letterMode == 1:
 				interface.create_targetLetter(target_pos, 0)
+			elif interface.mode == 9:
+				interface.create_targetRing(target_pos,0)
 			else:
-				interface.create_target3D(target_pos,0 )
+				interface.create_target3D(target_pos, 0)
+
 		if val1 == 6:
 			if interface.letterMode == 1:
 				interface.create_targetLetter(target_pos, 2)
+			elif interface.mode == 9:
+				interface.create_targetRing(target_pos,2)
+				print("BLUE")
 			else:
-				interface.create_target3D(target_pos,2)
+				interface.create_target3D(target_pos, 2)
 		if val1 == 7:
 			if interface.letterMode == 1:
 				interface.create_targetLetter(target_pos, 3)
+			elif interface.mode == 9:
+				interface.create_targetRing(target_pos,3)
 			else:
 				interface.create_target3D(target_pos,3)
 		if val1 == 8:
@@ -81,20 +90,24 @@ while True:
 			interface.targetID = val2
 		if val1 == 17:
 			interface.letterMode = val2
+		if val1 == 18:
+			interface.setTargetRad(val2/1000.0)
 
 	if command == 1:	# Set Target
-		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
-		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
-		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
+		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
+		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
+		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
 		if interface.letterMode == 1:
 			interface.create_targetLetter(target_pos, 1)
+		elif interface.mode == 9:
+			interface.create_targetRing(target_pos,1 )
 		else:
-			interface.create_target3D(target_pos,1 )
+			interface.create_target3D(target_pos, 1)
 
 	if command == 11:	# Set Target
-		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1250
-		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1250
-		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1250
+		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
+		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
+		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
 		print(target_pos)
 		interface.create_target(target_pos)
 	if command == 2:	# Set Dirr

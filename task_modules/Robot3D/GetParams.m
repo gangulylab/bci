@@ -110,7 +110,7 @@ Params.OuterCircleRadius = 350; % defines outer edge of target
 Params.InnerCircleRadius = 150; % defines inner edge of target
 % Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
-Params.ReachTargetRadius = 250;
+Params.ReachTargetRadius = 200;
 
 d2 = sqrt(1/2);
 d3 = sqrt(1/3);
