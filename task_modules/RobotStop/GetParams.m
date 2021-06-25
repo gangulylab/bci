@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0623_7DoF_PM4';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0625_7DoF_AM3';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -253,9 +253,9 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.limit = [-400, 400; -400 400; -300 350];
-Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotMode            = 9;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 6;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -287,7 +287,7 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 % Target
-Params.RobotTargetRadius = 75;  % increase radius if task too hard
+Params.RobotTargetRadius = 40;  % increase radius if task too hard
 Params.TargetHoldTime = 2;
 
 % Clicker
