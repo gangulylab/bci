@@ -226,7 +226,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 7;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 8;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -273,10 +273,7 @@ elseif Params.RobotMode == 8
     Params.ValidDir          = [1:7];
     Params.StartPos          = [-200,-200, 300];
     Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [5];
-%     Params.NumTrialsPerBlock    = 1;
-%     Params.TargetOrder          = [5];
-%     
+    Params.TargetOrder          = [5];    
 end
 
 Params.index = 1;
@@ -311,18 +308,9 @@ Params.dB = [zeros(3);eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
 Params.LongTrial = 0;
-% Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
-%     Params.ReachTargetPositions(4,:);...
-%     Params.ReachTargetPositions(1,:);...
-%     Params.ReachTargetPositions(2,:);...
-%     Params.ReachTargetPositions(6,:);...
-%     Params.ReachTargetPositions(5,:);...
-%     Params.ReachTargetPositions(9,:);...
-%     Params.ReachTargetPositions(10,:);...
-%     Params.ReachTargetPositions(7,:);...
-%     Params.ReachTargetPositions(8,:)];
 
 Params.RobotClicker     = 1;
+Params.ClickerBinNum = 5;
 Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
