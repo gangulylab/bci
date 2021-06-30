@@ -277,8 +277,8 @@ elseif Params.RobotMode == 8
 end
 
 Params.index = 1;
-Params.clickOrder = [1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6, 7,7,7,7,7,7,7,7,7,7,7,1,1,1,1,1,1,1,1,1,1,];
-
+Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
+% Params.clickOrder = ones(100,1)*7;
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
@@ -319,5 +319,8 @@ Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 
 Params.GraspTask = 1;
+
+Params.autoCenterOverTarget = 1;
+Params.autoCenterDist = 10;
 
 end % GetParams

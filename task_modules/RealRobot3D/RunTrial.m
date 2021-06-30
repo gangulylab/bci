@@ -9,7 +9,7 @@ global Cursor
 %% Set up trial
 
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
-
+pause()
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
