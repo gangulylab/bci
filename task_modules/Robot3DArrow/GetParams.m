@@ -79,7 +79,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0625_7DoF_PM2';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0630_7DoF_PM2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -152,8 +152,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 
-Params.NumTrialsPerBlock    = 28;
-Params.TargetOrder          = [1:7,1:7, 1:7, 1:7];
+Params.NumTrialsPerBlock    = 14;
+Params.TargetOrder          = [1:7,1:7];
 
 
 
