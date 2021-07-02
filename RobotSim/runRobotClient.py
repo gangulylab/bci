@@ -8,7 +8,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 10
+interface.mode = 11
 interface.angle = 0
 interface.debugLines = 0
 interface.open()
@@ -110,6 +110,8 @@ while True:
 		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
 		print(target_pos)
 		interface.create_target(target_pos)
+
+
 	if command == 2:	# Set Dirr
 		key = val1
 		interface.update_joystick(key)
@@ -119,12 +121,38 @@ while True:
 		interface.update_joystick(key)
 		interface.render()
 	if command == 4:	
+		if interface.mode == 10:
+			interface.robotenv.drawMode(1)
 		key = val10
 		robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
 		robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
 		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
+		interface.robotenv.opMode = 0
 		interface.updateRobotPos(robot_pos,key )
 		interface.render()
+
+	if command == 7:	
+		interface.robotenv.drawMode(2)
+		key = val10
+		# robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
+		# robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
+		
+		robot_ornz = ((val1-1) *val2 + val3/100)/10
+
+		interface.robotenv.opMode = 1
+		interface.robotenv.set_robotOrn(robot_ornz)
+
+		grasp =  val5
+
+		if grasp == 1:
+			interface.robotenv.setFing(0)
+		elif grasp == 2:
+			interface.robotenv.setFing(1.3)
+
+		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
+		interface.updateRobotPos(robot_pos,key )
+		interface.render()
+
 
 	if command == 5:
 		interface.displayCue(val1,val2)
