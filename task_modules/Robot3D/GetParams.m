@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.7;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0616_7DoF_PM4';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0702_7DoF_PM4';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -245,8 +245,8 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.limit = [-400, 400; -400 400; -350 350];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+Params.RunningModeBinNum    = 6;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;

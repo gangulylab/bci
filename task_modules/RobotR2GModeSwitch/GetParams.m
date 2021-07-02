@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0625_7DoF_AM3';
+    Params.NeuralNetFunction = 'MLP_Imag_Actions_0702_7DoF_PM3';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -237,7 +237,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 60;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -305,7 +305,7 @@ Params.ClickerBinThresh = 0.7;
 
 Params.switchLockCnt = 10;
 Params.GraspBinNum = 10;
-Params.GraspBinThresh = 0.7;
+Params.GraspBinThresh = 0.6;
 
 Params.autoCenterOverTarget = 1;
 
