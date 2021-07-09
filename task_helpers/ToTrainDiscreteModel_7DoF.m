@@ -1,7 +1,7 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210630/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210709/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210707/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210709/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -211,14 +211,12 @@ root_path = '/home/ucsf/Data/bravo1/20210707/Robot3DArrow';
 
 % foldernames = {'135108', '135915', '140426'} ;
 
-cd(root_path)
-
 % foldernames = {'133417', '134037', '134340'};
 
 % foldernames = {'103731', '104916', '105644', '110518', '111026'};
 
 
-foldernames = {'132803', '133525', '134019', '135008'};
+foldernames = {'101301', '102010', '102634','103630', '104301', '104934', '105119', '105305', '132215', '132710', '133248', '135226'};
 
 cd(root_path)
 
@@ -392,7 +390,7 @@ net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0707_7DoF_PM2';
+classifier_name = 'MLP_Imag_Actions_0709_7DoF_AMPM3';
 genFunction(net,classifier_name); % make sure to update GetParams
 % 
 % 
