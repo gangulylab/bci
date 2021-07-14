@@ -1,7 +1,7 @@
 %% Creating MLP classifier
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210630/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210709/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -22,6 +22,8 @@ root_path = '/home/ucsf/Data/bravo1/20210630/Robot3DArrow';
 % foldernames = {'101338', '101857', '102342', '102825'};
 
 % foldernames = {'133210', '133905', '134420'} 
+
+%
 
 cd(root_path)
 
@@ -185,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210702/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210709/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -207,11 +209,14 @@ root_path = '/home/ucsf/Data/bravo1/20210702/Robot3DArrow';
 
 % foldernames = {'101857', '102342', '102825', '103756', '110415'};
 
-foldernames = {'135108', '135915', '140426'} ;
-
-cd(root_path)
+% foldernames = {'135108', '135915', '140426'} ;
 
 % foldernames = {'133417', '134037', '134340'};
+
+% foldernames = {'103731', '104916', '105644', '110518', '111026'};
+
+
+foldernames = {'101301', '102010', '102634','103630', '104301', '104934', '105119', '105305', '132215', '132710', '133248', '135226'};
 
 cd(root_path)
 
@@ -277,7 +282,7 @@ end
 
 
 % FOR ONLINE DATA
-   foldernames = {'141920','142120','142320','142800','145811'};
+%    foldernames = {'141920','142120','142320','142800','145811'};
  
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -385,7 +390,7 @@ net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0702_7DoF_PM4';
+classifier_name = 'MLP_Imag_Actions_0709_7DoF_AMPM3';
 genFunction(net,classifier_name); % make sure to update GetParams
 % 
 % 
@@ -396,6 +401,6 @@ cd('/home/ucsf/Projects/bci')
 % ExperimentStart('RobotStop','bravo1',4,1,0)
 %ExperimentStart('Robot3D','bravo1',4,1,0)
  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
- ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
+%  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
  
 %  
