@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210709/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210714/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -198,25 +198,19 @@ root_path = '/home/ucsf/Data/bravo1/20210709/Robot3DArrow';
 % 
 % foldernames = {'111602', '112055', '112427', '112811', '113337', '113552', '113924', '114205'...
 %     '114800', '115132', '115413', '132949', '133554', '133844'};
-
-
 % foldernames = {'132949', '133554', '133844', '134859', '135041', '135057', '135324', '135652', '140726', '144542', '144754', '145042'};
-
 % foldernames = {'110604', '111123', '111649', '112201', '113524',
 % '113754', '113909', '114318', '114537'}; % 
-
 % foldernames = {'133244', '133928','134357'};
-
 % foldernames = {'101857', '102342', '102825', '103756', '110415'};
-
 % foldernames = {'135108', '135915', '140426'} ;
-
 % foldernames = {'133417', '134037', '134340'};
-
 % foldernames = {'103731', '104916', '105644', '110518', '111026'};
+% foldernames = {'101301', '102010', '102634','103630', '104301', '104934', '105119', '105305', '132215', '132710', '133248', '135226'};
 
-
-foldernames = {'101301', '102010', '102634','103630', '104301', '104934', '105119', '105305', '132215', '132710', '133248', '135226'};
+foldernames = {'101741', '102514', '103106', '104621', '132615', '133137', '133748', '142605', '141733','140924'};
+foldernames = {'101741', '102514', '103106', '104621','144541', '150310'}
+% foldernames = {'142605', '141733','140924'};
 
 cd(root_path)
 
@@ -390,7 +384,7 @@ net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0709_7DoF_AMPM3';
+classifier_name = 'MLP_Imag_Actions_0714_7DoF_AMPM6';
 genFunction(net,classifier_name); % make sure to update GetParams
 % 
 % 
