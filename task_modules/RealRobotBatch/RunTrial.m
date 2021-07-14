@@ -9,21 +9,16 @@ global Cursor
 %% Set up trial
 
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
-pause()
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right Thumb', 'Down - Middle Finger', 'Left Thumb', 'Up - Lips', 'Up', 'Down'};
+TargetName = {'Right', 'Front - feet', 'Left', 'Back - head', 'Up - lips', 'Down - tongue', 'Switch - both hands'};
 
-if Params.GraspTask == 1
-    TargetName = {'Close', 'Rotate Red', 'Open', 'Rotate Blue', 'Up', 'Down'};
-else
-TargetName = {'Blue', 'Green', 'Red', 'Yellow', 'Up', 'Down'};
-end
  fprintf('TARGET: %s\n',TargetName{Data.TargetID})
+ pause()
 % fprintf('  Target: %i\n',Data.TargetPosition)
 if Params.Verbose
     if TaskFlag==2
@@ -46,14 +41,14 @@ if Params.BLACKROCK
 end
 
 % reset cursor
-% if Params.LongTrial
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
-% else
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.StartPos;
-% end
-%     Cursor.IntendedState = [0,0,0,0,1]';
+if Params.LongTrial
+        Cursor.State = [0,0,0,0,0,0]';
+        Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
+else
+        Cursor.State = [0,0,0,0,0,0]';
+        Cursor.State(1:3) = Params.StartPos;
+end
+    Cursor.IntendedState = [0,0,0,0,1]';
 
 
 Cursor.ClickState = 0;

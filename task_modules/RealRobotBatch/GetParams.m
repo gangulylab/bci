@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'RealRobot3D';
+Params.Task = 'RealRobotBatch';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -210,7 +210,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 10 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -225,79 +225,18 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 8;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 1;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 if Params.RobotMode == 1
-    Params.ValidDir             = [1:4];
-    Params.StartPos             = [0,0, h];
-    Params.NumTrialsPerBlock    = 4;
-    Params.TargetOrder          = [1:4];
-elseif Params.RobotMode == 2
-    Params.ValidDir          = [5:6];
-    Params.StartPos          = [0,0, 250];
-    Params.NumTrialsPerBlock    = 2;
-    Params.TargetOrder          = [5,6];
-elseif Params.RobotMode == 3
-    Params.ValidDir          = [1:6];
-    Params.StartPos          = [0,0, 350];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [1];
-elseif Params.RobotMode == 4
-    Params.ValidDir          = [1:7];
-    Params.StartPos          = [0,0, 350];
-    Params.NumTrialsPerBlock    = 4;
-    Params.TargetOrder          = [1:4];
-elseif Params.RobotMode == 5
-    Params.ValidDir          = [1:6];
-    Params.StartPos          = [-200, -200, 350];
-%     Params.StartPos          = [150, 150, 350];
-    
-    Params.ReachTargetPositions = [180, 0, 240;...
-    0, 180, 240;...
-    0, 0, 240;...
-    0, 0. 0];
-    
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [1];
-    
-elseif Params.RobotMode == 7
-    Params.ValidDir          = [1:7];
-    Params.StartPos          = [0,0, 300];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [5];
-%     Params.NumTrialsPerBlock    = 1;
-%     Params.TargetOrder          = [5];
-
-elseif Params.RobotMode == 8
-    Params.ValidDir          = [1:7];
-    
-%         Grasp phase only
-    Params.StartPos          = [ 0, 0,300;];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [1];   
-    Params.OperationModeReset = 1;
-    
-elseif Params.RobotMode == 9
-    Params.ValidDir          = [1:7];
-   
-    Params.StartPos          = [ -200, 0,300;...
-                                0, -200,300;...
-                                200, 0, 300;...
-                                0, 200, 300];
-    Params.NumTrialsPerBlock    = 4;
-    Params.TargetOrder          = [1:4];   
-    Params.OperationModeReset = 0;
-    
-    
-
+    Params.ValidDir             = [1:7];
+    Params.StartPos             = [0,0, 250];
+    Params.NumTrialsPerBlock    = 7;
+    Params.TargetOrder          = [1:7];
 end
 
 Params.index = 1;
 Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
 
-Params.clickOrder = [7,7,7,7,7,7,7,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5];
-
-Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,3,3,3,3,3,3,3,3,3,3,3,3, 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,7,7,7,7,7,7,5,5,5,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1];
 % Params.clickOrder = ones(100,1)*7;
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -335,16 +274,12 @@ Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 0.2;
+Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 
 Params.GraspTask = 1;
 
 Params.autoCenterOverTarget = 1;
 Params.autoCenterDist = 8;
-
-Params.wristStartZ = 0; 
-
-
 
 end % GetParams
