@@ -187,30 +187,12 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210714/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210716/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-% foldernames = {'111533', '112105', '112436', '112747', '113524',
-% '113817', '114114',  '115402'}; %morning
-
-% foldernames = {'134509', '134821', '135145', '135525', '140741'}; 
-% 
-% foldernames = {'111602', '112055', '112427', '112811', '113337', '113552', '113924', '114205'...
-%     '114800', '115132', '115413', '132949', '133554', '133844'};
-% foldernames = {'132949', '133554', '133844', '134859', '135041', '135057', '135324', '135652', '140726', '144542', '144754', '145042'};
-% foldernames = {'110604', '111123', '111649', '112201', '113524',
-% '113754', '113909', '114318', '114537'}; % 
-% foldernames = {'133244', '133928','134357'};
-% foldernames = {'101857', '102342', '102825', '103756', '110415'};
-% foldernames = {'135108', '135915', '140426'} ;
-% foldernames = {'133417', '134037', '134340'};
-% foldernames = {'103731', '104916', '105644', '110518', '111026'};
-% foldernames = {'101301', '102010', '102634','103630', '104301', '104934', '105119', '105305', '132215', '132710', '133248', '135226'};
-
-foldernames = {'101741', '102514', '103106', '104621', '132615', '133137', '133748', '142605', '141733','140924'};
-foldernames = {'101741', '102514', '103106', '104621','144541', '150310'}
-% foldernames = {'142605', '141733','140924'};
+% foldernames = {'102008', '102705', '102726', '103214', '104134', '104745'};
+foldernames = {'133339', '133908', '134306', '134936'};
 
 cd(root_path)
 
@@ -328,6 +310,61 @@ for ii=1:length(foldernames)
     end
 end
 
+size(D7)
+root_path = '/home/ucsf/Data/bravo1/20210716/RealRobotBatch';
+foldernames = {'141358', '141729', '142051'};
+
+for ii=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [ find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        
+        
+        % get the pooled data
+        new_temp=[];
+        [xx yy] = size(TrialData.Params.ChMap);
+        for k=1:size(temp,2)
+            tmp1 = temp(129:256,k);tmp1 = tmp1(TrialData.Params.ChMap);
+            tmp2 = temp(513:640,k);tmp2 = tmp2(TrialData.Params.ChMap);
+            tmp3 = temp(769:896,k);tmp3 = tmp3(TrialData.Params.ChMap);
+            pooled_data=[];
+            for i=1:2:xx
+                for j=1:2:yy
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    pooled_data = [pooled_data; delta; beta ;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp=new_temp;
+        
+        
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        elseif TrialData.TargetID == 5
+            D5 = [D5 temp];
+        elseif TrialData.TargetID == 6
+            D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
+        end
+    end
+end
+size(D7)
+
 clear condn_data
 % combing delta beta and high gamma
 idx=[1:size(D1,1)];
@@ -384,7 +421,7 @@ net = train(net,N,T');
 cd('/home/ucsf/Projects/bci/clicker')
 
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0714_7DoF_AMPM6';
+classifier_name = 'MLP_Imag_Actions_0716_7DoF_PM3';
 genFunction(net,classifier_name); % make sure to update GetParams
 % 
 % 

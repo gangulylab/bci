@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
 %     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
-Params.NeuralNetFunction = 'MLP_Imag_Actions_0714_7DoF_AMPM6';
+Params.NeuralNetFunction = 'MLP_Imag_Actions_0716_7DoF_PM3';
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -210,7 +210,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 150;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -335,13 +335,13 @@ Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 0.2;
+Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 
 Params.GraspTask = 1;
 
 Params.autoCenterOverTarget = 1;
-Params.autoCenterDist = 10;
+Params.autoCenterDist = 5;
 
 Params.wristStartZ = 314.15/2; 
 
