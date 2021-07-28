@@ -225,7 +225,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 9;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 11; 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -268,16 +268,17 @@ elseif Params.RobotMode == 7
 %     Params.NumTrialsPerBlock    = 1;
 %     Params.TargetOrder          = [5];
 
-elseif Params.RobotMode == 8
+elseif Params.RobotMode == 8    
     Params.ValidDir          = [1:7];
     
 %         Grasp phase only
-    Params.StartPos          = [ 0, 0,300;];
+    Params.StartPos          = [ 0, 10,300;];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 1;
     
-elseif Params.RobotMode == 9
+    
+elseif Params.RobotMode == 9  
     Params.ValidDir          = [1:7];
    
     Params.StartPos          = [ -200, 0,300;...
@@ -288,7 +289,45 @@ elseif Params.RobotMode == 9
     Params.TargetOrder          = [1:4];   
     Params.OperationModeReset = 0;
     
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 1;
+    Params.autoCenterDist = 10;
     
+    Params.zlim = 7;
+
+    
+elseif Params.RobotMode == 10
+    Params.ValidDir          = [1:7];
+   
+    Params.StartPos          = [0, 0,300];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    
+    Params.wristStartX = 3.1415/2*10; 
+    Params.wristStartZ = 0; 
+  
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 5;
+
+    Params.zlim = 3;
+
+elseif Params.RobotMode == 11
+    Params.ValidDir          = [1:7];
+   
+    Params.StartPos          = [0, 0,300];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+  
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 5;
+
+    Params.zlim = 7;
 
 end
 
@@ -297,7 +336,7 @@ Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 
 Params.clickOrder = [7,7,7,7,7,7,7,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5];
 
-Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,3,3,3,3,3,3,3,3,3,3,3,3, 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,7,7,7,7,7,7,5,5,5,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1];
+Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,3,3,3,3,3,3,3,3,3,3,3,3, 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,7,7,7,7,7,7,5,5,5,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1];
 % Params.clickOrder = ones(100,1)*7;
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -337,14 +376,6 @@ Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
-
 Params.GraspTask = 1;
-
-Params.autoCenterOverTarget = 1;
-Params.autoCenterDist = 5;
-
-Params.wristStartZ = 314.15/2; 
-
-
 
 end % GetParams
