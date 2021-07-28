@@ -364,7 +364,7 @@ catch ME, % handle errors gracefully
         fprintf(1,'\n%s\n', errorMessage);
     end
     
-    keyboard;
+    ekeyboard;
 end
 
 end % ExperimentStart

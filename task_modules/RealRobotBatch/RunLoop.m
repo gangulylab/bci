@@ -69,6 +69,10 @@ write(Params.udp, [0,8,Params.AutoGrasp,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.
 write(Params.udp, [0,9,Params.ClickerBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,11,Params.autoCenterDist,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,13,Params.wristStartZ,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 
 pause(2.0)
