@@ -225,7 +225,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 11; 
+Params.RobotMode            = 10; 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -312,6 +312,7 @@ elseif Params.RobotMode == 10
     Params.autoCenterDist = 5;
 
     Params.zlim = 3;
+    Params.graspOrientation = 1;
 
 elseif Params.RobotMode == 11
     Params.ValidDir          = [1:7];
@@ -328,6 +329,7 @@ elseif Params.RobotMode == 11
     Params.autoCenterDist = 5;
 
     Params.zlim = 7;
+    Params.graspOrientation = 0
 
 end
 
@@ -337,6 +339,14 @@ Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 Params.clickOrder = [7,7,7,7,7,7,7,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,5];
 
 Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,3,3,3,3,3,3,3,3,3,3,3,3, 6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,7,7,7,7,7,7,5,5,5,5,5,5,5,5,5,5,5,5,1,1,1,1,1,1,1];
+
+
+Params.clickOrder = [1,1,1,1,1,1,1,1,1,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,3,3,3,3,3,3,3,3,3,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7];
+
+Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4];
+Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]
+% Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,2,2,2,2,2,2,2,2,2,2,2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
+
 % Params.clickOrder = ones(100,1)*7;
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -377,5 +387,6 @@ Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 Params.GraspTask = 1;
+Params.lowGainMode = 0;
 
 end % GetParams
