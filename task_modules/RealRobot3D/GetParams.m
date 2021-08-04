@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
 %     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
-Params.NeuralNetFunction = 'MLP_Imag_Actions_0728_7DoF_AMPM4';
+Params.NeuralNetFunction = 'MLP_Imag_Actions_0804_7DoF_AMPM5';
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -225,7 +225,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 10; 
+Params.RobotMode            = 11; 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -344,7 +344,7 @@ Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 7,7,7,7,7,7,7,3,3,
 Params.clickOrder = [1,1,1,1,1,1,1,1,1,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,3,3,3,3,3,3,3,3,3,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7];
 
 Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4];
-Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6]
+Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6];
 % Params.clickOrder = [7,7,7,7,7,7,7,7,7,7,6,6,6,6,6,6,6,6,6,6,6,6,6,5,5,5,5,5,5,5,5,5,5,5,5,2,2,2,2,2,2,2,2,2,2,2,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
 
 % Params.clickOrder = ones(100,1)*7;
@@ -387,6 +387,6 @@ Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 Params.GraspTask = 1;
-Params.lowGainMode = 0;
+Params.lowGainMode = 1;
 
 end % GetParams
