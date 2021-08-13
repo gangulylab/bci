@@ -187,11 +187,13 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210804/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210813/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {'102546', '103317', '103821', '104809', '105403', '133255', '134125', '134652'};
+% foldernames = {'103003', '103828', '104406', '105415', '105859', '110512', '134206', '134915'};
+% foldernames = {'134206', '134915', '140110', '140536', '141223'};
+foldernames = {};
 
 cd(root_path)
 
@@ -254,10 +256,6 @@ for ii=1:length(foldernames)
 end
 
 
-
-
-% FOR ONLINE DATA
-%    foldernames = {'141920','142120','142320','142800','145811'};
  
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -310,8 +308,8 @@ for ii=1:length(foldernames)
 end
 
 size(D7)
-root_path = '/home/ucsf/Data/bravo1/20210804/RealRobotBatch';
-foldernames = {'111616', '111923', '140359', '140645', '141258'};
+root_path = '/home/ucsf/Data/bravo1/20210813/RealRobotBatch';
+foldernames = {'132151', '132730', '133016'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -410,7 +408,7 @@ T(aa(1):aa(end),7)=1;
 cd('/home/ucsf/Projects/bci/clicker')
 load pretrain_net
 pretrain_net = train(pretrain_net,N,T');
-classifier_name = ' '; % enter the name
+classifier_name = 'MLP_PreTrained_7DoF_Days1to11_0813_PM1'; % enter the name
 genFunction(pretrain_net,classifier_name); % make sure to update GetParams
 
 
@@ -418,25 +416,30 @@ genFunction(pretrain_net,classifier_name); % make sure to update GetParams
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
 % TEST VALIDATION DOESN'T HAVE NaNs AND THAT PERFORMANCE IS REASONABLE
-clear net
-net = patternnet([96 96 96]) ;
-net.performParam.regularization=0.2;
-net = train(net,N,T');
+% clear net
+% net = patternnet([96 96 96]) ;
+% net.performParam.regularization=0.2;
 
+% cd('/home/ucsf/Projects/bci/clicker')
+% load net net
+% 
+% net = train(net,N,T');
+% 
 
 
 %%%%%%% SAVING THE MODEL %%%%%%%%
-cd('/home/ucsf/Projects/bci/clicker')
+% cd('/home/ucsf/Projects/bci/clicker')
+% save net net
 
 % classifier name
-classifier_name = 'MLP_Imag_Actions_0804_7DoF_AMPM5';
-genFunction(net,classifier_name); % make sure to update GetParams
-% 
-% 
-% % to restart exp run following lines
-clear
-clc
-cd('/home/ucsf/Projects/bci')
+% classifier_name = 'MLP_PreTrained_7DoF_Days1to11_0813_PM1';
+% genFunction(net,classifier_name); % make sure to update GetParams
+% % 
+% % 
+% % % to restart exp run following lines
+% clear
+% clc
+% cd('/home/ucsf/Projects/bci')
 % ExperimentStart('RobotStop','bravo1',4,1,0)
 %ExperimentStart('Robot3D','bravo1',4,1,0)
  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)

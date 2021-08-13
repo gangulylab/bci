@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
 %     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
-Params.NeuralNetFunction = 'MLP_Imag_Actions_0804_7DoF_AMPM4';
+Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0813_PM1';
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
     Params.NeuralNetSoftMaxThresh = 0;

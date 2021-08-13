@@ -70,12 +70,12 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.4;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
 %     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
-Params.NeuralNetFunction = 'MLP_Imag_Actions_0804_7DoF_AMPM5';
+Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -295,12 +295,14 @@ elseif Params.RobotMode == 9
     Params.autoCenterDist = 10;
     
     Params.zlim = 7;
+    Params.graspOrientation = 0;
 
     
-elseif Params.RobotMode == 10
+elseif Params.RobotMode == 10 % lateral
     Params.ValidDir          = [1:7];
+%     Params.ValidDir          = [1,3,5,6,7];
    
-    Params.StartPos          = [0, 0,300];
+    Params.StartPos          = [-150, 0,200];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -317,7 +319,7 @@ elseif Params.RobotMode == 10
 elseif Params.RobotMode == 11
     Params.ValidDir          = [1:7];
    
-    Params.StartPos          = [0, 0,300];
+    Params.StartPos          = [-150, 0,200];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -328,8 +330,8 @@ elseif Params.RobotMode == 11
     Params.autoCenterOverTarget = 0;
     Params.autoCenterDist = 5;
 
-    Params.zlim = 7;
-    Params.graspOrientation = 0
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
 
 end
 
