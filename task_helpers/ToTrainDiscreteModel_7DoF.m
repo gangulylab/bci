@@ -405,6 +405,15 @@ T(aa(1):aa(end),6)=1;
 T(aa(1):aa(end),7)=1;
 
 
+%%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
+% USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
+cd('/home/ucsf/Projects/bci/clicker')
+load pretrain_net
+pretrain_net = train(pretrain_net,N,T');
+classifier_name = ' '; % enter the name
+genFunction(pretrain_net,classifier_name); % make sure to update GetParams
+
+
 %%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
