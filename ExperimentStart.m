@@ -44,7 +44,8 @@ valid_tasks = {...
     'RobotStop',...
     'RobotR2GModeSwitch',...
     'RealRobot3D',...
-    'RealRobotBatch'};
+    'RealRobotBatch',...
+    'Robot3DPath'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -65,7 +66,7 @@ elseif IsOSX,
 else,
     homedir = '~';
     projectdir = '~/Projects/bci/';
-    %projectdir = '/home/sarah/Documents/bci';
+    projectdir = '/home/sarah/Documents/bci';
 
 end
 

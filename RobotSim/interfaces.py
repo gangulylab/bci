@@ -2,7 +2,6 @@ from JacoEnv import JacoEnv
 import numpy as np
 
 class DiscreteActionsRobot():
-    """Interface for discrete action classification."""
     def __init__(self, *args, **kwargs):  
         
         for _k, _v in kwargs.items():
@@ -13,7 +12,6 @@ class DiscreteActionsRobot():
         self.robotenv = JacoEnv(self.mode, self.angle, self.debugLines)
         self.robotenv.center_pos = np.array([-0.35, -0.3])
         self.pos = self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
-
 
     def create_target(self, cpos):
         # self.targetPos = self.bci_to_robot_transform(pos)
@@ -86,9 +84,7 @@ class DiscreteActionsRobot():
         else:
             color = [0,1,0];
             self.robotenv.set_letterColor(pos, color, self.targetID)
-      
-
-
+    
     def render(self):
         self.robotenv.step()
 
@@ -107,80 +103,6 @@ class DiscreteActionsRobot():
     def updateDebugLines(self, dl):
         self.debugLines = dl
         self.robotenv.dl = self.debugLines
-
-    def update_joystick(self, key):
-        if self.mode == 0:
-            if key == 1:
-                self.key = 6
-            elif key == 4:
-                self.key = 8
-            elif key == 3:
-                self.key = 4
-            elif key == 2:
-                self.key = 2
-            else:
-                self.key = 0
-        elif self.mode == 1:
-            if key == 1:
-                self.key = 16
-            elif key == 4:
-                self.key = 18
-            elif key == 3:
-                self.key = 14
-            elif key == 2:
-                self.key = 12
-            else:
-                self.key = 0
-        elif self.mode == 2:
-            if key == 1:
-                self.key = 26
-            elif key == 2:
-                self.key = 28
-            elif key == 3:
-                self.key = 24
-            elif key == 4:
-                self.key = 22
-            else:
-                self.key = 0
-        if self.mode == 3:
-            if key == 1:
-                self.key = 6
-            elif key == 4:
-                self.key = 8
-            elif key == 3:
-                self.key = 4
-            elif key == 2:
-                self.key = 2
-            elif key == 5:
-                self.key = 7
-            elif key == 6:
-                self.key = 1
-            elif key == 7:
-                self.key = 100
-            else:
-                self.key = 0
-        if self.mode == 4:
-            if key == 1:
-                self.key = 46
-            elif key == 4:
-                self.key = 48
-            elif key == 3:
-                self.key = 44
-            elif key == 2:
-                self.key = 42
-            elif key == 5:
-                self.key = 47
-            elif key == 6:
-                self.key = 41
-            elif key == 7:
-                self.key = 100
-            else:
-                self.key = 0
-                
-        # print(self.key)
-        self.robotenv.updateCommand(self.key)
-        # self.pos =self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
-        # print(self.key)
 
     def updateRobotPos(self, rp, key):
         if key == 1:
@@ -240,3 +162,17 @@ class DiscreteActionsRobot():
         self.target = target
         self.robotenv.set_bound_color(pos, c)
 
+    def setPath(self, ind):
+        p = [[[0.2, 0.2, 0], [0., 0.2, 0],[0,0,0], [-0.2, 0,0], [-0.2, -0.2, 0],[-0.2, -0.2, -0.2]],
+        [[0,0,0], [0.0, 0.3, 0], [-0.2, 0.3, 0],[-0.2, 0.3, 0.2]]]
+
+        self.path = p[ind]
+
+
+    def drawPath(self):
+
+        # p = [[0,0,0], [0.3, 0,0], [0.3, 0.2, 0],[0.3, 0.2, -0.2]] 
+        p = self.path
+        print(self.path)
+        for i in range(len(p) - 1):
+            self.robotenv.drawLine(p[i] + self.robotenv.center, p[i+1]+ self.robotenv.center)

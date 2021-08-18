@@ -1,5 +1,0 @@
-import pybullet as p
-
-
-
-class HandEnv(object):

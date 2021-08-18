@@ -14,50 +14,29 @@ class JacoEnv(object):
   def __init__(self, mode,angle, dl):
     p.connect(p.GUI)
     p.setAdditionalSearchPath(pybullet_data.getDataPath())
-    # p.setAdditionalSearchPath('../URDFs')
     p.resetSimulation()
     p.configureDebugVisualizer(p.COV_ENABLE_GUI,0)
     p.setGravity(0,0,-10)
 
-    rot_theta   = .005
-    self.Rx = np.array([[1., 0., 0.],[0., np.cos(rot_theta), -np.sin(rot_theta)], [0., np.sin(rot_theta), np.cos(rot_theta)]])
-    self.Ry = np.array([[np.cos(rot_theta), 0., np.sin(rot_theta)], [0., 1., 0.], [-np.sin(rot_theta), 0., np.cos(rot_theta)]])
-    self.Rz = np.array([[np.cos(rot_theta), -np.sin(rot_theta), 0.], [np.sin(rot_theta), np.cos(rot_theta), 0.], [0., 0., 1.]])
+    self.useOrientation         = 1
+    self.useSimulation          = 0
+    self.useRealTimeSimulation  = 0
 
-    self.Rxm = np.array([[1., 0., 0.],[0., np.cos(-rot_theta), -np.sin(-rot_theta)], [0., np.sin(-rot_theta), np.cos(-rot_theta)]])
-    self.Rym = np.array([[np.cos(-rot_theta), 0., np.sin(-rot_theta)], [0., 1., 0.], [-np.sin(-rot_theta), 0., np.cos(-rot_theta)]])
-    self.Rzm = np.array([[np.cos(-rot_theta), -np.sin(-rot_theta), 0.], [np.sin(-rot_theta), np.cos(-rot_theta), 0.], [0., 0., 1.]])
-
-    self.useOrientation = 1
-    self.useSimulation = 0
-    self.useRealTimeSimulation = 1
-
-    self.newPosInput = 0
-    self.ikSolver = 0
-
-    self.inputRate = .05
-    
-    self.cubeStep = 3
-    self.hasCube = False
-    self.dist = 0.0125
-    self.dist = 0.0075
-    self.distf = .0338
-    self.debuglen = 0.3
-
-    # self.wu = [0, 0.57, 0.45]
-    # self.wl = [-0.6, 0, 0.03]
-    self.fu = 1.35
-    self.fl = 0.
-    self.center = np.array([-0.35, 0.3, 0.25])
-    self.bciRate = 0.125
-    self.mode = mode
-    self.angle  =angle
-    self.dl  = dl
-    self.key = 0
-
+    self.mode           = mode
+    self.angle          = angle
+    self.dl             = dl
+    self.newPosInput    = 0
+    self.ikSolver       = 0
+    self.dist           = 0.0075
+    self.distf          = .0338
+    self.debuglen       = 0.3
+    self.fu             = 1.35
+    self.fl             = 0.
+    self.center         = np.array([-0.35, 0.3, 0.25])
+    self.bciRate        = 0.125
+    self.key            = 0
     self.robotTargetRad = .05
-
-    self.opMode = 0
+    self.opMode         = 0
 
     p.loadURDF("plane.urdf",[0,0,-.65])
     p.loadURDF("table/table.urdf", basePosition=[-0.6,0.45,-0.65])
@@ -65,6 +44,7 @@ class JacoEnv(object):
 
     p.resetBasePositionAndOrientation(self.jacoId,[0,0,0],[0,0,0,1])
 
+    # Camera settings
     if self.mode == 0 or self.mode == 2: 
       if self.angle == 0:
         p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
@@ -80,25 +60,22 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
 
     self.jacoEndEffectorIndex = 8
-    self.jacoArmJoints = [2, 3, 4, 5, 6, 7]
-    self.jacofingerJoints = [9, 11, 13]
-    self.jacoJoints = [2, 3, 4, 5, 6, 7, 9, 11, 13]
-
-    self.jd = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
-    self.JP = [0,0,0,0,0,0]
+    self.jacoArmJoints        = [2, 3, 4, 5, 6, 7]
+    self.jacofingerJoints     = [9, 11, 13]
+    self.jacoJoints           = [2, 3, 4, 5, 6, 7, 9, 11, 13]
+    self.jd                   = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+    self.JP                   = [0,0,0,0,0,0]
 
     # self.cube1Id = p.loadURDF("cube_small.urdf",[0.2, 0, -2] + self.center, [0,0,0,1])
     self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
 
-    c  = [0, 1, 0]
-    pos = np.array([0,0, -2])
-    pos[0] = self.center[0] + pos[0]
-    pos[1] = self.center[1] + pos[1]
-    pos[2] = self.center[2] + pos[2]
-    lw = 6
-    d = .05
-    # z = .1
-
+    c       = [0, 1, 0]
+    pos     = np.array([0,0, -2])
+    pos[0]  = self.center[0] + pos[0]
+    pos[1]  = self.center[1] + pos[1]
+    pos[2]  = self.center[2] + pos[2]
+    lw      = 6
+    d       = .05
 
     self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
     self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
@@ -125,13 +102,13 @@ class JacoEnv(object):
     self.l12 = p.addUserDebugLine(self.c4, self.c8, c, 6, 0)
 
     self.l13 = p.addUserDebugLine([0,0,0], [0,0,0], [0,0,0], 4, 0)
-
     self.m1 = p.addUserDebugLine(self.c1, self.c2, c, lw, 0)
 
     self.LetterMode  = 0
     self.reset()
     self.newPosInput = 1
     self.inverseKin()
+
     for i in self.jacoArmJoints:
       p.resetJointState(self.jacoId,i, self.JP[i-2])
 
@@ -142,7 +119,6 @@ class JacoEnv(object):
     p.setRealTimeSimulation(self.useRealTimeSimulation)
     p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
     
-
   def write_letter(self, dpos, c, targetID):
 
     pos = dpos.copy()
@@ -150,16 +126,11 @@ class JacoEnv(object):
     pos[1] = self.center[1] + pos[1]
     pos[2] = self.center[2] + pos[2]
 
-    # print(letter)
-
     letters = ["A", "F", "B", "E", "C", "D"]
-    offset = [[0,0,0], [0, -0.05, -0.05],  [0, -0.05, -0.05], [-.1, -0.05, -0.1], [0,0,-0.1], [0.1,-0.2,0.02], [0.05,-0.15,-0.1]]
+    offset  = [[0,0,0], [0, -0.05, -0.05],  [0, -0.05, -0.05], [-.1, -0.05, -0.1], [0,0,-0.1], [0.1,-0.2,0.02], [0.05,-0.15,-0.1]]
 
-    letter = letters[targetID-1]
-    pos = pos + offset[targetID]
-    print(pos)
-    # p.addUserDebugText(letter, ([-0.15, 0.3, 0.15]),  [0,0,0], 10)
-    # p.addUserDebugText(letter, (pos),  c, 12,replaceItemUniqueId=self.letter)
+    letter  = letters[targetID-1]
+    pos     = pos + offset[targetID]
     self.letter = p.addUserDebugText(letter, (pos),  c, 12)
     self.LetterMode = 1
 
@@ -170,15 +141,10 @@ class JacoEnv(object):
     pos[1] = self.center[1] + pos[1]
     pos[2] = self.center[2] + pos[2]
 
-    # print(letter)
-
     letters = ["A", "F", "B", "E", "C", "D"]
-    offset = [[0,0,0], [0, -0.05, -0.0],  [0, -0.05, -0.05], [-.1, -0.05, -0.1], [0,0,-0.1], [0.1,-0.2,0.02], [0.05,-0.15,-0.1]]
-
-    letter = letters[targetID-1]
-    pos = pos + offset[targetID]
-    print(pos)
-    # p.addUserDebugText(letter, ([-0.15, 0.3, 0.15]),  [0,0,0], 10)
+    offset  = [[0,0,0], [0, -0.05, -0.0],  [0, -0.05, -0.05], [-.1, -0.05, -0.1], [0,0,-0.1], [0.1,-0.2,0.02], [0.05,-0.15,-0.1]]
+    letter  = letters[targetID-1]
+    pos     = pos + offset[targetID]
     p.addUserDebugText(letter, (pos),  c, 12,replaceItemUniqueId=self.letter)
 
     self.JP = [0,0,0,0,0,0]
@@ -187,7 +153,6 @@ class JacoEnv(object):
     pos[0] = self.center[0] + pos[0]
     pos[1] = self.center[1] + pos[1]
 
-    # d = .05
     d = self.robotTargetRad
 
     p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ])
@@ -196,8 +161,6 @@ class JacoEnv(object):
     c3 = [pos[0] + d, pos[1] + d, -0.02]
     c4 = [pos[0] + d, pos[1] - d, -0.02]
 
-    # if self.dl:
-    # Green x
     self.l1 = p.addUserDebugLine(c1, c2, [0,1,0], 6, 0)
     self.l2 = p.addUserDebugLine(c2, c3, [0,1,0], 6, 0)
     self.l3 = p.addUserDebugLine(c3, c4, [0,1,0], 6, 0)
@@ -216,20 +179,19 @@ class JacoEnv(object):
 
     d = .05
 
-    # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
     c1 = [pos[0] - d, pos[1] - d, 0.0]
     c2 = [pos[0] - d, pos[1] + d, 0.0]
     c3 = [pos[0] + d, pos[1] + d, 0.0]
     c4 = [pos[0] + d, pos[1] - d, 0.0]
 
-    
-    # if self.dl:
-    # Green x
     self.l1 = p.addUserDebugLine(c1, c2, col, 6, 0,replaceItemUniqueId=self.l1)
     self.l2 = p.addUserDebugLine(c2, c3, col, 6, 0, replaceItemUniqueId=self.l2)
     self.l3 = p.addUserDebugLine(c3, c4, col, 6, 0, replaceItemUniqueId=self.l3)
     self.l4 = p.addUserDebugLine(c4, c1, col, 6, 0,replaceItemUniqueId=self.l4)
-    # p.resetBasePositionAndOrientation(self.cube1Id, [pos[0], pos[1], 0], [0,0,0,1])
+
+  def drawLine(self, p1, p2):
+    p.addUserDebugLine(p1, p2, [0,1,0],200,0)
+
   def drawAxes(self):
     c1 = [0, 0, -0.2] + self.center
     c2 = [0, 0, 0.2] + self.center
@@ -244,6 +206,8 @@ class JacoEnv(object):
     p.addUserDebugLine(c3, c4, [0,0,0], lw, 0)
     p.addUserDebugLine(c5, c6, [0,0,0], lw, 0)
 
+
+
   def draw2DAxes(self):
 
     c3 = [0, 0.2, -0.26] + self.center
@@ -255,7 +219,6 @@ class JacoEnv(object):
 
     p.addUserDebugLine(c1, c2, [0,0,0], lw, 0)
     p.addUserDebugLine(c3, c4, [0,0,0], lw, 0)
-
 
   def set_ringTarget(self, pos, c):
 
@@ -311,40 +274,21 @@ class JacoEnv(object):
   
   def set_cubeTarget(self, pos, c):
 
-      pos[0] = self.center[0] + pos[0]
-      pos[1] = self.center[1] + pos[1]
-      pos[2] = self.center[2] + pos[2]
-      lw = 6
-      d = .05
-      # z = .1
-      self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
-      self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
-      self.c3 = [pos[0] + d, pos[1]-d, pos[2]+d]
-      self.c4 = [pos[0] - d, pos[1]-d, pos[2]+d]
-      self.c5 = [pos[0] - d, pos[1]+d, pos[2]-d]
-      self.c6 = [pos[0] + d, pos[1]+d, pos[2]-d]
-      self.c7 = [pos[0] + d, pos[1]+d, pos[2]+d]
-      self.c8 = [pos[0] - d, pos[1]+d, pos[2]+d]
+    pos[0] = self.center[0] + pos[0]
+    pos[1] = self.center[1] + pos[1]
+    pos[2] = self.center[2] + pos[2]
+    lw = 6
+    d = .05
+    # z = .1
+    self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
+    self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
+    self.c3 = [pos[0] + d, pos[1]-d, pos[2]+d]
+    self.c4 = [pos[0] - d, pos[1]-d, pos[2]+d]
+    self.c5 = [pos[0] - d, pos[1]+d, pos[2]-d]
+    self.c6 = [pos[0] + d, pos[1]+d, pos[2]-d]
+    self.c7 = [pos[0] + d, pos[1]+d, pos[2]+d]
+    self.c8 = [pos[0] - d, pos[1]+d, pos[2]+d]
 
-      p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
-      p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
-      p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
-      p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
-
-      p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
-      p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
-      p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
-      p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
-
-      p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
-      p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
-      p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
-      p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
-
-      d1 = [pos[0], pos[1], pos[2]]
-      d2 = [self.center[0],self.center[1] ,self.center[2] ]
-
-  def set_cubeColor(self, pos, c, lw):
     p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
     p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
     p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
@@ -360,119 +304,37 @@ class JacoEnv(object):
     p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
     p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
 
-  def grabCube(self):
-    cp = p.getBasePositionAndOrientation(self.cube1Id)
-    cpos = cp[0]
-    self.set_robotPos([cpos[0] - self.center[0], cpos[1] - self.center[1], cpos[2] - self.center[2] + .02] , 0)
+    d1 = [pos[0], pos[1], pos[2]]
+    d2 = [self.center[0],self.center[1] ,self.center[2] ]
 
-    self.setFing(1.05)
+  def set_cubeColor(self, pos, c, lw):
 
-  def updateCommand(self, key):
-    self.key = key
-    Rrm = R.from_quat(self.orn)
-    Rnew =  Rrm.as_dcm() 
+    p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+    p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+    p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+    p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
 
-    baseTheta = self.JP[0]
-    s = math.sin(baseTheta)
-    c = math.cos(baseTheta)
+    p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
+    p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
+    p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
+    p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
 
-    n = np.sqrt(self.pos[0]*self.pos[0] + self.pos[1]*self.pos[1])
-    dx = -self.pos[1]/n
-    dy = self.pos[0]/n
-
-    if 0 < key < 30:
-      self.newPosInput = 1
-
-    # Position
-    if key == 6:
-      self.pos[0] = self.pos[0] + self.dist
-      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 4: 
-      self.pos[0] = self.pos[0] - self.dist
-      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 8:
-      self.pos[1] = self.pos[1] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
-    elif key == 2:
-      self.pos[1] = self.pos[1] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
-    elif key == 7:
-      self.pos[2] = self.pos[2] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
-    elif key == 1:
-      self.pos[2] = self.pos[2] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
-    elif key == 16:
-      self.fing = self.fing - self.distf
-      self.fing = self.fing + self.distf
-      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-      if self.dl:  
-        p.addUserDebugText('CLOSE', (self.pos2[0] - 0.3, self.pos2[1], self.pos2[2] + .01),  [0,0,0], 4, self.bciRate)
-    elif key == 18:
-      self.pos[2] = self.pos[2] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
-    elif key == 12:
-      self.pos[2] = self.pos[2] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
-    elif key == 0:
-      self.pos2 = self.pos
-    elif key == 26:
-      self.pos[0] = self.pos[0] - self.dist*dx
-      self.pos[1] = self.pos[1] - self.dist*dy
-      self.pos2 = [self.pos[0] - self.debuglen*dx, self.pos[1] - self.debuglen*dy]
-
-    elif key == 24: 
-      self.pos[0] = self.pos[0] + self.dist*dx
-      self.pos[1] = self.pos[1] + self.dist*dy
-      self.pos2 = [self.pos[0] + self.debuglen*dx, self.pos[1] + self.debuglen*dy]
-
-    elif key == 28:
-      self.pos[0] = self.pos[0] + self.dist*c
-      self.pos[1] = self.pos[1] - self.dist*s
-      self.pos2 = [self.pos[0] + self.debuglen*c, self.pos[1] - self.debuglen*s]
-
-    elif key == 22:
-      self.pos[0] = self.pos[0] - self.dist*c
-      self.pos[1] = self.pos[1] + self.dist*s
-      self.pos2 = [self.pos[0] - self.debuglen*c, self.pos[1] + self.debuglen*s]
-
-    if key == 46:
-      # self.pos[0] = self.pos[0] + self.dist
-      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 44: 
-      # self.pos[0] = self.pos[0] - self.dist
-      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
-    elif key == 48:
-      # self.pos[1] = self.pos[1] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
-    elif key == 42:
-      # self.pos[1] = self.pos[1] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
-    elif key == 47:
-      # self.pos[2] = self.pos[2] + self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
-    elif key == 41:
-      # self.pos[2] = self.pos[2] - self.dist
-      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
-
-    if self.fing > self.fu:
-      self.fing =  self.fu
-    if self.fing < self.fl:
-      self.fing =  self.fl
+    p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
+    p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
+    p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
+    p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
 
   def setFing(self, fp):
     if self.mode == 5:
       if self.TargetID >6:
         self.fing = fp
       else:
-
         orn = p.getEulerFromQuaternion(self.orn)
         ornNew = [math.pi, fp, 0]
         self.orn = p.getQuaternionFromEuler(ornNew)
         self.newPosInput = 1
     else:
       self.fing = fp
-
 
   def displayCue(self, cue, c):
     p.removeAllUserDebugItems()
@@ -504,12 +366,12 @@ class JacoEnv(object):
     self.step()
 
   def set_robotOrn(self, orn):
-    ornNew = [math.pi, 0, orn]
-    self.orn = p.getQuaternionFromEuler(ornNew)
+    ornNew    = [math.pi, 0, orn]
+    self.orn  = p.getQuaternionFromEuler(ornNew)
     self.newPosInput = 1
 
   def set_robotPos(self, rp, key):
-    self.key = key;
+    self.key    = key;
     self.pos[0] = self.center[0] + rp[0]
     self.pos[1] = self.center[1] + rp[1]
     self.pos[2] = self.center[2]  + rp[2]
@@ -548,8 +410,8 @@ class JacoEnv(object):
                                                 self.orn,
                                                 jointDamping=self.jd,
                                                 solver=self.ikSolver,
-                                                maxNumIterations=10000,
-                                                residualThreshold=.0001,
+                                                maxNumIterations=100,
+                                                residualThreshold=.01,
                                                 restPoses = self.JP )
 
       self.JP = list(self.jointPoses)
@@ -557,6 +419,7 @@ class JacoEnv(object):
   def reset(self):
     # p.resetSimulation()
     # p.resetBasePositionAndOrientation(self.cube1Id, [-1., -1., -1.], [0,0,0,1])
+    
     p.removeAllUserDebugItems()
     if self.LetterMode:
       p.removeAllUserDebugItems()
@@ -576,6 +439,9 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.5, cameraYaw= 25, cameraPitch=-20, cameraTargetPosition=[-0.35,0.3,0.2])    
     elif self.mode == 9:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 11:
+      p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 15, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+    
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -583,7 +449,6 @@ class JacoEnv(object):
     lw = 6
     d = .05
     c = [0,0,1]
-    # z = .1
 
     self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
     self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
@@ -612,35 +477,10 @@ class JacoEnv(object):
     self.l13 = p.addUserDebugLine([0,0,0], [0,0,0], [0,0,0], 4, 0)
 
     self.m1 = p.addUserDebugLine(self.c1, self.c2, c, lw, 0)
-    # self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
-    # self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
-    # self.c3 = [pos[0] + d, pos[1]-d, pos[2]+d]
-    # self.c4 = [pos[0] - d, pos[1]-d, pos[2]+d]
-    # self.c5 = [pos[0] - d, pos[1]+d, pos[2]-d]
-    # self.c6 = [pos[0] + d, pos[1]+d, pos[2]-d]
-    # self.c7 = [pos[0] + d, pos[1]+d, pos[2]+d]
-    # self.c8 = [pos[0] - d, pos[1]+d, pos[2]+d]
 
-    # p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
-    # p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
-    # p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
-    # p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
-
-    # p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
-    # p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
-    # p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
-    # p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
-
-    # p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
-    # p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
-    # p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
-    # p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
-
-    # p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.m1)
     d1 = [0,0,0]
     d2 = [0,0,0]
     p.addUserDebugLine(d1, d2, [0,0,0], 4, 0,replaceItemUniqueId=self.l13)
-
 
     if self.mode == 10:
       self.draw2DAxes()
@@ -703,7 +543,7 @@ class JacoEnv(object):
 
     self.newPosInput = 0
     
-    # p.addUserDebugLine(self.pos, self.pos2, [1,0,0,], 3, 0.3)
+    # Debug lines for visualization
 
     p1 = [self.pos[0] - .02, self.pos[1], 0.002]
     p2 = [self.pos[0] + .02, self.pos[1], 0.002]
@@ -713,6 +553,15 @@ class JacoEnv(object):
     if self.mode == 7 or self.mode == 10:
       p.addUserDebugLine(p1, p2, [0,1,0], 6, self.bciRate)
       p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate) 
+
+    p1 = [self.pos[0] - .02, self.pos[1], self.pos[2]]
+    p2 = [self.pos[0] + .02, self.pos[1], self.pos[2]]
+    p3 = [self.pos[0], self.pos[1] + .02, self.pos[2]]
+    p4 = [self.pos[0], self.pos[1] - .02, self.pos[2]]
+
+    if self.mode == 11:
+      p.addUserDebugLine(p1, p2, [0,0,1], 6, self.bciRate)
+      p.addUserDebugLine(p3, p4, [0,0,1], 6, self.bciRate) 
 
     if self.dl:
       if self.mode == 0:
@@ -732,5 +581,3 @@ class JacoEnv(object):
           p.addUserDebugLine(p3, p4, [0,1,1], 8, self.bciRate)
         else:
           p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
-        # else:
-        #   p.addUserDebugLine([self.pos[0], self.pos[1], 0.001], [self.pos2[0], self.pos2[1], 0], [1,0,0,], 8, self.bciRate)

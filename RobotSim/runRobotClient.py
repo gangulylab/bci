@@ -17,6 +17,8 @@ interface.letterMode = 0
 robot_open = 1
 target_pos = np.array([0.0, 300.0, 0.0])
 robot_pos = np.array([0.0, 0.0, 0.0])
+
+
 while True:
 	data, address = sock.recvfrom(4096)
 
@@ -51,13 +53,12 @@ while True:
 		if val1 == 2:		# Change hold time on debug lines
 			updateRate = 1.0 /val2
 			interface.updateRefresh(updateRate)
-
 			interface.updateRefresh(.15)
-		if val1 == 3:		# Change hold time on debug lines
+		if val1 == 3:		# Mode
 			interface.updateMode(val2)
-		if val1 == 4:		# Change hold time on debug lines
+		if val1 == 4:		# Use debug lines
 			interface.updateDebugLines(val2)
-		if val1 == 5:
+		if val1 == 5:		# Target type
 			if interface.letterMode == 1:
 				interface.create_targetLetter(target_pos, 0)
 			elif interface.mode == 9:
@@ -70,7 +71,6 @@ while True:
 				interface.create_targetLetter(target_pos, 2)
 			elif interface.mode == 9:
 				interface.create_targetRing(target_pos,2)
-				print("BLUE")
 			else:
 				interface.create_target3D(target_pos, 2)
 		if val1 == 7:
@@ -92,6 +92,9 @@ while True:
 			interface.letterMode = val2
 		if val1 == 18:
 			interface.setTargetRad(val2/1000.0)
+		if val1 == 19:
+			interface.setPath(val2)
+			interface.drawPath()
 
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
@@ -111,15 +114,6 @@ while True:
 		print(target_pos)
 		interface.create_target(target_pos)
 
-
-	if command == 2:	# Set Dirr
-		key = val1
-		interface.update_joystick(key)
-		interface.render()
-	if command == 3:
-		key = val1
-		interface.update_joystick(key)
-		interface.render()
 	if command == 4:	
 		if interface.mode == 10:
 			interface.robotenv.drawMode(1)
@@ -134,8 +128,6 @@ while True:
 	if command == 7:	
 		interface.robotenv.drawMode(2)
 		key = val10
-		# robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
-		# robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
 		
 		robot_ornz = ((val1-1) *val2 + val3/100)/10
 
@@ -152,7 +144,6 @@ while True:
 		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
 		interface.updateRobotPos(robot_pos,key )
 		interface.render()
-
 
 	if command == 5:
 		interface.displayCue(val1,val2)
