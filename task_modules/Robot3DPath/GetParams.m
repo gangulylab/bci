@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0625_7DoF_AM3';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0818_PM1';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -143,12 +143,19 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius];
     
     
-Params.LongStartPos =  [200, -200, 0; -200, 200, -150];
 
 
-Params.ReachTargetPositions = [-200, 200, -150; 200, -200, 0;
+
+Params.LongStartPos =  [200, -200, 0; -200, 200, 0; 200, 0, -100; -200, 0, -100];
+
+
+Params.ReachTargetPositions = [-200, 200, 0; 200, -200, 0; -200. 0. -100; 200, 0, -100;...
 -200, -200, -200;-200, -200, -200;-200, -200, -200;-200, -200, -200;-200, -200, -200];
 
+Params.Paths{1} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
+Params.Paths{2} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
+Params.Paths{3} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
+Params.Paths{4} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
 
 
 %% Kalman Filter Properties
@@ -177,7 +184,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [2];
+Params.TargetOrder          = [4];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -233,7 +240,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 35 ;
+Params.MaxReachTime = 120 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -248,7 +255,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.limit = [-400, 400; -400 400; -300 350];
+Params.limit = [-300, 300; -300 300; -250 250];
 Params.RobotMode            = 11;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
@@ -283,7 +290,7 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 1;
 
 % Target
-Params.RobotTargetRadius = 50;  % increase radius if task too hard
+Params.RobotTargetRadius = 100;  % increase radius if task too hard
 Params.TargetHoldTime = 10;
 
 % Clicker
@@ -292,7 +299,7 @@ Params.ClickerBinNum = 10;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
-Params.boundaryDist = 0;
+Params.boundaryDist = 10;
 Params.boundaryVel = 0;
 Params.AssistAlpha = 0.0;
 

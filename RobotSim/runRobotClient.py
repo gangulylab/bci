@@ -18,6 +18,8 @@ robot_open = 1
 target_pos = np.array([0.0, 300.0, 0.0])
 robot_pos = np.array([0.0, 0.0, 0.0])
 
+# interface.setPath(1)
+# interface.drawPath()
 
 while True:
 	data, address = sock.recvfrom(4096)
@@ -56,8 +58,10 @@ while True:
 			interface.updateRefresh(.15)
 		if val1 == 3:		# Mode
 			interface.updateMode(val2)
+			print("MODE:", val2)
 		if val1 == 4:		# Use debug lines
 			interface.updateDebugLines(val2)
+			print("DEBUG LINES", val2)
 		if val1 == 5:		# Target type
 			if interface.letterMode == 1:
 				interface.create_targetLetter(target_pos, 0)
@@ -123,6 +127,7 @@ while True:
 		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
 		interface.robotenv.opMode = 0
 		interface.updateRobotPos(robot_pos,key )
+		print(key)
 		interface.render()
 
 	if command == 7:	

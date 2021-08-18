@@ -79,7 +79,8 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0813_1';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0818_PM1';
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -199,7 +200,7 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 2;
+Params.InterTrialInterval = 4;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 1.0;
 Params.MaxStartTime = 25;

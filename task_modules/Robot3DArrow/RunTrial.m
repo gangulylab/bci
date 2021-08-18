@@ -168,6 +168,12 @@ if ~Data.ErrorID && Params.CueTime>0,
 end % only complete if no errors
 
 %% Go to reach target
+
+    [xa,xb,xc] = doubleToUDP(0);
+    [ya,yb,yc] = doubleToUDP(0); 
+    [za,zb,zc] = doubleToUDP(-50) ;
+
+
 if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
@@ -279,7 +285,7 @@ if ~Data.ErrorID
             Data.TaskState(1,end+1)=Cursor.TaskState;
             
             % draw the arrow
-            fwrite(Params.udp, [2, ClickToSend, 0])
+            fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]);
         end
         
         % end if takes too long

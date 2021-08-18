@@ -187,13 +187,11 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210813/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210818/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-% foldernames = {'103003', '103828', '104406', '105415', '105859', '110512', '134206', '134915'};
-% foldernames = {'134206', '134915', '140110', '140536', '141223'};
-foldernames = {};
+foldernames = {'133013', '133618'};
 
 cd(root_path)
 
@@ -309,7 +307,7 @@ end
 
 size(D7)
 root_path = '/home/ucsf/Data/bravo1/20210813/RealRobotBatch';
-foldernames = {'132151', '132730', '133016'};
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -408,7 +406,7 @@ T(aa(1):aa(end),7)=1;
 cd('/home/ucsf/Projects/bci/clicker')
 load pretrain_net
 pretrain_net = train(pretrain_net,N,T');
-classifier_name = 'MLP_PreTrained_7DoF_Days1to11_0813_PM1'; % enter the name
+classifier_name = 'MLP_PreTrained_7DoF_Days1to11_0818_PM1'; % enter the name
 genFunction(pretrain_net,classifier_name); % make sure to update GetParams
 
 

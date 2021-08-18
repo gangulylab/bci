@@ -60,7 +60,6 @@ fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
 fwrite(Params.udp, [0,18,Params.RobotTargetRadius])
 
-fwrite(Params.udp, [0,19,Params.PathInd])   % set debug lines
 
 %%  Loop Through Blocks of Trials
 Trial = 0;
@@ -120,6 +119,8 @@ for Block=1:NumBlocks, % Block Loop
         
         % update target and next target
         TargetID = NextTargetID;
+        
+        fwrite(Params.udp, [0,19,TargetID-1])   % set debug lines
 %         while NextTargetID==TargetID,
 %             NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1))
              NextTargetID =  Params.TargetOrder(Trial+1);
