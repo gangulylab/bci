@@ -6,7 +6,7 @@ function Params = GetParams(Params)
 
 %% Experiment
 Params.Task = 'Robot3DPath';
-switch Params.ControlMode,
+switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
     case 3, Params.ControlModeStr = 'KalmanPosVel';
@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -57,8 +57,6 @@ Params.FeatureBufferSize = 5;
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
 Params.UpdateRate = 5; % Hz
-
-
 %% Discrete Decoder name
 Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
@@ -146,19 +144,21 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
 
 
 
-Params.LongStartPos =  [200, -200, 0; -200, 200, 0; 200, 0, -100; -200, 0, -100];
+Params.LongStartPos =  [200, -200, 0; -200, 200, 0; 200, 0, -100; -200, 0, -100; 200, -100, 0; 200, 180, 0;...
+    200, 0, -200];
 
 
 Params.ReachTargetPositions = [-200, 200, 0; 200, -200, 0; -200. 0. -100; 200, 0, -100;...
--200, -200, -200;-200, -200, -200;-200, -200, -200;-200, -200, -200;-200, -200, -200];
+200, 180,0; 200, -100,0;0,0,280];
 
 Params.Paths{1} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
 Params.Paths{2} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
 Params.Paths{3} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
 Params.Paths{4} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
+Params.Paths{5} = [[0.2, 0.1, 0]; [0, 0.1, 0]; [-0.1414, -0.0414, 0]; [0, -0.18, 0]; [0.2, -0.18, 0]]*1000;
 
 
-%% Kalman Filter Properties
+%% Kal,an Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
 G = Params.Gain;
 t = 1/Params.UpdateRate;
@@ -184,7 +184,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [4];
+Params.TargetOrder          = [7];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -306,7 +306,6 @@ Params.AssistAlpha = 0.0;
 Params.PathInd = 0;
 
 %% For Debug
-
 
 Params.index = 1;
 Params.clickOrder = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7];

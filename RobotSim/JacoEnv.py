@@ -20,7 +20,7 @@ class JacoEnv(object):
 
     self.useOrientation         = 1
     self.useSimulation          = 0
-    self.useRealTimeSimulation  = 0
+    self.useRealTimeSimulation  = 1
 
     self.mode           = mode
     self.angle          = angle
@@ -403,7 +403,6 @@ class JacoEnv(object):
 
   def inverseKin(self):
     if (self.newPosInput == 1):
-      print(self.pos)
       self.jointPoses = p.calculateInverseKinematics(self.jacoId,
                                                 self.jacoEndEffectorIndex,
                                                 self.pos,
@@ -571,7 +570,6 @@ class JacoEnv(object):
       elif self.mode ==1:
         p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
       elif self.mode == 3 or self.mode == 4 or self.mode > 5:
-        print(self.key)
         if self.key == 100:
           p1 = [self.pos[0] - .15, self.pos[1], self.pos2[2]]
           p2 = [self.pos[0] + .15, self.pos[1], self.pos2[2]]

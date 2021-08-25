@@ -1,4 +1,7 @@
+# from jacoEnvDebug import JacoEnv
+
 from JacoEnv import JacoEnv
+
 import numpy as np
 
 class DiscreteActionsRobot():
@@ -163,9 +166,17 @@ class DiscreteActionsRobot():
         self.robotenv.set_bound_color(pos, c)
 
     def setPath(self, ind):
-        p = [[[0.2, 0.2, 0], [0., 0.2, 0],[0,0,0], [-0.2, 0,0], [-0.2, -0.2, 0]],[[0.2, 0.2, 0], [0., 0.2, 0],[0,0,0], [-0.2, 0,0], [-0.2, -0.2, 0]],
-        [[0.2,0,-0.1], [0.2, 0.0, 0.1], [0.0, 0.0, 0.1],[0., 0., -0.1], [-0.2, 0.0, -0.1]], [[0.2,0,-0.1], [0.2, 0.0, 0.1], [0.0, 0.0, 0.1],[0., 0., -0.1], [-0.2, 0.0, -0.1]]]
 
+        # horizontal 1 (left, forward, left forward)
+        p1 = [[0.2, 0.2, 0], [0., 0.2, 0],[0,0,0], [-0.2, 0,0], [-0.2, -0.2, 0]]
+
+        # vertical 1 (up, left, down, left)
+        p2 = [[0.2,0,-0.1], [0.2, 0.0, 0.1], [0.0, 0.0, 0.1],[0., 0., -0.1], [-0.2,0,-0.1]]
+
+        # diagonal 1
+        p3 = [[0.2,0.1, 0],[0, 0.1, 0],[-0.1414, -.0414,0],[0, -.18,0],[0.2, -.18,0]]
+
+        p = [p1,p1,p2,p2,p3,p3]
         self.path = p[ind]
 
 
