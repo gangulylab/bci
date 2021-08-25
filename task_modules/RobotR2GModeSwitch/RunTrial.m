@@ -52,6 +52,8 @@ Cursor.RState = [3.14/2;0]';
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
+inTarget = 0;
+Params.opMode = 0;
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
@@ -63,7 +65,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -227,10 +229,12 @@ if ~Data.ErrorID
     
             TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
             
-            dist2D = norm([[ReachTargetPos(1); ReachTargetPos(2)] - Cursor.State(1:2)])
+            dist2D = norm([[ReachTargetPos(1); ReachTargetPos(2)] - Cursor.State(1:2)]);
             
             if dist2D < Params.RobotTargetRadius
                 inTarget = 1;
+            else
+                inTarget = 0;
             end
 
             Params.TargetID =  Data.TargetID;
@@ -441,7 +445,8 @@ if Params.InterTrialInterval>0,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
-
+    
+    fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]);
     fwrite(Params.udp, [0,1,0])
     while ~done,
         % Update Time & Position

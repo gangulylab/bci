@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -79,7 +79,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0818_PM1';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    

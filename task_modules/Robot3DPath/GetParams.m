@@ -72,7 +72,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0818_PM1';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -183,15 +183,15 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [7];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1,2,3,4,5,6];
 
 % Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
 % Params.TargetOrder          = [7:10];
 
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -275,6 +275,10 @@ Params.ValidDir          = [1:6,7];
 Params.deltaT = 1/Params.UpdateRate;
 Params.k_v = 0.8;
 Params.k_i = 9;       % Can change this to make it more/less responsive  (increase to make faster, normal is 10)
+
+
+Params.k_v = 0.9;
+Params.k_i = 5;       % Can change this to make it more/less responsive  (increase to make faster, normal is 10)
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...

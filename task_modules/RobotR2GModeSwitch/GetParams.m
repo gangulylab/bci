@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Imag_Actions_0702_7DoF_PM3';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -184,8 +184,8 @@ Params.NumFixedBlocks       = 1;
 % Params.TargetOrder          = [1 2 5 3 4 6];
 
 % Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [1];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [7,8,9,10];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -259,7 +259,7 @@ Params.AssistAlpha = 0.0;
 
 Params.limit = [-400, 400; -400 400; -270 350];
 Params.RobotMode            = 10;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
-Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
