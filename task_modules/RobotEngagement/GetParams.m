@@ -260,7 +260,7 @@ Params.AssistAlpha = 0.0;
 Params.GoTime           = 5; % seconds
 Params.StopTime         = 3; % seconds
 Params.Cycles           = 3;
-Params.ShowUserDecode   = 1; % 1: user decode, 0: correct decode
+Params.ShowUserDecode   = 0; % 1: user decode, 0: correct decode
 
 Params.GoBins   = Params.GoTime*Params.UpdateRate;
 Params.StopBins = Params.StopTime*Params.UpdateRate;

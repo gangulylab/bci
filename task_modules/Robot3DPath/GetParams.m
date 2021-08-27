@@ -87,7 +87,7 @@ Params.AdaptiveBaseline = false;
 % also set the softmax option
 Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
-    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
+    Params.ConvNeuralNetSoftMaxThresh = 0.4;       
     Params.ConvUse3Features = true;
 %     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
@@ -248,7 +248,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.limit = [-300, 300; -300 300; -250 250];
 Params.RobotMode            = 11;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -263,7 +263,7 @@ Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.8;
+Params.k_v = 0.85;
 Params.k_i = 9;    
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...

@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=5;
+Params.ClickCounter=1;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -224,7 +224,7 @@ Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D ro
 Params.RobotTargetRadius    = 40;
 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;
