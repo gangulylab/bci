@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -180,12 +180,12 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-% Params.NumTrialsPerBlock    = 6;
-% Params.TargetOrder          = [1 2 5 3 4 6];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1 2 5 3 4 6];
 
 % Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [7,8,9,10];
+% Params.NumTrialsPerBlock    = 4;
+% Params.TargetOrder          = [7,8,9,10];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order

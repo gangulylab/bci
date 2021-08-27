@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot3DPath';
+Params.Task = 'RobotEngagement';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -39,7 +39,7 @@ Params.MaxVelocity              = 200;
 Params.ClickerBins = -1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
 Params.ClickerDataCollection = true; % if true, does not use clicker, freezes cursor when in target
-if Params.ClickerDataCollection,
+if Params.ClickerDataCollection
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
@@ -73,8 +73,6 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
-
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -96,19 +94,13 @@ else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
-
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
 Params.ChPooling = true; 
 
 %% Targets: radial layout
-Params.NumReachTargets   = 6;
-Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 350; % defines outer edge of target
-Params.InnerCircleRadius = 150; % defines inner edge of target
-% Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
-Params.ReachTargetRadius = 150;
+Params.ReachTargetRadius = 200;
 
 d2 = sqrt(1/2);
 d3 = sqrt(1/3);
@@ -118,40 +110,9 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     -Params.ReachTargetRadius, 0, 0;...
     0, -Params.ReachTargetRadius, 0; ...
     0,0,Params.ReachTargetRadius;...
-    0, 0,-Params.ReachTargetRadius;...
-    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-    0,    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius;...
-    0, -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius;...
-    0, -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius;...
-    0, d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius;...
-        d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
-    -d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
-    -d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
-    d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
-        d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
-    -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
-    -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
-    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
-        d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
-    -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
-    -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
-    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius];
+    0, 0,-Params.ReachTargetRadius];
     
-Params.LongStartPos =  [200, -200, 0; -200, 200, 0; 200, 0, -100; -200, 0, -100; 200, -100, 0; 200, 180, 0;...
-    200, 0, -200];
-
-Params.ReachTargetPositions = [-200, 200, 0; 200, -200, 0; -200. 0. -100; 200, 0, -100;...
-200, 180,0; 200, -100,0;0,0,280];
-
-Params.Paths{1} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
-Params.Paths{2} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
-Params.Paths{3} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
-Params.Paths{4} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
-Params.Paths{5} = [[0.2, 0.1, 0]; [0, 0.1, 0]; [-0.1414, -0.0414, 0]; [0, -0.18, 0]; [0.2, -0.18, 0]]*1000;
-
+Params.StartPos =  -Params.ReachTargetPositions;
 
 %% Kal,an Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -173,15 +134,15 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1,2,3,4,5,6];
 
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -205,21 +166,21 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType,
-    case 'none',
+switch Params.CLDA.AdaptType
+    case 'none'
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear',
-        switch Params.CLDA.Type,
-            case 2, % smooth batch
+    case 'linear'
+        switch Params.CLDA.Type
+            case 2 % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
-            case 3, % RML
+            case 3 % RML
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise, % none or refit
+            otherwise % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
@@ -246,9 +207,10 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.limit = [-300, 300; -300 300; -250 250];
-Params.RobotMode            = 11;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
-Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+
+Params.RobotMode            = 3;  
+Params.RobotDirectionLines  = 1;  % Show red decode line0: No lines, 1: Lines
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -263,8 +225,8 @@ Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.8;
-Params.k_i = 9;    
+Params.k_v = 0.2;
+Params.k_i = 20;       
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
@@ -289,14 +251,25 @@ Params.ClickerBinNum = 10;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
+% Boundaries
 Params.boundaryDist = 10;
 Params.boundaryVel = 0;
 Params.AssistAlpha = 0.0;
 
-Params.PathInd = 0;
+%Engagement Task
+Params.GoTime           = 5; % seconds
+Params.StopTime         = 3; % seconds
+Params.Cycles           = 3;
+Params.ShowUserDecode   = 1; % 1: user decode, 0: correct decode
 
+Params.GoBins   = Params.GoTime*Params.UpdateRate;
+Params.StopBins = Params.StopTime*Params.UpdateRate;
+
+Params.InputOrder = [];
+for i = 1:Params.Cycles
+    Params.InputOrder = [Params.InputOrder, ones(1,Params.GoBins),  zeros(1,Params.StopBins)];
+end
 %% For Debug
-
 Params.index = 1;
 Params.clickOrder = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7];
 end % GetParams

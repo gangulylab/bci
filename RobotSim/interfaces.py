@@ -187,3 +187,7 @@ class DiscreteActionsRobot():
         print(self.path)
         for i in range(len(p) - 1):
             self.robotenv.drawLine(p[i] + self.robotenv.center, p[i+1]+ self.robotenv.center)
+
+
+    def setGoCue(self, c):
+        self.robotenv.setGoCue(c)

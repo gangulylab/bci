@@ -67,7 +67,7 @@ class JacoEnv(object):
     self.JP                   = [0,0,0,0,0,0]
 
     # self.cube1Id = p.loadURDF("cube_small.urdf",[0.2, 0, -2] + self.center, [0,0,0,1])
-    self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
+    self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 1.0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
 
     c       = [0, 1, 0]
     pos     = np.array([0,0, -2])
@@ -401,6 +401,13 @@ class JacoEnv(object):
     else:
       self.m1 = p.addUserDebugLine(c1,c2, [0,0,1], 20, replaceItemUniqueId=self.m1)
 
+  def setGoCue(self, val):
+    p.removeUserDebugItem(self.t1)
+    if val == 1:
+      self.t1 = p.addUserDebugText('o o o', [-1.2,0.0,0.3],  [0,1,0], 16)
+    elif val == 0:
+      self.t1 = p.addUserDebugText('o o o', [-1.2,0.0,0.3],  [1,0,0], 16)
+
   def inverseKin(self):
     if (self.newPosInput == 1):
       self.jointPoses = p.calculateInverseKinematics(self.jacoId,
@@ -444,6 +451,8 @@ class JacoEnv(object):
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
+
+    self.t1 = p.addUserDebugText('o o o', [-1.2,0.2,-1.4],  [0,1,0], 1)
     pos = np.array([0,0, -2])
     lw = 6
     d = .05
@@ -519,7 +528,7 @@ class JacoEnv(object):
     self.updateT = time.time()
     self.pos2 = self.pos
 
-    p.resetBasePositionAndOrientation(self.cube1Id, [0,0, -2], [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ])
+    p.resetBasePositionAndOrientation(self.cube1Id, [0,1, -2], [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ])
 
   def step(self):
 

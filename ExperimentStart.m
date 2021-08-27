@@ -45,7 +45,8 @@ valid_tasks = {...
     'RobotR2GModeSwitch',...
     'RealRobot3D',...
     'RealRobotBatch',...
-    'Robot3DPath'};
+    'Robot3DPath',...
+    'RobotEngagement'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -189,7 +190,7 @@ Neuro.FeatureBufferSize = Params.FeatureBufferSize;
 Neuro.SmoothDataFlag = Params.SmoothDataFlag;
 
 % initialize filter bank state
-for i=1:length(Params.FilterBank),
+for i=1:length(Params.FilterBank)
     Neuro.FilterBank(i).state = [];
 end
 
