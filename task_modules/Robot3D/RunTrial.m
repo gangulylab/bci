@@ -236,6 +236,7 @@ if ~Data.ErrorID,
 
                 Params.index = Params.index + 1;
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+                Click_Decision
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID

@@ -364,12 +364,12 @@ if ~Data.ErrorID
             
 
         % end if in target for hold time (not using clicker)
-        if trajIndex >= length(Params.TrialInputOrder)
-            done = 1;
-            Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
-
-        end
+%         if trajIndex >= length(Params.TrialInputOrder)
+%             done = 1;
+%             Data.SelectedTargetID = TargetID;
+%             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
+% 
+%         end
         
     end % Reach Target Loop
 end % only complete if no errors

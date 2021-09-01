@@ -168,12 +168,12 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [1];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
 
 % Diagonals in the Horizontal Plane
-% Params.NumTrialsPerBlock    = 4;
-% Params.TargetOrder          = [7:10];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [7:10];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -243,7 +243,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.limit = [-400, 400; -400 400; -350 350];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 6;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -259,8 +259,11 @@ Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.95;
-Params.k_i = 20.ss0;
+% Params.k_v = 0.95;
+% Params.k_i = 15;
+
+Params.k_v = 0.9;
+Params.k_i = 10;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
@@ -273,7 +276,7 @@ Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
-Params.LongTrial = 0;
+Params.LongTrial = 1;
 Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(4,:);...
     Params.ReachTargetPositions(1,:);...
@@ -287,7 +290,7 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
 
 % Clicker
 Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 10;
+Params.ClickerBinNum = 6;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
@@ -296,7 +299,7 @@ Params.BreakGain = 0.75;
 
 Params.TargetHoldTime = 5;
 
-Params.boundaryDist = 0;
+Params.boundaryDist = 1;
 Params.boundaryVel = 0;
 Params.AssistAlpha = 0.0;
 
