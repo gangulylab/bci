@@ -46,7 +46,8 @@ valid_tasks = {...
     'RealRobot3D',...
     'RealRobotBatch',...
     'Robot3DPath',...
-    'RobotEngagement'};
+    'RobotEngagement',...
+    'RobotLateralR2G'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -353,19 +354,18 @@ try
     % Pause and Finish!
     ExperimentStop(Params,0);
     
-catch ME, % handle errors gracefully
+catch ME % handle errors gracefully
     Screen('CloseAll')
-    for i=length(ME.stack):-1:1,
-        if i==1,
+    for i=length(ME.stack):-1:1
+        if i==1
             errorMessage = sprintf('Error in function %s() at line %d.\n\nError Message:\n%s\n\n', ...
                 ME.stack(1).name, ME.stack(1).line, ME.message);
-        else,
+        else
             errorMessage = sprintf('Error in function %s() at line %d.\n\n', ...
                 ME.stack(i).name, ME.stack(i).line);
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    
     
     keyboard;
 end

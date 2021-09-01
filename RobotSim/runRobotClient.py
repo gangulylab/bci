@@ -17,6 +17,7 @@ interface.letterMode = 0
 robot_open = 1
 target_pos = np.array([0.0, 300.0, 0.0])
 robot_pos = np.array([0.0, 0.0, 0.0])
+robot_orn = np.array([0.0, 0.0, 0.0])
 
 while True:
 	data, address = sock.recvfrom(4096)
@@ -98,6 +99,7 @@ while True:
 			interface.drawPath()
 		if val1 == 20:
 			interface.setGoCue(val2)
+
 
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1000

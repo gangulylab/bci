@@ -183,6 +183,8 @@ if ~Data.ErrorID,
     InTargetTotalTime = 0;
     
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
+    
+    StopClicker_Buffer = zeros(Params.ClickerBinNum, 1);
     temp_dir = [0,0,0];
     ClickToSend = 0;
     
@@ -257,13 +259,17 @@ if ~Data.ErrorID,
                 ClickDec_Buffer(end) = Click_Decision;
                 RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
 
+                StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
+                StopClicker_Buffer(end) = Click_Decision == 7;
+                
                 ClickToSend = RunningMode_ClickDec;
                 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
                 
-                if RunningMode_ClickDec == 7
-                    Cursor.State(4:6) = [0;0;0];          
-                else 
+                if Params.ClickerBreak == 1 && RunningMode_ClickDec == 7
+                    Cursor.State(4:6) = Cursor.State(4:6)*Params.BreakGain;          
+                end
+
 
                 A = Params.dA;
                 B = Params.dB;
@@ -317,7 +323,7 @@ if ~Data.ErrorID,
                         Cursor.State(6) = -Params.boundaryVel;
                    end
                 end                
-                end
+                
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
@@ -335,12 +341,13 @@ if ~Data.ErrorID,
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
              
-            % start counting time if cursor is in target
-            if TargetID==Data.TargetID,
+            if TargetID==Data.TargetID
                 inTargetOld = 1;
                 InTargetTotalTime = InTargetTotalTime + dt;
                 if Params.RobotClicker
-                    if RunningMode_ClickDec == 7
+                    mean(StopClicker_Buffer);
+                    if mean(StopClicker_Buffer) > Params.ClickerBinThresh
+                        
                         done = 1;
                         Data.SelectedTargetID = TargetID;
                         Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 

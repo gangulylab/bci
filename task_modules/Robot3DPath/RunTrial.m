@@ -344,7 +344,7 @@ if ~Data.ErrorID
                 inTargetOld = 1;
                 InTargetTotalTime = InTargetTotalTime + dt;
                 if Params.RobotClicker
-                    mean(StopClicker_Buffer)
+                    mean(StopClicker_Buffer);
                     if mean(StopClicker_Buffer) > Params.ClickerBinThresh
                         
                         done = 1;
