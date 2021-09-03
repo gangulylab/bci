@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.6;       
+    Params.NeuralNetSoftMaxThresh = 0.8;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0903_PM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -172,8 +172,8 @@ Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1:6];
 
 % Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [7:10];
+%Params.NumTrialsPerBlock    = 4;
+%Params.TargetOrder          = [7:10];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -262,7 +262,7 @@ Params.deltaT = 1/Params.UpdateRate;
 % Params.k_v = 0.95;
 % Params.k_i = 15;
 
-Params.k_v = 0.9;
+Params.k_v = 0.91;
 Params.k_i = 10;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
@@ -290,12 +290,12 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
 
 % Clicker
 Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 6;
+Params.ClickerBinNum = 4;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
 Params.ClickerBreak = 1;
-Params.BreakGain = 0.75;
+Params.BreakGain = 0.25;
 
 Params.TargetHoldTime = 5;
 
