@@ -261,7 +261,7 @@ if ~Data.ErrorID,
                 RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
 
                 StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
-                StopClicker_Buffer(end) = Click_Decision == 7;
+                StopClicker_Buffer(end) = RunningMode_ClickDec == 7;
                 
                 ClickToSend = RunningMode_ClickDec;
                 
