@@ -70,7 +70,7 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.6;       
+    Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
@@ -263,8 +263,8 @@ Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.85;
-Params.k_i = 9;    
+Params.k_v = 0.9;
+Params.k_i = 10;    
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...

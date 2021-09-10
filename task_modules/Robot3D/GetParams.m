@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.8;       
+    Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0903_PM2';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -168,12 +168,12 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
+% Params.NumTrialsPerBlock    = 6;
+% Params.TargetOrder          = [1:6];
 
 % Diagonals in the Horizontal Plane
-%Params.NumTrialsPerBlock    = 4;
-%Params.TargetOrder          = [7:10];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [7:10];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -263,7 +263,7 @@ Params.deltaT = 1/Params.UpdateRate;
 % Params.k_v = 0.95;
 % Params.k_i = 15;
 
-Params.k_v = 0.91;
+Params.k_v = 0.9;
 Params.k_i = 10;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...

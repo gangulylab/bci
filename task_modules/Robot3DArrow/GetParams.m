@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=4;
+Params.ClickCounter=3;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -77,9 +77,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.6;       
+    Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0903_PM2';%'MLP_PreTrained_7DoF_Days1to11';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    

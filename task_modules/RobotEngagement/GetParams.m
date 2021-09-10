@@ -134,9 +134,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
@@ -222,7 +222,7 @@ end
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:6,7];
+%Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
 Params.k_v = 0.2;
@@ -246,7 +246,7 @@ Params.RobotTargetRadius = 100;  % increase radius if task too hard
 Params.TargetHoldTime = 10;
 
 % Clicker
-Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.RobotClicker = 0;     % 0: trial ends with hold time, 1: trial ends with click
 Params.ClickerBinNum = 10;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
@@ -260,7 +260,7 @@ Params.AssistAlpha = 0.0;
 Params.GoTime           = 5; % seconds
 Params.StopTime         = 3; % seconds
 Params.Cycles           = 3;
-Params.ShowUserDecode   = 1; % 1: user decode, 0: correct decode
+Params.ShowUserDecode   = 0; % 1: user decode, 0: correct decode
 
 Params.GoBins   = Params.GoTime*Params.UpdateRate;
 Params.StopBins = Params.StopTime*Params.UpdateRate;
