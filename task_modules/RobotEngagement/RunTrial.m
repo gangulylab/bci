@@ -362,10 +362,10 @@ if ~Data.ErrorID
                 inTargetOld = 0;
             end
             
-
         % end if in target for hold time (not using clicker)
-%         if trajIndex >= length(Params.TrialInputOrder)
-%             done = 1;
+        if trajIndex >= length(Params.TrialInputOrder)
+            done = 1;
+        end
 %             Data.SelectedTargetID = TargetID;
 %             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
 % 

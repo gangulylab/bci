@@ -77,9 +77,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.5;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0915_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
@@ -152,8 +152,8 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 21;
-Params.TargetOrder          = [1:7, 1:7, 1:7];
+Params.NumTrialsPerBlock    = 14;
+Params.TargetOrder          = [1:7, 1:7];
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 2];

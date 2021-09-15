@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.8;       
+    Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0903_PM2';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -178,8 +178,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [1];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [1:4];
 
 % Diagonals in the Horizontal Plane
 %Params.NumTrialsPerBlock    = 4;
@@ -235,7 +235,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 25 ;
+Params.MaxReachTime = 60 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 

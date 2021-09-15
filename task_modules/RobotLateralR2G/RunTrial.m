@@ -247,6 +247,7 @@ if ~Data.ErrorID
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
             ClickToSend = RunningMode_ClickDec;
             
+            Data.Subtask(1,end+1) = subTask;
             % Open/close 
             if Params.opMode == 1
                 Grasp_Buffer(1:end-1) = Grasp_Buffer(2:end);
@@ -333,6 +334,8 @@ if ~Data.ErrorID
             U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
             U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
 
+            RunningMode_ClickDec
+            
             % Mode 0: Translation
             if Params.opMode == 0
 
@@ -524,7 +527,7 @@ if Params.InterTrialInterval>0,
         end
     end % Instructed Delay Loop
 end % only complete if no errors
-
+pause()
 
 %% Completed Trial - Give Feedback
 

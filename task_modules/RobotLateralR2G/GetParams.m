@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0915_PM1';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -209,7 +209,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 20;
+Params.MaxReachTime = 120;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -228,7 +228,7 @@ Params.boundaryDist = 0;
 Params.boundaryVel = 0;
 Params.AssistAlpha = 0.0;
 
-Params.limit = [-400, 400; -400 400; -270 350];
+Params.limit = [-400, 400; -400 400; -220 350];
 Params.RobotMode            = 10;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
@@ -261,15 +261,15 @@ Params.opMode = 0;
 Params.LongTrial = 1;
 
 % Target
-Params.RobotTargetRadius = [40, 70];  % increase radius if task too hard
+Params.RobotTargetRadius = [50, 70];  % increase radius if task too hard
 
 % Clicker
 Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 7;
-Params.ClickerBinThresh = 0.7;
+Params.ClickerBinNum = 5;
+Params.ClickerBinThresh = 0.6;
 
 Params.switchLockCnt = 10;
-Params.GraspBinNum = 10;
+Params.GraspBinNum = 5;
 Params.GraspBinThresh = 0.6;
 
 Params.autoCenterOverTarget = 0;
