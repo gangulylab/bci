@@ -19,7 +19,7 @@ class JacoEnv(object):
     p.setGravity(0,0,-10)
 
     self.useOrientation         = 1
-    self.useSimulation          = 0
+    self.useSimulation          = 1
     self.useRealTimeSimulation  = 1
 
     self.mode           = mode
@@ -56,6 +56,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.4, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 9:
       p.resetDebugVisualizerCamera(cameraDistance=5., cameraYaw= 0, cameraPitch= 80, cameraTargetPosition=[-0.35,0.3,0.3])
+    elif self.mode == 10:
+      p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 0, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -66,8 +68,8 @@ class JacoEnv(object):
     self.jd                   = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
     self.JP                   = [0,0,0,0,0,0]
 
-    # self.cube1Id = p.loadURDF("cube_small.urdf",[0.2, 0, -2] + self.center, [0,0,0,1])
-    self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 1.0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
+    self.cube1Id = p.loadURDF("cube_small.urdf",[-0.2, 0, -0.2] + self.center, [0,0,0,1],  globalScaling=3)
+    # self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 1.0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
 
     c       = [0, 1, 0]
     pos     = np.array([0,0, -2])
@@ -278,7 +280,7 @@ class JacoEnv(object):
     pos[1] = self.center[1] + pos[1]
     pos[2] = self.center[2] + pos[2]
     lw = 6
-    d = .05
+    d = self.robotTargetRad
     # z = .1
     self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
     self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
@@ -366,8 +368,8 @@ class JacoEnv(object):
     self.step()
 
   def set_robotOrn(self, orn):
-    ornNew    = [math.pi, 0, orn]
-    self.orn  = p.getQuaternionFromEuler(ornNew)
+    # ornNew    = [math.pi, 0, orn]
+    self.orn  = p.getQuaternionFromEuler(orn)
     self.newPosInput = 1
 
   def set_robotPos(self, rp, key):
@@ -438,7 +440,7 @@ class JacoEnv(object):
     elif self.mode == 3  or self.mode == 4 or self.mode == 8:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 10:
-      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 15, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 5:
       p.resetDebugVisualizerCamera(cameraDistance=0.25, cameraYaw= 0, cameraPitch=0, cameraTargetPosition=[-0.35,0.3,0.2])  
     elif self.mode == 7:
@@ -447,7 +449,6 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 11:
       p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 15, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
-    
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -528,7 +529,10 @@ class JacoEnv(object):
     self.updateT = time.time()
     self.pos2 = self.pos
 
-    p.resetBasePositionAndOrientation(self.cube1Id, [0,1, -2], [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ])
+    if self.mode == 10:
+      p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -0.2] + self.center, [0,0,0,1])
+    else:
+      p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -2] + self.center, [0,0,0,1])
 
   def step(self):
 

@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -265,5 +265,8 @@ Params.StartTrialHold   = 0;
 
 Params.bypassClicker = 1;
 
+%%
+Params.index = 1;
+Params.clickOrder = [1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0]
 
 end % GetParams

@@ -1,6 +1,7 @@
 import socket
 import interfaces
 import numpy as np
+import math
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_address = ('localhost', 5006)
@@ -8,7 +9,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 11
+interface.mode = 10
 interface.angle = 0
 interface.debugLines = 0
 interface.open()
@@ -123,22 +124,27 @@ while True:
 		if interface.mode == 10:
 			interface.robotenv.drawMode(1)
 		key = val10
-		robot_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
-		robot_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
-		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
+		robot_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
+		robot_pos[1] = -((val4-1) *(val5 + val6/100))/ 1000
+		robot_pos[2] = ((val7-1) *(val8 + val9/100))/ 1000
 		interface.robotenv.opMode = 0
 		interface.updateRobotPos(robot_pos,key )
 		print(key)
 		interface.render()
 
+	
 	if command == 7:	
 		interface.robotenv.drawMode(2)
 		key = val10
 		
-		robot_ornz = ((val1-1) *val2 + val3/100)/10
+		robot_ornz = ((val1-1) *(val2 + val3/100))/10
 
-		interface.robotenv.opMode = 1
-		interface.robotenv.set_robotOrn(robot_ornz)
+		# interface.robotenv.opMode = 1
+		# interface.robotenv.set_robotOrn([math.pi, 0, robot_ornz])
+
+		interface.robotenv.set_robotOrn([robot_ornz,-math.pi/2,0])
+
+		print(robot_ornz)
 
 		grasp =  val5
 
@@ -147,8 +153,6 @@ while True:
 		elif grasp == 2:
 			interface.robotenv.setFing(1.3)
 
-		robot_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
-		interface.updateRobotPos(robot_pos,key )
 		interface.render()
 
 	if command == 5:
@@ -159,6 +163,30 @@ while True:
 		interface.setFing(fing)
 		# print(fing)
 		interface.render()
+
+	if command == 9:	
+		
+		robot_orn[0] = (val1-1) *(val2 + val3/100)/10
+		robot_orn[1] = -(val4-1) *(val5 + val6/100)/10
+		robot_orn[2] = (val7-1) *(val8 + val9/100)/10
+
+		robot_pos
+
+		print(robot_orn)
+		interface.robotenv.set_robotOrn(robot_orn)
+		interface.render()
+
+	if command == 14:	
+		key = val10
+		robot_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
+		robot_pos[1] = -((val4-1) *(val5 + val6/100))/ 1000
+		robot_pos[2] = ((val7-1) *(val8 + val9/100))/ 1000
+		interface.updateRobotPos(robot_pos,key )
+		print(robot_pos)
+		# interface.render()
+
+
+	
 
 sock.shutdown()
 sock.close() 

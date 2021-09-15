@@ -1,4 +1,4 @@
-function TargetID = InTargetRobot2D(Cursor,TargetPos, Radius)
+function TargetID = InTargetRobot3D2(Cursor,TargetPos, Radius, dim, ID)
 % function inFlag = InTargetRadial(Cursor,TargetsVerts,InnerCircleRadius)
 % function to tell if cursor is inside any of the targets
 % 
@@ -14,14 +14,14 @@ function TargetID = InTargetRobot2D(Cursor,TargetPos, Radius)
 
 TargetID = 0;
 
+temp = Cursor.State(1:3);
 
-temp = Cursor.State(1:2) - Cursor.Center(1:2)';
-
-for i=1:length(TargetPos)
-dist = temp - [TargetPos(i,1); TargetPos(i,2);];
+dist = temp - TargetPos';
 
 in = norm(dist) < Radius;
-if in, TargetID = i; end
+if in
+    TargetID = 1;
 end
 
-a = 1;
+
+
