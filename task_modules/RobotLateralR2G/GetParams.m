@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.6;       
+    Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0915_PM1';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0917_AM1';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -219,7 +219,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.flipView = 1;  % 0: standard simulation view, 1: real robot view (across table)
+Params.flipView = 0;  % 0: standard simulation view, 1: real robot view (across table)
 
 if Params.flipView
     Params.RobotMode = 12;
@@ -272,7 +272,7 @@ Params.RobotTargetRadius = [70, 70];  % Radius of targets, can be set separately
 
 % Clicker
 Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum    = 5;
+Params.ClickerBinNum    = 4;
 Params.ClickerBinThresh = 0.6;
 
 Params.switchLockCnt    = 10;
