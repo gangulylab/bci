@@ -9,7 +9,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 10
+interface.mode = 12
 interface.angle = 0
 interface.debugLines = 0
 interface.open()
@@ -103,9 +103,9 @@ while True:
 
 
 	if command == 1:	# Set Target
-		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
-		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
-		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
+		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
+		target_pos[1] = -((val4-1) *(val5 + val6/100))/ 1000
+		target_pos[2] = ((val7-1) *(val8 + val9/100))/ 1000
 		if interface.letterMode == 1:
 			interface.create_targetLetter(target_pos, 1)
 		elif interface.mode == 9:
@@ -114,14 +114,14 @@ while True:
 			interface.create_target3D(target_pos, 1)
 
 	if command == 11:	# Set Target
-		target_pos[0] = ((val1-1) *val2 + val3/100)/ 1000
-		target_pos[1] = -((val4-1) *val5 + val6/100)/ 1000
-		target_pos[2] = ((val7-1) *val8 + val9/100)/ 1000
+		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
+		target_pos[1] = -((val4-1) *(val5 + val6/100))/ 1000
+		target_pos[2] = ((val7-1) *(val8 + val9/100))/ 1000
 		print(target_pos)
 		interface.create_target(target_pos)
 
 	if command == 4:	
-		if interface.mode == 10:
+		if interface.mode == 10 or interface.mode == 12:
 			interface.robotenv.drawMode(1)
 		key = val10
 		robot_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000

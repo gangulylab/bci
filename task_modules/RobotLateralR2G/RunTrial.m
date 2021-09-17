@@ -251,7 +251,7 @@ if ~Data.ErrorID
             % Open/close 
             if Params.opMode == 1
                 Grasp_Buffer(1:end-1) = Grasp_Buffer(2:end);
-                Grasp_Buffer(end) = Click_Decision;
+                Grasp_Buffer(end) = RunningMode_ClickDec;
 
                 openCnt = sum(Grasp_Buffer == 3);            
                 closeCnt = sum(Grasp_Buffer == 1);
@@ -288,7 +288,7 @@ if ~Data.ErrorID
             % Mode switching    
             if switchLocked == 0
                 StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
-                StopClicker_Buffer(end) = Click_Decision == 7;
+                StopClicker_Buffer(end) = RunningMode_ClickDec == 7;
             else
                 switchLockCnt = switchLockCnt + 1;
                 if switchLockCnt > Params.switchLockCnt
@@ -304,6 +304,11 @@ if ~Data.ErrorID
                    switchLockCnt = 0;
                    StopClicker_Buffer = zeros(Params.ClickerBinNum, 1);
                    fprintf('Mode: %s\n','Grasp')
+                   
+                   if Params.zeroVelOnModeSwitch
+                       Cursor.State(4:6) = [0;0;0];
+                   end
+                   
                    if inTarget && Params.autoCenterOverTarget
                        Cursor.State(1) = ReachTargetPos(1);
                        Cursor.STate(2) = ReachTargetPos(2);
@@ -320,9 +325,17 @@ if ~Data.ErrorID
                    switchLockCnt = 0;
                    StopClicker_Buffer = zeros(Params.ClickerBinNum, 1);
                     fprintf('Mode: %s\n','Translation') 
+                    
+                   if Params.zeroVelOnModeSwitch
+                       Cursor.State(4:6) = [0;0;0];
+                   end
                end
             end
                         
+            
+            if Params.ClickerBreak == 1 && RunningMode_ClickDec == 7
+                    Cursor.State(4:6) = Cursor.State(4:6)*Params.BreakGain;          
+            end
               
             % Click to user input
             
@@ -334,7 +347,15 @@ if ~Data.ErrorID
             U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
             U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
 
-            RunningMode_ClickDec
+            
+            if Params.flipView 
+                U(1) = -U(1);
+                U(2) = -U(2);
+            end
+            
+            if Params.printDecode
+                RunningMode_ClickDec
+            end
             
             % Mode 0: Translation
             if Params.opMode == 0
@@ -401,6 +422,19 @@ if ~Data.ErrorID
                end
             end                
                 
+            if Cursor.RState(1) <= Params.Rlimit(1,1)
+               Cursor.RState(1) = Params.Rlimit(1,1) + Params.RboundaryDist;
+               if Cursor.RState(2) < 0
+                    Cursor.RState(2) = Params.RboundaryVel; 
+               end
+            elseif Cursor.RState(1) >= Params.Rlimit(1,2)
+               Cursor.RState(1) = Params.Rlimit(1,2) - Params.RboundaryDist;
+               if Cursor.RState(2) > 0
+                    Cursor.RState(2) = -Params.RboundaryVel;
+               end   
+            end
+            
+            
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
             
@@ -527,7 +561,6 @@ if Params.InterTrialInterval>0,
         end
     end % Instructed Delay Loop
 end % only complete if no errors
-pause()
 
 %% Completed Trial - Give Feedback
 

@@ -152,13 +152,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 3;
-Params.TargetOrder          = [1:3];
-
-% Diagonals in the Horizontal Plane
-% Params.NumTrialsPerBlock    = 4;
-% Params.TargetOrder          = [7,8,9,10];
-
+Params.NumTrialsPerBlock    = 1;        
+Params.TargetOrder          = [1];  %  Can set 1:3 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -184,21 +179,21 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType,
-    case 'none',
+switch Params.CLDA.AdaptType
+    case 'none'
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear',
-        switch Params.CLDA.Type,
-            case 2, % smooth batch
+    case 'linear'
+        switch Params.CLDA.Type
+            case 2 % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
-            case 3, % RML
+            case 3 % RML
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise, % none or refit
+            otherwise % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
@@ -224,12 +219,24 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.boundaryDist = 0;
-Params.boundaryVel = 0;
-Params.AssistAlpha = 0.0;
+Params.flipView = 1;  % 0: standard simulation view, 1: real robot view (across table)
 
-Params.limit = [-400, 400; -400 400; -220 350];
-Params.RobotMode            = 10;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+if Params.flipView
+    Params.RobotMode = 12;
+else
+    Params.RobotMode = 10;  
+end
+
+Params.boundaryDist     = .01;
+Params.boundaryVel      = 0;
+Params.RboundaryDist    = .01;
+Params.RboundaryVel     = 0;
+Params.AssistAlpha      = 0.0;
+Params.LongTrial        = 1;
+
+Params.limit = [-400, 400; -400 400; -220 300];
+
+
 Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -254,40 +261,46 @@ Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
+% Rotation Dynamics
 Params.ra = 0.8;
-Params.rb = 0.06;
+Params.rb = 0.03;
 Params.opMode = 0;
-
-Params.LongTrial = 1;
+Params.Rlimit = [-0.6, 0.6];
 
 % Target
-Params.RobotTargetRadius = [50, 70];  % increase radius if task too hard
+Params.RobotTargetRadius = [70, 70];  % Radius of targets, can be set separately
 
 % Clicker
-Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 5;
+Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.ClickerBinNum    = 5;
 Params.ClickerBinThresh = 0.6;
 
-Params.switchLockCnt = 10;
-Params.GraspBinNum = 5;
-Params.GraspBinThresh = 0.6;
+Params.switchLockCnt    = 10;
+Params.GraspBinNum      = 5;
+Params.GraspBinThresh   = 0.6;
 
 Params.autoCenterOverTarget = 0;
-
 Params.GripperOrnInit = [0, pi/2,0];
 
+Params.printDecode = 1;
 
+Params.ClickerBreak = 1;
+Params.BreakGain = 0.75;  %(0-1; 0: Full stop, 1: No break) 
+Params.zeroVelOnModeSwitch = 0;
 %% For Debug
 
 Params.index = 1;
-% Params.clickOrder = [1*ones(1,20), 7*(ones(1,7)), 3*(ones(1,10)), 4*ones(1,20), 6*(ones(1,25)), 1*ones(1,10), 5*ones(1,20)];
-Params.clickOrder = [3*(ones(1,8)), 6*(ones(1,15)),7*(ones(1,7)), 1*ones(1,10),7*(ones(1,7)), 5*ones(1,10), 3*ones(1,6), 7*(ones(1,7)), 3*ones(1,10),  5*ones(1,30) ];
+Params.clickOrder = [7*(ones(1,7)),2*(ones(1,20)), 4*(ones(1,20)) ];
 
-Params.clickOrder = [3*(ones(1,12)), 6*(ones(1,15)),7*(ones(1,7)), 1*ones(1,10),7*(ones(1,7)), 5*ones(1,10), 7*(ones(1,7)), 6*ones(1,15), 3*ones(1,10), ...
-    3*(ones(1,12)), 4*(ones(1,12)), 6*(ones(1,15)),7*(ones(1,7)), 1*ones(1,10),7*(ones(1,7)), 5*ones(1,10), 7*(ones(1,7)), 6*ones(1,15), 3*ones(1,10),...
-    ];
+Params.clickOrder = [1*(ones(1,20)), 3*(ones(1,20)),2*(ones(1,20)), ...
+    4*(ones(1,20)), 7*(ones(1,7)),  6*(ones(1,20)),5*(ones(1,20)),...
+    2*(ones(1,10)),6*(ones(1,20)),5*(ones(1,20)), 4*(ones(1,10)),...
+    6*(ones(1,20)),5*(ones(1,20))];
 
-Params.clickOrder = [7*(ones(1,8)), 4*(ones(1,8)),6*(ones(1,7)), 1*ones(1,10),7*(ones(1,7)), 5*ones(1,10), 3*ones(1,6), 7*(ones(1,7)), 3*ones(1,10),  5*ones(1,30) ];
+
+Params.clickOrder = [5*(ones(1,40)), 6*(ones(1,40)) ...
+    1*(ones(1,8)), 3*(ones(1,8))];
+
 
 
 end % GetParams

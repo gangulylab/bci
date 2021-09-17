@@ -58,6 +58,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=5., cameraYaw= 0, cameraPitch= 80, cameraTargetPosition=[-0.35,0.3,0.3])
     elif self.mode == 10:
       p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 0, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 12:
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -396,8 +398,13 @@ class JacoEnv(object):
     self.newPosInput = 1
 
   def drawMode(self, mode):
-    c1 = [-0.45, 0, 0.];
-    c2 = [-0.15, 0, 0.];
+
+    if self.mode == 12:
+      c1 = [-0.45, 0.6, 0.];
+      c2 = [-0.15, 0.6, 0.];
+    else:
+      c1 = [-0.45, 0, 0.];
+      c2 = [-0.15, 0, 0.];
     if mode == 1:
       self.m1 = p.addUserDebugLine(c1,c2, [1,0,0], 20, replaceItemUniqueId=self.m1)
     else:
@@ -449,6 +456,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 11:
       p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 15, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 12:
+      p.resetDebugVisualizerCamera(cameraDistance=0.5, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -491,7 +500,7 @@ class JacoEnv(object):
     d2 = [0,0,0]
     p.addUserDebugLine(d1, d2, [0,0,0], 4, 0,replaceItemUniqueId=self.l13)
 
-    if self.mode == 10:
+    if self.mode == 10 or self.mode == 12:
       self.draw2DAxes()
     elif self.mode < 5:
         self.drawAxes()
@@ -529,7 +538,7 @@ class JacoEnv(object):
     self.updateT = time.time()
     self.pos2 = self.pos
 
-    if self.mode == 10:
+    if self.mode == 10 or self.mode == 12:
       p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -0.2] + self.center, [0,0,0,1])
     else:
       p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -2] + self.center, [0,0,0,1])
@@ -562,7 +571,7 @@ class JacoEnv(object):
     p3 = [self.pos[0], self.pos[1] + .02, 0.002]
     p4 = [self.pos[0], self.pos[1] - .02, 0.002]
 
-    if self.mode == 7 or self.mode == 10:
+    if self.mode == 7 or self.mode == 10 or self.mode == 12:
       p.addUserDebugLine(p1, p2, [0,1,0], 6, self.bciRate)
       p.addUserDebugLine(p3, p4, [0,1,0], 6, self.bciRate) 
 
