@@ -57,7 +57,7 @@ fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 fwrite(Params.udp, [0,17,Params.LetterMode])   % set robot mode
 fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
-
+fwrite(Params.udp, [0,18,Params.RobotTargetRadius(1)])
 %%  Loop Through Blocks of Trials
 Trial = 0;
 TrialBatch = {};

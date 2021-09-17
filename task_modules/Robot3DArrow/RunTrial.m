@@ -107,7 +107,11 @@ end % only complete if no errors
 % 
 % fwrite(Params.udp,[1,ReachTargetPos(1)/10 + 128 ,ReachTargetPos(2)/10 + 128, ReachTargetPos(3)/10 + 128]);
 
-    
+if Params.flipView
+    ReachTargetPos(1) = -ReachTargetPos(1);
+    ReachTargetPos(2) = -ReachTargetPos(2);
+end
+
     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
@@ -261,7 +265,8 @@ if ~Data.ErrorID
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
             ClickToSend = RunningMode_ClickDec;
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
-                  
+             
+            
             % counter only if correct target is hit, training mode for now
             if TaskFlag == 1
                 Cursor.Counter = 0;
@@ -285,6 +290,19 @@ if ~Data.ErrorID
             Data.TaskState(1,end+1)=Cursor.TaskState;
             
             % draw the arrow
+            
+            if Params.flipView
+                if ClickToSend ==1
+                    ClickToSend = 3;
+                elseif ClickToSend == 3
+                    ClickToSend = 1;
+                elseif ClickToSend == 4
+                    ClickToSend = 2;
+                elseif ClickToSend == 2
+                    ClickToSend = 4;
+                end
+            end        
+
             fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend]);
         end
         

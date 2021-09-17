@@ -60,6 +60,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 0, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 12:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 14:
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 180 + 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])  
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -457,7 +459,9 @@ class JacoEnv(object):
     elif self.mode == 11:
       p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 15, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 12:
-      p.resetDebugVisualizerCamera(cameraDistance=0.5, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
+      p.resetDebugVisualizerCamera(cameraDistance=0.55, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 14:
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 180 - 20, cameraPitch=-30, cameraTargetPosition=[-0.3,0.25,0.1])  
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -502,7 +506,7 @@ class JacoEnv(object):
 
     if self.mode == 10 or self.mode == 12:
       self.draw2DAxes()
-    elif self.mode < 5:
+    elif self.mode < 5 or self.mode == 14:
         self.drawAxes()
     if self.mode == 9:
       self.drawAxes()

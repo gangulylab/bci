@@ -152,8 +152,8 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 14;
-Params.TargetOrder          = [1:7, 1:7];
+Params.NumTrialsPerBlock    = 21;
+Params.TargetOrder          = [1:7,1:7,1:7];
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 2];
@@ -218,9 +218,16 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
+Params.flipView = 1;
+
+if Params.flipView
+    Params.RobotMode        = 14; 
+else
+    Params.RobotMode            = 4; 
+end
 
 Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
-Params.RobotMode            = 4;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot, 4: Robot Arrow 3D 
+
 Params.RobotTargetRadius    = 40;
 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
@@ -232,10 +239,12 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 100;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6,7];
 Params.ValidDir          = [1:7];
 
+%% For Debug
+Params.index = 1;
+Params.clickOrder = [1*ones(1,5)];
 end % GetParams
