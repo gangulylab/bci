@@ -72,7 +72,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0922';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -134,9 +134,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
@@ -260,7 +260,7 @@ Params.AssistAlpha = 0.0;
 Params.GoTime           = 5; % seconds
 Params.StopTime         = 3; % seconds
 Params.Cycles           = 3;
-Params.ShowUserDecode   = 0; % 1: user decode, 0: correct decode
+Params.ShowUserDecode   = 1; % 1: user decode, 0: correct decode
 
 Params.GoBins   = Params.GoTime*Params.UpdateRate;
 Params.StopBins = Params.StopTime*Params.UpdateRate;
