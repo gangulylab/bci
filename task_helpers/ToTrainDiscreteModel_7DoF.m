@@ -187,11 +187,11 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210922/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20210924/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {'132730', '133409', '134109'};
+foldernames = {'104958','110034','110505','111336','134940', '135725', '140302'};
 
 cd(root_path)
 
@@ -403,14 +403,14 @@ T(aa(1):aa(end),7)=1;
 
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
-% cd('/home/ucsf/Projects/bci/clicker')
-% load pretrain_net
-%  pretrain_net.divideParam.trainRatio=0.8;
-% pretrain_net.divideParam.valRatio=0.1;
-% pretrain_net.divideParam.testRatio=0.1;
-% pretrain_net = train(pretrain_net,N,T');
-% classifier_name = 'MLP_PreTrained_7DoF_Days1to11_0922'; % enter the name
-% genFunction(pretrain_net,classifier_name); % make sure to update GetParams
+cd('/home/ucsf/Projects/bci/clicker')
+load pretrain_net
+pretrain_net.divideParam.trainRatio=0.8;
+pretrain_net.divideParam.valRatio=0.1;
+pretrain_net.divideParam.testRatio=0.1;
+pretrain_net = train(pretrain_net,N,T');
+classifier_name = 'MLP_PreTrained_7DoF_Days1to11_924pm2'; % enter the name
+genFunction(pretrain_net,classifier_name); % make sure to update GetParams
 
 
 %%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%
@@ -442,8 +442,8 @@ T(aa(1):aa(end),7)=1;
  clc
  cd('/home/ucsf/Projects/bci')
 % ExperimentStart('RobotStop','bravo1',4,1,0)
-%ExperimentStart('Robot3D','bravo1',4,1,0)
- ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+ExperimentStart('Robot3D','bravo1',4,1,0)
+ %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
  
 %  
