@@ -405,6 +405,7 @@ T(aa(1):aa(end),7)=1;
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
 cd('/home/ucsf/Projects/bci/clicker')
 load pretrain_net
+% load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
 pretrain_net.divideParam.trainRatio=0.8;
 pretrain_net.divideParam.valRatio=0.1;
 pretrain_net.divideParam.testRatio=0.1;
