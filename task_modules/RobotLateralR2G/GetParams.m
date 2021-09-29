@@ -74,7 +74,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_0922';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
@@ -153,7 +153,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [1];  %  Can set 1:3 
+Params.TargetOrder          = [3];  %  Can set 1:3 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -268,7 +268,7 @@ Params.opMode = 0;
 Params.Rlimit = [-0.6, 0.6];
 
 % Target
-Params.RobotTargetRadius = [70, 70];  % Radius of targets, can be set separately
+Params.RobotTargetRadius = [40, 70];  % Radius of targets, can be set separately
 
 % Clicker
 Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
