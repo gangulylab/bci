@@ -57,6 +57,7 @@ Cursor.ClickDistance = 0;
 inTargetOld = 0;
 inTarget = 0;
 Params.opMode = 0;
+graspState = 1;
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
@@ -258,6 +259,7 @@ if ~Data.ErrorID
                 
                 if openCnt/Params.GraspBinNum > Params.GraspBinThresh
                     graspnow = 1;
+                    graspState = 1;
                     
                      if inTarget && subTask == 2
                         fwrite(Params.udp, [0, 6, 0]) 
@@ -267,6 +269,7 @@ if ~Data.ErrorID
                     
                 elseif closeCnt/Params.GraspBinNum > Params.GraspBinThresh
                     graspnow = 2;
+                    graspState = 2;
                     if inTarget && subTask == 1
                         fwrite(Params.udp, [0, 6, 0]) 
                         subTask = subTask + 1;  
@@ -481,6 +484,8 @@ end
             Data.TaskState(1,end+1)=Cursor.TaskState;
             
             Data.OpMode(1,end+1) = Params.opMode;
+            Data.GraspNow(1,end+1) = graspnow;
+            Data.GraspState(1,end+1) = graspState;
              
             
         % end if takes too long
