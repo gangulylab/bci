@@ -287,6 +287,14 @@ Params.printDecode = 1;
 Params.ClickerBreak = 1;
 Params.BreakGain = 0.75;  %(0-1; 0: Full stop, 1: No break) 
 Params.zeroVelOnModeSwitch = 0;
+
+Params.SubTaskStart = 1;  % 1: full task, 2: start at subtask 2
+
+if Params.SubTaskStart == 2
+    Params.LongStartPos{1} =  [0, 0, -200];
+    Params.opMode = 1;
+end
+    
 %% For Debug
 
 Params.index = 1;

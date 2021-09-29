@@ -9,7 +9,7 @@ print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
 interface = interfaces.DiscreteActionsRobot()
-interface.mode = 14
+interface.mode = 3
 interface.angle = 0
 interface.debugLines = 0
 interface.open()

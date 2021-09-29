@@ -27,7 +27,7 @@ Orientation = Params.GripperOrnInit;
 
 fwrite(Params.udp, [9, xa,xb,xc,ya,yb,yc,za,zb,zc,0]); 
 
-subTask = 1;
+subTask = Params.SubTaskStart;
 ReachTargetPos = Data.TargetPosition(subTask,:);
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
@@ -480,11 +480,11 @@ end
                 
             Data.TaskState(1,end+1)=Cursor.TaskState;
             
-            Data.opMode = Params.opMode;
+            Data.OpMode(1,end+1) = Params.opMode;
              
             
         % end if takes too long
-        if TotalTime > Params.MaxReachTime,
+        if TotalTime > Params.MaxReachTime
             done = 1;
             Data.ErrorID = 3;
             Data.ErrorStr = 'ReachTarget';
