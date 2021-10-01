@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.6;       
+    Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11_924pm2';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -172,8 +172,8 @@ Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1:6];
 % 
 % Diagonals in the Horizontal Plane
- Params.NumTrialsPerBlock    = 4;
- Params.TargetOrder          = [7:10];
+Params.NumTrialsPerBlock    = 8;
+Params.TargetOrder          = [7:14];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -243,7 +243,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.limit = [-400, 400; -400 400; -250 250];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0

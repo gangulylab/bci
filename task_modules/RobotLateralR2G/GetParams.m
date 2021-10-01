@@ -153,7 +153,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [3];  %  Can set 1:3 
+Params.TargetOrder          = [2];  %  Can set 1:3 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -234,11 +234,11 @@ Params.RboundaryVel     = 0;
 Params.AssistAlpha      = 0.0;
 Params.LongTrial        = 1;
 
-Params.limit = [-400, 400; -400 400; -220 300];
+Params.limit = [-256, 256; -256 256; -200 256];
 
 
 Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 Params.RobotTargetDim = 1;
@@ -268,7 +268,7 @@ Params.opMode = 0;
 Params.Rlimit = [-0.6, 0.6];
 
 % Target
-Params.RobotTargetRadius = [40, 70];  % Radius of targets, can be set separately
+Params.RobotTargetRadius = [70, 70];  % Radius of targets, can be set separately
 
 % Clicker
 Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
