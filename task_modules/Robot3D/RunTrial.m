@@ -6,8 +6,6 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 
 global Cursor
 
-set(gcf,'CurrentCharacter','0')
-
 %% Set up trial
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
@@ -178,17 +176,16 @@ if ~Data.ErrorID,
     Data.Events(end).Str  = 'Reach Target';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
 
-    done = 0;
-    TotalTime = 0;
-    InTargetTotalTime = 0;
+    % Initialize 
+    done                = 0;
+    TotalTime           = 0;
+    InTargetTotalTime   = 0;
+    ClickDec_Buffer     = zeros(Params.RunningModeBinNum, 1);
+    StopClicker_Buffer  = zeros(Params.ClickerBinNum, 1);
+    temp_dir            = [0,0,0];
+    ClickToSend         = 0;
     
-    ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
-    
-    StopClicker_Buffer = zeros(Params.ClickerBinNum, 1);
-    temp_dir = [0,0,0];
-    ClickToSend = 0;
-    
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         

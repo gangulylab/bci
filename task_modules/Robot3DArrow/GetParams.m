@@ -246,5 +246,5 @@ Params.ValidDir          = [1:7];
 
 %% For Debug
 Params.index = 1;
-Params.clickOrder = [1*ones(1,5)];
+Params.clickOrder = [4*ones(1,5)];
 end % GetParams

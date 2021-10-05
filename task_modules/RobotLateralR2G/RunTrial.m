@@ -7,7 +7,7 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
-
+Params.index = 0;
 fwrite(Params.udp, [0,18,Params.RobotTargetRadius(1)])
 
 Cursor.State = [0,0,0,0,0,0]';
