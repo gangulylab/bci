@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP';
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -153,7 +153,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [2];  %  Can set 1:3 
+Params.TargetOrder          = [3];  %  Can set 1:3 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];

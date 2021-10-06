@@ -187,11 +187,11 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20210924/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20211006/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {'104958','110034','110505','111336','134940', '135725', '140302'};
+foldernames = {'102721','103423', '103915', '105420'};
 
 cd(root_path)
 
@@ -410,7 +410,7 @@ pretrain_net.divideParam.trainRatio=0.8;
 pretrain_net.divideParam.valRatio=0.1;
 pretrain_net.divideParam.testRatio=0.1;
 pretrain_net = train(pretrain_net,N,T');
-classifier_name = 'MLP_PreTrained_7DoF_Days1to11_924pm2'; % enter the name
+classifier_name = 'MLP_PreTrained_7DoF_1006_AM2'; % enter the name
 genFunction(pretrain_net,classifier_name); % make sure to update GetParams
 
 
@@ -418,33 +418,33 @@ genFunction(pretrain_net,classifier_name); % make sure to update GetParams
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
 % TEST VALIDATION DOESN'T HAVE NaNs AND THAT PERFORMANCE IS REASONABLE
- clear net
- net = patternnet([64 64 64]) ;
- net.performParam.regularization=0.2;
-
-% cd('/home/ucsf/Projects/bci/clicker')
-% load net net
+%  clear net
+%  net = patternnet([64 64 64]) ;
+%  net.performParam.regularization=0.2;
 % 
- net = train(net,N,T');
+% % cd('/home/ucsf/Projects/bci/clicker')
+% % load net net
+% % 
+%  net = train(net,N,T');
+% % 
 % 
-
-
-%%%%%%% SAVING THE MODEL %%%%%%%%
-% cd('/home/ucsf/Projects/bci/clicker')
-% save net net
-
-% classifier name
- classifier_name = 'MLP_20210922';
- genFunction(net,classifier_name); % make sure to update GetParams
-% % 
-% % 
-% % % to restart exp run following lines
- clear
- clc
- cd('/home/ucsf/Projects/bci')
-% ExperimentStart('RobotStop','bravo1',4,1,0)
-ExperimentStart('Robot3D','bravo1',4,1,0)
- %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
-%  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
- 
+% 
+% %%%%%%% SAVING THE MODEL %%%%%%%%
+% % cd('/home/ucsf/Projects/bci/clicker')
+% % save net net
+% 
+% % classifier name
+%  classifier_name = 'MLP_20210922';
+%  genFunction(net,classifier_name); % make sure to update GetParams
+% % % 
+% % % 
+% % % % to restart exp run following lines
+%  clear
+%  clc
+%  cd('/home/ucsf/Projects/bci')
+% % ExperimentStart('RobotStop','bravo1',4,1,0)
+% ExperimentStart('Robot3D','bravo1',4,1,0)
+%  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
 %  
+% %  

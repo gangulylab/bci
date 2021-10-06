@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -81,6 +81,8 @@ if Params.NeuralNetFlag
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP';
+    
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -153,7 +155,7 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 Params.NumTrialsPerBlock    = 21;
-Params.TargetOrder          = [1:7,1:7,1:7];
+Params.TargetOrder          = [1:7,  1:7, 1:7];
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 2];

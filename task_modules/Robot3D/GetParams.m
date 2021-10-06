@@ -75,6 +75,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP';
+%  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -172,8 +173,8 @@ Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1:6];
 % 
 % Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 8;
-Params.TargetOrder          = [7:14];
+% Params.NumTrialsPerBlock    = 8;
+% Params.TargetOrder          = [7:14];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -252,7 +253,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 100;
+Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];

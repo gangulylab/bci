@@ -200,6 +200,7 @@ if ~Data.ErrorID
     switchLocked = 0;
     temp_dir = [0,0,0];
     ClickToSend = 0;
+    taskSuccess = 0;
     
     while ~done
         % Update Time & Position
@@ -263,7 +264,9 @@ if ~Data.ErrorID
                     
                      if inTarget && subTask == 2
                         fwrite(Params.udp, [0, 6, 0]) 
+                        taskSuccess = 2;
                         done= 1;  
+
                     end
                     
                     
@@ -273,6 +276,7 @@ if ~Data.ErrorID
                     if inTarget && subTask == 1
                         fwrite(Params.udp, [0, 6, 0]) 
                         subTask = subTask + 1;  
+                        taskSuccess = 2;
                         fwrite(Params.udp, [0,18,Params.RobotTargetRadius(subTask)])
                         ReachTargetPos = Data.TargetPosition(subTask,:);
                              % show next target% Send target position
@@ -486,7 +490,7 @@ end
             Data.OpMode(1,end+1) = Params.opMode;
             Data.GraspNow(1,end+1) = graspnow;
             Data.GraspState(1,end+1) = graspState;
-             
+            Data.TaskSuccess(1,end+1) = taskSuccess; 
             
         % end if takes too long
         if TotalTime > Params.MaxReachTime
