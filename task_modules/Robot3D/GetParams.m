@@ -72,9 +72,9 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.55;       
+    Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP3';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -171,10 +171,10 @@ Params.NumFixedBlocks       = 1;
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1:6];
-% 
-% Diagonals in the Horizontal Plane
-% Params.NumTrialsPerBlock    = 8;
-% Params.TargetOrder          = [7:14];
+
+%Diagonals in the Horizontal Plane
+Params.NumTrialsPerBlock    = 8;
+Params.TargetOrder          = [7:14];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -226,7 +226,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 25 ;
+Params.MaxReachTime = 40 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -253,7 +253,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 50;
+Params.RobotTargetRadius = 75;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -292,7 +292,7 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
 
 % Clicker
 Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 5;
+Params.ClickerBinNum = 3;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
