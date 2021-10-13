@@ -67,6 +67,12 @@ else,
             
             % eval the classifier
             Decision_Prob = feval(Params.NeuralNetFunction,X);
+            
+            if Params.NeuralBias
+                Decision_Prob(Params.NeuralNetBiasDirection) = ...
+                    Decision_Prob(Params.NeuralNetBiasDirection) - Params.NeuralNetBiasCorrection;
+            end
+                        
             [aa bb]=max(Decision_Prob);
             if aa >= Params.NeuralNetSoftMaxThresh
                 Click_Decision = bb;
@@ -103,6 +109,12 @@ else,
         X = pooled_data;
             
         act = predict(Params.NeuralNet2.net, X' ,'ExecutionEnvironment','cpu')';
+        
+        if Params.NeuralBias
+            act(Params.NeuralNetBiasDirection) = ...
+                act(Params.NeuralNetBiasDirection) - Params.NeuralNetBiasCorrection;
+        end
+        
         [aa bb]=max(act);
         if aa >=  Params.NeuralNet2SoftMaxThresh
             Click_Decision = bb;
