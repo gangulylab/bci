@@ -78,6 +78,16 @@ if Params.NeuralNetFlag
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% BIAS CORRECTION FOR LEFT LEG
+% scales the probabilities of the decoder towards a specific action by a
+% prespecific amount
+
+Params.NeuralBias = true;
+Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
+Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
+
+
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
