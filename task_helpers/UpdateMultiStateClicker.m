@@ -77,6 +77,41 @@ else,
             end
             
         end
+    elseif Params.NeuralNet2Flag==1
+        chmap=Params.ChMap;
+        [xx yy] = size(chmap);
+        X = Neuro.FilteredFeatures;
+        X = X(:);
+        feat_idx = [129:256 513:640 769:896];
+        X = X(feat_idx);
+        % pooling
+        f1 = (X(1:128));
+        f2 = (X(129:256));
+        f3 = (X(257:384));
+        f1 = f1(chmap);
+        f2 = f2(chmap);
+        f3 = f3(chmap);
+        pooled_data=[];
+        for i=1:2:xx
+            for j=1:2:yy
+                delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
+                beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
+                hg = (f3(i:i+1,j:j+1));hg=mean(hg(:));
+                pooled_data = [pooled_data; delta; beta ;hg];
+            end
+        end
+        X = pooled_data;
+            
+        act = predict(Params.NeuralNet2.net, X' ,'ExecutionEnvironment','cpu')';
+        [aa bb]=max(act);
+        if aa >=  Params.NeuralNet2SoftMaxThresh
+            Click_Decision = bb;
+            Click_Distance = aa;
+        else
+            Click_Decision = 0;
+            Click_Distance = 0;
+        end
+        
     elseif Params.ConvNeuralNetFlag == 1
         chtemp=[];
         chmap=Params.ChMap;
