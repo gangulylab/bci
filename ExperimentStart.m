@@ -369,7 +369,7 @@ catch ME % handle errors gracefully
     end
     
     
-    keyboard;
+    ckeyboard;
 end
 
 end % ExperimentStart

@@ -70,7 +70,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
@@ -98,7 +98,7 @@ end
 % scales the probabilities of the decoder towards a specific action by a
 % prespecific amount
 
-Params.NeuralBias = true;
+Params.NeuralBias = false;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
@@ -292,7 +292,7 @@ Params.opMode = 0;
 Params.Rlimit = [-0.6, 0.6];
 
 % Target
-Params.RobotTargetRadius = [70, 70];  % Radius of targets, can be set separately
+Params.RobotTargetRadius = [40, 70];  % Radius of targets, can be set separately
 
 % Clicker
 Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click

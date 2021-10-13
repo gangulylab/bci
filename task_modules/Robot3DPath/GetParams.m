@@ -65,15 +65,29 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+% %% Neural network classifier option
+% % set this to true to use neural network
+% % also set the softmax option
+% Params.NeuralNetFlag = true;
+% if Params.NeuralNetFlag
+%     Params.NeuralNetSoftMaxThresh = 0.5;       
+%     Params.Use3Features = true;
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+%     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+% 
+% else
+%     Params.NeuralNetSoftMaxThresh = 0;
+% end
+
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.5;       
+    Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;

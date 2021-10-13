@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -75,7 +75,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
@@ -93,7 +93,7 @@ end
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;       
     Params.Use3Features = true;

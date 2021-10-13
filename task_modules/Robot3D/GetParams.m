@@ -198,8 +198,8 @@ Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1:6];
 
 %Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 8;
-Params.TargetOrder          = [7:14];
+% Params.NumTrialsPerBlock    = 8;
+% Params.TargetOrder          = [7:14];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -266,7 +266,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.limit = [-400, 400; -400 400; -250 250];
+Params.limit = [-256, 256; -256 256; -250 256];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
