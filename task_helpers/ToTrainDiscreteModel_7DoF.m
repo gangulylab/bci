@@ -411,7 +411,7 @@ pretrain_net_mlp4.divideParam.valRatio=0.1;
 pretrain_net_mlp4.divideParam.testRatio=0.1;
 pretrain_net_mlp4 = train(pretrain_net_mlp4,N,T');
 classifier_name = 'MLP_PreTrained_7DoF_1008_AM1'; % enter the name
-genFunction(pretrain_net_mlp4,classifier_name); % make sure to update GetParams
+genFunction(pretrain_net_mlp4,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 
 %%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%
