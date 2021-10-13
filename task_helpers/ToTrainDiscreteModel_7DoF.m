@@ -404,14 +404,14 @@ T(aa(1):aa(end),7)=1;
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
 cd('/home/ucsf/Projects/bci/clicker')
-load pretrain_net_mlp
+load pretrain_net_mlp4 
 % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
-pretrain_net_mlp.divideParam.trainRatio=0.8;
-pretrain_net_mlp.divideParam.valRatio=0.1;
-pretrain_net_mlp.divideParam.testRatio=0.1;
-pretrain_net_mlp = train(pretrain_net_mlp,N,T');
+pretrain_net_mlp4.divideParam.trainRatio=0.8;
+pretrain_net_mlp4.divideParam.valRatio=0.1;
+pretrain_net_mlp4.divideParam.testRatio=0.1;
+pretrain_net_mlp4 = train(pretrain_net_mlp4,N,T');
 classifier_name = 'MLP_PreTrained_7DoF_1008_AM1'; % enter the name
-genFunction(pretrain_net_mlp,classifier_name); % make sure to update GetParams
+genFunction(pretrain_net_mlp4,classifier_name); % make sure to update GetParams
 
 
 %%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%

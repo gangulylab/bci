@@ -80,7 +80,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP3';%'MLP_PreTrained_7DoF_PnP';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
     
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
