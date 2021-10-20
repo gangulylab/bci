@@ -15,7 +15,7 @@ class DiscreteActionsRobot():
         self.robotenv = JacoEnv(self.mode, self.angle, self.debugLines)
         self.robotenv.center_pos = np.array([-0.35, -0.3])
         self.pos = self.robot_to_bci_transform([self.robotenv.pos[0], self.robotenv.pos[1]])
-
+        self.path =  [[None]*3 for i in range(4)]
     def create_target(self, cpos):
         # self.targetPos = self.bci_to_robot_transform(pos)
         pos = cpos.copy()
@@ -178,6 +178,15 @@ class DiscreteActionsRobot():
 
         p = [p1,p1,p2,p2,p3,p3]
         self.path = p[ind]
+
+
+    def setPath_ES(self, p, ind):
+        print(self.path[ind])
+        self.path[ind][0] = p[0]
+        self.path[ind][1] = p[1]
+        self.path[ind][2] = p[2]
+        print(self.path)
+
 
 
     def drawPath(self):

@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'RobotLateralR2G';
+Params.Task = 'EtchASketch';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -57,8 +57,6 @@ Params.FeatureBufferSize = 5;
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
 Params.UpdateRate = 5; % Hz
-
-
 %% Discrete Decoder name
 Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
@@ -67,10 +65,24 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+% %% Neural network classifier option
+% % set this to true to use neural network
+% % also set the softmax option
+% Params.NeuralNetFlag = true;
+% if Params.NeuralNetFlag
+%     Params.NeuralNetSoftMaxThresh = 0.5;       
+%     Params.Use3Features = true;
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+%     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+% 
+% else
+%     Params.NeuralNetSoftMaxThresh = 0;
+% end
+
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
@@ -81,27 +93,13 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
-%% Neural network 2 classifier option
-% Trained in a different way using different optimizer
-
-Params.NeuralNet2Flag = true;
-if Params.NeuralNet2Flag
-    Params.NeuralNet2SoftMaxThresh = 0.4;       
-    Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
-    
-else
-    Params.NeuralNet2SoftMaxThresh = 0;
-end
-
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
 % prespecific amount
 
-Params.NeuralBias = false;
+Params.NeuralBias = true;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
-
 
 
 %% ADAPTIVE BASELINE FLAG 
@@ -113,7 +111,7 @@ Params.AdaptiveBaseline = false;
 % also set the softmax option
 Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
-    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
+    Params.ConvNeuralNetSoftMaxThresh = 0.4;       
     Params.ConvUse3Features = true;
 %     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
@@ -122,47 +120,98 @@ else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
-
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
 Params.ChPooling = true; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
-Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 350; % defines outer edge of target
-Params.InnerCircleRadius = 150; % defines inner edge of target
-% Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
-Params.ReachTargetRadius = 150;
+Params.LongStartPos =  [200, 0, 0; 200, 0, 0; 0,0,-200; 0,0,-200; ...
+    -200,0,0;-200,0,0;0,-200,-200; 0,200,-200];
 
-d2 = sqrt(1/2);
-d3 = sqrt(1/3);
+% Params.Paths{1} = [[0.2, 0, 0]; [0.2, 0.0, -0.2]; [0.0,0,-0.2];  [0.0, 0.2,-0.2]]*1000;
 
-Params.ReachTargetPositions{1} = [0,0, -200; -250,0, -50];    
-Params.LongStartPos{1} =  [200, 0, 0];
+% Params.ReachTargetPositions = [];
+
+% Params.CorrectDecode{1} = [6*ones(1,10), 7*ones(1,10),3*ones(1,10), 2*ones(1,10)];
+% pp = Params.Paths{1}(1,:) + [zeros(10,1), zeros(10,1),-[20:20:200]'];
+% pp = [pp; pp(end,:) + [zeros(10,1),zeros(10,1), zeros(10,1)]];
+% pp = [pp; pp(end,:) + [-[20:20:200]',zeros(10,1), zeros(10,1)]];
+% pp = [pp; pp(end,:) + [zeros(10,1),[20:20:200]' zeros(10,1)]];
+% 
+% Params.PathPoints{1} = [Params.Paths{1}(1,:);pp];
+
+Params.DirOrder = [[6,7,3,2]; [6,3,7,4];[5,4,7,3];[5,1,2,7];...
+    [1,7,6,4];[2,6,7,1];[2,3,5,7]; [4,7,5,1]];
+
+stepL = 20;
+segL = 200;
+numSteps = segL/stepL;
+numSegs = 4;
+
+numClickSteps = 5;
+
+for i = 1:8
+   pp = Params.LongStartPos(i,:);
+   p = Params.LongStartPos(i,:);
+
+        correctD = Params.DirOrder(i,:);
+%         Params.CorrectDecode{i} = reshape([correctD'*ones(1,numSteps)]',numSteps*numSegs,1);
+    Params.CorrectDecode{i} = [];
+    for d = 1:numSegs
+        dir = correctD(d);
+
+        if dir < 7
+            Params.CorrectDecode{i} = [Params.CorrectDecode{i}; dir*ones(numSteps,1)];
+        else
+            Params.CorrectDecode{i} = [Params.CorrectDecode{i}; dir*ones(numClickSteps,1)];
+        end
+
+        if dir == 1
+            pp = [pp; pp(end,:) + [[20:20:200]',zeros(10,1), zeros(10,1)]];
+        elseif dir == 3
+            pp = [pp; pp(end,:) + [-[20:20:200]',zeros(10,1), zeros(10,1)]];
+        elseif dir == 2
+            pp = [pp; pp(end,:) + [zeros(10,1),[20:20:200]' zeros(10,1)]];
+        elseif dir == 4
+            pp = [pp; pp(end,:) + [zeros(10,1),-[20:20:200]' zeros(10,1)]];
+        elseif dir == 5
+            pp =[pp; pp(end,:) + [zeros(10,1), zeros(10,1),[20:20:200]']];
+        elseif dir == 6
+           pp = [pp; pp(end,:) + [zeros(10,1), zeros(10,1),-[20:20:200]']];
+        elseif dir == 7
+            pp = [pp; pp(end,:) + [zeros(numClickSteps,1),zeros(numClickSteps,1), zeros(numClickSteps,1)]];
+            
+            Params.ReachTargetPositions(i,:) = pp(end,:);
+        end
+        
+        if dir ~= 7
+            p = [p; pp(end,:)];
+        end
+    end
+   
+
+        Params.PathPoints{i} = [pp];
+        Params.Paths{i} = p;
+    
+    
+end
 
 
-Params.ReachTargetPositions{2} = [0,150, -200; -250,0, -50];    
-Params.LongStartPos{2} =  [200, 0, 0];
 
-
-Params.ReachTargetPositions{3} = [0,-150, -200; -250,0, -50];    
-Params.LongStartPos{3} =  [200, 0, 0];
-
-
-%% Kalman Filter Properties
+%% Kal,an Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
 G = Params.Gain;
 t = 1/Params.UpdateRate;
 a = 0.91;%.825;
 w = 120;
-if Params.ControlMode>=3,
+if Params.ControlMode>=3
     Params = LoadKF2dDynamics(Params, G, t, a, w);
 end
 
 %% LQR Optimal Velocity Controller
-if Params.OptimalVeloctityMode==2,
+if Params.OptimalVeloctityMode==2
     Params = LoadLQR2dDynamics(Params, G, t, a);
 end
 
@@ -176,10 +225,10 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [3];  %  Can set 1:3 
+Params.NumTrialsPerBlock    = 8;
+Params.TargetOrder          = [1:8];
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -203,21 +252,21 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType
-    case 'none'
+switch Params.CLDA.AdaptType,
+    case 'none',
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear'
-        switch Params.CLDA.Type
-            case 2 % smooth batch
+    case 'linear',
+        switch Params.CLDA.Type,
+            case 2, % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
-            case 3 % RML
+            case 3, % RML
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise % none or refit
+            otherwise, % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
@@ -228,7 +277,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 120 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -243,26 +292,13 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.flipView = 0;  % 0: standard simulation view, 1: real robot view (across table)
-
-if Params.flipView
-    Params.RobotMode = 12;
-else
-    Params.RobotMode = 10;  
-end
-
-Params.boundaryDist     = .01;
-Params.boundaryVel      = 0;
-Params.RboundaryDist    = .01;
-Params.RboundaryVel     = 0;
-Params.AssistAlpha      = 0.0;
-Params.LongTrial        = 1;
-
-Params.limit = [-256, 256; -256 256; -200 256];
-
-Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
+Params.limit = [-256, 256; -256 256; -250 256];
+Params.RobotMode            = 15;  
+Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 1;  % 1: Null output if no winner, 0: maintain prior decision if no winner
+Params.RunningModeZero      = 1;  % 1: Ouput null state if no winner, 0: maintain prior decision if no winner
+Params.RobotTargetDim = 2;
+
 
 Params.RobotTargetDim = 1;
 
@@ -270,67 +306,35 @@ Params.ReachTargets      = [1,2,3,4,5,6];
 Params.ValidDir          = [1:6,7];
 
 Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.9;
-Params.k_i = 10.0;       % Can change this to make it more/less responsive  (increase to make faster, normal is 10)
 
-Params.dA = [1 0 0  Params.deltaT 0 0;...
-                    0 1 0 0 Params.deltaT 0;...
-                    0 0 1 0 0 Params.deltaT;...
-                    0 0 0 Params.k_v 0 0;...
-                    0 0 0 0 Params.k_v 0;...
-                    0 0 0 0 0 Params.k_v];
-                
-Params.dB = [zeros(3);...
-                    eye(3)];
-Params.dB = Params.dB*Params.k_i;
-
-% Rotation Dynamics
-Params.ra = 0.8;
-Params.rb = 0.03;
-Params.opMode = 0;
-Params.Rlimit = [-0.6, 0.6];
+Params.LongTrial = 1;
 
 % Target
-Params.RobotTargetRadius = [40, 70];  % Radius of targets, can be set separately
+Params.RobotTargetRadius = 15;  % increase radius if task too hard
+Params.TargetHoldTime = 10;
 
 % Clicker
-Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum    = 4;
-Params.ClickerBinThresh = 0.6;
+Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.ClickerBinNum = 10;
+Params.ClickerBinThresh = 0.7;
+Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
-Params.switchLockCnt    = 10;
-Params.GraspBinNum      = 5;
-Params.GraspBinThresh   = 0.6;
+Params.boundaryDist = 10;
+Params.boundaryVel = 0;
+Params.AssistAlpha = 0.0;
 
-Params.autoCenterOverTarget = 0;
+Params.PathInd = 0;
+
+
 Params.GripperOrnInit = [0, pi/2,0];
 
-Params.printDecode = 1;
 
-Params.ClickerBreak = 1;
-Params.BreakGain = 0.75;  %(0-1; 0: Full stop, 1: No break) 
-Params.zeroVelOnModeSwitch = 0;
-
-Params.SubTaskStart = 1;  % 1: full task, 2: start at subtask 2
-
-if Params.SubTaskStart == 2
-    Params.LongStartPos{1} =  [0, 0, -200];
-    Params.opMode = 1;
-end
-    
 %% For Debug
 
 Params.index = 1;
-% Params.clickOrder = [7*(ones(1,7)),2*(ones(1,20)), 4*(ones(1,20)) ];
-% 
-% Params.clickOrder = [1*(ones(1,20)), 3*(ones(1,20)),2*(ones(1,20)), ...
-%     4*(ones(1,20)), 7*(ones(1,7)),  6*(ones(1,20)),5*(ones(1,20)),...
-%     2*(ones(1,10)),6*(ones(1,20)),5*(ones(1,20)), 4*(ones(1,10)),...
-%     6*(ones(1,20)),5*(ones(1,20))];
 
-Params.clickOrder = [5*(ones(1,40)), 6*(ones(1,40)) ...
-    1*(ones(1,8)), 3*(ones(1,8))];
+d = Params.DirOrder(Params.TargetOrder(1),:);
+Params.clickOrder = reshape([d'*ones(1,15)]',60,1);
 
-
-
+% Params.clickOrder = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7];
 end % GetParams

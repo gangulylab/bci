@@ -19,7 +19,7 @@ class JacoEnv(object):
     p.setGravity(0,0,-10)
 
     self.useOrientation         = 1
-    self.useSimulation          = 1
+    self.useSimulation          = 0
     self.useRealTimeSimulation  = 1
 
     self.mode           = mode
@@ -125,6 +125,7 @@ class JacoEnv(object):
     p.setRealTimeSimulation(self.useRealTimeSimulation)
     p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
     
+
   def write_letter(self, dpos, c, targetID):
 
     pos = dpos.copy()
@@ -433,6 +434,45 @@ class JacoEnv(object):
 
       self.JP = list(self.jointPoses)
 
+  def removeDebug(self):
+    p.removeAllUserDebugItems()
+    pos = np.array([0,0, -2])
+    lw = 6
+    d = .05
+    c = [0,0,1]
+
+    self.c1 = [pos[0] - d, pos[1]-d, pos[2]-d]
+    self.c2 = [pos[0] + d, pos[1]-d, pos[2]-d]
+    self.c3 = [pos[0] + d, pos[1]-d, pos[2]+d]
+    self.c4 = [pos[0] - d, pos[1]-d, pos[2]+d]
+    self.c5 = [pos[0] - d, pos[1]+d, pos[2]-d]
+    self.c6 = [pos[0] + d, pos[1]+d, pos[2]-d]
+    self.c7 = [pos[0] + d, pos[1]+d, pos[2]+d]
+    self.c8 = [pos[0] - d, pos[1]+d, pos[2]+d]
+
+    self.l1 = p.addUserDebugLine(self.c1, self.c2, c, 6, 0)
+    self.l2 = p.addUserDebugLine(self.c2, self.c3, c, 6, 0)
+    self.l3 = p.addUserDebugLine(self.c3, self.c4, c, 6, 0)
+    self.l4 = p.addUserDebugLine(self.c4, self.c1, c, 6, 0)
+
+    self.l5 = p.addUserDebugLine(self.c5, self.c6, c, 6, 0)
+    self.l6 = p.addUserDebugLine(self.c6, self.c7, c, 6, 0)
+    self.l7 = p.addUserDebugLine(self.c7, self.c8, c, 6, 0)
+    self.l8 = p.addUserDebugLine(self.c8, self.c5, c, 6, 0)
+
+    self.l9 = p.addUserDebugLine(self.c1, self.c5, c, 6, 0)
+    self.l10 = p.addUserDebugLine(self.c2, self.c6, c, 6, 0)
+    self.l11 = p.addUserDebugLine(self.c3, self.c7, c, 6, 0)
+    self.l12 = p.addUserDebugLine(self.c4, self.c8, c, 6, 0)
+
+    self.l13 = p.addUserDebugLine([0,0,0], [0,0,0], [0,0,0], 4, 0)
+
+    self.m1 = p.addUserDebugLine(self.c1, self.c2, c, lw, 0)
+
+    d1 = [0,0,0]
+    d2 = [0,0,0]
+    p.addUserDebugLine(d1, d2, [0,0,0], 4, 0,replaceItemUniqueId=self.l13)
+
   def reset(self):
     # p.resetSimulation()
     # p.resetBasePositionAndOrientation(self.cube1Id, [-1., -1., -1.], [0,0,0,1])
@@ -462,6 +502,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.55, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 14:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 180 - 20, cameraPitch=-30, cameraTargetPosition=[-0.3,0.25,0.1])  
+    elif self.mode == 15:
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 15, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
@@ -584,7 +626,7 @@ class JacoEnv(object):
     p3 = [self.pos[0], self.pos[1] + .02, self.pos[2]]
     p4 = [self.pos[0], self.pos[1] - .02, self.pos[2]]
 
-    if self.mode == 11:
+    if self.mode == 11 or self.mode == 15:
       p.addUserDebugLine(p1, p2, [0,0,1], 6, self.bciRate)
       p.addUserDebugLine(p3, p4, [0,0,1], 6, self.bciRate) 
 
@@ -595,6 +637,17 @@ class JacoEnv(object):
         p.addUserDebugLine([self.pos[0], self.pos[1], 0.001], [self.pos2[0], self.pos2[1], 0], [1,0,0,], 8, self.bciRate)
       elif self.mode ==1:
         p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
+      elif self.mode == 15:
+        if self.key == 100:
+          p1 = [self.pos[0] - .15, self.pos[1], self.pos2[2]]
+          p2 = [self.pos[0] + .15, self.pos[1], self.pos2[2]]
+          p3 = [self.pos[0], self.pos[1] + .15, self.pos2[2]]
+          p4 = [self.pos[0], self.pos[1] - .15, self.pos2[2]]
+
+          p.addUserDebugLine(p1, p2, [0,1,1], 8, self.bciRate)
+          p.addUserDebugLine(p3, p4, [0,1,1], 8, self.bciRate)
+        else:
+          p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2]], [self.pos2[0], self.pos2[1], self.pos2[2]], [1,0,0,], 8, self.bciRate)  
       elif self.mode == 3 or self.mode == 4 or self.mode > 5:
         if self.key == 100:
           p1 = [self.pos[0] - .15, self.pos[1], self.pos2[2]]

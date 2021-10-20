@@ -276,7 +276,7 @@ if ~Data.ErrorID
                     if inTarget && subTask == 1
                         fwrite(Params.udp, [0, 6, 0]) 
                         subTask = subTask + 1;  
-                        taskSuccess = 2;
+                        taskSuccess = 1;
                         fwrite(Params.udp, [0,18,Params.RobotTargetRadius(subTask)])
                         ReachTargetPos = Data.TargetPosition(subTask,:);
                              % show next target% Send target position
@@ -318,7 +318,7 @@ if ~Data.ErrorID
                    
                    if inTarget && Params.autoCenterOverTarget
                        Cursor.State(1) = ReachTargetPos(1);
-                       Cursor.STate(2) = ReachTargetPos(2);
+                       Cursor.State(2) = ReachTargetPos(2);
                        [xa,xb,xc] = doubleToUDP(Cursor.State(1));
                         [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
                         [za,zb,zc] = doubleToUDP(Cursor.State(3)) ;

@@ -69,7 +69,7 @@ elseif IsOSX,
 else,
     homedir = '~';
     projectdir = '~/Projects/bci/';
-%     projectdir = '/home/sarah/Documents/bci';
+    projectdir = '/home/sarah/Documents/bci';
 
 end
 
@@ -369,7 +369,7 @@ catch ME % handle errors gracefully
     end
     
     
-    ckeyboard;
+    keyboard;
 end
 
 end % ExperimentStart

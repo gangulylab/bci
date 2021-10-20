@@ -5,6 +5,7 @@ import math
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 server_address = ('localhost', 5006)
+# server_address = ('0.0.0.0', 5006)
 print('starting up on {} port {}'.format(*server_address))
 sock.bind(server_address)
 
@@ -19,6 +20,8 @@ robot_open = 1
 target_pos = np.array([0.0, 300.0, 0.0])
 robot_pos = np.array([0.0, 0.0, 0.0])
 robot_orn = np.array([0.0, 0.0, 0.0])
+p =[0.0, 0.0, 0.0]
+ 
 
 while True:
 	data, address = sock.recvfrom(4096)
@@ -100,6 +103,12 @@ while True:
 			interface.drawPath()
 		if val1 == 20:
 			interface.setGoCue(val2)
+		if val1 == 21:
+			interface.drawPath()
+		if val1 == 22:
+			interface.robotenv.removeDebug()
+
+
 
 
 	if command == 1:	# Set Target
@@ -184,6 +193,15 @@ while True:
 		interface.updateRobotPos(robot_pos,key )
 		print(robot_pos)
 		# interface.render()
+
+
+	if command == 15:		#set path coordinates
+		ind = val10
+		p[0] = ((val1-1) *(val2 + val3/100))/ 1000
+		p[1] = -((val4-1) *(val5 + val6/100))/ 1000
+		p[2] = ((val7-1) *(val8 + val9/100))/ 1000
+		interface.setPath_ES(p, ind)
+
 
 
 	
