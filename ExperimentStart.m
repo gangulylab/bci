@@ -48,7 +48,8 @@ valid_tasks = {...
     'Robot3DPath',...
     'RobotEngagement',...
     'RobotLateralR2G',...
-    'Robot3DWaypoint'};
+    'Robot3DWaypoint',...
+    'RobotEtchASketch'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -69,7 +70,7 @@ elseif IsOSX,
 else,
     homedir = '~';
     projectdir = '~/Projects/bci/';
-    projectdir = '/home/sarah/Documents/bci';
+%     projectdir = '/home/sarah/Documents/bci';
 
 end
 

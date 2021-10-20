@@ -70,7 +70,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
@@ -86,7 +86,7 @@ end
 
 Params.NeuralNet2Flag = true;
 if Params.NeuralNet2Flag
-    Params.NeuralNet2SoftMaxThresh = 0.4;       
+    Params.NeuralNet2SoftMaxThresh = 0.45;       
     Params.Use3Features = true;
     Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
     
@@ -177,7 +177,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [3];  %  Can set 1:3 
+Params.TargetOrder          = [3];  %  Set set 1 or 3 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -228,7 +228,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 150;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
