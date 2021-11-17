@@ -68,7 +68,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.6;       
     Params.Use3Features = true;
@@ -76,6 +76,26 @@ if Params.NeuralNetFlag
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% Neural network 2 classifier option
+% Trained in a different way using different optimizer
+
+Params.NeuralNet2Flag = true;
+if Params.NeuralNet2Flag
+    Params.NeuralNet2SoftMaxThresh = 0.45    ;       
+    Params.Use3Features = true;
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
+    
+else
+    Params.NeuralNet2SoftMaxThresh = 0;
+end
+%% BIAS CORRECTION FOR LEFT LEG
+% scales the probabilities of the decoder towards a specific action by a
+% prespecific amount
+
+Params.NeuralBias = false;
+Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
+Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;

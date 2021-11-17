@@ -189,9 +189,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 6;
@@ -268,7 +268,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 Params.limit = [-256, 256; -256 256; -250 256];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
-Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
@@ -278,7 +278,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius = 75;
+Params.RobotTargetRadius = 30;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -303,7 +303,7 @@ Params.dB = [zeros(3);...
                     eye(3)];
 Params.dB = Params.dB*Params.k_i;
 
-Params.LongTrial = 0;
+Params.LongTrial = 1;
 Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(4,:);...
     Params.ReachTargetPositions(1,:);...
@@ -316,7 +316,7 @@ Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
     Params.ReachTargetPositions(8,:)];
 
 % Clicker
-Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.RobotClicker = 0;     % 0: trial ends with hold time, 1: trial ends with click
 Params.ClickerBinNum = 3;
 Params.ClickerBinThresh = 0.7;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
@@ -324,7 +324,7 @@ Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.ClickerBreak = 1;
 Params.BreakGain = 0.75;
 
-Params.TargetHoldTime = 5;
+Params.TargetHoldTime = 0.2;
 
 Params.boundaryDist = 1;
 Params.boundaryVel = 0;

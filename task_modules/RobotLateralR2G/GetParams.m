@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         =0; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -86,7 +86,7 @@ end
 
 Params.NeuralNet2Flag = true;
 if Params.NeuralNet2Flag
-    Params.NeuralNet2SoftMaxThresh = 0.45;       
+    Params.NeuralNet2SoftMaxThresh = 0.40;       
     Params.Use3Features = true;
     Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
     
@@ -228,7 +228,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 150;
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -291,7 +291,7 @@ Params.opMode = 0;
 Params.Rlimit = [-0.6, 0.6];
 
 % Target
-Params.RobotTargetRadius = [40, 70];  % Radius of targets, can be set separately
+Params.RobotTargetRadius = [40, 40];  % Radius of targets, can be set separately
 
 % Clicker
 Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
