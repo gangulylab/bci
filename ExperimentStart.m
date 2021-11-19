@@ -30,7 +30,8 @@ valid_tasks = {...
     'MultiStateDiscrete',...
     'RadialTaskMultiStateDiscrete',...
     'RadialTaskMultiStateDiscreteArrow',...
-    'CenterOutDscreteVer2'};
+    'CenterOutDscreteVer2',...
+    'ImaginedMvmtDAQ'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -262,7 +263,7 @@ Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle
 
 % Font
 Screen('TextFont',Params.WPTR, 'Arial');
-Screen('TextSize',Params.WPTR, 28);
+Screen('TextSize',Params.WPTR, 30);
 
 %% Initialze keyboard
 typing_tasks = {'RadialTyping','RadialTypingMultiClick', 'GridTyping'};
