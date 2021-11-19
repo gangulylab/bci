@@ -2,6 +2,7 @@ function InstructionScreen(Params,tex)
 % Display text then wait for subject to resume experiment
 
 % Pause Screen
+%Screen(Params.WPTR,'TextSize',100);
 DrawFormattedText(Params.WPTR, tex,'center','center',255);
 Screen('Flip', Params.WPTR);
 
