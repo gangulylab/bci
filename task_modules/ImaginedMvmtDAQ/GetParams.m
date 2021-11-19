@@ -96,9 +96,9 @@ Params.ERPs=true;
 
 %% Trial Duraton times 
 Params.InterTrialInterval = 2; % rest period between trials 
-Params.InstructedDelayTime = 1; % text appears telling subject which action to imagine
-Params.CueTime = 2; % A red square; subject has to get ready
-Params.ImaginedMvmtTime = 3; % A green square, subject has actively imagine the action
+Params.InstructedDelayTime = 3; % text appears telling subject which action to imagine
+Params.CueTime = 3; % A red square; subject has to get ready
+Params.ImaginedMvmtTime = 4; % A green square, subject has actively imagine the action
 
 % random legacy stuff
 Params.TargetHoldTime = 1;

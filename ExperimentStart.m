@@ -253,7 +253,7 @@ if strcmpi(str,'n'),
 end
 
 %% Initialize Window
- Screen('Preference', 'SkipSyncTests', 1);
+ %Screen('Preference', 'SkipSyncTests', 1);
 if DEBUG
     [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 0 1750 1000]);
 else

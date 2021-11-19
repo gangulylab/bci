@@ -160,7 +160,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > 5%Params.InstructedDelayTime,
+        if InTargetTotalTime > Params.InstructedDelayTime,
             done = 1;
         end
     end % Instructed Delay Loop
