@@ -3,6 +3,7 @@ function InstructionScreen(Params,tex)
 
 % Pause Screen
 %Screen(Params.WPTR,'TextSize',100);
+ Screen('TextSize',Params.WPTR,Params.TargetFontSize);
 DrawFormattedText(Params.WPTR, tex,'center','center',255);
 Screen('Flip', Params.WPTR);
 

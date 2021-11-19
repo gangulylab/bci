@@ -95,9 +95,9 @@ Params.NumTrialsPerBlock    = length(Params.TargetList);
 Params.ERPs=true;
 
 %% Trial Duraton times 
-Params.InterTrialInterval = 1.0; % rest period between trials 
-Params.InstructedDelayTime = 2.0; % text appears telling subject which action to imagine
-Params.CueTime = 1; % A red square; subject has to get ready
+Params.InterTrialInterval = 2; % rest period between trials 
+Params.InstructedDelayTime = 1; % text appears telling subject which action to imagine
+Params.CueTime = 2; % A red square; subject has to get ready
 Params.ImaginedMvmtTime = 3; % A green square, subject has actively imagine the action
 
 % random legacy stuff
@@ -109,7 +109,7 @@ Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 
 %% Size of text and square during experiment
 Params.TargetRectSize = 100;
-Params.TargetFontSize = 50;
+Params.TargetFontSize = 150;
 
 
 %% Discrete Decoder name
@@ -140,6 +140,41 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+
+
+%% Targets: radial layout
+Params.NumReachTargets   = 4;
+Params.TargetSpacing     = 10; % px
+Params.OuterCircleRadius = 600; % defines outer edge of target
+Params.InnerCircleRadius = 300; % defines inner edge of target
+Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
+
+Params.TargetsColor        = [100,100,100]; % all targets
+Params.CuedTargetColor   = [55,255,0]; % cued target
+
+% triangles
+da = 360/Params.NumReachTargets; % degrees btw target centers
+b = da/2; % degrees btw targets edges
+Params.ReachTargetAngles = 0:da:(360-da);
+for i=1:Params.NumReachTargets,
+    a = Params.ReachTargetAngles(i);
+    Params.ReachTargetPositions(i,:) = ...
+        Params.ReachTargetRadius * [cosd(a) sind(a)]; % center of targets
+    
+    Params.ReachTargetVerts{i} = ...
+        Params.OuterCircleRadius .* ...
+        [0, 0
+        cosd(a-b) sind(a-b)
+        cosd(a+b) sind(a+b)];
+end
+
+% inner circle
+sz = Params.InnerCircleRadius;
+Params.InnerCircleColor = 0;
+Params.InnerCircleRect = [-sz, -sz, sz, sz];
+
+% useful for optimal cursor updates, not used for targets here
+Params.TargetSize = Params.OuterCircleRadius - Params.InnerCircleRadius;
 
 
 %% Cursor

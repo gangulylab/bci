@@ -52,12 +52,23 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     Data.Events(end).Str  = 'Instructed Delay';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-%     if TaskFlag==1,
-%         OptimalCursorTraj = ...
-%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-%         ct = 1;
-%     end
+    %     if TaskFlag==1,
+    %         OptimalCursorTraj = ...
+    %             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+    %         ct = 1;
+    %     end
     
+    
+    
+    tex =  Data.ImaginedAction;
+    %InstructionScreen(Params,tex);
+     Screen('TextSize',Params.WPTR,Params.TargetFontSize);
+     DrawFormattedText(Params.WPTR, tex,'center','center',255);
+     Screen('DrawingFinished', Params.WPTR);
+     Screen('Flip', Params.WPTR);
+     
+
+
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
@@ -135,12 +146,12 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             
             
             % Output the Text to the Screen on what the targt should be
-            tex =  TrialData.ImaginedAction;
-            Screen('TextSize',Params.WPTR,Params.TargetFontSize);
-            DrawFormattedText(Params.WPTR, tex,'center','center',255);
-            Screen('Flip', Params.WPTR);
-            Screen('DrawingFinished', Params.WPTR);
-            Screen('Flip', Params.WPTR);
+%             tex =  Data.ImaginedAction;
+%             Screen('TextSize',Params.WPTR,Params.TargetFontSize);
+%             DrawFormattedText(Params.WPTR, tex,'center','center',255);
+%             Screen('Flip', Params.WPTR);
+%             Screen('DrawingFinished', Params.WPTR);
+%             Screen('Flip', Params.WPTR);
             
             
             % start counting time
@@ -149,7 +160,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > Params.InstructedDelayTime,
+        if InTargetTotalTime > 5%Params.InstructedDelayTime,
             done = 1;
         end
     end % Instructed Delay Loop
@@ -505,11 +516,11 @@ if Params.InterTrialInterval>0,
     Data.Events(end).Str  = 'Inter Trial Interval';
     if Params.ArduinoSync, PulseArduino(Params.ArduinoPtr,Params.ArduinoPin,length(Data.Events)); end
     
-    if TaskFlag==1,
-        OptimalCursorTraj = ...
-            GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
-        ct = 1;
-    end
+%     if TaskFlag==1,
+%         OptimalCursorTraj = ...
+%             GenerateCursorTraj(StartTargetPos,StartTargetPos,Params.InstructedDelayTime,Params);
+%         ct = 1;
+%     end
     
     done = 0;
     TotalTime = 0;
