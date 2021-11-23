@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock    
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
