@@ -284,7 +284,7 @@ if ~Data.ErrorID && Params.CueTime>0,
 end % only complete if no errors
 
 %% Go to reach target
-if ~Data.ErrorID,
+if ~Data.ErrorID && Params.ImaginedMvmtTime>0,
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -474,15 +474,21 @@ if ~Data.ErrorID,
             Screen('Flip', Params.WPTR);
         end
         
-        % end if takes too long
-        if TotalTime > Params.MaxReachTime,
+        % run trial for set duration 
+        if TotalTime > Params.ImaginedMvmtTime,
             done = 1;
-            Data.ErrorID = 3;
-            Data.ErrorStr = 'ReachTarget';
-            Data.SelectedTargetID = 0;
-            Data.SelectedTargetPosition = NaN;
-            fprintf('ERROR: %s\n',Data.ErrorStr)
         end
+        
+        
+%         % end if takes too long
+%         if TotalTime > Params.MaxReachTime,
+%             done = 1;
+%             Data.ErrorID = 3;
+%             Data.ErrorStr = 'ReachTarget';
+%             Data.SelectedTargetID = 0;
+%             Data.SelectedTargetPosition = NaN;
+%             fprintf('ERROR: %s\n',Data.ErrorStr)
+%         end
         
         %         % end if clicks in a target
         %         if Cursor.ClickState==Params.ClickerBins && TargetID~=0,
