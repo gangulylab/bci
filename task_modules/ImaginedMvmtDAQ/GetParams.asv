@@ -94,7 +94,7 @@ Params.NumTrialsPerBlock    = length(Params.TargetList);
 % freezes real-time updates for DAQ
 Params.ERPs=true;
 
-%% Trial Duration times 
+%% Trial Duraton times 
 Params.InterTrialInterval = 3; % rest period between trials 
 Params.InstructedDelayTime = 3; % text appears telling subject which action to imagine
 Params.CueTime = 3; % A red square; subject has to get ready
@@ -108,8 +108,8 @@ Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 
 
 %% Size of text and square during experiment
-Params.TargetRectSize = 200; % size of the squares that act as cues
-Params.TargetFontSize = 150; % size of the text that appears as instructions
+Params.TargetRectSize = 200; % size of the squares that ac
+Params.TargetFontSize = 150;
 
 
 %% Discrete Decoder name

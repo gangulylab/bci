@@ -45,7 +45,7 @@ if IsWin,
     %homedir = 'C:\Users\ganguly-lab2\Documents\bci_data_test';
     %projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
     homedir='C:\Users\Nikhlesh\Documents\bci_data_test';
-    projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\bci');
+    projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\for_BCI\bci');
 elseif IsOSX,
     homedir = '/Users/daniel/';
     projectdir = '/Users/daniel/Projects/bci/';
