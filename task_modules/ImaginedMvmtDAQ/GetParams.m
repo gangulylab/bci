@@ -83,6 +83,8 @@ Params.TargetList = randperm(length(Params.ImaginedMvmt));
 Params.ImaginedMvmt = Params.ImaginedMvmt(Params.TargetList);
 
 
+
+
 %% Trial and Block Types
 % just set to 1 imagined block
 Params.NumImaginedBlocks    = 1;
@@ -97,7 +99,7 @@ Params.ERPs=true;
 %% Trial Duration times 
 Params.InterTrialInterval = 3; % rest period between trials 
 Params.InstructedDelayTime = 3; % text appears telling subject which action to imagine
-Params.CueTime = 3; % A red square; subject has to get ready
+Params.CueTime = 2; % A red square; subject has to get ready
 Params.ImaginedMvmtTime = 4; % A green square, subject has actively imagine the action
 
 % random legacy stuff
