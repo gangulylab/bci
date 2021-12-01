@@ -87,6 +87,9 @@ addpath(genpath(fullfile(projectdir,'exo_control')));
 % add task module
 addpath(genpath(fullfile(projectdir,'task_modules',Task)))
 
+% load model
+load('LSTM32ch64nodes.mat');
+
 %% Retrieve Parameters from Params File
 Params.Task = Task;
 Params.Subject = Subject;
@@ -190,6 +193,8 @@ Neuro.SpatialFiltering  = Params.SpatialFiltering;
 Neuro.FeatureMask       = Params.FeatureMask;
 Neuro.FeatureBufferSize = Params.FeatureBufferSize;
 Neuro.SmoothDataFlag = Params.SmoothDataFlag;
+Neuro.biLSTMFlag = Params.biLSTMFlag;
+Neuro.biLSTMMaxSoftThresh = Params.biLSTMSoftMaxThresh;
 
 % initialize filter bank state
 for i=1:length(Params.FilterBank)
@@ -199,6 +204,30 @@ end
 % initialize feature buffer
 Neuro.FeatureDataBuffer = zeros(Neuro.FeatureBufferSize,Neuro.NumFeatures*Neuro.NumChannels);
 Neuro.FilteredFeatures = zeros(Neuro.NumFeatures*Neuro.NumChannels,1);
+
+% initialize filter bank
+
+Params.lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
+   'PassbandFrequency',30,'PassbandRipple',0.2, ...
+   'SampleRate',1e3);
+
+% log spaced hg filters
+Params.Fs = 1000;
+Params.FilterBank(1).fpass = [70,77];   % high gamma1
+Params.FilterBank(end+1).fpass = [77,85];   % high gamma2
+Params.FilterBank(end+1).fpass = [85,93];   % high gamma3
+Params.FilterBank(end+1).fpass = [93,102];  % high gamma4
+Params.FilterBank(end+1).fpass = [102,113]; % high gamma5
+Params.FilterBank(end+1).fpass = [113,124]; % high gamma6
+Params.FilterBank(end+1).fpass = [124,136]; % high gamma7
+Params.FilterBank(end+1).fpass = [136,150]; % high gamma8
+
+% compute filter coefficients
+for i=1:length(Params.FilterBank),
+    [b,a] = butter(3,Params.FilterBank(i).fpass/(Params.Fs/2));
+    Params.FilterBank(i).b = b;
+    Params.FilterBank(i).a = a;
+end
 
 % initialize stats for each channel for z-scoring
 Neuro.ChStats.mean      = zeros(1,Params.NumChannels); % estimate of mean for each channel
@@ -215,7 +244,8 @@ Neuro.FeatureStats.BufSize  = Params.ZBufSize * Params.UpdateRate;
 Neuro.FeatureStats.Buf      = cell(1,Neuro.FeatureStats.BufSize);
 
 % create low freq buffers
-Neuro.FilterDataBuf = zeros(Neuro.BufferSamps,Neuro.NumChannels,Neuro.NumBuffer);
+buffSize = 800;
+Neuro.DataBuf = zeros(128,buffSize);
 if Neuro.NumFeatureBins>1,
     Neuro.NeuralFeaturesBuf = zeros(Neuro.NumFeatures*Neuro.NumChannels,...
         Neuro.NumFeatureBins);

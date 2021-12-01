@@ -70,7 +70,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
@@ -78,6 +78,11 @@ if Params.NeuralNetFlag
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
+end
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.55;
 end
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data

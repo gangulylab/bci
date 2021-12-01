@@ -75,7 +75,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.55;       
     Params.Use3Features = true;
@@ -90,6 +90,11 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.55;
+end
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option

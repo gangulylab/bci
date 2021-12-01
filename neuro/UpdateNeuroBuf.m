@@ -2,10 +2,9 @@ function Neuro = UpdateNeuroBuf(Neuro)
 % Neuro = UpdateNeuroBuf(Neuro)
 % efficiently replaces old data in circular buffer with new filtered
 % signals
+samps = size(Neuro.BroadbandData{end},1);
 
-% update filter buffer
-samps = Neuro.NumSamps;
-Neuro.FilterDataBuf = circshift(Neuro.FilterDataBuf,-samps);
-Neuro.FilterDataBuf((end-samps+1):end,:,:) = Neuro.FilteredData(:,:,1:Neuro.NumBuffer);
+Neuro.DataBuf = circshift(Neuro.DataBuf,-samps,2);
+Neuro.DataBuf(:,(end-samps+1):end) = Neuro.BroadbandData{end}';
 
 end % UpdateNeuroBuf
