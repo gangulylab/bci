@@ -97,8 +97,8 @@ Params.NumTrialsPerBlock    = length(Params.TargetList);
 Params.ERPs=true;
 
 %% Trial Duration times 
-Params.InterTrialInterval = 3; % rest period between trials 
-Params.InstructedDelayTime = 3; % text appears telling subject which action to imagine
+Params.InterTrialInterval = 2; % rest period between trials 
+Params.InstructedDelayTime = 5; % text appears telling subject which action to imagine
 Params.CueTime = 2; % A red square; subject has to get ready
 Params.ImaginedMvmtTime = 4; % A green square, subject has actively imagine the action
 
