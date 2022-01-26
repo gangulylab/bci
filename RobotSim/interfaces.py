@@ -31,17 +31,43 @@ class DiscreteActionsRobot():
         self.target = target
         self.robotenv.set_block_pos(pos, target)
 
-    def create_target3D(self, cpos, st):
+    # def create_target3D(self, cpos, st):
+    #     # self.targetPos = self.bci_to_robot_transform(pos)
+    #     pos = cpos.copy()
+    #     if st == 1:
+    #         color = [0,1,0];
+    #         self.robotenv.set_cubeTarget(pos, color)
+    #         self.newTarget = 1
+    #     elif st == 0:
+    #         color = [1,0,0];
+    #         # if self.newTarget ==1:
+    #         self.robotenv.set_cubeColor(pos, color, 16)
+    #             # self.newTarget = 0
+    #     elif st == 2:
+    #         color = [0,0,1];
+    #         self.robotenv.set_cubeColor(pos, color, 22)
+    #     else:
+    #         color = [0,1,0];
+    #         self.robotenv.set_cubeColor(pos, color, 22)
+
+    def create_target3D(self, cpos, st, target):
         # self.targetPos = self.bci_to_robot_transform(pos)
         pos = cpos.copy()
         if st == 1:
             color = [0,1,0];
-            self.robotenv.set_cubeTarget(pos, color)
+            if target < 8:
+                self.robotenv.set_cubeTarget(pos, color)
+            else:
+                color = [0,0,1]
+                self.robotenv.set_triangleTarget(pos, color, target)
             self.newTarget = 1
         elif st == 0:
             color = [1,0,0];
             # if self.newTarget ==1:
-            self.robotenv.set_cubeColor(pos, color, 16)
+            if target < 8:
+                self.robotenv.set_cubeColor(pos, color, 16)
+            else:
+                self.robotenv.set_triangleColor(pos, color, 16)
                 # self.newTarget = 0
         elif st == 2:
             color = [0,0,1];
@@ -49,6 +75,7 @@ class DiscreteActionsRobot():
         else:
             color = [0,1,0];
             self.robotenv.set_cubeColor(pos, color, 22)
+
 
     def create_targetRing(self, cpos, st):
         # self.targetPos = self.bci_to_robot_transform(pos)
@@ -122,6 +149,10 @@ class DiscreteActionsRobot():
             self.key = 1
         elif key == 7:
             self.key = 100
+        elif key == 8:
+            self.key = 101
+        elif key == 9:
+            self.key = 102
         else:
             self.key = 0
         self.robotenv.set_robotPos(rp, self.key)
@@ -186,8 +217,6 @@ class DiscreteActionsRobot():
         self.path[ind][1] = p[1]
         self.path[ind][2] = p[2]
         print(self.path)
-
-
 
     def drawPath(self):
 

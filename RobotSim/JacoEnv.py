@@ -124,7 +124,9 @@ class JacoEnv(object):
     ls = p.getLinkState(self.jacoId, self.jacoEndEffectorIndex)
     p.setRealTimeSimulation(self.useRealTimeSimulation)
     p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
-    
+
+
+
 
   def write_letter(self, dpos, c, targetID):
 
@@ -330,6 +332,34 @@ class JacoEnv(object):
     p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
     p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
     p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
+
+
+  def set_triangleTarget(self, pos, c, target):
+
+    if target == 9:
+      xd = 1
+    else:
+      xd = -1
+
+    pos[0] = self.center[0] + pos[0]
+    pos[1] = self.center[1] + pos[1]
+    pos[2] = self.center[2] + pos[2]
+    lw = 6
+    d = self.robotTargetRad
+
+    self.c1 = [pos[0], pos[1], pos[2]-d]
+    self.c2 = [pos[0] - 2*xd*d, pos[1] - d, pos[2]-d]
+    self.c3 = [pos[0] - 2*xd*d, pos[1] + d, pos[2]-d]
+
+    p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+    p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+    p.addUserDebugLine(self.c3, self.c1, c, lw, 0, replaceItemUniqueId=self.l3)
+
+  def set_triangleColor(self, pos, c, lw):
+
+    p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+    p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+    p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
 
   def setFing(self, fp):
     if self.mode == 5:
@@ -561,7 +591,7 @@ class JacoEnv(object):
     else:
       self.pos =list([-0.35, 0.3, 0.2])
 
-    self.orn = p.getQuaternionFromEuler([math.pi,0,math.pi/2])
+    self.orn = p.getQuaternionFromEuler([math.pi,0,math.pi])
     if self.mode == 7:
       self.fing = 0.0
     elif self.mode == 9:
@@ -588,6 +618,7 @@ class JacoEnv(object):
       p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -0.2] + self.center, [0,0,0,1])
     else:
       p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -2] + self.center, [0,0,0,1])
+
 
   def step(self):
 
@@ -646,6 +677,13 @@ class JacoEnv(object):
 
           p.addUserDebugLine(p1, p2, [0,1,1], 8, self.bciRate)
           p.addUserDebugLine(p3, p4, [0,1,1], 8, self.bciRate)
+        elif self.key == 101:
+          p1 = [self.pos[0], self.pos[1], self.pos2[2]]
+          p2 = [self.pos[0], self.pos[1], self.pos2[2] - 0.15]
+          p3 = [self.pos[0], self.pos[1] + .15, self.pos2[2] - 0.15]
+          p.addUserDebugLine(p1, p2, [0,1,1], 8, self.bciRate)
+          p.addUserDebugLine(p2, p3, [0,1,1], 8, self.bciRate)
+          print("Here")
         else:
           p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2]], [self.pos2[0], self.pos2[1], self.pos2[2]], [1,0,0,], 8, self.bciRate)  
       elif self.mode == 3 or self.mode == 4 or self.mode > 5:
@@ -657,5 +695,28 @@ class JacoEnv(object):
 
           p.addUserDebugLine(p1, p2, [0,1,1], 8, self.bciRate)
           p.addUserDebugLine(p3, p4, [0,1,1], 8, self.bciRate)
+
+        elif self.key == 101:
+          p1 = [self.pos[0], self.pos[1], self.pos[2] + 0.1]
+          p2 = [self.pos[0], self.pos[1], self.pos[2]-0.05]
+          p3 = [self.pos[0] + 0.075, self.pos[1], self.pos[2] - 0.1]
+          p4 = [self.pos[0] + 0.15, self.pos[1], self.pos[2] - 0.05]
+          p5 = [self.pos[0] + 0.15, self.pos[1], self.pos[2] + 0.05]
+          p.addUserDebugLine(p1, p2, [1,1,0], 8, self.bciRate)
+          p.addUserDebugLine(p2, p3, [1,1,0], 8, self.bciRate)
+          p.addUserDebugLine(p3, p4, [1,1,0], 8, self.bciRate)
+          p.addUserDebugLine(p4, p5, [1,1,0], 8 , self.bciRate)
+
+        elif self.key == 102:
+          p1 = [self.pos[0], self.pos[1], self.pos[2] + 0.1]
+          p2 = [self.pos[0], self.pos[1], self.pos[2]-0.05]
+          p3 = [self.pos[0] - 0.075, self.pos[1], self.pos[2] - 0.1]
+          p4 = [self.pos[0] - 0.15, self.pos[1], self.pos[2] - 0.05]
+          p5 = [self.pos[0] - 0.15, self.pos[1], self.pos[2] + 0.05]
+          p.addUserDebugLine(p1, p2, [1,1,0], 8, self.bciRate)
+          p.addUserDebugLine(p2, p3, [1,1,0], 8, self.bciRate)
+          p.addUserDebugLine(p3, p4, [1,1,0], 8, self.bciRate)
+          p.addUserDebugLine(p4, p5, [1,1,0], 8 , self.bciRate)
+    
         else:
           p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)

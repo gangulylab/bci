@@ -116,7 +116,7 @@ end
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
 
-    fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
+    fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID]);
 
 if ~Data.ErrorID && Params.CueTime>0,
     tstart  = GetSecs;
@@ -252,8 +252,7 @@ if ~Data.ErrorID
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = ...
                 UpdateMultiStateClicker(Params,Neuro,Clicker,bl_mean,bl_std);
-%             Click_Decision = 0;
-%             Click_Distance = 0;
+            Params.index = Params.index+1;
             Cursor.ClickState = Click_Decision;
             Cursor.ClickDistance = Click_Distance;
             Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
@@ -263,10 +262,10 @@ if ~Data.ErrorID
             ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
             ClickDec_Buffer(end) = Click_Decision;
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+
             ClickToSend = RunningMode_ClickDec;
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
              
-            
             % counter only if correct target is hit, training mode for now
             if TaskFlag == 1
                 Cursor.Counter = 0;

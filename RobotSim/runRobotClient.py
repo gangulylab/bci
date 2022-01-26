@@ -57,7 +57,7 @@ while True:
 		if val1 == 2:		# Change hold time on debug lines
 			updateRate = 1.0 /val2
 			interface.updateRefresh(updateRate)
-			interface.updateRefresh(.15)
+			interface.updateRefresh(.2)
 		if val1 == 3:		# Mode
 			interface.updateMode(val2)
 			print("MODE:", val2)
@@ -70,7 +70,7 @@ while True:
 			elif interface.mode == 9:
 				interface.create_targetRing(target_pos,0)
 			else:
-				interface.create_target3D(target_pos, 0)
+				interface.create_target3D(target_pos, 0, target)
 
 		if val1 == 6:
 			if interface.letterMode == 1:
@@ -78,14 +78,14 @@ while True:
 			elif interface.mode == 9:
 				interface.create_targetRing(target_pos,2)
 			else:
-				interface.create_target3D(target_pos, 2)
+				interface.create_target3D(target_pos, 2, target)
 		if val1 == 7:
 			if interface.letterMode == 1:
 				interface.create_targetLetter(target_pos, 3)
 			elif interface.mode == 9:
 				interface.create_targetRing(target_pos,3)
 			else:
-				interface.create_target3D(target_pos,3)
+				interface.create_target3D(target_pos,3, target)
 		if val1 == 8:
 			interface.setMode(val2)
 		if val1 == 9:
@@ -108,19 +108,18 @@ while True:
 		if val1 == 22:
 			interface.robotenv.removeDebug()
 
-
-
-
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
 		target_pos[1] = -((val4-1) *(val5 + val6/100))/ 1000
 		target_pos[2] = ((val7-1) *(val8 + val9/100))/ 1000
+		target = val10
 		if interface.letterMode == 1:
 			interface.create_targetLetter(target_pos, 1)
 		elif interface.mode == 9:
 			interface.create_targetRing(target_pos,1 )
 		else:
-			interface.create_target3D(target_pos, 1)
+			interface.create_target3D(target_pos, 1, target)
+
 
 	if command == 11:	# Set Target
 		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
@@ -194,17 +193,12 @@ while True:
 		print(robot_pos)
 		# interface.render()
 
-
 	if command == 15:		#set path coordinates
 		ind = val10
 		p[0] = ((val1-1) *(val2 + val3/100))/ 1000
 		p[1] = -((val4-1) *(val5 + val6/100))/ 1000
 		p[2] = ((val7-1) *(val8 + val9/100))/ 1000
 		interface.setPath_ES(p, ind)
-
-
-
-	
 
 sock.shutdown()
 sock.close() 

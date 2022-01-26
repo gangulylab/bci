@@ -149,7 +149,9 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0, -Params.ReachTargetRadius, 0; ...
     0,0,Params.ReachTargetRadius;...
     0, 0,-Params.ReachTargetRadius;...
-    0,0,0];
+    0,0,0;...
+    0.5*Params.ReachTargetRadius,0,40;...
+    -0.5*Params.ReachTargetRadius,0,40];
 
 
 %% Kalman Filter Properties
@@ -172,14 +174,16 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
-Params.NumTrialsPerBlock    = 21;
-Params.TargetOrder          = [1:7,  1:7, 1:7];
+Params.NumTrialsPerBlock    = 9;
+Params.TargetOrder          = [8,9,1:7];
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+% Params.TargetOrder = [8];
+
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 2];
 
 %% CLDA Parameters
@@ -224,7 +228,7 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 4;
+Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 1.0;
 Params.MaxStartTime = 25;
@@ -270,5 +274,6 @@ Params.ValidDir          = [1:7];
 
 %% For Debug
 Params.index = 1;
-Params.clickOrder = [4*ones(1,5)];
+Params.clickOrder = [8*ones(1,5)];
+Params.clickOrder = [8*ones(1,5),2*ones(1,5),3*ones(1,5),4*ones(1,5),5*ones(1,5),6*ones(1,5),7*ones(1,5),8*ones(1,5)]';
 end % GetParams
