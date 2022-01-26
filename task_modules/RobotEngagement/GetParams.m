@@ -159,8 +159,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1,2,3,4,5,6];
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:6, 1:6];
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
