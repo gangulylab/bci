@@ -75,14 +75,14 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.55;       
+    Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_0126_AM1';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_01282022_AM1';
     
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
@@ -95,7 +95,7 @@ end
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.45    ;       
     Params.Use3Features = true;

@@ -55,8 +55,8 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 4;
 
 %% Timing
-Params.ScreenRefreshRate = 8; % Hz
-Params.UpdateRate = 8; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
@@ -235,7 +235,7 @@ Params.TargetOrder          = [1:10];
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.handVis = 1;
-Params.ActionDuration = 5;    % seconds
+Params.ActionDuration = 4;    % seconds
 
 delta = 1/(0.5*Params.ActionDuration*Params.UpdateRate);
 
