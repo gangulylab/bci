@@ -33,14 +33,21 @@ if Params.BLACKROCK,
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
 
-axis = Params.axes(Data.TargetID);
+axis = 1;
+
+if Params.d1(Data.TargetID)
+    Params.angles = Params.angles1d;
+end
 
 Cursor.State = [0,0,0,0,0,0]';
-Cursor.State(axis) = Params.angles{axis}(1);
+Cursor.State(axis) = Params.angles(1);
 
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
+
+
+fwrite(Params.udp, [0,16,Data.TargetID]);
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
@@ -53,7 +60,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
     TotalTime = 0;
     InTargetTotalTime = 0;
     
-    Cursor.State(axis) = Params.angles{Data.TargetID}(1);
+%     Cursor.State(axis) = Params.angles(step);
 
     [xa,xb,xc] = doubleToUDP(Cursor.State(1)*80);
     [ya,yb,yc] = doubleToUDP(Cursor.State(2)*80); 
@@ -120,20 +127,10 @@ if ~Data.ErrorID && Params.CueTime>0,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
-    
-
 
     fwrite(Params.udp, [5, Data.TargetID, 0])
     
-
-    
-%     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
-%     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
-%     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)) ;
-% 
-%     fwrite(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, 0]);
-    
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -150,7 +147,7 @@ if ~Data.ErrorID && Params.CueTime>0,
             Data.Time(1,end+1) = tim;
             
             % grab and process neural data
-            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate)
                 dT = tim-Cursor.LastUpdateTime;
                 dT_vec(end+1) = dT;
                 Cursor.LastUpdateTime = tim;
@@ -159,14 +156,12 @@ if ~Data.ErrorID && Params.CueTime>0,
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);           
             end
 
-
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             
             Cursor.TaskState = 2;
-            Data.TaskState(1,end+1)=Cursor.TaskState;  
-            
+            Data.TaskState(1,end+1)=Cursor.TaskState;      
             Data.StopState(1,end+1)=0;
             
             % start counting time            
@@ -240,13 +235,11 @@ if ~Data.ErrorID,
 
             Params.TargetID =  Data.TargetID;
 %             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-Click_Decision = 0;
-Click_Distance = 0;
+            Click_Decision = 0;
+            Click_Distance = 0;
                 
-%             if TaskFlag==1, % imagined movements
-            Cursor.State(axis) = Params.angles{Data.TargetID}(step);
-%             end
-            
+            Cursor.State(axis) = Params.angles(step);
+
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
 
@@ -317,7 +310,7 @@ Click_Distance = 0;
         
     end % Reach Target Loop
     
-    if step >= length(Params.angles{Data.TargetID})
+    if step >= length(Params.angles)
         done = 1;
     end
 end % only complete if no errors

@@ -67,13 +67,10 @@ Cursor.LastUpdateTime = tlast;
 for Block=1:NumBlocks, % Block Loop
     NextTargetID =  Params.TargetOrder(Trial+1);
     % initialize cursor state(s)
-    if Params.LongTrial
-        Cursor.State = [0,0,0,0,0,0]';
-        Cursor.State(1:3) = Params.LongStartPos(NextTargetID,:)
-    else
-        Cursor.State = [0,0,0,0,0,0]';
-        Cursor.IntendedState = [0,0,0,0,1]';
-    end
+
+    Cursor.State = [0,0,0,0,0,0]';
+    Cursor.IntendedState = [0,0,0,0,1]';
+
     Cursor.Vcommand = [0,0]';
     Cursor.ClickState = 0;
     
