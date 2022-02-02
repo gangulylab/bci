@@ -7,9 +7,7 @@ n(4) = sum(v == 4);
 n(5) = sum(v == 5);
 n(6) = sum(v == 6);
 n(7) = sum(v == 7);
-n(8) = sum(v == 8);
-n(9) = sum(v == 9);
-n(10) = sum(v == 0);
+n(8) = sum(v == 0);
 
 
 maxVal = max(n);
@@ -19,7 +17,7 @@ if (length(idx) >  1) % tie
     modeVal = 0;
 elseif (maxVal <= 0.5* length(v)) % 
     modeVal = 0;
-elseif idx == 10
+elseif idx == 8
     modeVal = 0;
 else
     modeVal = idx;
