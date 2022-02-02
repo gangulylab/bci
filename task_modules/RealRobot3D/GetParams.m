@@ -75,11 +75,18 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_5DoF_Apr30';
 %     Params.NeuralNetFunction = 'MLP_Lips_RtThumb_LtThumb_RtMiddle_Tongue_LfMiddle_4';    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';   
 %     Params.NeuralNetFunction = 'MLP_Lips_RtHand_LtHand_Feet_Head_Tong_Lips_BL7';
-Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_Days1to11';
+Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_02022022_AM2';
 %MLP_Lips_RtThumb_LtThumb_RtMiddle_Day2A
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+%% BIAS CORRECTION FOR LEFT LEG
+% scales the probabilities of the decoder towards a specific action by a
+% prespecific amount
+
+Params.NeuralBias = false;
+Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
+Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
@@ -225,7 +232,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 11; 
+Params.RobotMode            = 10; 
 
 if Params.RobotMode == 1
     Params.ValidDir             = [1:4];
@@ -389,6 +396,6 @@ Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 Params.GraspTask = 1;
-Params.lowGainMode = 1;
+Params.lowGainMode = 0;
 
 end % GetParams

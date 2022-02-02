@@ -187,11 +187,11 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220128/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220202/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {'112052','112559'};
+foldernames = {'102552', '103014', '103454', '103943'};
 
 cd(root_path)
 
@@ -254,7 +254,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED
-foldernames = {'110039','110656','111206'};
+foldernames = {'101645','102211'};
 
 cd(root_path)
  
@@ -309,8 +309,8 @@ for ii=1:length(foldernames)
 end
 
 size(D7)
-root_path = '/home/ucsf/Data/bravo1/20210813/RealRobotBatch';
-foldernames = {};
+root_path = '/home/ucsf/Data/bravo1/20220202/RealRobotBatch';
+foldernames = {'113555', '113903'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -413,7 +413,7 @@ pretrain_net_mlp4.divideParam.trainRatio=0.8;
 pretrain_net_mlp4.divideParam.valRatio=0.1;
 pretrain_net_mlp4.divideParam.testRatio=0.1;
 pretrain_net_mlp4 = train(pretrain_net_mlp4,N,T');
-classifier_name = 'MLP_PreTrained_7DoF_01282022_AM1'; % enter the name
+classifier_name = 'MLP_PreTrained_7DoF_02022022_AM2'; % enter the name
 genFunction(pretrain_net_mlp4,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 
