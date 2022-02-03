@@ -107,6 +107,11 @@ while True:
 			interface.drawPath()
 		if val1 == 22:
 			interface.robotenv.removeDebug()
+		if val1 == 23:
+			betaVal = ((val2-1) *(val3 + val4/100))
+			print(betaVal)
+			interface.robotenv.drawBetaLine(betaVal)
+
 
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000
