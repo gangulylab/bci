@@ -126,8 +126,6 @@ class JacoEnv(object):
     p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
 
 
-
-
   def write_letter(self, dpos, c, targetID):
 
     pos = dpos.copy()
@@ -334,6 +332,16 @@ class JacoEnv(object):
     p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
 
 
+  def drawBetaLine(self, betaScalar):
+    print(betaScalar)
+    p1 = [-0.8, 0.1, 0]
+    p2 = [-0.8, 0.1, betaScalar*0.5+ 0.1]
+
+    c = [0, 0, 1]
+    lw = 10
+
+    self.l13 = p.addUserDebugLine(p1, p2, c, lw, 0, replaceItemUniqueId=self.l13)
+
   def set_triangleTarget(self, pos, c, target):
 
     if target == 9:
@@ -359,7 +367,7 @@ class JacoEnv(object):
 
     p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
     p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
-    p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+    p.addUserDebugLine(self.c3, self.c1, c, lw, 0, replaceItemUniqueId=self.l3)
 
   def setFing(self, fp):
     if self.mode == 5:
@@ -534,6 +542,8 @@ class JacoEnv(object):
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 180 - 20, cameraPitch=-30, cameraTargetPosition=[-0.3,0.25,0.1])  
     elif self.mode == 15:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 15, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
+    elif self.mode == 16: # RobotBeta
+      p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 0, cameraPitch=0, cameraTargetPosition=[-0.35,0.3,0.3])
     else: 
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=0, cameraPitch=-0, cameraTargetPosition=[-0.35,0.3,0.1])
 
