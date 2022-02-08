@@ -42,7 +42,7 @@ end
 Cursor.ClickState = 0;
 Cursor.Counter = 0;
 Cursor.ClickDistance = 0;
-beta_scalar = 0;
+
 
 
 %% Instructed Delay (STATE 1)
@@ -261,8 +261,7 @@ if ~Data.ErrorID && Params.CueTime>0,
     end % Instructed Delay Loop
 end % only complete if no errors
 
-%% Go to reach target STATE 3
-% smaller bar green color under active control 
+%% Go to reach target
 if ~Data.ErrorID,
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
@@ -374,18 +373,10 @@ if ~Data.ErrorID,
             Screen('FillOval', Params.WPTR, ...
                 Params.InnerCircleColor, CircRect')
             
-            %             % draw cursor
-            %             Screen('FillOval', Params.WPTR, ...
-            %                 CursorCol', CursorRect')
+%             % draw cursor
+%             Screen('FillOval', Params.WPTR, ...
+%                 CursorCol', CursorRect')
             
-            
-            % GET BETA BAND PROJECTED VALUE
-            beta_scalar = betaband_output(Params,Neuro);
-            
-            % DRAW THE DATA 
-
-
-
             %get arrow location
             ArrowStart = Params.Center;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);

@@ -98,12 +98,7 @@ Params.ERPs=false;
 Params.BetaBarHeight = 200; % pixels
 Params.BetaBarValue = 20; % projected beta band value
 
-
-
-%% IMPORT PC WEIGHTS AND MEAN FOR BETA BAND ANALYSIS
-
-Params.BetaWts = load(fullfile('clicker','betawts'));
-Params.BetaMean = load(fullfile('clicker','betamean'));
+%% IMPORT PC WEIGHTS FOR BET
 
 %% Targets: radial layout
 Params.NumReachTargets   = 4;
