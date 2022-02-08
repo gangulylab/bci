@@ -13,5 +13,12 @@ beta_mean = Params.BetaMean.betamean;
 X = X - beta_mean;
 beta_scalar = X'*beta_wts;
 
+% check four boundaries
+if beta_scalar < 0
+    beta_scalar = 0;
+elseif beta_scalar>Params.BetaBarValue
+    beta_scalar = Params.BetaBarValue;
+end
+
 
 end

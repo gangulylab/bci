@@ -134,20 +134,15 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             %    cat(1,StartRect,ReachRect,CursorRect)')
            
             
-            % DRAW BAR
-            rectColor = [192 192 192];
-            baseRect = [0 0 600 900];
-            Screen('FillRect', Params.WPTR, rectColor, baseRect);
+            %%%% DRAW VERTICAL BAR
+            %if  not already there 
+            %Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
             
-            % START DRAWING BAR - GREEN
-            barColor = [60 179 113];
-            barRect = [0 0 600 200];
-            Screen('FillRect', Params.WPTR, barColor, barRect);
-            
-            Screen('DrawingFinished', Params.WPTR);
-            Screen('Flip', Params.WPTR);
-
-            
+            ht=Params.BetaBarHeight; % height of the overall rectangle
+            baseRect = [Params.Center(1)-100 Params.Center(2)-ht ...
+                Params.Center(1)+100 Params.Center(2)+ht];
+            rectColor = [200 200 200];
+            Screen('FillRect', Params.WPTR, rectColor, baseRect)
             
             
             Screen('DrawingFinished', Params.WPTR);
@@ -258,7 +253,24 @@ if ~Data.ErrorID && Params.CueTime>0,
             %    cat(1,StartCol,ReachCol,Params.CursorColor)', ...
             %    cat(1,StartRect,ReachRect,CursorRect)')
            
-            % draw bar, with red smaller bar
+            
+            %%%% DRAW VERTICAL BAR WITH RED SMALLER BAR
+            %if  not already there 
+            %Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
+            
+            ht=Params.BetaBarHeight; % height of the overall rectangle
+            baseRect = [Params.Center(1)-100 Params.Center(2)-ht ...
+                Params.Center(1)+100 Params.Center(2)+ht];
+            rectColor = [200 200 200];
+            Screen('FillRect', Params.WPTR, rectColor, baseRect)
+            
+            small_ht = 0;
+            small_y=[Params.Center(2)+ht-15-small_ht Params.Center(2)+ht+15-small_ht  ];
+            smallRect = [Params.Center(1)-100 small_y(1) ...
+                Params.Center(1)+100 small_y(2)];
+            smallrectColor = [225 0 0];
+            Screen('FillRect', Params.WPTR, smallrectColor, smallRect)
+            
             
             Screen('DrawingFinished', Params.WPTR);
             Screen('Flip', Params.WPTR);
@@ -396,10 +408,6 @@ if ~Data.ErrorID,
             
             % GET BETA BAND PROJECTED VALUE
             beta_scalar = betaband_output(Params,Neuro);
-            
-            % DRAW THE DATA 
-
-
 
             %get arrow location
             ArrowStart = Params.Center;
@@ -457,15 +465,34 @@ if ~Data.ErrorID,
             
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
-           
-%             % draw the arrow
-%             Screen('DrawLine', Params.WPTR, [255 0 0],ArrowStart(1),ArrowStart(2),...
-%                 ArrowEnd(1),ArrowEnd(2),3);
-%             Screen('FillOval',Params.WPTR,[255 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
-%                 ArrowEnd(1)+20,ArrowEnd(2)+20],3);
-%             
-%             Screen('DrawingFinished', Params.WPTR);
-%             Screen('Flip', Params.WPTR);
+            
+            
+            
+            %%%% DRAW VERTICAL BAR WITH RED SMALLER BAR
+            %if  not already there
+            %Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
+            
+            ht=Params.BetaBarHeight; % height of the overall rectangle
+            baseRect = [Params.Center(1)-100 Params.Center(2)-ht ...
+                Params.Center(1)+100 Params.Center(2)+ht];
+            rectColor = [200 200 200];
+            Screen('FillRect', Params.WPTR, rectColor, baseRect)
+            
+            small_ht =  beta_scalar/20*ht*2;
+            small_y=[Params.Center(2)+ht-15-small_ht Params.Center(2)+ht+15-small_ht  ];
+            smallRect = [Params.Center(1)-100 small_y(1) ...
+                Params.Center(1)+100 small_y(2)];
+            smallrectColor = [0 225 0];
+            Screen('FillRect', Params.WPTR, smallrectColor, smallRect)
+            
+            %             % draw the arrow
+            %             Screen('DrawLine', Params.WPTR, [255 0 0],ArrowStart(1),ArrowStart(2),...
+            %                 ArrowEnd(1),ArrowEnd(2),3);
+            %             Screen('FillOval',Params.WPTR,[255 0 0],[ArrowEnd(1)-20,ArrowEnd(2)-20,...
+            %                 ArrowEnd(1)+20,ArrowEnd(2)+20],3);
+            %
+            Screen('DrawingFinished', Params.WPTR);
+            Screen('Flip', Params.WPTR);
 
         end
         
