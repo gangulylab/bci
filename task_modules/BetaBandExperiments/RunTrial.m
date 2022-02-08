@@ -134,6 +134,21 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             %    cat(1,StartRect,ReachRect,CursorRect)')
            
             
+            % DRAW BAR
+            rectColor = [192 192 192];
+            baseRect = [0 0 600 900];
+            Screen('FillRect', Params.WPTR, rectColor, baseRect);
+            
+            % START DRAWING BAR - GREEN
+            barColor = [60 179 113];
+            barRect = [0 0 600 200];
+            Screen('FillRect', Params.WPTR, barColor, barRect);
+            
+            Screen('DrawingFinished', Params.WPTR);
+            Screen('Flip', Params.WPTR);
+
+            
+            
             
             Screen('DrawingFinished', Params.WPTR);
             Screen('Flip', Params.WPTR);
