@@ -146,6 +146,12 @@ switch TaskFlag,
                 end
         end
         
+        Instructions = [...
+            '\n\nBar Experiments\n\n'...
+            'Imagine moving your right hand\n'...
+            '\n\nPress the ''Space Bar'' to begin!' ];
+        
+        
         InstructionScreen(Params,Instructions);
         Cursor.Assistance = 0;
         Cursor.DeltaAssistance = 0;

@@ -44,7 +44,10 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock    
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
+
+%% Size for TargetFont
+Params.TargetFontSize = 150;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;

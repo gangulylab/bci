@@ -478,7 +478,7 @@ if ~Data.ErrorID,
             rectColor = [200 200 200];
             Screen('FillRect', Params.WPTR, rectColor, baseRect)
             
-            small_ht =  beta_scalar/20*ht*2;
+            small_ht =  beta_scalar/Params.BetaBarValue*ht*2;
             small_y=[Params.Center(2)+ht-15-small_ht Params.Center(2)+ht+15-small_ht  ];
             smallRect = [Params.Center(1)-100 small_y(1) ...
                 Params.Center(1)+100 small_y(2)];
@@ -590,26 +590,26 @@ if Params.InterTrialInterval>0,
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
             Cursor.State= [0 0 0 0 0]';
             
-            TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
-            % draw target triangles
-            for i=1:Params.NumReachTargets,
-                % center vertices to define triangle for each target
-                TargetVerts = Params.ReachTargetVerts{i};
-                TargetVerts(:,1) = TargetVerts(:,1) + Params.Center(1);
-                TargetVerts(:,2) = TargetVerts(:,2) + Params.Center(2);
-                
-                Screen('FillPoly', Params.WPTR, ...
-                    TargetsCol(i,:)', TargetVerts, 1);
-                Screen('FramePoly', Params.WPTR, ... % black frame around triangles
-                    0, TargetVerts, Params.TargetSpacing);
-            end
-            
-            % draw target circles
-            CircRect = Params.InnerCircleRect;
-            CircRect([1,3]) = CircRect([1,3]) + Params.Center(1); % add x-pos
-            CircRect([2,4]) = CircRect([2,4]) + Params.Center(2); % add y-pos
-            Screen('FillOval', Params.WPTR, ...
-                Params.InnerCircleColor, CircRect')
+%             TargetsCol = repmat(Params.TargetsColor,Params.NumReachTargets,1);
+%             % draw target triangles
+%             for i=1:Params.NumReachTargets,
+%                 % center vertices to define triangle for each target
+%                 TargetVerts = Params.ReachTargetVerts{i};
+%                 TargetVerts(:,1) = TargetVerts(:,1) + Params.Center(1);
+%                 TargetVerts(:,2) = TargetVerts(:,2) + Params.Center(2);
+%                 
+%                 Screen('FillPoly', Params.WPTR, ...
+%                     TargetsCol(i,:)', TargetVerts, 1);
+%                 Screen('FramePoly', Params.WPTR, ... % black frame around triangles
+%                     0, TargetVerts, Params.TargetSpacing);
+%             end
+%             
+%             % draw target circles
+%             CircRect = Params.InnerCircleRect;
+%             CircRect([1,3]) = CircRect([1,3]) + Params.Center(1); % add x-pos
+%             CircRect([2,4]) = CircRect([2,4]) + Params.Center(2); % add y-pos
+%             Screen('FillOval', Params.WPTR, ...
+%                 Params.InnerCircleColor, CircRect')
             
             Cursor.TaskState = 4;
             Data.TaskState(1,end+1)=Cursor.TaskState;
