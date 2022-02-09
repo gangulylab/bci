@@ -3,7 +3,7 @@ function beta_scalar = betaband_output(Params,Neuro)
 
 % get the beta band features
 if Params.ControlMode == 2
-    X = 20*randn(896,1);
+    X = 10*randn(896,1);
 else
     X = Neuro.FilteredFeatures;
 end
