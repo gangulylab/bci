@@ -257,15 +257,16 @@ if ~Data.ErrorID && Params.CueTime>0,
             %%%% DRAW VERTICAL BAR WITH RED SMALLER BAR
             %if  not already there 
             %Params.Center = [mean(Params.ScreenRectangle([1,3])),mean(Params.ScreenRectangle([2,4]))];
-            
+                        
+                
             ht=Params.BetaBarHeight; % height of the overall rectangle
             baseRect = [Params.Center(1)-100 Params.Center(2)-ht ...
                 Params.Center(1)+100 Params.Center(2)+ht];
             rectColor = [200 200 200];
             Screen('FillRect', Params.WPTR, rectColor, baseRect)
             
-            small_ht = 0;
-            small_y=[Params.Center(2)+ht-15-small_ht Params.Center(2)+ht+15-small_ht  ];
+            small_ht =  0;%beta_scalar/Params.BetaBarValue*ht;
+            small_y=[Params.Center(2)-small_ht-15 Params.Center(2)-small_ht+15  ];
             smallRect = [Params.Center(1)-100 small_y(1) ...
                 Params.Center(1)+100 small_y(2)];
             smallrectColor = [225 0 0];
@@ -478,8 +479,8 @@ if ~Data.ErrorID,
             rectColor = [200 200 200];
             Screen('FillRect', Params.WPTR, rectColor, baseRect)
             
-            small_ht =  beta_scalar/Params.BetaBarValue*ht*2;
-            small_y=[Params.Center(2)+ht-15-small_ht Params.Center(2)+ht+15-small_ht  ];
+            small_ht =  beta_scalar/Params.BetaBarValue*ht;
+            small_y=[Params.Center(2)-small_ht-15 Params.Center(2)-small_ht+15  ];
             smallRect = [Params.Center(1)-100 small_y(1) ...
                 Params.Center(1)+100 small_y(2)];
             smallrectColor = [0 225 0];

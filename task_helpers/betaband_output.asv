@@ -25,7 +25,7 @@ beta_mean = Params.BetaMean.betamean;
 
 % check four boundaries
 if beta_scalar < 0
-    %beta_scalar = 0;
+    beta_scalar = 0;
 elseif beta_scalar>Params.BetaBarValue
     beta_scalar = Params.BetaBarValue;
 end
