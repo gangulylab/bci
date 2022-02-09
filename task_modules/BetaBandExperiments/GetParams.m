@@ -98,7 +98,7 @@ Params.ERPs=false;
 %% HEIGHT OF THE BAR FOR BETA BAND EXPERIMENTS
 % as the projected weights
 
-Params.BetaBarHeight = 200; % pixels
+Params.BetaBarHeight = 300; % pixels
 Params.BetaBarValue = 20; % projected beta band value
 
 
@@ -171,8 +171,8 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 2;
-Params.NumTrialsPerBlock    = 13;
+Params.NumFixedBlocks       = 1;
+Params.NumTrialsPerBlock    = 2;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -220,7 +220,7 @@ Params.InterTrialInterval = 1.0;
 Params.InstructedDelayTime = 1.0;
 Params.CueTime = 1;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 5 ;
+Params.MaxReachTime = 30 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
