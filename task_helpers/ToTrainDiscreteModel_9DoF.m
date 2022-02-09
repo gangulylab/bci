@@ -8,12 +8,12 @@
 clc;clear
 
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220204/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220209/Robot3DArrow';
 
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For example: 
 
-foldernames = {'133312', '134225', '134655','135121'};
+foldernames = {'132157', '132904', '133312','133729'};
 
 cd(root_path)
 
@@ -82,7 +82,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED CONTROL
- foldernames = {'140159','140607','141121','141718'};
+ foldernames = {'134844','135219','135546','135920'};
 
 cd(root_path)
  
@@ -258,7 +258,7 @@ net.divideParam.trainRatio=0.8;
 net.divideParam.valRatio=0.1;
 net.divideParam.testRatio=0.1;
 net = train(net,N,T','useParallel','yes');
-classifier_name = 'MLP_PreTrained_9DoF_02042022_PM2'; % enter the name
+classifier_name = 'MLP_PreTrained_9DoF_02092022_PM2'; % enter the name
 genFunction(net,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 delete(gcp)
 
@@ -277,8 +277,8 @@ delete(gcp)
 % % % % to restart exp run following lines
   clear
   clc
-  cd('/home/ucsf/Projects/bci')
-  ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+%   cd('/home/ucsf/Projects/bci')
+%   ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %  ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
