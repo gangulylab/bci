@@ -3,7 +3,7 @@ function beta_scalar = betaband_output(Params,Neuro)
 
 % get the beta band features
 if Params.ControlMode == 2
-    X = 2*randn(896,1);
+    X = 20*randn(896,1);
 else
     X = Neuro.FilteredFeatures;
 end
@@ -24,11 +24,15 @@ beta_mean = Params.BetaMean.betamean;
 %end
 
 % check four boundaries
-if beta_scalar < 0
-    %beta_scalar = 0;
-elseif beta_scalar>Params.BetaBarValue
-    beta_scalar = Params.BetaBarValue;
+% if beta_scalar < 0
+%     %beta_scalar = 0;
+% elseif abs(beta_scalar)>Params.BetaBarValue
+%     beta_scalar = sign(beta_scalar)*Params.BetaBarValue;
+% end
+
+if abs(beta_scalar)>Params.BetaBarValue
+    beta_scalar = sign(beta_scalar)*Params.BetaBarValue;
 end
 
-
+beta_scalar
 end
