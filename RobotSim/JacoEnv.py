@@ -19,7 +19,7 @@ class JacoEnv(object):
     p.setGravity(0,0,-10)
 
     self.useOrientation         = 1
-    self.useSimulation          = 0
+    self.useSimulation          = 1
     self.useRealTimeSimulation  = 1
 
     self.mode           = mode
@@ -71,6 +71,8 @@ class JacoEnv(object):
     self.jacoJoints           = [2, 3, 4, 5, 6, 7, 9, 11, 13]
     self.jd                   = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
     self.JP                   = [0,0,0,0,0,0]
+
+    self.RP = [0,2.4,-1.4,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi,0]
 
     self.cube1Id = p.loadURDF("cube_small.urdf",[-0.2, 0, -0.2] + self.center, [0,0,0,1],  globalScaling=3)
     # self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 1.0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
@@ -410,10 +412,31 @@ class JacoEnv(object):
     self.newPosInput = 1
     self.step()
 
+
+  def set_robotRotation(self, dim, rot_theta):
+    Rrm = R.from_quat(self.orn)     # convert current orn to rot matrix
+    Rnew =  Rrm.as_matrix() 
+
+    if dim == 0:    #x
+      Rx = np.array([[1., 0., 0.],[0., np.cos(rot_theta), -np.sin(rot_theta)], [0., np.sin(rot_theta), np.cos(rot_theta)]])
+      Rnew = Rrm.as_matrix() @ Rx
+      print("Update X")
+    if dim == 1:  #y
+      Ry = np.array([[np.cos(rot_theta), 0., np.sin(rot_theta)], [0., 1., 0.], [-np.sin(rot_theta), 0., np.cos(rot_theta)]])
+      Rnew = Rrm.as_matrix() @ Ry
+    if dim == 2:  #z
+      Rz = np.array([[np.cos(rot_theta), -np.sin(rot_theta), 0.], [np.sin(rot_theta), np.cos(rot_theta), 0.], [0., 0., 1.]])
+      Rnew = Rrm.as_matrix() @ Rz
+
+    Rn = R.from_matrix(Rnew)
+    self.orn = Rn.as_quat()
+    self.newPosInput = 1
+
   def set_robotOrn(self, orn):
     # ornNew    = [math.pi, 0, orn]
     self.orn  = p.getQuaternionFromEuler(orn)
     self.newPosInput = 1
+    
 
   def set_robotPos(self, rp, key):
     self.key    = key;
@@ -466,11 +489,15 @@ class JacoEnv(object):
                                                 self.orn,
                                                 jointDamping=self.jd,
                                                 solver=self.ikSolver,
-                                                maxNumIterations=100,
-                                                residualThreshold=.01,
-                                                restPoses = self.JP )
+                                                maxNumIterations=1000,
+                                                residualThreshold=.0001,
+                                                lowerLimits = [-3.14,-6.28,-6.28,-3.14,-3.14,-3.14,-3.14, -3.14,-3.14],
+                                                upperLimits = [3.14,-1.6,6.28,3.14,3.14,3.14,3.14,3.14,3.14],
+                                                jointRanges = [6,6,6,6,6,6,6,6,6],
+                                                restPoses = self.RP)
 
       self.JP = list(self.jointPoses)
+      # print(self.JP)
 
   def removeDebug(self):
     p.removeAllUserDebugItems()
@@ -602,6 +629,9 @@ class JacoEnv(object):
       self.pos =list([-0.35, 0.3, 0.2])
 
     self.orn = p.getQuaternionFromEuler([math.pi,0,math.pi])
+    # self.pos   = list([-0.5, 0.0, 0.25])
+    # self.orn  = p.getQuaternionFromEuler([0, -math.pi/2, 0])
+
     if self.mode == 7:
       self.fing = 0.0
     elif self.mode == 9:
@@ -628,7 +658,6 @@ class JacoEnv(object):
       p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -0.2] + self.center, [0,0,0,1])
     else:
       p.resetBasePositionAndOrientation(self.cube1Id, [-0.25, 0, -2] + self.center, [0,0,0,1])
-
 
   def step(self):
 
