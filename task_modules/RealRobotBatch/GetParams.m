@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_02022022_AM1';
+Params.NeuralNetFunction = 'MLP_9DoF_Till_20220209_PM2';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_9DoF_02022022';
     
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
