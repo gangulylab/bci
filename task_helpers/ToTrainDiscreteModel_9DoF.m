@@ -83,7 +83,6 @@ end
 
 % FIXED CONTROL
  foldernames = {'110512','111127','111559'};
-
 cd(root_path)
  
 for ii=1:length(foldernames)
@@ -250,7 +249,22 @@ T(aa(1):aa(end),8)=1;
 T(aa(1):aa(end),9)=1;
 
 
-%%%%% CODE SNIPPET FOR TRAINING AND SAVING THE DECODER %%%%%
+
+
+
+%%%%% CODE SNIPPET FOR UPDATING A PRETRAINED MODEL %%%%%
+cd('/home/ucsf/Projects/bci/clicker')
+load net_9DoF
+net_9DoF.divideParam.trainRatio=0.85;
+net_9DoF.divideParam.valRatio=0.15;
+net_9DoF.divideParam.testRatio=0;
+net_9DoF = train(net_9DoF,N,T','useParallel','yes');
+classifier_name = 'MLP_9DoF_UpdateXX'; % enter the name
+genFunction(net_9DoF,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+delete(gcp)
+
+
+%%%%% CODE SNIPPET FOR TRAINING AND SAVING THE DECODER FROM SCRATCH %%%%%
 cd('/home/ucsf/Projects/bci/clicker')
 clear net
 net = patternnet([64 64 64]);
@@ -264,9 +278,16 @@ genFunction(net,classifier_name); % make sure to update Params.NeuralNetFunction
 delete(gcp)
 
 
-
-
-
+clear
+clc
+cd('/home/ucsf/Projects/bci')
+ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+%  ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
+% ExperimentStart('Robot3D','bravo1',4,1,0)
+%  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
+%
+% %  
 
 
 
@@ -283,13 +304,3 @@ delete(gcp)
 % % % 
 % % % 
 % % % % to restart exp run following lines
-  clear
-  clc
-%   cd('/home/ucsf/Projects/bci')
-%   ExperimentStart('Robot3DArrow','bravo1',4,1,0)
-%  ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
-% ExperimentStart('Robot3D','bravo1',4,1,0)
-%  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
-% %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
-%  
-% %  
