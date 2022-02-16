@@ -238,8 +238,8 @@ if ~Data.ErrorID
 
             Params.TargetID =  Data.TargetID;
             Params.index = Params.index+1;
+
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            Click_Decision
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -335,6 +335,7 @@ if ~Data.ErrorID
 %             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
 %             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
 %             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
+            ClickToSend
             write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;

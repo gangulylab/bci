@@ -306,15 +306,17 @@ elseif Params.RobotMode == 9
 
     
 elseif Params.RobotMode == 10 % lateral
-    Params.ValidDir          = [1:7];
+    Params.ValidDir          = [1:9];
 %     Params.ValidDir          = [1,3,5,6,7];
    
     Params.StartPos          = [-150, 0,200];
+%     Params.StartPos          = [-150, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
     
     Params.wristStartX = 3.1415/2*10; 
+    Params.wristStartX = 3.1415*10;   % harder to start in top-down
     Params.wristStartZ = 0; 
   
     Params.autoCenterOverTarget = 0;
@@ -324,9 +326,10 @@ elseif Params.RobotMode == 10 % lateral
     Params.graspOrientation = 1;
 
 elseif Params.RobotMode == 11
-    Params.ValidDir          = [1:7];
+    Params.ValidDir          = [1:9];
    
     Params.StartPos          = [-150, 0,200];
+    
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -368,6 +371,10 @@ Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior
 Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
+
+Params.clickOrder = [8,8,8,8,8,8,8,8,8,8,8,8,8,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+
 Params.ReachTargets      = [1,2,3,4,5,6];
 
 
@@ -397,5 +404,9 @@ Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 Params.lowGainMode = 0;
+
+% 
+% A = csvread('/home/sarah/Desktop/20220211/143321/data000.csv');
+% Params.clickOrder = A(:,11);
 
 end % GetParams

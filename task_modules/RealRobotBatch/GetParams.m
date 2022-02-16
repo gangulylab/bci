@@ -250,23 +250,23 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 1;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
-if Params.RobotMode == 1
-    Params.ValidDir             = [1:7];
-    Params.StartPos             = [0,0, 250];
-    Params.NumTrialsPerBlock    = 7;
-    Params.TargetOrder          = [1:7];
-end
+
+Params.ValidDir             = [1:9];
+Params.StartPos             = [90, 0, 250];
+Params.NumTrialsPerBlock    = 2;
+Params.TargetOrder          = [1,2];
+
 
 Params.index = 1;
-Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
+Params.clickOrder = [9*ones(50,1),8*ones(50,1)];
 
 % Params.clickOrder = ones(100,1)*7;
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
-Params.limit = [-200, 200; -200 200; 180 450];
+Params.limit = [-100, 300; -200 200; 180 450];
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -310,6 +310,9 @@ Params.autoCenterDist = 8;
 Params.OperationModeReset = 0;
 Params.wristStartX = 3.1415*10; 
 Params.wristStartZ = 0; 
+
+   Params.wristStartX = 3.1415/2*10; 
+    Params.wristStartZ = 0; 
 Params.zlim = 7;
 
 end % GetParams

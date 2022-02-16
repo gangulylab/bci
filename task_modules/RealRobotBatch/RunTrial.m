@@ -8,6 +8,28 @@ global Cursor
 
 %% Set up trial
 
+
+if Data.TargetID == 8
+    write(Params.udp, [0,12,3.1415*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+elseif Data.TargetID == 9
+    write(Params.udp, [0,12,3.1415/2*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+end
+
+if Data.TargetID == 1
+    Params.StartPos = [0,0,250];
+else
+    Params.StartPos = [100,0,250];
+end
+
+[xa,xb,xc] = doubleToUDP(Params.StartPos(1));
+[ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
+[za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
+
+write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
+
+
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
@@ -15,10 +37,10 @@ TargetID = 0; % Target that cursor is in, 0 for no targets
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right', 'Front - feet', 'Left', 'Back - head', 'Up - lips', 'Down - tongue', 'Switch - both hands'};
+TargetName = {'Right', 'Front - feet', 'Left', 'Back - head', 'Up - lips', 'Down - tongue', 'Switch - both hands', 'Right Wrist', 'Left Wrist'};
 
- fprintf('TARGET: %s\n',TargetName{Data.TargetID})
- pause()
+fprintf('TARGET: %s\n',TargetName{Data.TargetID})
+pause()
 % fprintf('  Target: %i\n',Data.TargetPosition)
 if Params.Verbose
     if TaskFlag==2
@@ -54,6 +76,8 @@ end
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
+
+
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
@@ -270,6 +294,7 @@ if ~Data.ErrorID
                 U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec == 6);
                 
                 
+                
                 vTarget = (Data.TargetPosition'- Cursor.State(1:3));
 
                 if norm(vTarget) ~= 0
@@ -330,6 +355,7 @@ if ~Data.ErrorID
 %             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
 %             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
 %             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
+ClickToSend
             write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;
