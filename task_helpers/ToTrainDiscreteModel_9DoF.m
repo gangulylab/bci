@@ -8,12 +8,12 @@
 clc;clear
 
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220211/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220216/Robot3DArrow';
 
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For example: 
 
-foldernames = {'132157', '132904', '133312','133729'};
+foldernames = {};
 
 cd(root_path)
 
@@ -82,7 +82,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED CONTROL
- foldernames = {'110512','111127','111559'};
+ foldernames = {};
 cd(root_path)
  
 for ii=1:length(foldernames)
@@ -141,8 +141,8 @@ end
 
 size(D7)
 %ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220211/RealRobotBatch';
-foldernames = {'150255','150628'};
+root_path = '/home/ucsf/Data/bravo1/20220216/RealRobotBatch';
+foldernames = {'133920', '134657', '135101', '140115', '140535'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -259,29 +259,29 @@ net_9DoF.divideParam.trainRatio=0.85;
 net_9DoF.divideParam.valRatio=0.15;
 net_9DoF.divideParam.testRatio=0;
 net_9DoF = train(net_9DoF,N,T','useParallel','yes');
-classifier_name = 'MLP_9DoF_UpdateXX'; % enter the name
+classifier_name = 'MLP_9DoF_Update03'; % enter the name
 genFunction(net_9DoF,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 delete(gcp)
 
 
 %%%%% CODE SNIPPET FOR TRAINING AND SAVING THE DECODER FROM SCRATCH %%%%%
-cd('/home/ucsf/Projects/bci/clicker')
-clear net
-net = patternnet([64 64 64]);
-net.performParam.regularization=0.2;
-net.divideParam.trainRatio=0.8;
-net.divideParam.valRatio=0.1;
-net.divideParam.testRatio=0.1;
-net = train(net,N,T','useParallel','yes');
-classifier_name = 'MLP_PreTrained_9DoF_02092022_PM2'; % enter the name
-genFunction(net,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
-delete(gcp)
+% cd('/home/ucsf/Projects/bci/clicker')
+% clear net
+% net = patternnet([64 64 64]);
+% net.performParam.regularization=0.2;
+% net.divideParam.trainRatio=0.8;
+% net.divideParam.valRatio=0.1;
+% net.divideParam.testRatio=0.1;
+% net = train(net,N,T','useParallel','yes');
+% classifier_name = 'MLP_PreTrained_9DoF_02092022_PM2'; % enter the name
+% genFunction(net,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+% delete(gcp)
 
 
 clear
 clc
-cd('/home/ucsf/Projects/bci')
-ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% cd('/home/ucsf/Projects/bci')
+% ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %  ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)

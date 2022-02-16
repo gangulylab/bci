@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-Params.NeuralNetFunction = 'MLP_9DoF_Till_20220209_PM2';
+Params.NeuralNetFunction = 'MLP_9DoF_Update03';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_9DoF_02022022';
     
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
@@ -255,8 +255,8 @@ Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot
 
 Params.ValidDir             = [1:9];
 Params.StartPos             = [90, 0, 250];
-Params.NumTrialsPerBlock    = 2;
-Params.TargetOrder          = [1,2];
+Params.NumTrialsPerBlock    = 9;
+Params.TargetOrder          = [1:9];
 
 
 Params.index = 1;
