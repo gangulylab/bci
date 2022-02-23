@@ -70,11 +70,11 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';
+    Params.NeuralNetFunction = 'MLP_9DoF_Days1to5';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -84,7 +84,7 @@ end
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;       
     Params.Use3Features = true;
@@ -189,13 +189,13 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 1;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 18;
-Params.TargetOrder          = [1:6,1:6,1:6];
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:6,1:6];
 
 %Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 8;
@@ -268,7 +268,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 Params.limit = [-256, 256; -256 256; -250 256];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
-Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
+Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 

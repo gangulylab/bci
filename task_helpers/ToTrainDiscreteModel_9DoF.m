@@ -8,7 +8,7 @@
 clc;clear
 
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220216/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220218/Robot3DArrow';
 
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For example: 
@@ -82,7 +82,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED CONTROL
- foldernames = {};
+foldernames = {'140802','141418','141820'};
 cd(root_path)
  
 for ii=1:length(foldernames)
@@ -259,7 +259,7 @@ net_9DoF.divideParam.trainRatio=0.85;
 net_9DoF.divideParam.valRatio=0.15;
 net_9DoF.divideParam.testRatio=0;
 net_9DoF = train(net_9DoF,N,T','useParallel','yes');
-classifier_name = 'MLP_9DoF_Update03'; % enter the name
+classifier_name = 'MLP_9DoF_02182022Update'; % enter the name
 genFunction(net_9DoF,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 delete(gcp)
 

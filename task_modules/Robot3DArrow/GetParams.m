@@ -82,7 +82,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_9DoF_Update01';
+    Params.NeuralNetFunction = 'MLP_9DoF_Days1to5';
     
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
@@ -180,8 +180,8 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 9;
-Params.TargetOrder          = [1:9];
+Params.NumTrialsPerBlock    = 27;
+Params.TargetOrder          = [1:9,1:9,1:9];
 % 
 % Params.NumTrialsPerBlock    = 21;
 % Params.TargetOrder          = [1:7,1:7,1:7];
