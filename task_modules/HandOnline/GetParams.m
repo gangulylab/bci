@@ -52,7 +52,13 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
+
+%% Bins for successful target selection
+% The number of bins of successful decodes to hit the target
+% Set this to 2/3 bins if enforcing a null class i.e.
+% Params.MultiDecisionBoundary <0
+Params.ClickCounter=3;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -65,23 +71,71 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.7;    
+    Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'smallerMLP_6DoF_PlusOK_Trained4mOnlineData_20210201';
-    %Params.NeuralNetFunction = 'MLP_6DoF__PlusOK_Trained4mOnlineData_20210201';    
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210201';
-        
-    % LAST USED VERSION OF NN CLASSIFIER
-    %Params.NeuralNetFunction = 'MLP_6DoF_Trained4mOnlineData_PlusStop';
+%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
+
+    Params.NeuralNetFunction = 'MLP_Hand';
+    
+    
+%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% Neural network 2 classifier option
+% Trained in a different way using different optimizer
+
+Params.NeuralNet2Flag = false;
+if Params.NeuralNet2Flag
+    Params.NeuralNet2SoftMaxThresh = 0.45    ;       
+    Params.Use3Features = true;
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_hand_adam')); % 7DoF classifier trained in a different way
+    
+else
+    Params.NeuralNet2SoftMaxThresh = 0;
+end
+
+%% BIAS CORRECTION FOR LEFT LEG
+% scales the probabilities of the decoder towards a specific action by a
+% prespecific amount
+
+Params.NeuralBias = false;
+Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
+Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
+
+
+%% CONVOLUTIONAL NEURAL NET OPTION
+% set this to true to use neural network
+% also set the softmax option
+Params.ConvNeuralNetFlag =false;
+if Params.ConvNeuralNetFlag
+    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
+    Params.ConvUse3Features = true;
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
+else
+    Params.ConvNeuralNetSoftMaxThresh = 0;
+end
+
+%% ADAPTIVE BASELINE FLAG 
+% data is baseline to state 1 data
+Params.AdaptiveBaseline = false;
+
+%% POOLING CHANNELS FOR CONTROL
+% set this 1 only during online control
+Params.ChPooling = true; 
+
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
