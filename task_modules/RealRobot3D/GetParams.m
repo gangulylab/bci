@@ -307,16 +307,15 @@ elseif Params.RobotMode == 9
     
 elseif Params.RobotMode == 10 % lateral
     Params.ValidDir          = [1:9];
-%     Params.ValidDir          = [1,3,5,6,7];
    
-    Params.StartPos          = [-150, 0,200];
+    Params.StartPos          = [-200, 200,200];
 %     Params.StartPos          = [-150, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
     
     Params.wristStartX = 3.1415/2*10; 
-    Params.wristStartX = 3.1415*10;   % harder to start in top-down
+%     Params.wristStartX = 3.1415*10;   % harder to start in top-down
     Params.wristStartZ = 0; 
   
     Params.autoCenterOverTarget = 0;
