@@ -65,7 +65,7 @@ while True:
 	if command == 14:	# Set Target
 		key = val10
 		robot_pos[0] = ((val1-1) *(val2 + val3/100))/80
-		robot_pos[1] = ((val4-1) *(val5 + val6/100))_/80
+		robot_pos[1] = ((val4-1) *(val5 + val6/100))/80
 		robot_pos[2] = ((val7-1) *(val8 + val9/100))/80
 		print(robot_pos)
 

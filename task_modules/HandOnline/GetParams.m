@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -77,7 +77,7 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.50;       
+    Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
@@ -97,10 +97,10 @@ end
 
 Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
-    Params.NeuralNet2SoftMaxThresh = 0.45    ;       
+    Params.NeuralNet2SoftMaxThresh = 0.3  ;       
     Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_hand_adam')); % 7DoF classifier trained in a different way
-    
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_hand_adam_64')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_hand_adam_64;
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
@@ -231,7 +231,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 25 ;
+Params.MaxReachTime = 20 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -256,6 +256,7 @@ Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of 
 
 Params.NumTrialsPerBlock    = 8;
 Params.TargetOrder          = [1:6,9,10];
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 
 Params.TargetOrder          = [Params.TargetOrder, 1];
 

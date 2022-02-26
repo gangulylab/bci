@@ -238,7 +238,7 @@ if ~Data.ErrorID
 
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            
+            Click_Decision
             targetInd = [1:6,0,0,7,8];
                 
             % Mode filter

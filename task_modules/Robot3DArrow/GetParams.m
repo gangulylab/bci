@@ -75,7 +75,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
@@ -95,12 +95,12 @@ end
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
-Params.NeuralNet2Flag = false;
+Params.NeuralNet2Flag = true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.45    ;       
     Params.Use3Features = true;
     Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
-    
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
@@ -180,11 +180,11 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 27;
-Params.TargetOrder          = [1:9,1:9,1:9];
+%Params.NumTrialsPerBlock    = 27;
+%Params.TargetOrder          = [1:9,1:9,1:9];
 % 
-% Params.NumTrialsPerBlock    = 21;
-% Params.TargetOrder          = [1:7,1:7,1:7];
+Params.NumTrialsPerBlock    = 21;
+Params.TargetOrder          = [1:7,1:7,1:7];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order

@@ -68,36 +68,35 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-Params.NeuralNetFunction = 'MLP_9DoF_Update03';
-%     Params.NeuralNetFunction = 'MLP_PreTrained_9DoF_02022022';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb';
     
-%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
+    
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
-Params.NeuralNet2Flag = false;
+Params.NeuralNet2Flag = true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.45    ;       
     Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
-    
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
-
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
 % prespecific amount
@@ -255,8 +254,8 @@ Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot
 
 Params.ValidDir             = [1:9];
 Params.StartPos             = [90, 0, 250];
-Params.NumTrialsPerBlock    = 9;
-Params.TargetOrder          = [1:9];
+Params.NumTrialsPerBlock    = 7;
+Params.TargetOrder          = [1:7];
 
 
 Params.index = 1;
