@@ -187,11 +187,11 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220202/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220302/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {'102552', '103014', '103454', '103943'};
+foldernames = {};
 
 cd(root_path)
 
@@ -254,7 +254,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED
-foldernames = {'101645','102211'};
+foldernames = {'130447', '131009', '131301', '131557', '132120', '132409', '132929', '133422', '133751', '134123'};
 
 cd(root_path)
  
@@ -310,7 +310,7 @@ end
 
 size(D7)
 root_path = '/home/ucsf/Data/bravo1/20220225/RealRobotBatch';
-foldernames = {'145451', '145738','150040','150503','150743','151307'};
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -413,7 +413,7 @@ pretrain_net_mlp4.divideParam.trainRatio=0.8;
 pretrain_net_mlp4.divideParam.valRatio=0.1;
 pretrain_net_mlp4.divideParam.testRatio=0.1;
 pretrain_net_mlp4 = train(pretrain_net_mlp4,N,T');
-classifier_name = 'MLP_PreTrained_7DoF_02022022_AM2'; % enter the name
+classifier_name = 'MLP_PreTrained_7DoF_03022022_PM'; % enter the name
 genFunction(pretrain_net_mlp4,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 
@@ -487,8 +487,8 @@ save net_mlp_7DoF_Feb2022 net_mlp_7DoF_Feb2022
 % % % % to restart exp run following lines
   clear
   clc
-  cd('/home/ucsf/Projects/bci')
- ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
+%   cd('/home/ucsf/Projects/bci')
+%  ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 % %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
