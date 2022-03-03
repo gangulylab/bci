@@ -23,8 +23,8 @@ else,
         tmp_lp = filter(Params.lpFilt,Neuro.DataBuf');
         tmp_lp = resample(tmp_lp,200,800);
         tmp_hg = resample(tmp_hg,200,800)*5e2;
-        tmp_lp = spatial_pool(tmp_lp,Params.ChMap);
-        tmp_hg = spatial_pool(tmp_hg,Params.ChMap);
+        %tmp_lp = spatial_pool(tmp_lp,Params.ChMap);
+        %tmp_hg = spatial_pool(tmp_hg,Params.ChMap);
         tmp = [tmp_hg tmp_lp];
         pred = net.predict(tmp');
         [aa bb]=max(pred);

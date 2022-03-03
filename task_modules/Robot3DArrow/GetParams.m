@@ -95,6 +95,8 @@ Params.biLSTMFlag = true;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.55;
 end
+Params.LSTMBufferSize
+Params.LSTMFunction = '';
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
