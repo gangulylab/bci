@@ -216,6 +216,8 @@ if ~Data.ErrorID
                 Data.NeuralTime(1,end+1) = tim;
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
                 
+               
+                
                 % save kalman filter          
                 if Params.ControlMode>=3 && TaskFlag>1 && Params.SaveKalmanFlag,
                     Data.KalmanGain{end+1} = [];
