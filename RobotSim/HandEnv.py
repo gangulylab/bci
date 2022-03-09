@@ -19,6 +19,7 @@ class HandEnv(object):
 		self.jointState = [0,0,-0.4,0]
 		self.hideHand()
 		p.resetJointState(self.handId, 3, -0.4)
+		self.showDecodes = 0
 
 	def setJointPosition(self, joint, angle):
 		self.jointState[joint] = angle
@@ -154,7 +155,9 @@ class HandEnv(object):
 		p.resetJointState(self.handId, 26, 0.5)
 		p.resetJointState(self.handId, 27, 0.2)
 		p.removeAllUserDebugItems()
-		self.displayDecodes()
+		
+		if self.showDecodes:
+			self.displayDecodes()
 
 
 	def displayDecodes(self):
@@ -275,7 +278,8 @@ class HandEnv(object):
 		elif cue == 10:
 			p.addUserDebugText('WRIST IN', [-0.7,0.25,0.2],  [0,0,c], 12)
 
-		self.displayDecodes()
+		if self.showDecodes:
+			self.displayDecodes()
 
 	def step(self):
 		

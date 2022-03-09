@@ -247,7 +247,7 @@ if ~Data.ErrorID,
             [ya,yb,yc] = doubleToUDP(Cursor.State(2)*80); 
             [za,zb,zc] = doubleToUDP(Cursor.State(3)*80) ;
             
-            fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
+            fwrite(Params.udp, [7, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;

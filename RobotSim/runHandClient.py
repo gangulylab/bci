@@ -42,6 +42,8 @@ while True:
 			env.reset()
 		if val1 == 2:
 			env.showHand()
+		if val1 == 3:
+			env.showDecodes = val2
 		if val1 == 16:
 			action = val2
 			print("action", action)
@@ -90,14 +92,19 @@ while True:
 			env.setGrasp(10, robot_pos[5])		
 
 		print(action)
+		if env.showDecodes:
+			env.displayCurrentDecode(action)	
 
-		env.displayCurrentDecode(action)	
-		
+	if command == 7:
+		key = val10
+		robot_pos[0] = ((val1-1) *(val2 + val3/100))/80
+		robot_pos[1] = ((val4-1) *(val5 + val6/100))/80
+		robot_pos[2] = ((val7-1) *(val8 + val9/100))/80
+
+		env.setGrasp(val10, robot_pos[0])	
 
 	if command == 5:
 		env.displayCue(val1,val2)
-
-
 
 sock.shutdown()
 sock.close() 
