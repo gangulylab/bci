@@ -20,6 +20,8 @@ else,
             %X = X(769:end);% only hG
             idx=[1:128 385:512 641:768];
             X=X(idx);
+            % 2-norm
+            X = X./norm(X);
             
             if Params.AdaptiveBaseline
                 m = bl_mean(idx+128);
@@ -65,6 +67,9 @@ else,
             end
             X = pooled_data;
             
+            % 2-norm
+            X = X./norm(X);
+            
             % eval the classifier
             Decision_Prob = feval(Params.NeuralNetFunction,X);
             
@@ -107,6 +112,9 @@ else,
             end
         end
         X = pooled_data;
+        
+        % 2-norm
+        X = X./norm(X);
             
         act = predict(Params.NeuralNet2.net, X' ,'ExecutionEnvironment','cpu')';
         
