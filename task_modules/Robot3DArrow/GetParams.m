@@ -105,6 +105,9 @@ else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
 
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
+
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
 % prespecific amount

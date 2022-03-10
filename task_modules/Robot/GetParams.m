@@ -71,12 +71,30 @@ Params.MultiDecisionBoundary = -2;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.6;
-   Params.NeuralNetFunction = 'MLP_Imag_Actions_0616_7DoF_PM2';
-   %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
+    Params.NeuralNetSoftMaxThresh = 0.5;       
+    Params.Use3Features = true;
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
+%  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+
+%% Neural network 2 classifier option
+% Trained in a different way using different optimizer
+
+Params.NeuralNet2Flag = false;
+if Params.NeuralNet2Flag
+    Params.NeuralNet2SoftMaxThresh = 0.4;       
+    Params.Use3Features = true;
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
+    
+else
+    Params.NeuralNet2SoftMaxThresh = 0;
+end
+
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
 
 
 %% POOLING CHANNELS FOR CONTROL

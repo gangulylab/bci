@@ -88,12 +88,14 @@ Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;       
     Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
     
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
 
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
