@@ -37,7 +37,7 @@ TargetID = 0; % Target that cursor is in, 0 for no targets
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right', 'Front - feet', 'Left', 'Back - head', 'Up - lips', 'Down - tongue', 'Switch - both hands', 'Right Wrist', 'Left Wrist'};
+TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Lips', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
 pause()
@@ -258,7 +258,7 @@ if ~Data.ErrorID
             Params.TargetID =  Data.TargetID;
             Params.index = Params.index+1;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            Click_Decision
+
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -355,7 +355,7 @@ if ~Data.ErrorID
 %             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
 %             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
 %             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
-ClickToSend
+            ClickToSend
             write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;
