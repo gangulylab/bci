@@ -6,7 +6,7 @@ function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro
 global Cursor
 
 if Params.ControlMode == 2 %mouse
-%     Click_Decision  = Params.clickOrder(Params.index);
+    %     Click_Decision  = Params.clickOrder(Params.index);
     Click_Decision = Params.TargetID;
     Click_Distance = 0;
     
@@ -20,6 +20,11 @@ else,
             %X = X(769:end);% only hG
             idx=[1:128 385:512 641:768];
             X=X(idx);
+            
+            % 2-norm
+            if Params.Norm2
+                X = X./norm(X);
+            end
             
             if Params.AdaptiveBaseline
                 m = bl_mean(idx+128);
@@ -65,6 +70,11 @@ else,
             end
             X = pooled_data;
             
+            % 2-norm
+            if Params.Norm2
+                X = X./norm(X);
+            end
+            
             % eval the classifier
             Decision_Prob = feval(Params.NeuralNetFunction,X);
             
@@ -72,7 +82,7 @@ else,
                 Decision_Prob(Params.NeuralNetBiasDirection) = ...
                     Decision_Prob(Params.NeuralNetBiasDirection) - Params.NeuralNetBiasCorrection;
             end
-                        
+            
             [aa bb]=max(Decision_Prob);
             if aa >= Params.NeuralNetSoftMaxThresh
                 Click_Decision = bb;
@@ -107,7 +117,12 @@ else,
             end
         end
         X = pooled_data;
-            
+        
+        % 2-norm
+        if Params.Norm2
+            X = X./norm(X);
+        end
+        
         act = predict(Params.NeuralNet2.net, X' ,'ExecutionEnvironment','cpu')';
         
         if Params.NeuralBias
@@ -131,6 +146,12 @@ else,
         X = X(:);
         feat_idx = [129:256 513:640 769:896];
         X = X(feat_idx);
+        
+        % 2-norm
+        if Params.Norm2
+            X = X./norm(X);
+        end
+        
         f1 = (X(1:128));
         f2 = (X(129:256));
         f3 = (X(257:384));

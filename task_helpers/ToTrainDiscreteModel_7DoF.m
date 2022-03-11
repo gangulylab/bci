@@ -253,8 +253,8 @@ for ii=1:length(foldernames)
     end
 end
 
-% FIXED
-foldernames = {'130447', '131009', '131301', '131557', '132120', '132409', '132929', '133422', '133751', '134123'};
+% FIXED ARROW
+foldernames = {'101645','102211'};
 
 cd(root_path)
  
@@ -309,6 +309,8 @@ for ii=1:length(foldernames)
 end
 
 size(D7)
+
+% ROBOT BATCH
 root_path = '/home/ucsf/Data/bravo1/20220225/RealRobotBatch';
 foldernames = {};
 
@@ -374,6 +376,17 @@ condn_data{5}=[D5(idx,:)]';
 condn_data{6}=[D6(idx,:)]'; 
 condn_data{7}=[D7(idx,:)]'; 
 
+
+% 2norm
+for i=1:length(condn_data)
+   tmp = condn_data{i}; 
+   for j=1:size(tmp,1)
+       tmp(j,:) = tmp(j,:)./norm(tmp(j,:));
+   end
+   condn_data{i}=tmp;
+end
+
+
 A = condn_data{1};
 B = condn_data{2};
 C = condn_data{3};
@@ -407,58 +420,58 @@ T(aa(1):aa(end),7)=1;
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
 cd('/home/ucsf/Projects/bci/clicker')
-load pretrain_net_mlp4 
+load net_7DoF_PnP_2022Feb_2norm 
 % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
-pretrain_net_mlp4.divideParam.trainRatio=0.8;
-pretrain_net_mlp4.divideParam.valRatio=0.1;
-pretrain_net_mlp4.divideParam.testRatio=0.1;
-pretrain_net_mlp4 = train(pretrain_net_mlp4,N,T');
-classifier_name = 'MLP_PreTrained_7DoF_03022022_PM'; % enter the name
-genFunction(pretrain_net_mlp4,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+net_7DoF_PnP_2022Feb_2norm.divideParam.trainRatio=0.8;
+net_7DoF_PnP_2022Feb_2norm.divideParam.valRatio=0.1;
+net_7DoF_PnP_2022Feb_2norm.divideParam.testRatio=0.1;
+net_7DoF_PnP_2022Feb_2norm = train(net_7DoF_PnP_2022Feb_2norm,N,T');
+classifier_name = 'MLP_7DoF_PnP_2022Feb_2norm_XX'; % enter the name
+genFunction(net_7DoF_PnP_2022Feb_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 
-
-%%%% IS USING THE ADAM OPTIMIZER %%%%
-
-% first load the saved mlp network
-load('net_mlp_7DoF_Feb2022.mat')
-
-% get the layers of the model 
-clear layers
-layers=net_mlp_7DoF_Feb2022.Layers;
-
-% organize the data
-X = N;
-Y=categorical(T1);
-idx = randperm(length(Y),round(0.8*length(Y)));
-Xtrain = X(:,idx);
-Ytrain = Y(idx);
-I = ones(length(Y),1);
-I(idx)=0;
-idx1 = find(I~=0);
-Xtest = X(:,idx1);
-Ytest = Y(idx1);
-
-
-
-%'ValidationData',{XTest,YTest},...
-options = trainingOptions('adam', ...
-    'InitialLearnRate',0.01, ...
-    'MaxEpochs',20, ...
-    'Verbose',true, ...
-    'Plots','training-progress',...
-    'MiniBatchSize',32,...
-    'ValidationFrequency',30,...
-    'ValidationPatience',6,...
-    'ExecutionEnvironment','cpu',...
-    'ValidationData',{Xtest',Ytest});
-
-% build the classifier
-net = trainNetwork(Xtrain',Ytrain,layers,options);
-net_mlp_7DoF_Feb2022 = net;
-
-% save it
-save net_mlp_7DoF_Feb2022 net_mlp_7DoF_Feb2022
+% 
+% %%%% IS USING THE ADAM OPTIMIZER %%%%
+% 
+% % first load the saved mlp network
+% load('net_mlp_7DoF_Feb2022.mat')
+% 
+% % get the layers of the model 
+% clear layers
+% layers=net_mlp_7DoF_Feb2022.Layers;
+% 
+% % organize the data
+% X = N;
+% Y=categorical(T1);
+% idx = randperm(length(Y),round(0.8*length(Y)));
+% Xtrain = X(:,idx);
+% Ytrain = Y(idx);
+% I = ones(length(Y),1);
+% I(idx)=0;
+% idx1 = find(I~=0);
+% Xtest = X(:,idx1);
+% Ytest = Y(idx1);
+% 
+% 
+% 
+% %'ValidationData',{XTest,YTest},...
+% options = trainingOptions('adam', ...
+%     'InitialLearnRate',0.01, ...
+%     'MaxEpochs',20, ...
+%     'Verbose',true, ...
+%     'Plots','training-progress',...
+%     'MiniBatchSize',32,...
+%     'ValidationFrequency',30,...
+%     'ValidationPatience',6,...
+%     'ExecutionEnvironment','cpu',...
+%     'ValidationData',{Xtest',Ytest});
+% 
+% % build the classifier
+% net = trainNetwork(Xtrain',Ytrain,layers,options);
+% net_mlp_7DoF_Feb2022 = net;
+% 
+% % save it
+% save net_mlp_7DoF_Feb2022 net_mlp_7DoF_Feb2022
 
 %%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%
 % training a simple MLP

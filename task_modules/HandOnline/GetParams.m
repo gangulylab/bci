@@ -273,4 +273,6 @@ Params.d1 = [0,0,0,0,0,0,0,0,1,1];
 Params.numCorrectDecode = 10;
 Params.correctStep = -1/Params.numCorrectDecode ;
 Params.incorrectStep = 0.1*Params.correctStep;
+
+Params.showDecodeLines = 1;
 end % GetParams

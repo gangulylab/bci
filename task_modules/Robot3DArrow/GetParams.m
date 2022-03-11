@@ -82,7 +82,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_03022022_PM';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';%'MLP_7DoF_PnP_2022Feb';
     
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
@@ -104,6 +104,9 @@ if Params.NeuralNet2Flag
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
+
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
