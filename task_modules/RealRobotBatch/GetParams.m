@@ -75,7 +75,8 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';%'MLP_7DoF_PnP_2022Feb';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0325_pm2';%'MLP_7DoF_PnP_2022Feb';
+%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0323_pm1';%'MLP_7DoF_PnP_2022Feb';
     
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
@@ -240,7 +241,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 7;
+Params.MaxReachTime = 8;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -299,7 +300,6 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 Params.RobotClicker     = 1;
-Params.ClickerBinNum    = 7;
 Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
@@ -316,8 +316,14 @@ Params.OperationModeReset = 0;
 Params.wristStartX = 3.1415*10; 
 Params.wristStartZ = 0; 
 
-   Params.wristStartX = 3.1415/2*10; 
-    Params.wristStartZ = 0; 
+Params.wristStartX = 3.1415/2*10; 
+Params.wristStartZ = 0; 
 Params.zlim = 7;
+
+
+Params.SwitchBinNum = 8;
+Params.SwitchBinThresh = 0.7;
+Params.GraspBinNum = 8;
+Params.GraspBinThresh = 0.7;
 
 end % GetParams

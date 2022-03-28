@@ -66,7 +66,7 @@ write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1",
 write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,7,Params.AssistAlpha*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,8,Params.AutoGrasp,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,9,Params.ClickerBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,9,Params.ClickerBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,11,Params.autoCenterDist,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -75,6 +75,11 @@ write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1
 write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,16,Params.lowGainMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,17,Params.graspOrientation,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,18,Params.SwitchBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 
 
 pause(2.0)

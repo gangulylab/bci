@@ -73,7 +73,8 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
+%    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0325_pm2';%'MLP_7DoF_PnP_2022Feb';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -233,7 +234,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 150;
+Params.MaxReachTime = 90;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -324,7 +325,7 @@ elseif Params.RobotMode == 9
 elseif Params.RobotMode == 10 % lateral
     Params.ValidDir          = [1:9];
    
-    Params.StartPos          = [-200, 200,200];
+    Params.StartPos          = [-200, 200,220];
 %     Params.StartPos          = [-150, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
@@ -387,7 +388,7 @@ Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
 
-Params.clickOrder = [8,8,8,8,8,8,8,8,8,8,8,8,8,1,1,1,1,1,1,1,1,1,1,1,1,1]
+Params.clickOrder = [8,8,8,8,8,8,8,8,8,8,8,8,8,1,1,1,1,1,1,1,1,1,1,1,1,1];
 
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -410,7 +411,6 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 Params.RobotClicker     = 1;
-Params.ClickerBinNum    = 7;
 Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
@@ -419,6 +419,12 @@ Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 Params.lowGainMode = 0;
+
+Params.SwitchBinNum = 8;
+Params.SwitchBinThresh = 0.7;
+Params.GraspBinNum = 8;
+Params.GraspBinThresh = 0.7;
+
 
 % 
 % A = csvread('/home/sarah/Desktop/20220211/143321/data000.csv');
