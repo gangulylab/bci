@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'RobotLateralR2G';
+Params.Task = 'RealRobotBetaStop';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -44,7 +44,7 @@ if Params.ClickerDataCollection
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -52,20 +52,19 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 5;
+Params.FeatureBufferSize = 4;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
 Params.UpdateRate = 5; % Hz
 
-
 %% Discrete Decoder name
-Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
 
 %% Multi State Decision Boundary
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
+
 
 %% Neural network classifier option
 % set this to true to use neural network
@@ -105,12 +104,6 @@ Params.NeuralBias = false;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
-
-
-%% ADAPTIVE BASELINE FLAG 
-% data is baseline to state 1 data
-Params.AdaptiveBaseline = false;
-
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
@@ -118,40 +111,31 @@ Params.ConvNeuralNetFlag = false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
+    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
-    Params.ConvNeuralNetSoftMaxThresh = 0;
+    Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% ADAPTIVE BASELINE FLAG 
+% data is baseline to state 1 data
+Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
 Params.ChPooling = true; 
 
+
 %% Targets: radial layout
-Params.NumReachTargets   = 6;
-Params.TargetSpacing     = 10; % px
-Params.OuterCircleRadius = 350; % defines outer edge of target
-Params.InnerCircleRadius = 150; % defines inner edge of target
-% Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
-Params.ReachTargetRadius = 150;
-
+Params.ReachTargetRadius = 180;
 d2 = sqrt(1/2);
 d3 = sqrt(1/3);
 
-Params.ReachTargetPositions{1} = [0,0, -200; -250,0, -50];    
-Params.LongStartPos{1} =  [200, 0, 0];
+h = 260;
 
-
-Params.ReachTargetPositions{2} = [0,150, -200; -250,0, -50];    
-Params.LongStartPos{2} =  [200, 0, 0];
-
-
-Params.ReachTargetPositions{3} = [0,-150, -200; -250,0, -50];    
-Params.LongStartPos{3} =  [200, 0, 0];
+Params.ReachTargetPositions = [1,0,0; 2,0,0; 3,0,0];
 
 
 %% Kalman Filter Properties
@@ -179,11 +163,11 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [1];  %  Set set 1 or 3 
-
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-Params.TargetOrder          = [Params.TargetOrder, 1];
+Params.NumTrialsPerBlock    = 3;
+Params.TargetOrder          = [1:3];
+% 
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+% Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -206,13 +190,13 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType
-    case 'none'
+switch Params.CLDA.AdaptType,
+    case 'none',
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear'
-        switch Params.CLDA.Type
-            case 2 % smooth batch
+    case 'linear',
+        switch Params.CLDA.Type,
+            case 2, % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
@@ -220,18 +204,18 @@ switch Params.CLDA.AdaptType
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise % none or refit
+            otherwise, % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 2;
+Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
-Params.MaxStartTime = 25;
-Params.MaxReachTime = 180;
+Params.MaxStartTime = 50;
+Params.MaxReachTime = 10;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -246,94 +230,50 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.flipView = 1;  % 0: standard simulation view, 1: real robot view (across table)
+Params.RobotMode = 5;
+Params.ValidDir          = [1:9];
+Params.StartPos          = [-250, 100,200];
+% Params.StartPos             = [90, 0, 250];
 
-if Params.flipView
-    Params.RobotMode = 12;
-else
-    Params.RobotMode = 10;  
-end
+Params.OperationModeReset = 0;
 
-Params.boundaryDist     = .01;
-Params.boundaryVel      = 0;
-Params.RboundaryDist    = .01;
-Params.RboundaryVel     = 0;
-Params.AssistAlpha      = 0.0;
-Params.LongTrial        = 1;
+Params.wristStartX = 3.1415*10; 
+Params.wristStartZ = 0; 
 
-Params.limit = [-256, 256; -256 256; -200 256];
+Params.autoCenterOverTarget = 0;
+Params.autoCenterDist = 5;
 
-Params.RobotDirectionLines  = 0;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 1;  % 1: Null output if no winner, 0: maintain prior decision if no winner
+Params.zlim = 5;
+Params.graspOrientation = 0;
 
+Params.index = 1;
+Params.TargetOrder          = [Params.TargetOrder, 1];
+
+% Params.limit = [-200, 200; -200 200; 180 450];
+Params.wl = [-50, -60, 10];
+Params.wu = [5, -5 45];
+
+Params.RunningModeBinNum    = 1;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+
+Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:6,7];
 
-Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.9;
-Params.k_i = 10.0;       % Can change this to make it more/less responsive  (increase to make faster, normal is 10)
+Params.LongTrial = 0;
+Params.RobotClicker     = 1;
+Params.ClickerBinNum    = 7;
+Params.TargetHoldTime   = 0.25;
 
-Params.dA = [1 0 0  Params.deltaT 0 0;...
-                    0 1 0 0 Params.deltaT 0;...
-                    0 0 1 0 0 Params.deltaT;...
-                    0 0 0 Params.k_v 0 0;...
-                    0 0 0 0 Params.k_v 0;...
-                    0 0 0 0 0 Params.k_v];
-                
-Params.dB = [zeros(3);...
-                    eye(3)];
-Params.dB = Params.dB*Params.k_i;
+Params.boundaryDist     = 0;
+Params.boundaryVel      = 0;
+Params.AssistAlpha      = 0.0;
+Params.AutoGrasp = 1;
+Params.GraspTask = 1;
+Params.lowGainMode = 0; 
 
-% Rotation Dynamics
-Params.ra = 0.8;
-Params.rb = 0.03;
-Params.opMode = 0;
-Params.Rlimit = [-0.6, 0.6];
-
-% Target
-Params.RobotTargetRadius = [40, 70];  % Radius of targets, can be set separately
-
-% Clicker
-Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum    = 4;
-Params.ClickerBinThresh = 0.6;
-
-Params.switchLockCnt    = 10;
-Params.GraspBinNum      = 5;
-Params.GraspBinThresh   = 0.6;
-
-Params.autoCenterOverTarget = 0;
-Params.GripperOrnInit = [0, pi/2,0];
-
-Params.printDecode = 1;
-
-Params.ClickerBreak = 1;
-Params.BreakGain = 0.75;  %(0-1; 0: Full stop, 1: No break) 
-Params.zeroVelOnModeSwitch = 0;
-
-Params.SubTaskStart = 1;  % 1: full task, 2: start at subtask 2
-
-if Params.SubTaskStart == 2
-    Params.LongStartPos{1} =  [0, 0, -200];
-    Params.opMode = 1;
-end
-    
-%% For Debug
-
-Params.index = 1;
-% Params.clickOrder = [7*(ones(1,7)),2*(ones(1,20)), 4*(ones(1,20)) ];
-% 
-% Params.clickOrder = [1*(ones(1,20)), 3*(ones(1,20)),2*(ones(1,20)), ...
-%     4*(ones(1,20)), 7*(ones(1,7)),  6*(ones(1,20)),5*(ones(1,20)),...
-%     2*(ones(1,10)),6*(ones(1,20)),5*(ones(1,20)), 4*(ones(1,10)),...
-%     6*(ones(1,20)),5*(ones(1,20))];
-
-Params.clickOrder = [5*(ones(1,40)), 6*(ones(1,40)) ...
-    1*(ones(1,8)), 3*(ones(1,8))];
-
+Params.BetaThreshold = 10.0;
 
 
 end % GetParams

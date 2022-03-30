@@ -7,40 +7,18 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
-
-
-if Data.TargetID == 8
-    write(Params.udp, [0,12,3.1415*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-elseif Data.TargetID == 9
-    write(Params.udp, [0,12,3.1415/2*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-end
-
-if Data.TargetID == 1
-    Params.StartPos = [0,0,250];
-else
-    Params.StartPos = [100,0,250];
-end
-
-[xa,xb,xc] = doubleToUDP(Params.StartPos(1));
-[ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
-[za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
-
-write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
-write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
-
-
+beta_scalar = 0;
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
+pause()
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Lips', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
+TargetName = {'Target 1', 'Target 2', 'Target 3'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
-pause()
 % fprintf('  Target: %i\n',Data.TargetPosition)
 if Params.Verbose
     if TaskFlag==2
@@ -63,21 +41,19 @@ if Params.BLACKROCK
 end
 
 % reset cursor
-if Params.LongTrial
-        Cursor.State = [0,0,0,0,0,0]';
-        Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
-else
-        Cursor.State = [0,0,0,0,0,0]';
-        Cursor.State(1:3) = Params.StartPos;
-end
-    Cursor.IntendedState = [0,0,0,0,1]';
+% if Params.LongTrial
+%         Cursor.State = [0,0,0,0,0,0]';
+%         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
+% else
+%         Cursor.State = [0,0,0,0,0,0]';
+%         Cursor.State(1:3) = Params.StartPos;
+% end
+%     Cursor.IntendedState = [0,0,0,0,1]';
 
 
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
-
-
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
@@ -257,8 +233,11 @@ if ~Data.ErrorID
 
             Params.TargetID =  Data.TargetID;
             Params.index = Params.index+1;
-            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            
+            % GET BETA BAND PROJECTED VALUE
+%             beta_scalar = betaband_output(Params,Neuro);
 
+            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -271,100 +250,41 @@ if ~Data.ErrorID
                 end 
             end              
                 
-                Cursor.ClickState = Click_Decision;
-                Cursor.ClickDistance = Click_Distance;
-                Data.ClickerState(1,end+1) = Cursor.ClickState;
-                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+            Cursor.ClickState = Click_Decision;
+            Cursor.ClickDistance = Click_Distance;
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
+            Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
                                 
-                ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
-                ClickDec_Buffer(end) = Click_Decision;
-                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);  
-                
-                RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
+            ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+            ClickDec_Buffer(end) = Click_Decision;
+            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);               
+            RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
-                ClickToSend = RunningMode_ClickDec;        
-                Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
-
-                A = Params.dA;
-                B = Params.dB;
+            ClickToSend = RunningMode_ClickDec;        
+            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+            
+            beta_scalar = beta_scalar + 0.05
+            % Imagined Movement
+            
+            
+            if (beta_scalar >= Params.BetaThreshold)
+                % Command to stop robot
+                CC = "STOP";
+                write(Params.udp, [0,25,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+                done = 1;
                 
-                U = zeros(3,1);
-                U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
-                U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
-                U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec == 6);
+            else
+                %send movement inpu
+                ClickToSend = 1;
+                write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
                 
-                
-                
-                vTarget = (Data.TargetPosition'- Cursor.State(1:3));
-
-                if norm(vTarget) ~= 0
-                    norm_vTarget = vTarget/norm(vTarget);
-                else
-                    norm_vTarget = [0;0;0];
-                end
-                
-                AssistVel = Params.AssistAlpha*B*norm_vTarget;
-                Data.AssistVel(:,end+1) = AssistVel;
-                
-                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-                Cursor.IntendedState = [0 0 0 0 0]';  
-                              
-                % Stop robot at boundaries             
-                if Cursor.State(1) <= Params.limit(1,1)
-                   Cursor.State(1) = Params.limit(1,1) + Params.boundaryDist;
-                   if Cursor.State(4) < 0
-                        Cursor.State(4) = Params.boundaryVel; 
-                   end
-                elseif Cursor.State(1) >= Params.limit(1,2)
-                   Cursor.State(1) = Params.limit(1,2) - Params.boundaryDist;
-                   if Cursor.State(4) > 0
-                        Cursor.State(4) = -Params.boundaryVel;
-                   end   
-                elseif Cursor.State(2) <= Params.limit(2,1)
-                   Cursor.State(2) = Params.limit(2,1) + Params.boundaryDist;
-                    if Cursor.State(5) < 0
-                       Cursor.State(5) =  Params.boundaryVel;
-                    end
-                elseif Cursor.State(2) >= Params.limit(2,2)
-                   Cursor.State(2) = Params.limit(2,2) - Params.boundaryDist;
-                   if Cursor.State(5) > 0
-                        Cursor.State(5) =  -Params.boundaryVel; 
-                   end
-                elseif Cursor.State(3) <= Params.limit(3,1)
-                   Cursor.State(3) = Params.limit(3,1) + Params.boundaryDist;
-                   if Cursor.State(6) < 0
-                        Cursor.State(6) =  Params.boundaryVel;
-                   end
-                elseif Cursor.State(3) >= Params.limit(3,2)
-                   Cursor.State(3) = Params.limit(3,2) - Params.boundaryDist;
-                   if Cursor.State(6) > 0
-                        Cursor.State(6) = -Params.boundaryVel;
-                   end
-                end                
-                
+            end
+            
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
-%             
-%             [xa,xb,xc] = doubleToUDP(Cursor.State(1));
-%             [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
-%             [za,zb,zc] = doubleToUDP(Cursor.State(3)-256) ;
-%             
-%             write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send pos
-% 
-%             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
-%             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
-%             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
-            ClickToSend
-            write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
 
-            Data.CursorState(:,end+1) = Cursor.State;
-            Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
-            Data.CursorAssist(1,end+1) = Cursor.Assistance;
-                       
-            Cursor.TaskState = 3;
-            Data.TaskState(1,end+1)=Cursor.TaskState;
-             
+            
         % end if takes too long
         if TotalTime > Params.MaxReachTime
             done = 1;
@@ -405,7 +325,7 @@ if Params.InterTrialInterval>0
     TotalTime = 0;
     InTargetTotalTime = 0;
 
-    write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+    
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -452,6 +372,9 @@ if Params.InterTrialInterval>0
         end
     end % Instructed Delay Loop
 end % only complete if no errors
+
+% send home
+write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 
 %% Completed Trial - Give Feedback

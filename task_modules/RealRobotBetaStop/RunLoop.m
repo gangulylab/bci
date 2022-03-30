@@ -56,9 +56,9 @@ end
 % Params.pythonPort = 5006;
 write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 
-[xa,xb,xc] = doubleToUDP(Params.StartPos(1));
-[ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
-[za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
+[xa,xb,xc] = doubleToUDP(Params.StartPos(1,1));
+[ya,yb,yc] = doubleToUDP(Params.StartPos(1,2)); 
+[za,zb,zc] = doubleToUDP(Params.StartPos(1,3) - 256) ;
 
 write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -73,14 +73,25 @@ write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Para
 write(Params.udp, [0,13,Params.wristStartZ,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,18,Params.SwitchBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,18,Params.SwitchBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 
+
+[xa,xb,xc] = doubleToUDP(Params.wl(1));
+[ya,yb,yc] = doubleToUDP(Params.wl(2)); 
+[za,zb,zc] = doubleToUDP(Params.wl(3)) ;
+write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+[xa,xb,xc] = doubleToUDP(Params.wu(1));
+[ya,yb,yc] = doubleToUDP(Params.wu(2)); 
+[za,zb,zc] = doubleToUDP(Params.wu(3)) ;
+write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
 write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
+pause(2.0)
+
 pause(2.0)
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
@@ -102,7 +113,7 @@ for Block=1:NumBlocks, % Block Loop
         Cursor.State(1:3) = Params.LongStartPos(NextTargetID,:);
     else
         Cursor.State = [0,0,0,0,0,0]';
-        Cursor.State(1:3) = Params.StartPos;
+        Cursor.State(1:3) = Params.StartPos(Trial+1,:);
         Cursor.IntendedState = [0,0,0,0,1]';
     end
     Cursor.Vcommand = [0,0]';
@@ -140,8 +151,7 @@ for Block=1:NumBlocks, % Block Loop
         
         % update trial
         Trial = Trial + 1;
-        
-        
+         
         % update target and next target
         TargetID = NextTargetID;
 %         while NextTargetID==TargetID,
@@ -176,6 +186,18 @@ for Block=1:NumBlocks, % Block Loop
         
         % Run Trial
         TrialData.TrialStartTime  = GetSecs;
+        
+        [xa,xb,xc] = doubleToUDP(Params.StartPos(1,1));
+        [ya,yb,yc] = doubleToUDP(Params.StartPos(1,2)); 
+        [za,zb,zc] = doubleToUDP(Params.StartPos(1,3) - 256) ;
+        
+        Params.StartPos(1,:)
+
+        write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+        write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+        write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
+        write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
         [TrialData,Neuro,KF,Params,Clicker] = ...
             RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
         TrialData.TrialEndTime    = GetSecs;

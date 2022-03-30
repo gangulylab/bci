@@ -52,7 +52,8 @@ valid_tasks = {...
     'RobotEtchASketch',...
     'RobotBeta',...
     'Robot3DRot',...
-    'HandOnline'};
+    'HandOnline',...
+    'RealRobotBetaStop'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -371,7 +372,6 @@ catch ME % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    
     
     keyboard;
 end
