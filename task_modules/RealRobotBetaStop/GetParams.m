@@ -73,7 +73,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -126,7 +126,18 @@ Params.AdaptiveBaseline = false;
 % set this 1 only during online control
 Params.ChPooling = true; 
 
+%% HEIGHT OF THE BAR FOR BETA BAND EXPERIMENTS
+% as the projected weights
 
+Params.BetaBarHeight = 300; % pixels
+Params.BetaBarValue = 20; % projected beta band value
+
+
+
+%% IMPORT PC WEIGHTS AND MEAN FOR BETA BAND ANALYSIS
+
+Params.BetaWts = load(fullfile('clicker','betawts'));
+Params.BetaMean = load(fullfile('clicker','betamean'));
 %% Targets: radial layout
 
 Params.ReachTargetRadius = 180;
@@ -273,7 +284,7 @@ Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 Params.lowGainMode = 0; 
 
-Params.BetaThreshold = 10.0;
+Params.BetaThreshold = 5.0;
 
 
 end % GetParams

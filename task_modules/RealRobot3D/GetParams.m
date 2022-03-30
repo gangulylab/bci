@@ -74,7 +74,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
 %    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0325_pm2';%'MLP_7DoF_PnP_2022Feb';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2';%'MLP_7DoF_PnP_2022Feb';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -234,7 +234,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 90;
+Params.MaxReachTime = 150;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -325,9 +325,9 @@ elseif Params.RobotMode == 9
 elseif Params.RobotMode == 10 % lateral
     Params.ValidDir          = [1:9];
    
-    Params.StartPos          = [0, 200,220];
+    Params.StartPos          = [-200, 200,220];
 %     Params.StartPos          = [-150, 0,350];
-    Params.StartPos  = [0, 80, 300];
+    Params.StartPos  = [0, 30, 300];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -359,11 +359,10 @@ elseif Params.RobotMode == 11
 
     Params.zlim = 5;
     Params.graspOrientation = 0;
-
 end
 
-Params.wl = [-50, -60, 10];
-Params.wu = [5, -15 45];
+Params.wl = [-50, -64, 10];
+Params.wu = [5, -15 50];
 
 Params.index = 1;
 Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];

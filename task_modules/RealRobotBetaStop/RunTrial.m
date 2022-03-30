@@ -260,7 +260,7 @@ if ~Data.ErrorID
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);               
             RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
-            ClickToSend = RunningMode_ClickDec;        
+            ClickToSend = RunningMode_ClickDec        
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
             
             
@@ -271,13 +271,16 @@ if ~Data.ErrorID
                 % Command to stop robot
                 CC = "STOP";
                 write(Params.udp, [0,25,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-                done = 1;
+%                 done = 1;
                 
             else
-                %send movement inpu
-                ClickToSend = 1;
-                write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-                
+                %send movement input only if correct
+                if ClickToSend == 1
+                    write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
+                else
+                    ClickToSend = 0;
+                    write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
+                end
             end
             
                 

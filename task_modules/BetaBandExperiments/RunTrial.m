@@ -409,7 +409,7 @@ if ~Data.ErrorID,
             
             % GET BETA BAND PROJECTED VALUE
             beta_scalar = betaband_output(Params,Neuro);
-
+            Data.beta_scalar(1,end+1) = beta_scalar;
             %get arrow location
             ArrowStart = Params.Center;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);

@@ -75,7 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0325_pm2';%'MLP_7DoF_PnP_2022Feb';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2';%'MLP_7DoF_PnP_2022Feb';
 %     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0323_pm1';%'MLP_7DoF_PnP_2022Feb';
     
     
@@ -327,7 +327,7 @@ Params.GraspBinNum = 8;
 Params.GraspBinThresh = 0.7;
 
 
-Params.wl = [-50, -70, 10];
+Params.wl = [-50, -65, 10];
 Params.wu = [5, -15 45];
 
 
