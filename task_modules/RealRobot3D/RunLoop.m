@@ -82,6 +82,15 @@ write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1"
 
 
 
+[xa,xb,xc] = doubleToUDP(Params.wl(1));
+[ya,yb,yc] = doubleToUDP(Params.wl(2)); 
+[za,zb,zc] = doubleToUDP(Params.wl(3)) ;
+write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+[xa,xb,xc] = doubleToUDP(Params.wu(1));
+[ya,yb,yc] = doubleToUDP(Params.wu(2)); 
+[za,zb,zc] = doubleToUDP(Params.wu(3)) ;
+write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
 pause(2.0)
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
