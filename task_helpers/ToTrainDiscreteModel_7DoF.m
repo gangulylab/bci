@@ -420,7 +420,7 @@ T(aa(1):aa(end),7)=1;
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
 cd('/home/ucsf/Projects/bci/clicker')
-load net_7DoF_PnP_2022Feb_2norm 
+load net_7DoF_PnP_2022Mar_2norm 
 % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
 net_7DoF_PnP_2022Feb_2norm.divideParam.trainRatio=0.8;
 net_7DoF_PnP_2022Feb_2norm.divideParam.valRatio=0.1;
