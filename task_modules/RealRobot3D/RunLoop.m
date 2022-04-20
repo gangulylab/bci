@@ -72,7 +72,7 @@ write(Params.udp, [0,11,Params.autoCenterDist,0,0,0,0,0,0,0,0,0], "127.0.0.1", P
 write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,13,Params.wristStartZ,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,16,Params.lowGainMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,17,Params.graspOrientation,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,18,Params.SwitchBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -80,8 +80,7 @@ write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1
 write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
-
-
+% set workspace limits
 [xa,xb,xc] = doubleToUDP(Params.wl(1));
 [ya,yb,yc] = doubleToUDP(Params.wl(2)); 
 [za,zb,zc] = doubleToUDP(Params.wl(3)) ;
@@ -91,12 +90,11 @@ write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 [za,zb,zc] = doubleToUDP(Params.wu(3)) ;
 write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
-pause(2.0)
-% fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
-% fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
-% fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
+
+write(Params.udp, [0,26,Params.k_v*10,Params.k_i,Params.r_v*10,Params.r_i,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 
+% pause(2.0)
 
 %%  Loop Through Blocks of Trials
 Trial = 0;
@@ -190,7 +188,7 @@ for Block=1:NumBlocks, % Block Loop
         [ya,yb,yc] = doubleToUDP(Params.StartPos(Trial,2)); 
         [za,zb,zc] = doubleToUDP(Params.StartPos(Trial,3) - 256) ;
         
-    Params.StartPos(Trial,:)
+        Params.StartPos(Trial,:)
 
         write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
         write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 

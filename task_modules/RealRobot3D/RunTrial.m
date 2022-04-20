@@ -202,7 +202,8 @@ if ~Data.ErrorID
         tim = GetSecs;
         
         % for pausing and quitting expt
-        if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+%         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        done = CheckRobotDone();
         
         % Update Screen
         if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
@@ -265,76 +266,9 @@ if ~Data.ErrorID
 
                 ClickToSend = RunningMode_ClickDec;        
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
-
-                A = Params.dA;
-                B = Params.dB;
-                
-                U = zeros(3,1);
-                U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
-                U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
-                U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec == 6);
-                
-                
-                vTarget = (Data.TargetPosition'- Cursor.State(1:3));
-
-                if norm(vTarget) ~= 0
-                    norm_vTarget = vTarget/norm(vTarget);
-                else
-                    norm_vTarget = [0;0;0];
-                end
-                
-                AssistVel = Params.AssistAlpha*B*norm_vTarget;
-                Data.AssistVel(:,end+1) = AssistVel;
-                
-                Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-                Cursor.IntendedState = [0 0 0 0 0]';  
-                              
-                % Stop robot at boundaries             
-                if Cursor.State(1) <= Params.limit(1,1)
-                   Cursor.State(1) = Params.limit(1,1) + Params.boundaryDist;
-                   if Cursor.State(4) < 0
-                        Cursor.State(4) = Params.boundaryVel; 
-                   end
-                elseif Cursor.State(1) >= Params.limit(1,2)
-                   Cursor.State(1) = Params.limit(1,2) - Params.boundaryDist;
-                   if Cursor.State(4) > 0
-                        Cursor.State(4) = -Params.boundaryVel;
-                   end   
-                elseif Cursor.State(2) <= Params.limit(2,1)
-                   Cursor.State(2) = Params.limit(2,1) + Params.boundaryDist;
-                    if Cursor.State(5) < 0
-                       Cursor.State(5) =  Params.boundaryVel;
-                    end
-                elseif Cursor.State(2) >= Params.limit(2,2)
-                   Cursor.State(2) = Params.limit(2,2) - Params.boundaryDist;
-                   if Cursor.State(5) > 0
-                        Cursor.State(5) =  -Params.boundaryVel; 
-                   end
-                elseif Cursor.State(3) <= Params.limit(3,1)
-                   Cursor.State(3) = Params.limit(3,1) + Params.boundaryDist;
-                   if Cursor.State(6) < 0
-                        Cursor.State(6) =  Params.boundaryVel;
-                   end
-                elseif Cursor.State(3) >= Params.limit(3,2)
-                   Cursor.State(3) = Params.limit(3,2) - Params.boundaryDist;
-                   if Cursor.State(6) > 0
-                        Cursor.State(6) = -Params.boundaryVel;
-                   end
-                end                
-                
-                
+     
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
-            %%%%% DIRECTION
-%             
-%             [xa,xb,xc] = doubleToUDP(Cursor.State(1));
-%             [ya,yb,yc] = doubleToUDP(Cursor.State(2)); 
-%             [za,zb,zc] = doubleToUDP(Cursor.State(3)-256) ;
-%             
-%             write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send pos
-% 
-%             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
-%             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
-%             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
+
             ClickToSend
             write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
 

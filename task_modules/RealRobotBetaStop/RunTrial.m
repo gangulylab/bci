@@ -265,8 +265,7 @@ if ~Data.ErrorID
             
             
             % Imagined Movement
-            
-            
+
             if (beta_scalar >= Params.BetaThreshold)
                 % Command to stop robot
                 CC = "STOP";
