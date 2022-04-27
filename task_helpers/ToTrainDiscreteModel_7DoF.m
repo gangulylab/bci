@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220325/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220422/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -311,9 +311,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220330/RealRobotBatch';
-foldernames = {'133521', '133751', '134030', '134303', '134524', '135407', '144011', '144244', '144513', '144734'}
-
+root_path = '/home/ucsf/Data/bravo1/20220427/RealRobotBatch';
+foldernames = {'133143', '133433', '133728', '133957', '134538', '134846', '135132', '135338'};
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -425,9 +424,9 @@ load net_7DoF_PnP_2022Mar_2norm
 net_7DoF_PnP_2022Feb_2norm.divideParam.trainRatio=0.8;
 net_7DoF_PnP_2022Feb_2norm.divideParam.valRatio=0.1;
 net_7DoF_PnP_2022Feb_2norm.divideParam.testRatio=0.1;
-net_7DoF_PnP_2022Feb_2norm = train(net_7DoF_PnP_2022Feb_2norm,N,T');
-classifier_name = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2'; % enter the name
-genFunction(net_7DoF_PnP_2022Feb_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+net_7DoF_PnP_2022Feb_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
+classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1'; % enter the name
+genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 
 % 

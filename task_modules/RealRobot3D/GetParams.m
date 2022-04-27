@@ -74,7 +74,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
 %    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2';%'MLP_7DoF_PnP_2022Feb';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm';%'MLP_7DoF_PnP_2022Feb';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -238,7 +238,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 10;
+Params.MaxReachTime = 120;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -254,7 +254,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.RobotMode    = 3; 
-Params.wl           = [-50, -64, 10];
+Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 50];
 
 if Params.RobotMode == 1 % lateral R2G boxes
@@ -285,7 +285,8 @@ elseif Params.RobotMode == 2 % vertical R2G
     
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
-    Params.StartPos             = [100, -90, 410];
+    Params.StartPos             = [100, -90, 410]; % vertically alligned start
+%     Params.StartPos             = [100, -90, 320]; % vertically alligned start
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset   = 0;
@@ -308,8 +309,10 @@ Params.RobotTargetDim       = 1;
 
 % Robot Dynamics
 Params.deltaT   = 1/Params.UpdateRate;
-Params.k_v      = 0.7;
-Params.k_i      = 40;
+% Params.k_v      = 0.7;
+% Params.k_i      = 40;
+Params.k_v      = 0.8;
+Params.k_i      = 18;
 
 Params.r_v      = 0.8;
 Params.r_i      = 100;
