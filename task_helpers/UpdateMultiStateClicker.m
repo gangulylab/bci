@@ -16,7 +16,7 @@ else,
             %if Params.SmoothDataFlag==1
             X = Neuro.FilteredFeatures;
             X = X(:);
-            X = X(129:end);% all features
+            X = X(129:end);% all features except delta phase
             %X = X(769:end);% only hG
             idx=[1:128 385:512 641:768];
             X=X(idx);
