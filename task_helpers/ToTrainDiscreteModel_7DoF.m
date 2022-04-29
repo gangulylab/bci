@@ -313,8 +313,9 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220427/RealRobotBatch';
-foldernames = {'133143', '133433', '133728', '133957', '134538', '134846', '135132', '135338'};
+root_path = '/home/ucsf/Data/bravo1/20220429/RealRobotBatch';
+%foldernames = {'111810', '112200', '112450', '112910', '113148', '113503', '113815'};
+foldernames = {'134056','134340','134714','135036','135329'}
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -423,15 +424,21 @@ T(aa(1):aa(end),7)=1;
 cd('/home/ucsf/Projects/bci/clicker')
 load net_7DoF_PnP_2022Mar_2norm 
 % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
-net_7DoF_PnP_2022Mar_2norm.divideParam.trainRatio=0.8;
-net_7DoF_PnP_2022Mar_2norm.divideParam.valRatio=0.1;
-net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
+
+%net_7DoF_PnP_2022Mar_2norm.divideParam.trainRatio=0.8;
+%net_7DoF_PnP_2022Mar_2norm.divideParam.valRatio=0.1;
+%net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
+
+
+net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=20
+
 net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
-classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1'; % enter the name
+
+classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0429_pm1'; % enter the name
 genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 %%%%% limit the nunber of epochs the NN trains for
-%net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=20
+%net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=25
 
 %%%%% lower the learning rate of the NN weight change
 %net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
@@ -505,10 +512,10 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 % % % 
 % % % 
 % % % % to restart exp run following lines
-  clear
-  clc
-%   cd('/home/ucsf/Projects/bci')
-%  ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
+clear
+clc
+cd('/home/ucsf/Projects/bci')
+ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 % %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)

@@ -73,8 +73,9 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-%    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm';%'MLP_7DoF_PnP_2022Feb';
+   Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0429_pm1';%'MLP_7DoF_PnP_2022Feb_2norm';
+%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm';%'MLP_7DoF_PnP_2022Feb';
+%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -238,7 +239,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
