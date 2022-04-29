@@ -191,7 +191,9 @@ root_path = '/home/ucsf/Data/bravo1/20220422/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {};
+root_path = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220323\Robot3DArrow\'
+
+foldernames = {'110803','133649'};
 
 cd(root_path)
 
@@ -421,12 +423,18 @@ T(aa(1):aa(end),7)=1;
 cd('/home/ucsf/Projects/bci/clicker')
 load net_7DoF_PnP_2022Mar_2norm 
 % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
-net_7DoF_PnP_2022Feb_2norm.divideParam.trainRatio=0.8;
-net_7DoF_PnP_2022Feb_2norm.divideParam.valRatio=0.1;
-net_7DoF_PnP_2022Feb_2norm.divideParam.testRatio=0.1;
-net_7DoF_PnP_2022Feb_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
+net_7DoF_PnP_2022Mar_2norm.divideParam.trainRatio=0.8;
+net_7DoF_PnP_2022Mar_2norm.divideParam.valRatio=0.1;
+net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
+net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
 classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1'; % enter the name
 genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+
+%%%%% limit the nunber of epochs the NN trains for
+%net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=20
+
+%%%%% lower the learning rate of the NN weight change
+%net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
 
 
 % 
@@ -464,7 +472,7 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 %     'ValidationPatience',6,...
 %     'ExecutionEnvironment','cpu',...
 %     'ValidationData',{Xtest',Ytest});
-% 
+
 % % build the classifier
 % net = trainNetwork(Xtrain',Ytrain,layers,options);
 % net_mlp_7DoF_Feb2022 = net;
