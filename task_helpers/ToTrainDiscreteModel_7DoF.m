@@ -191,9 +191,9 @@ root_path = '/home/ucsf/Data/bravo1/20220422/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-root_path = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220323\Robot3DArrow\'
+% root_path = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220323\Robot3DArrow\'
 
-foldernames = {'110803','133649'};
+foldernames = {};
 
 cd(root_path)
 
@@ -313,9 +313,9 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220429/RealRobotBatch';
+root_path = '/home/ucsf/Data/bravo1/20220504/RealRobotBatch';
 %foldernames = {'111810', '112200', '112450', '112910', '113148', '113503', '113815'};
-foldernames = {'134056','134340','134714','135036','135329'}
+foldernames = {'133229', '135507', '135908', '140421'}
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -434,7 +434,7 @@ net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=20
 
 net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
 
-classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0429_pm1'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0504_pm1'; % enter the name
 genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 %%%%% limit the nunber of epochs the NN trains for
@@ -512,10 +512,10 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 % % % 
 % % % 
 % % % % to restart exp run following lines
-clear
-clc
-cd('/home/ucsf/Projects/bci')
-ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+% clear
+% clc
+% cd('/home/ucsf/Projects/bci')
+% ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 % %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)

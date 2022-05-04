@@ -73,7 +73,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-   Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0429_pm1';%'MLP_7DoF_PnP_2022Feb_2norm';
+   Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0504_pm1';%'MLP_7DoF_PnP_2022Feb_2norm';
 %     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm';%'MLP_7DoF_PnP_2022Feb';
 %     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
@@ -239,7 +239,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 180;
+Params.MaxReachTime = 120;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -264,7 +264,7 @@ if Params.RobotMode == 1 % lateral R2G boxes
     Params.StartPos             = [0, 30, 300];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
-    Params.OperationModeReset   = 0;
+    Params.OperationModeReset   = 1;
     Params.wristStartX          = 3.1415/2*10; 
     Params.wristStartZ          = 0; 
     Params.autoCenterOverTarget = 0;
@@ -287,7 +287,7 @@ elseif Params.RobotMode == 2 % vertical R2G
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
     Params.StartPos             = [100, -90, 410]; % vertically alligned start
-%     Params.StartPos             = [100, -90, 320]; % vertically alligned start
+%     Params.StartPos             = [100, -90, 320]; %
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset   = 0;
@@ -317,6 +317,9 @@ Params.k_i      = 18;
 
 Params.r_v      = 0.8;
 Params.r_i      = 100;
+
+Params.r_v      = 0.7;
+Params.r_i      = 90;
 
 Params.LongTrial = 0;
 Params.RobotClicker     = 1;
