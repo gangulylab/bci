@@ -205,11 +205,6 @@ for Block=1:NumBlocks, % Block Loop
             'TrialData',...
             '-v7.3','-nocompression');
         
-        
-        
-        % keep track of useful stats and params
-%         SavePersistence(Params,Neuro,KF,TaskFlag)
-        
     end % Trial Loop
     
     % Give Feedback for Block

@@ -258,8 +258,9 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
+
+Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 Params.ValidDir             = [1:9];
 Params.StartPos             = [90, 0, 250];
@@ -314,7 +315,7 @@ Params.GraspTask = 1;
 Params.autoCenterOverTarget = 0;
 Params.autoCenterDist = 8;
 
-Params.OperationModeReset = 0;
+Params.OperationModeReset = 1;
 Params.wristStartX = 3.1415*10; 
 Params.wristStartZ = 0; 
 
@@ -322,12 +323,11 @@ Params.wristStartX = 3.1415/2*10;
 Params.wristStartZ = 0; 
 Params.zlim = 7;
 
-
 Params.SwitchBinNum = 8;
 Params.SwitchBinThresh = 0.7;
 Params.GraspBinNum = 8;
 Params.GraspBinThresh = 0.7;
-
+Params.graspOrientation     = 1;
 
 Params.wl = [-50, -65, 10];
 Params.wu = [5, -15 45];

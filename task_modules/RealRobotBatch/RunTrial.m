@@ -8,6 +8,7 @@ global Cursor
 
 %% Set up trial
 
+if Params.OperationModeReset == 0
 
 if Data.TargetID == 8
     write(Params.udp, [0,12,3.1415*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -21,6 +22,16 @@ else
     Params.StartPos = [100,0,250];
 end
 
+elseif Params.OperationModeReset == 1
+
+if Data.TargetID == 6
+    Params.StartPos = [0,0,250];
+else
+    Params.StartPos = [100,0,250];
+end
+
+end
+
 [xa,xb,xc] = doubleToUDP(Params.StartPos(1));
 [ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
 [za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
@@ -28,6 +39,11 @@ end
 write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
+
+if Data.TargetID == 3 && Params.OperationModeReset == 1
+    l = "LEFT"
+    write(Params.udp, [0,27,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+end
 
 
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     

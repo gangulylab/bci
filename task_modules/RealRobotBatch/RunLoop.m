@@ -73,6 +73,7 @@ write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Para
 write(Params.udp, [0,13,Params.wristStartZ,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,17,Params.graspOrientation,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,18,Params.SwitchBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -103,7 +104,7 @@ TrialBatch = {};
 tlast = GetSecs;
 Cursor.LastPredictTime = tlast;
 Cursor.LastUpdateTime = tlast;
-for Block=1:NumBlocks, % Block Loop
+for Block=1:NumBlocks % Block Loop
     NextTargetID =  Params.TargetOrder(Trial+1);
     % initialize cursor state(s)
     if Params.LongTrial
@@ -194,11 +195,6 @@ for Block=1:NumBlocks, % Block Loop
             fullfile(DataDir,sprintf('Data%04i.mat',Trial)),...
             'TrialData',...
             '-v7.3','-nocompression');
-        
-        
-        
-        % keep track of useful stats and params
-%         SavePersistence(Params,Neuro,KF,TaskFlag)
         
     end % Trial Loop
     
