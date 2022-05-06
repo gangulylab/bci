@@ -313,9 +313,9 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220504/RealRobotBatch';
+root_path = '/home/ucsf/Data/bravo1/20220506/RealRobotBatch';
 %foldernames = {'111810', '112200', '112450', '112910', '113148', '113503', '113815'};
-foldernames = {'133229', '135507', '135908', '140421'}
+foldernames = {'134049', '135003', '135206', '135442',  '135660', '135935', '140145', '140414'}
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -430,11 +430,11 @@ load net_7DoF_PnP_2022Mar_2norm
 %net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
 
 
-net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=20
+net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=30;
 
 net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
 
-classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0504_pm1'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0506_pm1'; % enter the name
 genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 %%%%% limit the nunber of epochs the NN trains for
