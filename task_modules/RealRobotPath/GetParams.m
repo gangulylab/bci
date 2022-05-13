@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'RealRobot3D';
+Params.Task = 'RealRobotPath';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -133,34 +133,56 @@ Params.ChPooling = true;
 %% Targets: radial layout
 
 Params.ReachTargetRadius = 180;
-d2 = sqrt(1/2);
-d3 = sqrt(1/3);
-
 h = 260;
-% 
-% Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, h;...
-%     0, Params.ReachTargetRadius, h; ...
-%     -Params.ReachTargetRadius, 0, h;...
-%     0, -Params.ReachTargetRadius, h; ...
-%     0,0,450;...
-%     0, 0, 100;...
-%     d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-%     -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-%     -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-%     d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0];
-% 
-% Params.ReachTargetPositions = [Params.ReachTargetPositions;...
-%     Params.ReachTargetPositions(1,1:2),-150;...
-%     Params.ReachTargetPositions(2,1:2),-150;...
-%     Params.ReachTargetPositions(3,1:2),-150;...
-%     Params.ReachTargetPositions(4,1:2),-150;
-%     Params.ReachTargetPositions(3,1:2),-150;...
-%     Params.ReachTargetPositions(4,1:2),-150];
+Params.r_i      = 90;
 
 Params.ReachTargetPositions = [240, -70, 410;...
 240, -220, 410;...
 240, 80, 410];
 
+
+% Path 1
+Params.StartPos             = [100, -90, 320;...
+                                100,-240, 410;...
+                               100,60, 409]; 
+                            
+                            
+Params.CorrectInput{1} = [5, 7, 6, 1, 5, 7, 6, 7, 3];
+Params.Waypoint{1} = [100, -90, 410;...
+    0,0,0;...
+250,-90,410;
+0,0,0;...
+150,-90,410;...
+0,0,0;...
+150, -90, 130;...
+0,0,0;...
+0,0,0];
+    
+
+Params.CorrectInput{2} = [2, 1, 7, 1, 7, 3, 6, 7, 3];
+Params.Waypoint{2} = [100, -90, 410;...
+250,-90,410;...
+0,0,0;...
+0,0,0;...
+0,0,0;...
+150,-90,410;...
+150, -90, 130;...
+0,0,0;...
+0,0,0];
+
+Params.CorrectInput{3} = [4, 1, 7, 1, 7, 3, 6, 7, 3];
+Params.Waypoint{3} = [100, -90, 410;...
+250,-90,410;...
+0,0,0;...
+0,0,0;...
+0,0,0;...
+150,-90,410;...
+150, -90, 130;...
+0,0,0;...
+0,0,0];
+
+
+% 410, 0, -65, 0];
 
 %% Kalman Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -182,16 +204,14 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [1:4];
-% 
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-% Params.TargetOrder          = [Params.TargetOrder, 1];
+Params.NumTrialsPerBlock    = 3;
+Params.TargetOrder          = [1,1,1];
+
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -258,47 +278,16 @@ Params.RobotMode    = 3;
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 50];
 
-if Params.RobotMode == 1 % lateral R2G boxes
-    Params.ValidDir             = [1:9];
-    Params.StartPos             = [-200, 200,220];
-    Params.StartPos             = [0, 30, 300];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [1];   
-    Params.OperationModeReset   = 1;
-    Params.wristStartX          = 3.1415/2*10; 
-    Params.wristStartZ          = 0; 
-    Params.autoCenterOverTarget = 0;
-    Params.autoCenterDist       = 5;
-    Params.graspOrientation     = 1;
-
-elseif Params.RobotMode == 2 % vertical R2G
-    Params.ValidDir          = [1:9];
-    Params.StartPos          = [-150, 0,200];
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [1];   
-    Params.OperationModeReset = 0;
-    Params.wristStartX = 3.1415*10; 
-    Params.wristStartZ = 0; 
-    Params.autoCenterOverTarget = 0;
-    Params.autoCenterDist = 5;
-    Params.zlim = 5;
-    Params.graspOrientation = 0;
-    
-elseif Params.RobotMode == 3  % lateral R2G wall
-    Params.ValidDir             = [1:9];
-    Params.StartPos             = [100, -90, 410]; % vertically alligned start
-%     Params.StartPos             = [100, -90, 320]; %
-    Params.NumTrialsPerBlock    = 1;
-    Params.TargetOrder          = [1];   
+if Params.RobotMode == 3  % lateral R2G wall
+    Params.ValidDir             = [1:9];  
     Params.OperationModeReset   = 0;
     Params.wristStartX          = 3.1415/2*10; 
     Params.wristStartZ          = 0; 
     Params.graspOrientation     = 1;
-
 end
 
 Params.index        = 1;
-Params.clickOrder   = [ones(5,1)];
+Params.clickOrder   = [5*(ones(20,1))];
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.TargetOrder  = [Params.TargetOrder, 1];
 
@@ -314,6 +303,18 @@ Params.deltaT   = 1/Params.UpdateRate;
 % Params.k_i      = 40;
 Params.k_v      = 0.8;
 Params.k_i      = 18;
+
+Params.dA = [1 0 0  Params.deltaT 0 0;...
+                    0 1 0 0 Params.deltaT 0;...
+                    0 0 1 0 0 Params.deltaT;...
+                    0 0 0 Params.k_v 0 0;...
+                    0 0 0 0 Params.k_v 0;...
+                    0 0 0 0 0 Params.k_v];
+                
+Params.dB = [zeros(3);...
+                    eye(3)];
+Params.dB = Params.dB*Params.k_i;
+
 
 Params.r_v      = 0.8;
 Params.r_i      = 100;
