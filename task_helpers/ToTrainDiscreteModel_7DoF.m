@@ -444,6 +444,18 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 %net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
 
 
+% updating the ensemble decoder
+load net_7DoF_PnP4_ensemble
+for i=1:length(net_7DoF_PnP4_ensemble)
+    net = net_7DoF_PnP4_ensemble{i};
+    net = train(net,N,T','useParallel','yes');
+    net_7DoF_PnP4_ensemble_batch{i} = net;
+end
+
+save net_7DoF_PnP4_ensemble_batch net_7DoF_PnP4_ensemble_batch
+
+
+
 % 
 % %%%% IS USING THE ADAM OPTIMIZER %%%%
 % 
