@@ -206,10 +206,10 @@ else,
         % eval the classifier
         nets = Params.NeuralNetFunction(1).(Params.NeuralNetName);    
         Decision_Prob=[];
-        for iter=1:length(nets)
+        for iter=1:1%length(nets)
             Decision_Prob = [Decision_Prob nets{iter}(X)];
         end
-        Decision_Prob = mean(Decision_Prob,2);    
+        %Decision_Prob = mean(Decision_Prob,2);    
         
         
         if Params.NeuralBias

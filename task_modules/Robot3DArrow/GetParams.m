@@ -75,14 +75,14 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022Mar_2norm'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+    Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
@@ -92,10 +92,10 @@ else
 end
 
 %% Use ensemble neural network
-Params.NeuralNetEnsemble = true;
-Params.NeuralNetSoftMaxThresh = 0.50;   
-Params.NeuralNetName = 'net_7DoF_PnP4_ensemble';
-Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+% Params.NeuralNetEnsemble = false;
+% Params.NeuralNetSoftMaxThresh = 0.50;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer

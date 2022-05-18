@@ -71,26 +71,36 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.5;       
+    Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
-   Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0506_pm1';%'MLP_7DoF_PnP_2022Feb_2norm';
-%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm';%'MLP_7DoF_PnP_2022Feb';
-%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1';
-%  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
+%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
+
+    Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+    
+%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% Use ensemble neural network
+
+% Params.NeuralNetEnsemble = false;
+% Params.NeuralNetSoftMaxThresh = 0.450;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch3';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
 Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
-    Params.NeuralNet2SoftMaxThresh = 0.4;       
+    Params.NeuralNet2SoftMaxThresh = 0.45    ;       
     Params.Use3Features = true;
     Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
-    
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
@@ -106,18 +116,19 @@ Params.NeuralBias = false;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = false;
+Params.ConvNeuralNetFlag =false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
-    Params.NeuralNetSoftMaxThresh = 0;
+    Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
 %% ADAPTIVE BASELINE FLAG 

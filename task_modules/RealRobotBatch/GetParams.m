@@ -75,11 +75,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0506_pm1';%'MLP_7DoF_PnP_2022Mar_2norm';%'MLP_7DoF_PnP_2022Feb';
-
-%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Mar_2norm_0427_pm1';
-%     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0323_pm1';%'MLP_7DoF_PnP_2022Feb';
-    
+    Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
@@ -87,6 +83,13 @@ if Params.NeuralNetFlag
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% Use ensemble neural network
+
+% Params.NeuralNetEnsemble = true;
+% Params.NeuralNetSoftMaxThresh = 0.450;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch3';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
@@ -101,10 +104,8 @@ else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
 
-
 %% NORMALIZING THE NEURAL FEATURES
 Params.Norm2 = true;
-
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
@@ -114,18 +115,19 @@ Params.NeuralBias = false;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = false;
+Params.ConvNeuralNetFlag =false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
-    Params.NeuralNetSoftMaxThresh = 0;
+    Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
 %% ADAPTIVE BASELINE FLAG 

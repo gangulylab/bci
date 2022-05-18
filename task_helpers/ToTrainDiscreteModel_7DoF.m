@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220422/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220518/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -256,7 +256,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {};
+foldernames = {'134311', '134930', '135407', '135838'};
 
 cd(root_path)
  
@@ -313,9 +313,9 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220506/RealRobotBatch';
+root_path = '/home/ucsf/Data/bravo1/20220518/RealRobotBatch';
 %foldernames = {'111810', '112200', '112450', '112910', '113148', '113503', '113815'};
-foldernames = {'134049', '135003', '135206', '135442',  '135660', '135935', '140145', '140414'}
+foldernames = {}
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -434,7 +434,7 @@ net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=30;
 
 net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
 
-classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0506_pm1'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; % enter the name
 genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 %%%%% limit the nunber of epochs the NN trains for
@@ -445,15 +445,16 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 
 
 % updating the ensemble decoder
-load net_7DoF_PnP4_ensemble
-for i=1:length(net_7DoF_PnP4_ensemble)
-    net = net_7DoF_PnP4_ensemble{i};
-    net = train(net,N,T','useParallel','yes');
-    net_7DoF_PnP4_ensemble_batch{i} = net;
-end
-
-save net_7DoF_PnP4_ensemble_batch net_7DoF_PnP4_ensemble_batch
-
+% load net_7DoF_PnP4_ensemble_batch2
+% net_7DoF_PnP4_ensemble_batch3=net_7DoF_PnP4_ensemble_batch2;
+% for i=1:1%length(net_7DoF_PnP4_ensemble)
+%     net = net_7DoF_PnP4_ensemble_batch3{i};
+%     net = train(net,N,T','useParallel','no');
+%     net_7DoF_PnP4_ensemble_batch3{i} = net;
+% end
+% cd('/home/ucsf/Projects/bci/clicker')
+% save net_7DoF_PnP4_ensemble_batch3 net_7DoF_PnP4_ensemble_batch3
+% 
 
 
 % 
@@ -524,10 +525,10 @@ save net_7DoF_PnP4_ensemble_batch net_7DoF_PnP4_ensemble_batch
 % % % 
 % % % 
 % % % % to restart exp run following lines
-% clear
-% clc
-% cd('/home/ucsf/Projects/bci')
-% ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+ clear
+ clc
+%  cd('/home/ucsf/Projects/bci')
+%  ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 % %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
