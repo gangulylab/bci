@@ -52,7 +52,7 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -69,7 +69,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
@@ -87,10 +87,10 @@ end
 
 %% Use ensemble neural network
 
-% Params.NeuralNetEnsemble = false;
-% Params.NeuralNetSoftMaxThresh = 0.450;   
-% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch3';
-% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+Params.NeuralNetEnsemble = true;
+Params.NeuralNetSoftMaxThresh = 0.450;   
+Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520B';
+Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer

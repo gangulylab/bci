@@ -187,17 +187,20 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220518/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220525/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
 % root_path = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220323\Robot3DArrow\'
 
-foldernames = {};
+
 
 cd(root_path)
 
 %FOR IMAGINED MOVEMENT DATA, 
+
+foldernames = {'112220', '113015', '113530', '113952','133515','134328','134721','135110'};
+
 D1=[];
 D2=[];
 D3=[];
@@ -256,7 +259,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'134311', '134930', '135407', '135838'};
+foldernames = {'140853', '140521', '141429', '142010' ,'142921'};
 
 cd(root_path)
  
@@ -313,9 +316,9 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220518/RealRobotBatch';
-%foldernames = {'111810', '112200', '112450', '112910', '113148', '113503', '113815'};
-foldernames = {}
+root_path = '/home/ucsf/Data/bravo1/20220520/RealRobotBatch';
+foldernames = {'152841', '153118', '153654', '154044', '154318', '154545','155450'};
+
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -419,6 +422,21 @@ T(aa(1):aa(end),6)=1;
 T(aa(1):aa(end),7)=1;
 
 
+%%%%%% CODE SNIPPET FOR CREATING A DECODER FROM SCRATCH %%%%%
+clear net
+net = patternnet([64 64 64]) ;
+net.performParam.regularization=0.2;
+net = train(net,N,T');
+
+net_new_7DoF_ZWrist_05252022A.net = net;
+
+cd('/home/ucsf/Projects/bci/clicker')
+save net_new_7DoF_ZWrist_05252022A net_new_7DoF_ZWrist_05252022A
+classifier_name = 'MLP_7DoF_ZWrist_05252022'; % enter the name
+genFunction(net_new_7DoF_ZWrist_05252022,classifier_name);
+
+
+
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
 cd('/home/ucsf/Projects/bci/clicker')
@@ -444,16 +462,16 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 %net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
 
 
-% updating the ensemble decoder
-% load net_7DoF_PnP4_ensemble_batch2
-% net_7DoF_PnP4_ensemble_batch3=net_7DoF_PnP4_ensemble_batch2;
-% for i=1:1%length(net_7DoF_PnP4_ensemble)
-%     net = net_7DoF_PnP4_ensemble_batch3{i};
-%     net = train(net,N,T','useParallel','no');
-%     net_7DoF_PnP4_ensemble_batch3{i} = net;
-% end
-% cd('/home/ucsf/Projects/bci/clicker')
-% save net_7DoF_PnP4_ensemble_batch3 net_7DoF_PnP4_ensemble_batch3
+%updating the ensemble decoder
+load net_7DoF_PnP4_ensemble_batch_0520A
+net_7DoF_PnP4_ensemble_batch_0520B=net_7DoF_PnP4_ensemble_batch_0520A;
+for i=2:length(net_7DoF_PnP4_ensemble_batch_0520B)
+    net = net_7DoF_PnP4_ensemble_batch_0520B{i};
+    net = train(net,N,T','useParallel','no');
+    net_7DoF_PnP4_ensemble_batch_0520B{i} = net;
+end
+cd('/home/ucsf/Projects/bci/clicker')
+save net_7DoF_PnP4_ensemble_batch_0520B net_7DoF_PnP4_ensemble_batch_0520B
 % 
 
 
@@ -504,14 +522,14 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
 % TEST VALIDATION DOESN'T HAVE NaNs AND THAT PERFORMANCE IS REASONABLE
-%  clear net
-%  net = patternnet([64 64 64]) ;
-%  net.performParam.regularization=0.2;
-% 
-% % cd('/home/ucsf/Projects/bci/clicker')
+ clear net
+ net = patternnet([64 64 64]) ;
+ net.performParam.regularization=0.2;
+
+cd('/home/ucsf/Projects/bci/clicker')
 % % load net net
 % % 
-%  net = train(net,N,T');
+ net = train(net,N,T');
 % % 
 % 
 % 
@@ -520,13 +538,22 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 % % save net net
 % 
 % % classifier name
-%  classifier_name = 'MLP_20210922';
-%  genFunction(net,classifier_name); % make sure to update GetParams
+net_new_7DoF_05252022 = net;
+classifier_name = 'net_new_7DoF_05252022';
+genFunction(net_new_7DoF_05252022,classifier_name); % make sure to update GetParams
 % % % 
 % % % 
 % % % % to restart exp run following lines
- clear
- clc
+ 
+
+% to restart exp run following lines
+clear
+clc
+cd('/home/ucsf/Projects/bci')
+%ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+
+
+ ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %  cd('/home/ucsf/Projects/bci')
 %  ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)

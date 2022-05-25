@@ -76,7 +76,8 @@ else,
             end
             
             % eval the classifier
-            Decision_Prob = feval(Params.NeuralNetFunction,X);
+            %Decision_Prob = feval(Params.NeuralNetFunction,X);
+            Decision_Prob = Params.NeuralNet(X);
             
             if Params.NeuralBias
                 Decision_Prob(Params.NeuralNetBiasDirection) = ...
