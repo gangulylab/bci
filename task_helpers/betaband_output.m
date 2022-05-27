@@ -8,7 +8,7 @@ else
     X = Neuro.FilteredFeatures;
 end
 
-X = X(385:512);
+X = X(513:640);
 
 
 % get PC wts
