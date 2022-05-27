@@ -422,14 +422,25 @@ T(aa(1):aa(end),6)=1;
 T(aa(1):aa(end),7)=1;
 
 
-%%%%%% CODE SNIPPET FOR CREATING A DECODER FROM SCRATCH %%%%%
-clear net
+%%%%%% NEW CODE SNIPPET FOR CREATING A DECODER FROM SCRATCH 05/25/2005 %%%%%
+
+%if new from scratch
+clear net 
 net = patternnet([64 64 64]) ;
 net.performParam.regularization=0.2;
+
+% if loading from pretrained
+%load net_new_7DoF_ZWrist_05252022 
+%net = net_new_7DoF_ZWrist_05252022.net 
+
+
 net = train(net,N,T');
 
+% give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
+% 87 of GetParams
 net_new_7DoF_ZWrist_05252022A.net = net;
 
+% save the weights
 cd('/home/ucsf/Projects/bci/clicker')
 save net_new_7DoF_ZWrist_05252022A net_new_7DoF_ZWrist_05252022A
 classifier_name = 'MLP_7DoF_ZWrist_05252022'; % enter the name
