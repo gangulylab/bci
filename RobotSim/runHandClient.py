@@ -10,7 +10,8 @@ sock.bind(server_address)
 
 
 env = HandEnv()
-robot_pos = np.array([0.0, 0.0, 0.0])
+robot_pos = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
 
 while True:
 	data, address = sock.recvfrom(4096)
@@ -41,6 +42,8 @@ while True:
 			env.reset()
 		if val1 == 2:
 			env.showHand()
+		if val1 == 3:
+			env.showDecodes = val2
 		if val1 == 16:
 			action = val2
 			print("action", action)
@@ -61,26 +64,47 @@ while True:
 		key = val1
 		interface.update_joystick(key)
 		interface.render()
-	if command == 4:	# Set Target
+	if command == 14:	# Set Target
 		key = val10
-		robot_pos[0] = ((val1-1) *val2 + val3/100)/80
-		robot_pos[1] = ((val4-1) *val5 + val6/100)/80
-		robot_pos[2] = ((val7-1) *val8 + val9/100)/80
+		robot_pos[0] = ((val1-1) *(val2 + val3/100))/80
+		robot_pos[1] = ((val4-1) *(val5 + val6/100))/80
+		robot_pos[2] = ((val7-1) *(val8 + val9/100))/80
+		print(robot_pos)
 
-		# if key > 6:
-		env.setGrasp(action, robot_pos[0])
-		# else:
-		# 	env.setJointPosition(1, robot_pos[0])
-		# 	env.setJointPosition(2, robot_pos[1])
-		# 	env.setJointPosition(3, robot_pos[2] - .4)
-		# 	env.step()
+	if command == 4:
+		robot_pos[3] = ((val1-1) *(val2 + val3/100))/80
+		robot_pos[4] = ((val4-1) *(val5 + val6/100))/80
+		robot_pos[5] = ((val7-1) *(val8 + val9/100))/80
 
-		
+
+	if command == 15:
+		action = val1
+
+		if action < 6 and action > 0:
+			env.setGrasp(action, robot_pos[action - 1])
+		if action == 6:
+			env.setGrasp(1, robot_pos[0])
+			env.setGrasp(2, robot_pos[1])
+			env.setGrasp(3, robot_pos[2])
+			env.setGrasp(4, robot_pos[3])
+			env.setGrasp(5, robot_pos[4])
+		if action == 7 or action == 8:
+			env.setGrasp(10, robot_pos[5])		
+
+		print(action)
+		if env.showDecodes:
+			env.displayCurrentDecode(action)	
+
+	if command == 7:
+		key = val10
+		robot_pos[0] = ((val1-1) *(val2 + val3/100))/80
+		robot_pos[1] = ((val4-1) *(val5 + val6/100))/80
+		robot_pos[2] = ((val7-1) *(val8 + val9/100))/80
+
+		env.setGrasp(val10, robot_pos[0])	
 
 	if command == 5:
 		env.displayCue(val1,val2)
-
-
 
 sock.shutdown()
 sock.close() 

@@ -54,6 +54,7 @@ end
 Params.udp = udp("127.0.0.1", 5006);
 fopen(Params.udp)
 fwrite(Params.udp, [0,1,0])                  % reset robot
+fwrite(Params.udp, [0, 3, Params.showDecodeLines])
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 % fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
@@ -146,7 +147,7 @@ for Block=1:NumBlocks, % Block Loop
         % Run Trial
         TrialData.TrialStartTime  = GetSecs;
         [TrialData,Neuro,KF,Params,Clicker] = ...
-            RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
+    RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
         TrialData.TrialEndTime    = GetSecs;
                 
         % Save Data from Single Trial

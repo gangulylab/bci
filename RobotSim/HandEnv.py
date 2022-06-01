@@ -13,18 +13,21 @@ class HandEnv(object):
 		p.loadURDF("table/table.urdf", basePosition=[-0.5,-0.1,-0.65])
 		self.handId = p.loadURDF("URDFs/asr_hand/model_hand_right2.urdf", [-0.5,0,-1.0],  useFixedBase=True)
 		
+		p.configureDebugVisualizer(p.COV_ENABLE_SHADOWS, 0)
 
 		self.handStates = [1,2,3]
 		self.jointState = [0,0,-0.4,0]
 		self.hideHand()
 		p.resetJointState(self.handId, 3, -0.4)
+		self.showDecodes = 0
 
 	def setJointPosition(self, joint, angle):
 		self.jointState[joint] = angle
 
 	def setGrasp(self, action, s):
 
-
+		print(action)
+		print(s)
 		if action == 1:		# thumb
 			p.resetJointState(self.handId, 25, s+0.1)
 			p.resetJointState(self.handId, 26, s+ 0.5)
@@ -52,24 +55,23 @@ class HandEnv(object):
 
 		elif action == 6:  # Power Grasp	
 			p.resetJointState(self.handId, 3, -.4)
-			p.resetJointState(self.handId, 3, -.4)
 
-			p.resetJointState(self.handId, 5, -0.5-0.2*s )
+			# p.resetJointState(self.handId, 5, -0.5-0.2*s )
 			p.resetJointState(self.handId, 6, s)
 			p.resetJointState(self.handId, 7, s)
 			p.resetJointState(self.handId, 8, s)
 
-			p.resetJointState(self.handId, 10, -0.2-0.1*s )
+			# p.resetJointState(self.handId, 10, -0.2-0.1*s )
 			p.resetJointState(self.handId, 11, s)
 			p.resetJointState(self.handId, 12, s)
 			p.resetJointState(self.handId, 13, s)
 
-			p.resetJointState(self.handId, 15, 0.1+0.1*s )
+			# p.resetJointState(self.handId, 15, 0.1+0.1*s )
 			p.resetJointState(self.handId, 16, s)
 			p.resetJointState(self.handId, 17, s)
 			p.resetJointState(self.handId, 18, s)
 
-			p.resetJointState(self.handId, 20, 0.4+0.2*s )
+			# p.resetJointState(self.handId, 20, 0.4+0.2*s )
 			p.resetJointState(self.handId, 21, s)
 			p.resetJointState(self.handId, 22, s)
 			p.resetJointState(self.handId, 23, s)
@@ -121,17 +123,129 @@ class HandEnv(object):
 
 	def reset(self):
 		# p.resetJointState(self.handId, 3, -0.4)
+		print('RESET')
 		self.hideHand()
 		p.resetJointState(self.handId, 3, -0.4)
 
 		p.resetJointState(self.handId, 1, 0)
 		p.resetJointState(self.handId, 2, 0)
+		
 		p.resetJointState(self.handId, 4, 0)
 		p.resetJointState(self.handId, 5, 0)
-		p.resetJointState(self.handId, 10, 0)
+		p.resetJointState(self.handId, 6, 0)
+		p.resetJointState(self.handId, 7, 0)
+		p.resetJointState(self.handId, 8, 0)
+
+		p.resetJointState(self.handId, 10, 0) 
+		p.resetJointState(self.handId, 11, 0)
+		p.resetJointState(self.handId, 12, 0)
+		p.resetJointState(self.handId, 13, 0)
+
 		p.resetJointState(self.handId, 15, 0)
+		p.resetJointState(self.handId, 16, 0)
+		p.resetJointState(self.handId, 17, 0)
+		p.resetJointState(self.handId, 18, 0)
+
 		p.resetJointState(self.handId, 20, 0)
+		p.resetJointState(self.handId, 21, 0)
+		p.resetJointState(self.handId, 22, 0)
+		p.resetJointState(self.handId, 23, 0)
+
+		p.resetJointState(self.handId, 25, 0.1)
+		p.resetJointState(self.handId, 26, 0.5)
+		p.resetJointState(self.handId, 27, 0.2)
 		p.removeAllUserDebugItems()
+		
+		if self.showDecodes:
+			self.displayDecodes()
+
+
+	def displayDecodes(self):
+		c = [1, 1, 1]
+		t = 0
+		d = 10
+
+		p1 = [-0.58,0.11,0.21]
+		p2 = [-0.58,0.15, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+
+		p1 = [-0.515,0.19,0.21]
+		p2 = [-0.515,0.23, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+	
+		p1 = [-0.49,0.20,0.21]
+		p2 = [-0.49,0.24, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+	
+		p1 = [-0.47,0.19,0.21]
+		p2 = [-0.47,0.23, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+	
+		p1 = [-0.45,0.16,0.21]
+		p2 = [-0.45,0.20, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+
+		p1 = [-0.6,0.0,0.21]
+		p2 = [-0.7,0.04, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+	
+		p1 = [-0.4,0.0,0.21]
+		p2 = [-0.3,0.04, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+
+
+	def displayCurrentDecode(self, action):
+		c = [1, 0, 0]
+		t = 0.2
+		d = 15
+
+		if action == 1:
+			p1 = [-0.58,0.11,0.2101]
+			p2 = [-0.58,0.15, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 2:
+			p1 = [-0.515,0.19,0.2101]
+			p2 = [-0.515,0.23, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 3:
+			p1 = [-0.49,0.20,0.2101]
+			p2 = [-0.49,0.24, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 4:
+			p1 = [-0.47,0.19,0.2101]
+			p2 = [-0.47,0.23, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 5:
+			p1 = [-0.45,0.16,0.2101]
+			p2 = [-0.45,0.20, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 6:
+			p1 = [-0.58,0.11,0.2101]
+			p2 = [-0.58,0.15, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.515,0.19,0.2101]
+			p2 = [-0.515,0.23, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.49,0.20,0.2101]
+			p2 = [-0.49,0.24, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.47,0.19,0.2101]
+			p2 = [-0.47,0.23, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.45,0.16,0.2101]
+			p2 = [-0.45,0.20, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 8:	
+			p1 = [-0.6,0.0,0.2101]
+			p2 = [-0.7,0.04, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 7:
+			p1 = [-0.4,0.0,0.2101]
+			p2 = [-0.3,0.04, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+
+		
+
 
 	def hideHand(self):
 		p.resetBasePositionAndOrientation(self.handId,[0,0,-1.0],[0,0,0,1])
@@ -163,6 +277,9 @@ class HandEnv(object):
 			p.addUserDebugText('WRIST OUT', [-0.7,0.25,0.2],  [0,0,c], 12)
 		elif cue == 10:
 			p.addUserDebugText('WRIST IN', [-0.7,0.25,0.2],  [0,0,c], 12)
+
+		if self.showDecodes:
+			self.displayDecodes()
 
 	def step(self):
 		

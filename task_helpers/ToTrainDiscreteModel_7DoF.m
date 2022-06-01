@@ -187,15 +187,20 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220202/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220525/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
-foldernames = {'102552', '103014', '103454', '103943'};
+% root_path = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220323\Robot3DArrow\'
+
+
 
 cd(root_path)
 
 %FOR IMAGINED MOVEMENT DATA, 
+
+foldernames = {'112220', '113015', '113530', '113952','133515','134328','134721','135110'};
+
 D1=[];
 D2=[];
 D3=[];
@@ -253,8 +258,8 @@ for ii=1:length(foldernames)
     end
 end
 
-% FIXED
-foldernames = {'101645','102211'};
+% FIXED ARROW
+foldernames = {'140853', '140521', '141429', '142010' ,'142921'};
 
 cd(root_path)
  
@@ -309,8 +314,10 @@ for ii=1:length(foldernames)
 end
 
 size(D7)
-root_path = '/home/ucsf/Data/bravo1/20220202/RealRobotBatch';
-foldernames = {'113555', '113903'};
+
+% ROBOT BATCH
+root_path = '/home/ucsf/Data/bravo1/20220520/RealRobotBatch';
+foldernames = {'152841', '153118', '153654', '154044', '154318', '154545','155450'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -374,6 +381,17 @@ condn_data{5}=[D5(idx,:)]';
 condn_data{6}=[D6(idx,:)]'; 
 condn_data{7}=[D7(idx,:)]'; 
 
+
+% 2norm
+for i=1:length(condn_data)
+   tmp = condn_data{i}; 
+   for j=1:size(tmp,1)
+       tmp(j,:) = tmp(j,:)./norm(tmp(j,:));
+   end
+   condn_data{i}=tmp;
+end
+
+
 A = condn_data{1};
 B = condn_data{2};
 C = condn_data{3};
@@ -404,31 +422,125 @@ T(aa(1):aa(end),6)=1;
 T(aa(1):aa(end),7)=1;
 
 
+%%%%%% NEW CODE SNIPPET FOR CREATING A DECODER FROM SCRATCH 05/25/2005 %%%%%
+
+%if new from scratch
+clear net 
+net = patternnet([64 64 64]) ;
+net.performParam.regularization=0.2;
+
+% if loading from pretrained
+%load net_new_7DoF_ZWrist_05252022 
+%net = net_new_7DoF_ZWrist_05252022.net 
+
+
+net = train(net,N,T');
+
+% give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
+% 87 of GetParams
+net_new_7DoF_ZWrist_05252022A.net = net;
+
+% save the weights
+cd('/home/ucsf/Projects/bci/clicker')
+save net_new_7DoF_ZWrist_05252022A net_new_7DoF_ZWrist_05252022A
+classifier_name = 'MLP_7DoF_ZWrist_05252022'; % enter the name
+genFunction(net_new_7DoF_ZWrist_05252022,classifier_name);
+
+
+
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
 cd('/home/ucsf/Projects/bci/clicker')
-load pretrain_net_mlp4 
+load net_7DoF_PnP_2022Mar_2norm 
 % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
-pretrain_net_mlp4.divideParam.trainRatio=0.8;
-pretrain_net_mlp4.divideParam.valRatio=0.1;
-pretrain_net_mlp4.divideParam.testRatio=0.1;
-pretrain_net_mlp4 = train(pretrain_net_mlp4,N,T');
-classifier_name = 'MLP_PreTrained_7DoF_02022022_AM2'; % enter the name
-genFunction(pretrain_net_mlp4,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
+%net_7DoF_PnP_2022Mar_2norm.divideParam.trainRatio=0.8;
+%net_7DoF_PnP_2022Mar_2norm.divideParam.valRatio=0.1;
+%net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
+
+
+net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=30;
+
+net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
+
+classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; % enter the name
+genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+
+%%%%% limit the nunber of epochs the NN trains for
+%net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=25
+
+%%%%% lower the learning rate of the NN weight change
+%net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
+
+
+%updating the ensemble decoder
+load net_7DoF_PnP4_ensemble_batch_0520A
+net_7DoF_PnP4_ensemble_batch_0520B=net_7DoF_PnP4_ensemble_batch_0520A;
+for i=2:length(net_7DoF_PnP4_ensemble_batch_0520B)
+    net = net_7DoF_PnP4_ensemble_batch_0520B{i};
+    net = train(net,N,T','useParallel','no');
+    net_7DoF_PnP4_ensemble_batch_0520B{i} = net;
+end
+cd('/home/ucsf/Projects/bci/clicker')
+save net_7DoF_PnP4_ensemble_batch_0520B net_7DoF_PnP4_ensemble_batch_0520B
+% 
+
+
+% 
+% %%%% IS USING THE ADAM OPTIMIZER %%%%
+% 
+% % first load the saved mlp network
+% load('net_mlp_7DoF_Feb2022.mat')
+% 
+% % get the layers of the model 
+% clear layers
+% layers=net_mlp_7DoF_Feb2022.Layers;
+% 
+% % organize the data
+% X = N;
+% Y=categorical(T1);
+% idx = randperm(length(Y),round(0.8*length(Y)));
+% Xtrain = X(:,idx);
+% Ytrain = Y(idx);
+% I = ones(length(Y),1);
+% I(idx)=0;
+% idx1 = find(I~=0);
+% Xtest = X(:,idx1);
+% Ytest = Y(idx1);
+% 
+% 
+% 
+% %'ValidationData',{XTest,YTest},...
+% options = trainingOptions('adam', ...
+%     'InitialLearnRate',0.01, ...
+%     'MaxEpochs',20, ...
+%     'Verbose',true, ...
+%     'Plots','training-progress',...
+%     'MiniBatchSize',32,...
+%     'ValidationFrequency',30,...
+%     'ValidationPatience',6,...
+%     'ExecutionEnvironment','cpu',...
+%     'ValidationData',{Xtest',Ytest});
+
+% % build the classifier
+% net = trainNetwork(Xtrain',Ytrain,layers,options);
+% net_mlp_7DoF_Feb2022 = net;
+% 
+% % save it
+% save net_mlp_7DoF_Feb2022 net_mlp_7DoF_Feb2022
 
 %%%%%%% CODE SNIPPET FOR TRAINING A MODEL FROM SCRATCH %%%%%
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
 % TEST VALIDATION DOESN'T HAVE NaNs AND THAT PERFORMANCE IS REASONABLE
-%  clear net
-%  net = patternnet([64 64 64]) ;
-%  net.performParam.regularization=0.2;
-% 
-% % cd('/home/ucsf/Projects/bci/clicker')
+ clear net
+ net = patternnet([64 64 64]) ;
+ net.performParam.regularization=0.2;
+
+cd('/home/ucsf/Projects/bci/clicker')
 % % load net net
 % % 
-%  net = train(net,N,T');
+ net = train(net,N,T');
 % % 
 % 
 % 
@@ -437,15 +549,24 @@ genFunction(pretrain_net_mlp4,classifier_name); % make sure to update Params.Neu
 % % save net net
 % 
 % % classifier name
-%  classifier_name = 'MLP_20210922';
-%  genFunction(net,classifier_name); % make sure to update GetParams
+net_new_7DoF_05252022 = net;
+classifier_name = 'net_new_7DoF_05252022';
+genFunction(net_new_7DoF_05252022,classifier_name); % make sure to update GetParams
 % % % 
 % % % 
 % % % % to restart exp run following lines
-  clear
-  clc
-  cd('/home/ucsf/Projects/bci')
- ExperimentStart('RobotLateralR2G','bravo1',4,1,0)
+ 
+
+% to restart exp run following lines
+clear
+clc
+cd('/home/ucsf/Projects/bci')
+%ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+
+
+ ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+%  cd('/home/ucsf/Projects/bci')
+%  ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 %  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 % %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)

@@ -66,15 +66,31 @@ write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1",
 write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,7,Params.AssistAlpha*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,8,Params.AutoGrasp,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,9,Params.ClickerBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,9,Params.ClickerBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,11,Params.autoCenterDist,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,13,Params.wristStartZ,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,17,Params.graspOrientation,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,18,Params.SwitchBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 
+
+[xa,xb,xc] = doubleToUDP(Params.wl(1));
+[ya,yb,yc] = doubleToUDP(Params.wl(2)); 
+[za,zb,zc] = doubleToUDP(Params.wl(3)) ;
+write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+[xa,xb,xc] = doubleToUDP(Params.wu(1));
+[ya,yb,yc] = doubleToUDP(Params.wu(2)); 
+[za,zb,zc] = doubleToUDP(Params.wu(3)) ;
+write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
+write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 pause(2.0)
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
@@ -88,7 +104,7 @@ TrialBatch = {};
 tlast = GetSecs;
 Cursor.LastPredictTime = tlast;
 Cursor.LastUpdateTime = tlast;
-for Block=1:NumBlocks, % Block Loop
+for Block=1:NumBlocks % Block Loop
     NextTargetID =  Params.TargetOrder(Trial+1);
     % initialize cursor state(s)
     if Params.LongTrial
@@ -179,11 +195,6 @@ for Block=1:NumBlocks, % Block Loop
             fullfile(DataDir,sprintf('Data%04i.mat',Trial)),...
             'TrialData',...
             '-v7.3','-nocompression');
-        
-        
-        
-        % keep track of useful stats and params
-%         SavePersistence(Params,Neuro,KF,TaskFlag)
         
     end % Trial Loop
     

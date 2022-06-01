@@ -68,23 +68,29 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_02022022_AM1';
-%     Params.NeuralNetFunction = 'MLP_PreTrained_9DoF_02022022';
+    Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
     
-%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% Use ensemble neural network
+
+Params.NeuralNetEnsemble = true;
+Params.NeuralNetSoftMaxThresh = 0.450;   
+Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520B';
+Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
@@ -92,11 +98,14 @@ Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.45    ;       
     Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
-    
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
+
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
@@ -106,18 +115,19 @@ Params.NeuralBias = false;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = false;
+Params.ConvNeuralNetFlag =false;
 if Params.ConvNeuralNetFlag
     Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    %Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
-    Params.NeuralNetSoftMaxThresh = 0;
+    Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
 %% ADAPTIVE BASELINE FLAG 
@@ -235,7 +245,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 10;
+Params.MaxReachTime = 8;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -250,23 +260,24 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 1;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
-if Params.RobotMode == 1
-    Params.ValidDir             = [1:7];
-    Params.StartPos             = [0,0, 250];
-    Params.NumTrialsPerBlock    = 7;
-    Params.TargetOrder          = [1:7];
-end
+
+Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+
+Params.ValidDir             = [1:9];
+Params.StartPos             = [90, 0, 250];
+Params.NumTrialsPerBlock    = 7;
+Params.TargetOrder          = [1:7];
+
 
 Params.index = 1;
-Params.clickOrder = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,7,7,7,7,7,7,7,7,7,7,7,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,1,1,1,1,1,1,1,1,1,1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
+Params.clickOrder = [9*ones(50,1),8*ones(50,1)];
 
 % Params.clickOrder = ones(100,1)*7;
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
-Params.limit = [-200, 200; -200 200; 180 450];
+Params.limit = [-100, 300; -200 200; 180 450];
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -294,7 +305,6 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 Params.RobotClicker     = 1;
-Params.ClickerBinNum    = 7;
 Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
@@ -310,6 +320,19 @@ Params.autoCenterDist = 8;
 Params.OperationModeReset = 0;
 Params.wristStartX = 3.1415*10; 
 Params.wristStartZ = 0; 
+
+Params.wristStartX = 3.1415/2*10; 
+Params.wristStartZ = 0; 
 Params.zlim = 7;
+
+Params.SwitchBinNum = 8;
+Params.SwitchBinThresh = 0.7;
+Params.GraspBinNum = 8;
+Params.GraspBinThresh = 0.7;
+Params.graspOrientation     = 1;
+
+Params.wl = [-50, -65, 10];
+Params.wu = [5, -15 45];
+
 
 end % GetParams

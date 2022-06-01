@@ -111,6 +111,13 @@ while True:
 			betaVal = ((val2-1) *(val3 + val4/100))
 			print(betaVal)
 			interface.robotenv.drawBetaLine(betaVal)
+		if val1 == 24:
+			startOrn = val2
+			if startOrn == 1:
+				interface.robotenv.set_robotOrn([math.pi, 0, math.pi])
+			if startOrn == 2:
+				interface.robotenv.set_robotOrn([0, -math.pi/2, 0])
+			interface.render()
 
 
 	if command == 1:	# Set Target
@@ -196,7 +203,7 @@ while True:
 		robot_pos[2] = ((val7-1) *(val8 + val9/100))/ 1000
 		interface.updateRobotPos(robot_pos,key )
 		print(robot_pos)
-		# interface.render()
+		interface.render()
 
 	if command == 15:		#set path coordinates
 		ind = val10
@@ -204,6 +211,14 @@ while True:
 		p[1] = -((val4-1) *(val5 + val6/100))/ 1000
 		p[2] = ((val7-1) *(val8 + val9/100))/ 1000
 		interface.setPath_ES(p, ind)
+
+
+	if command == 16:		#set robot orn
+		ind = val10
+		robot_theta_delta = ((val1-1) *(val2 + val3/100))/100
+		interface.robotenv.set_robotRotation(1, robot_theta_delta)
+		print(robot_theta_delta)
+		interface.render()
 
 sock.shutdown()
 sock.close() 

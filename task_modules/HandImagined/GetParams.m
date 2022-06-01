@@ -243,5 +243,5 @@ Params.angles = [0.1:-delta:-1,-1:delta:0.1, 0.1, 0.1, 0.1];
 Params.angles1d = [0.1:-0.5*delta:-1, -1, -1, -1];
 
 Params.d1 = [0,0,0,0,0,0,0,0,1,1];
-
+Params.showDecodeLines = 0;
 end % GetParams

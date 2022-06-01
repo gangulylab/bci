@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -70,29 +70,32 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.55;       
+    Params.NeuralNetSoftMaxThresh = 0.5;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';
-%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';    
-
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm';
+%  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
-    Params.NeuralNet2SoftMaxThresh = 0.45;       
+    Params.NeuralNet2SoftMaxThresh = 0.4;       
     Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
     
 else
     Params.NeuralNet2SoftMaxThresh = 0;
 end
+
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
@@ -177,7 +180,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;        
-Params.TargetOrder          = [3];  %  Set set 1 or 3 
+Params.TargetOrder          = [1];  %  Set set 1 or 3 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -243,7 +246,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.flipView = 0;  % 0: standard simulation view, 1: real robot view (across table)
+Params.flipView = 1;  % 0: standard simulation view, 1: real robot view (across table)
 
 if Params.flipView
     Params.RobotMode = 12;
