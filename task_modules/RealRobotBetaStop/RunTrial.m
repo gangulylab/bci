@@ -236,9 +236,9 @@ if ~Data.ErrorID
             
             % GET BETA BAND PROJECTED VALUE
             beta_scalar = betaband_output(Params,Neuro)
-            beta_scalar = beta_scalar + 0.05;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-                
+            Data.BetaScalar(1,end+1) = beta_scalar; 
+            
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
                     Click_Decision = 0;
