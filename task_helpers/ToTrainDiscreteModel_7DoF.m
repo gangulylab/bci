@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220525/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220601/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -199,7 +199,7 @@ cd(root_path)
 
 %FOR IMAGINED MOVEMENT DATA, 
 
-foldernames = {'112220', '113015', '113530', '113952','133515','134328','134721','135110'};
+foldernames = {'133926', '134505', '134849', '135218'};
 
 D1=[];
 D2=[];
@@ -259,7 +259,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'140853', '140521', '141429', '142010' ,'142921'};
+foldernames = {'140154', '140444', '140722', '140947'};
 
 cd(root_path)
  
@@ -316,8 +316,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220520/RealRobotBatch';
-foldernames = {'152841', '153118', '153654', '154044', '154318', '154545','155450'};
+root_path = '/home/ucsf/Data/bravo1/20220601/RealRobotBatch';
+foldernames = {'142117','143202', '143438', '143656'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -438,33 +438,33 @@ net = train(net,N,T');
 
 % give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
 % 87 of GetParams
-net_new_7DoF_ZWrist_05252022A.net = net;
+net_new_7DoF_ZWrist_06012022A = net;
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-save net_new_7DoF_ZWrist_05252022A net_new_7DoF_ZWrist_05252022A
-classifier_name = 'MLP_7DoF_ZWrist_05252022'; % enter the name
-genFunction(net_new_7DoF_ZWrist_05252022,classifier_name);
+save net_new_7DoF_ZWrist_06012022A net_new_7DoF_ZWrist_06012022A
+classifier_name = 'MLP_7DoF_ZWrist_06012022C'; % enter the name
+genFunction(net_new_7DoF_ZWrist_06012022A,classifier_name);
 
 
 
 %%%%% CODE SNIPPET FOR UPDATING A PRETRAINED DECODER %%%%%
 % USE 2 BLOCKS OF ONLINE DAA, EACH BLOCK WITH 21 TRIALS %%%
-cd('/home/ucsf/Projects/bci/clicker')
-load net_7DoF_PnP_2022Mar_2norm 
-% load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
-
-%net_7DoF_PnP_2022Mar_2norm.divideParam.trainRatio=0.8;
-%net_7DoF_PnP_2022Mar_2norm.divideParam.valRatio=0.1;
-%net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
-
-
-net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=30;
-
-net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
-
-classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; % enter the name
-genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+% cd('/home/ucsf/Projects/bci/clicker')
+% load net_7DoF_PnP_2022Mar_2norm 
+% % load pretrain_net_mlp % NEW PNP DECODER FOR BATCH UPDATE
+% 
+% %net_7DoF_PnP_2022Mar_2norm.divideParam.trainRatio=0.8;
+% %net_7DoF_PnP_2022Mar_2norm.divideParam.valRatio=0.1;
+% %net_7DoF_PnP_2022Mar_2norm.divideParam.testRatio=0.1;
+% 
+% 
+% net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=30;
+% 
+% net_7DoF_PnP_2022Mar_2norm = train(net_7DoF_PnP_2022Mar_2norm,N,T');
+% 
+% classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; % enter the name
+% genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 
 %%%%% limit the nunber of epochs the NN trains for
 %net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=25
@@ -474,15 +474,15 @@ genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update P
 
 
 %updating the ensemble decoder
-load net_7DoF_PnP4_ensemble_batch_0520A
-net_7DoF_PnP4_ensemble_batch_0520B=net_7DoF_PnP4_ensemble_batch_0520A;
-for i=2:length(net_7DoF_PnP4_ensemble_batch_0520B)
-    net = net_7DoF_PnP4_ensemble_batch_0520B{i};
-    net = train(net,N,T','useParallel','no');
-    net_7DoF_PnP4_ensemble_batch_0520B{i} = net;
-end
-cd('/home/ucsf/Projects/bci/clicker')
-save net_7DoF_PnP4_ensemble_batch_0520B net_7DoF_PnP4_ensemble_batch_0520B
+% load net_7DoF_PnP4_ensemble_batch_0520A
+% net_7DoF_PnP4_ensemble_batch_0520B=net_7DoF_PnP4_ensemble_batch_0520A;
+% for i=2:length(net_7DoF_PnP4_ensemble_batch_0520B)
+%     net = net_7DoF_PnP4_ensemble_batch_0520B{i};
+%     net = train(net,N,T','useParallel','no');
+%     net_7DoF_PnP4_ensemble_batch_0520B{i} = net;
+% end
+% cd('/home/ucsf/Projects/bci/clicker')
+% save net_7DoF_PnP4_ensemble_batch_0520B net_7DoF_PnP4_ensemble_batch_0520B
 % 
 
 
@@ -533,38 +533,38 @@ save net_7DoF_PnP4_ensemble_batch_0520B net_7DoF_PnP4_ensemble_batch_0520B
 % training a simple MLP
 % IMPORTANT, CLICK THE CONFUSION MATRIX BUTTON IN GUI TO VERIFY THAT THE
 % TEST VALIDATION DOESN'T HAVE NaNs AND THAT PERFORMANCE IS REASONABLE
- clear net
- net = patternnet([64 64 64]) ;
- net.performParam.regularization=0.2;
-
-cd('/home/ucsf/Projects/bci/clicker')
-% % load net net
-% % 
- net = train(net,N,T');
-% % 
+%  clear net
+%  net = patternnet([64 64 64]) ;
+%  net.performParam.regularization=0.2;
 % 
-% 
-% %%%%%%% SAVING THE MODEL %%%%%%%%
-% % cd('/home/ucsf/Projects/bci/clicker')
-% % save net net
-% 
-% % classifier name
-net_new_7DoF_05252022 = net;
-classifier_name = 'net_new_7DoF_05252022';
-genFunction(net_new_7DoF_05252022,classifier_name); % make sure to update GetParams
+% cd('/home/ucsf/Projects/bci/clicker')
+% % % load net net
 % % % 
+%  net = train(net,N,T');
 % % % 
-% % % % to restart exp run following lines
- 
-
-% to restart exp run following lines
-clear
-clc
-cd('/home/ucsf/Projects/bci')
-%ExperimentStart('RealRobotBatch','bravo1',4,1,0)
-
-
- ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% % 
+% % 
+% % %%%%%%% SAVING THE MODEL %%%%%%%%
+% % % cd('/home/ucsf/Projects/bci/clicker')
+% % % save net net
+% % 
+% % % classifier name
+% net_new_7DoF_05252022 = net;
+% classifier_name = 'net_new_7DoF_05252022';
+% genFunction(net_new_7DoF_05252022,classifier_name); % make sure to update GetParams
+% % % % 
+% % % % 
+% % % % % to restart exp run following lines
+%  
+% 
+% % to restart exp run following lines
+% clear
+% clc
+% cd('/home/ucsf/Projects/bci')
+% %ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+% 
+% 
+%  ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %  cd('/home/ucsf/Projects/bci')
 %  ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
