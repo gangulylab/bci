@@ -230,18 +230,49 @@ Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of 
 %Target order: 1:thumb, 2:index, 3:middle, 5:ring, 5:pinky, 6:power, ...
 %7:pinch, 8:tripod, 9:wrist add, 10:wrist abd
 
-Params.NumTrialsPerBlock    = 10;
-Params.TargetOrder          = [1:10];
+Params.NumTrialsPerBlock    = 14;
+Params.TargetOrder          = [1:14];
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.handVis = 1;
-Params.ActionDuration = 4;    % seconds
+% Params.ActionDuration = 4;    % seconds
+% 
+% delta = 1/(0.5*Params.ActionDuration*Params.UpdateRate);
+% 
+% Params.angles = [0.1:-delta:-1,-1:delta:0.1, 0.1, 0.1, 0.1];
+% Params.angles1d = [0.1:-0.5*delta:-1, -1, -1, -1];
 
-delta = 1/(0.5*Params.ActionDuration*Params.UpdateRate);
 
-Params.angles = [0.1:-delta:-1,-1:delta:0.1, 0.1, 0.1, 0.1];
-Params.angles1d = [0.1:-0.5*delta:-1, -1, -1, -1];
+Params.CycleDuration    = 1.2;    % seconds
+Params.NumCycles        = 3;
+Params.NumBinsPause     = 0;
 
-Params.d1 = [0,0,0,0,0,0,0,0,1,1];
+% delta = 1/(0.5*Params.CycleDuration*Params.UpdateRate);
+numBins = (Params.CycleDuration + 1/Params.UpdateRate)*Params.UpdateRate;
+
+st = 0.1;
+en = -1;
+d1 = abs(st-en);
+d2 = 2*d1;
+
+delta1 = d1/(numBins - 1);
+delta2 = d2/(numBins - 1);
+
+Params.angles = [];
+Params.angles1d = [];
+
+% full range 0.1: 1
+
+for i = 1:Params.NumCycles
+
+Params.angles = [Params.angles, st:-delta2:en,(en+ delta2):delta2:(st-delta2)];
+
+Params.angles1d = [Params.angles1d, st:delta1:en];
+
+end
+
+Params.angles = [Params.angles, st,st];
+
+Params.d1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 Params.showDecodeLines = 0;
 end % GetParams
