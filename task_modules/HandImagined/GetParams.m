@@ -55,7 +55,7 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 4;
 
 %% Timing
-Params.ScreenRefreshRate = 5; % Hz
+Params.ScreenRefreshRate = 20; % Hz
 Params.UpdateRate = 5; % Hz
 
 %% Discrete Decoder name
@@ -248,7 +248,7 @@ Params.NumCycles        = 3;
 Params.NumBinsPause     = 0;
 
 % delta = 1/(0.5*Params.CycleDuration*Params.UpdateRate);
-numBins = (Params.CycleDuration + 1/Params.UpdateRate)*Params.UpdateRate;
+numBins = (Params.CycleDuration + 1/Params.ScreenRefreshRate)*Params.ScreenRefreshRate;
 
 st = 0.1;
 en = -1;
@@ -265,13 +265,12 @@ Params.angles1d = [];
 
 for i = 1:Params.NumCycles
 
-Params.angles = [Params.angles, st:-delta2:en,(en+ delta2):delta2:(st-delta2)];
-
+Params.angles = [Params.angles, st:-delta2:en,(en+ delta2):delta2:(st-delta2), st,st,st,st];
 Params.angles1d = [Params.angles1d, st:delta1:en];
 
 end
 
-Params.angles = [Params.angles, st,st];
+Params.angles = [Params.angles, st,st,st,st];
 
 Params.d1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 Params.showDecodeLines = 0;

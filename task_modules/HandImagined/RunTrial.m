@@ -212,6 +212,13 @@ if ~Data.ErrorID,
             dt_vec(end+1) = dt;
             Cursor.LastPredictTime = tim;
             Data.Time(1,end+1) = tim;
+
+            [xa,xb,xc] = doubleToUDP(Cursor.State(1)*80);
+            [ya,yb,yc] = doubleToUDP(Cursor.State(2)*80); 
+            [za,zb,zc] = doubleToUDP(Cursor.State(3)*80) ;
+            
+            fwrite(Params.udp, [7, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
+
             
             % grab and process neural data
             if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
@@ -243,12 +250,7 @@ if ~Data.ErrorID,
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
 
-            [xa,xb,xc] = doubleToUDP(Cursor.State(1)*80);
-            [ya,yb,yc] = doubleToUDP(Cursor.State(2)*80); 
-            [za,zb,zc] = doubleToUDP(Cursor.State(3)*80) ;
             
-            fwrite(Params.udp, [7, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
-
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
