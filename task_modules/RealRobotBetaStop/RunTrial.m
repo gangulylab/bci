@@ -275,12 +275,13 @@ if ~Data.ErrorID
                 
             else
                 %send movement input only if correct
-                if ClickToSend == 1
+%                 if ClickToSend == 1
+                    ClickToSend = 1;
                     write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-                else
-                    ClickToSend = 0;
-                    write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-                end
+%                 else
+%                     ClickToSend = 0;
+%                     write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
+%                 end
             end
             
                 

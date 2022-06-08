@@ -76,9 +76,9 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2';
 %  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
 
-    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_06012022'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
-    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_06012022A'));
-    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_06012022A;
+       Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_YGrasp_06082022C'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_YGraspOpen_06082022B'));
+    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_YGraspOpen_06082022B;
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -288,7 +288,7 @@ Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 Params.lowGainMode = 0; 
 
-Params.BetaThreshold = 0;
+Params.BetaThreshold = -4.5;
 
 
 end % GetParams

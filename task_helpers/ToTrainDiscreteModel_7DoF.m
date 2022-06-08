@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220601/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220608/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -199,7 +199,9 @@ cd(root_path)
 
 %FOR IMAGINED MOVEMENT DATA, 
 
-foldernames = {'133926', '134505', '134849', '135218'};
+%foldernames = {'111214', '111833', '112240', '112646','142116','141531','135832','135152'};
+foldernames = {'134135', '134711', '135103', '135428', '135759'};
+
 
 D1=[];
 D2=[];
@@ -259,7 +261,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'140154', '140444', '140722', '140947'};
+foldernames = {};
 
 cd(root_path)
  
@@ -317,7 +319,7 @@ size(D7)
 
 % ROBOT BATCH
 root_path = '/home/ucsf/Data/bravo1/20220601/RealRobotBatch';
-foldernames = {'142117','143202', '143438', '143656'};
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -426,7 +428,7 @@ T(aa(1):aa(end),7)=1;
 
 %if new from scratch
 clear net 
-net = patternnet([64 64 64]) ;
+net = patternnet([48 48 48]) ;
 net.performParam.regularization=0.2;
 
 % if loading from pretrained
@@ -438,13 +440,13 @@ net = train(net,N,T');
 
 % give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
 % 87 of GetParams
-net_new_7DoF_ZWrist_06012022A = net;
+net_new_7DoF_ZWrist_YGraspOpen_06082022B = net;
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-save net_new_7DoF_ZWrist_06012022A net_new_7DoF_ZWrist_06012022A
-classifier_name = 'MLP_7DoF_ZWrist_06012022C'; % enter the name
-genFunction(net_new_7DoF_ZWrist_06012022A,classifier_name);
+save net_new_7DoF_ZWrist_YGraspOpen_06082022B net_new_7DoF_ZWrist_YGraspOpen_06082022B
+classifier_name = 'MLP_7DoF_ZWrist_YGrasp_06082022C'; % enter the name
+genFunction(net_new_7DoF_ZWrist_YGraspOpen_06082022B,classifier_name);
 
 
 
@@ -558,9 +560,10 @@ genFunction(net_new_7DoF_ZWrist_06012022A,classifier_name);
 %  
 % 
 % % to restart exp run following lines
-% clear
-% clc
-% cd('/home/ucsf/Projects/bci')
+% % clear
+% % clc
+% % cd('/home/ucsf/Projects/bci')
+% % ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 % %ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % 
 % 
@@ -572,3 +575,4 @@ genFunction(net_new_7DoF_ZWrist_06012022A,classifier_name);
 % %  ExperimentStart('RobotR2GModeSwitch','bravo1',4,1,0)
 %  
 % %  
+
