@@ -260,15 +260,16 @@ if ~Data.ErrorID
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);               
             RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
-            ClickToSend = RunningMode_ClickDec        
+            ClickToSend = RunningMode_ClickDec;       
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
             
+            Data.BetaScalar(1,end+1) = beta_scalar;
             
             % Imagined Movement
 
             if (beta_scalar >= Params.BetaThreshold)
                 % Command to stop robot
-                CC = "STOP";
+                CC = "STOP"
                 write(Params.udp, [0,25,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 %                 done = 1;
                 
