@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Hand';
+Params.Task = 'HandImagined';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -52,7 +52,7 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 20; % Hz
@@ -203,9 +203,9 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
+Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
-Params.CueTime = 0.75;
+Params.CueTime = 1.5;
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 25 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
@@ -243,7 +243,7 @@ Params.handVis = 1;
 % Params.angles1d = [0.1:-0.5*delta:-1, -1, -1, -1];
 
 
-Params.CycleDuration    = 1.2;    % seconds
+Params.CycleDuration    = 2.6;    % seconds
 Params.NumCycles        = 3;
 Params.NumBinsPause     = 0;
 
