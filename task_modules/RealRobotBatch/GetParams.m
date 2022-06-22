@@ -68,17 +68,16 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-%     Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
-     Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_06012022C'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
-    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_06012022A'));
-    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_06012022A;
+    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_YGrasp_06222022B'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_YGraspOpen_06222022B'));
+    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_YGraspOpen_06222022B;
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
@@ -88,10 +87,9 @@ else
 end
 
 %% Use ensemble neural network
-
-Params.NeuralNetEnsemble = true;
-Params.NeuralNetSoftMaxThresh = 0.450;   
-Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520B';
+Params.NeuralNetEnsemble = false;
+Params.NeuralNetSoftMaxThresh = 0.45;   
+Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
 Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
 
 %% Neural network 2 classifier option
@@ -101,7 +99,7 @@ Params.NeuralNet2Flag = false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.45    ;       
     Params.Use3Features = true;
-    Params.NeuralNet2 = load(fullfile('clicker','net_mlp_7DoF_Feb2022')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2 = load(fullfile('clicker','net_new_7DoF_ZWrist_05252022')); % 7DoF classifier trained in a different way
     Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
 else
     Params.NeuralNet2SoftMaxThresh = 0;

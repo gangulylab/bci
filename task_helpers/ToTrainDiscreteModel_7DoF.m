@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220608/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220622/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -200,7 +200,7 @@ cd(root_path)
 %FOR IMAGINED MOVEMENT DATA, 
 
 %foldernames = {'111214', '111833', '112240', '112646','142116','141531','135832','135152'};
-foldernames = {'134135', '134711', '135103', '135428', '135759'};
+foldernames = {'134346', '134957', '135353', '135757', '141012', '141350', '141709'};
 
 
 D1=[];
@@ -318,8 +318,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220601/RealRobotBatch';
-foldernames = {};
+root_path = '/home/ucsf/Data/bravo1/20220622/RealRobotBatch';
+foldernames = {'142315', '142554', '142838'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -440,13 +440,13 @@ net = train(net,N,T');
 
 % give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
 % 87 of GetParams
-net_new_7DoF_ZWrist_YGraspOpen_06082022B = net;
+net_new_7DoF_ZWrist_YGraspOpen_06222022B = net;
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-save net_new_7DoF_ZWrist_YGraspOpen_06082022B net_new_7DoF_ZWrist_YGraspOpen_06082022B
-classifier_name = 'MLP_7DoF_ZWrist_YGrasp_06082022C'; % enter the name
-genFunction(net_new_7DoF_ZWrist_YGraspOpen_06082022B,classifier_name);
+save net_new_7DoF_ZWrist_YGraspOpen_06222022B net_new_7DoF_ZWrist_YGraspOpen_06222022B
+classifier_name = 'MLP_7DoF_ZWrist_YGrasp_06222022B'; % enter the name
+genFunction(net_new_7DoF_ZWrist_YGraspOpen_06222022B,classifier_name);
 
 
 

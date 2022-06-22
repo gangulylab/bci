@@ -53,7 +53,7 @@ TargetID = 0; % Target that cursor is in, 0 for no targets
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Lips', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
+TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Grasp Extension', 'Right Wrist', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
 pause()
