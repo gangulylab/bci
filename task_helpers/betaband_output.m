@@ -8,12 +8,11 @@ else
     X = Neuro.FilteredFeatures;
 end
 
-X = X(385:512);
+X = X(513:640);
 
 
 % get PC wts
-beta_wts = Params.BetaWts.betawts;
-beta_mean = Params.BetaMean.betamean;
+beta_wts = Params.BetaWts.betawts_stop;
 
 %%% get projected value
 %if Params.ControlMode == 2
@@ -33,6 +32,6 @@ beta_mean = Params.BetaMean.betamean;
 if abs(beta_scalar)>Params.BetaBarValue
     beta_scalar = sign(beta_scalar)*Params.BetaBarValue;
 end
-
-beta_scalar
+% 
+% beta_scalar
 end

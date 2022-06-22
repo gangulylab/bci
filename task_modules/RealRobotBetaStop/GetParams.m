@@ -143,7 +143,7 @@ Params.BetaBarValue = 20; % projected beta band value
 
 %% IMPORT PC WEIGHTS AND MEAN FOR BETA BAND ANALYSIS
 
-Params.BetaWts = load(fullfile('clicker','betawts'));
+Params.BetaWts = load(fullfile('clicker','betawts_stop'));
 Params.BetaMean = load(fullfile('clicker','betamean'));
 %% Targets: radial layout
 
