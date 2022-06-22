@@ -71,14 +71,21 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.5;       
+    Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022Feb_2norm_0330_pm2';
-%  Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
+%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
+
+    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_YGrasp_06222022B'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_YGraspOpen_06222022B'));
+    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_YGraspOpen_06222022B;
+    
+%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
-
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer
@@ -226,7 +233,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 10;
+Params.MaxReachTime = 20;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -284,7 +291,7 @@ Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 Params.lowGainMode = 0; 
 
-Params.BetaThreshold = 5.0;
+Params.BetaThreshold = -1;
 
 
 end % GetParams

@@ -28,10 +28,13 @@ class HandEnv(object):
 
 		print(action)
 		print(s)
+
+		l = 0.6
+
 		if action == 1:		# thumb
-			p.resetJointState(self.handId, 25, s+0.1)
-			p.resetJointState(self.handId, 26, s+ 0.5)
-			p.resetJointState(self.handId, 27, s+ 0.2)
+			p.resetJointState(self.handId, 25, l*s+0.1)
+			p.resetJointState(self.handId, 26, l*s+ 0.5)
+			p.resetJointState(self.handId, 27, l*s+ 0.2)
 
 		if action == 2:		# index
 			p.resetJointState(self.handId, 21, s)
@@ -102,7 +105,6 @@ class HandEnv(object):
 			p.resetJointState(self.handId, 26, 0)
 			p.resetJointState(self.handId, 27, s+ 0.2)
 
-
 			p.resetJointState(self.handId, 20, 0.4+0.2*s )
 			p.resetJointState(self.handId, 21, s)
 			p.resetJointState(self.handId, 22, s)
@@ -118,6 +120,27 @@ class HandEnv(object):
 		
 		elif action == 10:  #WRIST ABDUCTION (IN)
 			p.resetJointState(self.handId, 1, s*0.5)
+
+		elif action == 11:  #WRIST FLEX
+			p.resetJointState(self.handId, 2, -s*0.5)
+		
+		elif action == 12:  #WRIST EXTEND
+			p.resetJointState(self.handId, 2, s*0.5)
+
+		elif action == 13:  # WRIST SUPINATE
+			p.resetJointState(self.handId, 25, 0)
+			p.resetJointState(self.handId, 26,  0)
+			p.resetJointState(self.handId, 27,  0)
+			p.resetJointState(self.handId, 3, 2*s+1)
+
+
+		elif action == 14:  #WRIST PRONATE
+			p.resetJointState(self.handId, 25, 0)
+			p.resetJointState(self.handId, 26, 0)
+			p.resetJointState(self.handId, 27, 0)
+			p.resetJointState(self.handId, 3, -2*s + 1)
+
+
 		
 		
 
@@ -150,7 +173,7 @@ class HandEnv(object):
 		p.resetJointState(self.handId, 21, 0)
 		p.resetJointState(self.handId, 22, 0)
 		p.resetJointState(self.handId, 23, 0)
-
+		p.resetJointState(self.handId, 24, 0.0)
 		p.resetJointState(self.handId, 25, 0.1)
 		p.resetJointState(self.handId, 26, 0.5)
 		p.resetJointState(self.handId, 27, 0.2)
@@ -161,6 +184,7 @@ class HandEnv(object):
 
 
 	def displayDecodes(self):
+		self.reset()
 		c = [1, 1, 1]
 		t = 0
 		d = 10
@@ -277,7 +301,16 @@ class HandEnv(object):
 			p.addUserDebugText('WRIST OUT', [-0.7,0.25,0.2],  [0,0,c], 12)
 		elif cue == 10:
 			p.addUserDebugText('WRIST IN', [-0.7,0.25,0.2],  [0,0,c], 12)
+		elif cue == 11:
+			p.addUserDebugText('WRIST FLEX', [-0.7,0.25,0.2],  [0,0,c], 12)
+		elif cue == 12:
+			p.addUserDebugText('WRIST EXTEND', [-0.75,0.25,0.2],  [0,0,c], 12)
+		elif cue == 13:
+			p.addUserDebugText('WRIST PRONATE', [-0.75,0.25,0.2],  [0,0,c], 12)
+		elif cue == 14:
+			p.addUserDebugText('WRIST SUPINATE', [-0.75,0.25,0.2],  [0,0,c], 12)
 
+		self.setGrasp(cue, 0.1)
 		if self.showDecodes:
 			self.displayDecodes()
 

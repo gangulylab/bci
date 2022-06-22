@@ -236,9 +236,9 @@ if ~Data.ErrorID
             
             % GET BETA BAND PROJECTED VALUE
             beta_scalar = betaband_output(Params,Neuro)
-            beta_scalar = beta_scalar + 0.05;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-                
+            Data.BetaScalar(1,end+1) = beta_scalar; 
+            
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
                     Click_Decision = 0;
@@ -260,26 +260,28 @@ if ~Data.ErrorID
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);               
             RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
-            ClickToSend = RunningMode_ClickDec        
+            ClickToSend = RunningMode_ClickDec;       
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
             
+            Data.BetaScalar(1,end+1) = beta_scalar;
             
             % Imagined Movement
 
             if (beta_scalar >= Params.BetaThreshold)
                 % Command to stop robot
-                CC = "STOP";
+                CC = "STOP"
                 write(Params.udp, [0,25,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 %                 done = 1;
                 
             else
                 %send movement input only if correct
-                if ClickToSend == 1
+%                 if ClickToSend == 1
+                    ClickToSend = 1;
                     write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-                else
-                    ClickToSend = 0;
-                    write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-                end
+%                 else
+%                     ClickToSend = 0;
+%                     write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
+%                 end
             end
             
                 
