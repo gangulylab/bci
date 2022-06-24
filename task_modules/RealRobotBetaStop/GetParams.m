@@ -233,7 +233,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 20;
+
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -293,5 +293,13 @@ Params.lowGainMode = 0;
 
 Params.BetaThreshold = -1;
 
+Params.PathLim = [-0.15, -0.55];
+Params.NumCycles = 3;
 
+Params.StopSignal = 1;
+Params.StopSignalBins = 10;
+Params.StopLocation = mean(Params.PathLim);
+
+
+Params.MaxReachTime =Params.NumCycles*20;
 end % GetParams

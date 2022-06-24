@@ -7,6 +7,7 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
+
 beta_scalar = 0;
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
 pause()
@@ -40,19 +41,10 @@ if Params.BLACKROCK
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
 
-% reset cursor
-% if Params.LongTrial
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
-% else
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.StartPos;
-% end
-%     Cursor.IntendedState = [0,0,0,0,1]';
-
-
-Cursor.ClickState = 0;
-Cursor.ClickDistance = 0;
+Cursor.State            = [0;0;0;0;0;0];
+Cursor.State(1)         = Params.PathLim(1);
+Cursor.ClickState       = 0;
+Cursor.ClickDistance    = 0;
 inTargetOld = 0;
 
 %% Instructed Delay
@@ -191,6 +183,13 @@ if ~Data.ErrorID
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
     temp_dir = [0,0,0];
     ClickToSend = 0;
+      
+    direction   =   -1;
+    nLength     =   1;
+    signal      =   0;
+    signalDone = 0;
+
+    write(Params.udp, [0, 30,0,0,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort); % send vel
     
     while ~done
         % Update Time & Position
@@ -236,8 +235,9 @@ if ~Data.ErrorID
             
             % GET BETA BAND PROJECTED VALUE
             beta_scalar = betaband_output(Params,Neuro)
+%             beta_scalar = -10;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            Data.BetaScalar(1,end+1) = beta_scalar; 
+
             
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -263,7 +263,10 @@ if ~Data.ErrorID
             ClickToSend = RunningMode_ClickDec;       
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
             
-            Data.BetaScalar(1,end+1) = beta_scalar;
+            Data.BetaScalar(1,end+1)    = beta_scalar;
+            Data.Direction(1,end+1)     = direction;
+            Data.StopSignal(1,end+1)    = signal;
+            Data.CursorState(:,end+1) = Cursor.State;
             
             % Imagined Movement
 
@@ -274,19 +277,71 @@ if ~Data.ErrorID
 %                 done = 1;
                 
             else
-                %send movement input only if correct
-%                 if ClickToSend == 1
-                    ClickToSend = 1;
-                    write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-%                 else
-%                     ClickToSend = 0;
-%                     write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
-%                 end
+
+
+            if direction == -1
+                ClickToSend = 1;
+            elseif direction == 1
+                ClickToSend = 3;
             end
+
+            write(Params.udp, [7, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
+
+            end
+
+            f = read(Params.udp, 10, "str");
+            
+            Cursor.State(1)  = f   ;
+
+
+% Change red/green signal box
+        if Params.StopSignal
+           if signal == 0 
+               if (direction == -1) && (f < Params.StopLocation) && ~signalDone
+                   write(Params.udp, [0, 30,1,0,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort); % send vel
+
+                   signal = 1;
+                   signalCount = 1;
+                   signalDone = 1;
+               elseif  (direction == 1) && (f > Params.StopLocation) && ~signalDone
+                   write(Params.udp, [0, 30,1,0,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort); % send vel
+
+                   signal = 1;
+                   signalCount = 1;
+               end
+           elseif signal == 1
+                if signalCount < Params.StopSignalBins
+                    signalCount = signalCount + 1;
+                else
+                   write(Params.udp, [0, 30,0,0,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort); % send vel
+
+                    signal = 0;
+                    signalDone = 1;
+                end
+           end
+        end
+        
+% Change directions
+
+        if (direction == -1) && (f < Params.PathLim(2))
+            signalDone = 0;
+            direction = 1;
+            nLength = nLength + 1;
+           
+        elseif (direction == 1) && (f > Params.PathLim(1))
+            signalDone = 0;
+            direction = -1;
+            nLength = nLength + 1;
+        end
+            
+        if nLength > 2*Params.NumCycles
+            done = 1;
+            
+        end
             
                 
-            %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
-            %%%%% DIRECTION
+        %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
+        %%%%% DIRECTION
 
             
         % end if takes too long
