@@ -82,9 +82,9 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_YGrasp_06242022'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
-    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_YGraspOpen_06242022'));
-    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_YGraspOpen_06242022;
+    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_06292022C'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_06292022C'));
+    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_06292022C;
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    

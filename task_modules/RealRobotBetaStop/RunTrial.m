@@ -294,16 +294,17 @@ if ~Data.ErrorID
             Cursor.State(1)  = f   ;
 
 
+
 % Change red/green signal box
         if Params.StopSignal
            if signal == 0 
-               if (direction == -1) && (f < Params.StopLocation) && ~signalDone
+               if (direction == -1) && (abs(f - Params.StopLocation) < .03) && ~signalDone
                    write(Params.udp, [0, 30,1,0,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort); % send vel
 
                    signal = 1;
                    signalCount = 1;
                    signalDone = 1;
-               elseif  (direction == 1) && (f > Params.StopLocation) && ~signalDone
+               elseif  (direction == 1) && (abs(f - Params.StopLocation) < .03) && ~signalDone
                    write(Params.udp, [0, 30,1,0,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort); % send vel
 
                    signal = 1;
