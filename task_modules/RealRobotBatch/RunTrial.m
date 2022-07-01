@@ -53,7 +53,7 @@ TargetID = 0; % Target that cursor is in, 0 for no targets
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Grasp Extension', 'Right Wrist', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
+TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Right Wrist', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
 pause()
@@ -298,7 +298,12 @@ if ~Data.ErrorID
                 
                 RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
-                ClickToSend = RunningMode_ClickDec;        
+                ClickToSend = RunningMode_ClickDec;   
+                ClickToSend
+                if ClickToSend ~= Data.TargetID
+                    ClickToSend = 0;
+                end
+                
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
                 A = Params.dA;
@@ -371,7 +376,7 @@ if ~Data.ErrorID
 %             [xa,xb,xc] = doubleToUDP(Cursor.State(4));
 %             [ya,yb,yc] = doubleToUDP(Cursor.State(5)); 
 %             [za,zb,zc] = doubleToUDP(Cursor.State(6)) ;
-            ClickToSend
+            
             write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;
