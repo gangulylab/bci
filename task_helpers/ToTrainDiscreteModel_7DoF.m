@@ -576,3 +576,277 @@ genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
 %  
 % %  
 
+%% TO UPDATE CLASSIFIER USING POOLING ON 4 FEATURES with low gamma
+
+clc;clear
+% enter the root path from the Data folder
+root_path = '/home/ucsf/Data/bravo1/20220701/Robot3DArrow';
+% enter the folder names for the Task. These can be increased as more data
+% is collected. For exaple: 
+
+% root_path = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220323\Robot3DArrow\'
+
+
+
+cd(root_path)
+
+%FOR IMAGINED MOVEMENT DATA, 
+
+%foldernames = {'111214', '111833', '112240', '112646','142116','141531','135832','135152'};
+foldernames = {'132653', '133226', '133609', '133932', '134335', '134718'};
+
+
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+D5=[];
+D6=[];
+D7=[];
+for ii=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{ii},'Imagined');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [ find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        
+        %get the pooled data
+        new_temp=[];
+        [xx yy] = size(TrialData.Params.ChMap);
+        for k=1:size(temp,2)
+            tmp1 = temp(129:256,k);tmp1 = tmp1(TrialData.Params.ChMap);
+            tmp2 = temp(513:640,k);tmp2 = tmp2(TrialData.Params.ChMap);
+            tmp3 = temp(769:896,k);tmp3 = tmp3(TrialData.Params.ChMap);
+            tmp4 = temp(641:768,k);tmp4 = tmp4(TrialData.Params.ChMap);%low gamma
+            pooled_data=[];
+            for i=1:2:xx
+                for j=1:2:yy
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    lg = (tmp4(i:i+1,j:j+1));lg=mean(lg(:));
+                    pooled_data = [pooled_data; delta; beta ;lg;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp_data=new_temp;
+
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        elseif TrialData.TargetID == 5
+            D5 = [D5 temp];
+        elseif TrialData.TargetID == 6
+            D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
+        end
+    end
+end
+
+% FIXED ARROW
+foldernames = {'135514', '135809'};
+
+cd(root_path)
+ 
+for ii=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [ find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        
+        
+    %get the pooled data
+        new_temp=[];
+        [xx yy] = size(TrialData.Params.ChMap);
+        for k=1:size(temp,2)
+            tmp1 = temp(129:256,k);tmp1 = tmp1(TrialData.Params.ChMap);
+            tmp2 = temp(513:640,k);tmp2 = tmp2(TrialData.Params.ChMap);
+            tmp3 = temp(769:896,k);tmp3 = tmp3(TrialData.Params.ChMap);
+            tmp4 = temp(641:768,k);tmp4 = tmp4(TrialData.Params.ChMap);%low gamma
+            pooled_data=[];
+            for i=1:2:xx
+                for j=1:2:yy
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    lg = (tmp4(i:i+1,j:j+1));lg=mean(lg(:));
+                    pooled_data = [pooled_data; delta; beta ;lg;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp_data=new_temp;
+        
+        
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        elseif TrialData.TargetID == 5
+            D5 = [D5 temp];
+        elseif TrialData.TargetID == 6
+            D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
+        end
+    end
+end
+
+size(D7)
+
+% ROBOT BATCH
+root_path = '/home/ucsf/Data/bravo1/20220701/RealRobotBatch';
+foldernames = {'140416', '140855', '141151', '141914', '142150', '142455', '142809', '143059'};
+
+for ii=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [ find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        
+        
+%get the pooled data
+        new_temp=[];
+        [xx yy] = size(TrialData.Params.ChMap);
+        for k=1:size(temp,2)
+            tmp1 = temp(129:256,k);tmp1 = tmp1(TrialData.Params.ChMap);
+            tmp2 = temp(513:640,k);tmp2 = tmp2(TrialData.Params.ChMap);
+            tmp3 = temp(769:896,k);tmp3 = tmp3(TrialData.Params.ChMap);
+            tmp4 = temp(641:768,k);tmp4 = tmp4(TrialData.Params.ChMap);%low gamma
+            pooled_data=[];
+            for i=1:2:xx
+                for j=1:2:yy
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    lg = (tmp4(i:i+1,j:j+1));lg=mean(lg(:));
+                    pooled_data = [pooled_data; delta; beta ;lg;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp_data=new_temp;
+        
+        
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        elseif TrialData.TargetID == 5
+            D5 = [D5 temp];
+        elseif TrialData.TargetID == 6
+            D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
+        end
+    end
+end
+size(D7)
+
+clear condn_data
+% combing delta beta and high gamma
+idx=[1:size(D1,1)];
+condn_data{1}=[D1(idx,:) ]'; 
+condn_data{2}= [D2(idx,:)]'; 
+condn_data{3}=[D3(idx,:)]'; 
+condn_data{4}=[D4(idx,:)]'; 
+condn_data{5}=[D5(idx,:)]'; 
+condn_data{6}=[D6(idx,:)]'; 
+condn_data{7}=[D7(idx,:)]'; 
+
+
+% 2norm
+for i=1:length(condn_data)
+   tmp = condn_data{i}; 
+   for j=1:size(tmp,1)
+       tmp(j,:) = tmp(j,:)./norm(tmp(j,:));
+   end
+   condn_data{i}=tmp;
+end
+
+
+A = condn_data{1};
+B = condn_data{2};
+C = condn_data{3};
+D = condn_data{4};
+E = condn_data{5};
+F = condn_data{6};
+G = condn_data{7};
+
+clear N
+N = [A' B' C' D' E' F' G'];
+T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
+    5*ones(size(E,1),1);6*ones(size(F,1),1);7*ones(size(G,1),1)];
+
+T = zeros(size(T1,1),7);
+[aa bb]=find(T1==1);
+T(aa(1):aa(end),1)=1;
+[aa bb]=find(T1==2);
+T(aa(1):aa(end),2)=1;
+[aa bb]=find(T1==3);
+T(aa(1):aa(end),3)=1;
+[aa bb]=find(T1==4);
+T(aa(1):aa(end),4)=1;
+[aa bb]=find(T1==5);
+T(aa(1):aa(end),5)=1;
+[aa bb]=find(T1==6);
+T(aa(1):aa(end),6)=1;
+[aa bb]=find(T1==7);
+T(aa(1):aa(end),7)=1;
+
+
+%%%%%% UPDATING THE DECODER WEIGHTS %%%%%
+
+%if new from scratch
+%clear net 
+%net = patternnet([64 64 64]) ;
+%net.performParam.regularization=0.2;
+
+% if loading from pretrained
+load net_7DoF_PnP_lg 
+net = net_7DoF_PnP_lg;
+
+
+net = train(net,N,T');
+
+% save the weights
+cd('/home/ucsf/Projects/bci/clicker')
+classifier_name = 'XX'; % enter the name
+genFunction(net,classifier_name);
+
+
+
+
+
+
+
+
+
+
+
