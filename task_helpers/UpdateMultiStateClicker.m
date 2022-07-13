@@ -18,7 +18,11 @@ else,
             X = X(:);
             X = X(129:end);% all features except delta phase
             %X = X(769:end);% only hG
-            idx=[1:128 385:512 641:768];
+            if Params.Use3Features
+                idx=[1:128 385:512 641:768];
+            elseif Params.Use4Features
+                idx=[1:128 385:512 513:640 641:768];
+            end
             X=X(idx);
             
             % 2-norm
@@ -49,26 +53,55 @@ else,
             [xx yy] = size(chmap);
             X = Neuro.FilteredFeatures;
             X = X(:);
-            feat_idx = [129:256 513:640 769:896];
-            X = X(feat_idx);
-            
-            % pooling
-            f1 = (X(1:128));
-            f2 = (X(129:256));
-            f3 = (X(257:384));
-            f1 = f1(chmap);
-            f2 = f2(chmap);
-            f3 = f3(chmap);
-            pooled_data=[];
-            for i=1:2:xx
-                for j=1:2:yy
-                    delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
-                    beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
-                    hg = (f3(i:i+1,j:j+1));hg=mean(hg(:));
-                    pooled_data = [pooled_data; delta; beta ;hg];
+            if Params.Use3Features
+                feat_idx = [129:256 513:640 769:896];
+                X = X(feat_idx);
+
+                % pooling
+                f1 = (X(1:128));
+                f2 = (X(129:256));
+                f3 = (X(257:384));
+
+                f1 = f1(chmap);
+                f2 = f2(chmap);
+                f3 = f3(chmap);
+                pooled_data=[];
+                for i=1:2:xx
+                    for j=1:2:yy
+                        delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
+                        beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
+                        hg = (f3(i:i+1,j:j+1));hg=mean(hg(:));
+                        pooled_data = [pooled_data; delta; beta ;hg];
+                    end
                 end
+                X = pooled_data;
+
+            elseif Params.Use4Features
+                feat_idx = [129:256 513:640 641:768 769:896];
+                X = X(feat_idx);
+
+                % pooling
+                f1 = (X(1:128));
+                f2 = (X(129:256));
+                f3 = (X(257:384));
+                f4 = (X(385:512));
+
+                f1 = f1(chmap);
+                f2 = f2(chmap);
+                f3 = f3(chmap);
+                f4 = f4(chmap);
+                pooled_data=[];
+                for i=1:2:xx
+                    for j=1:2:yy
+                        delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
+                        beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
+                        lg = (f3(i:i+1,j:j+1));lg=mean(lg(:));
+                        hg = (f4(i:i+1,j:j+1));hg=mean(hg(:));
+                        pooled_data = [pooled_data; delta; beta ;lg;hg];
+                    end
+                end
+                X = pooled_data;
             end
-            X = pooled_data;
             
             % 2-norm
             if Params.Norm2
@@ -76,8 +109,8 @@ else,
             end
             
             % eval the classifier
-            %Decision_Prob = feval(Params.NeuralNetFunction,X);
-            Decision_Prob = Params.NeuralNet(X);
+            Decision_Prob = feval(Params.NeuralNetFunction,X);
+            %Decision_Prob = Params.NeuralNet(X);
             
             if Params.NeuralBias
                 Decision_Prob(Params.NeuralNetBiasDirection) = ...
