@@ -72,13 +72,18 @@ Params.MultiDecisionBoundary = 0;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
-    Params.Use3Features = true;
-%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
-%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
-    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_06292022C'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
-    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_06292022C'));
-    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_06292022C;
+    Params.Use3Features = false;
+    Params.Use4Features = true; % for low gamma
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg';
     
+%     Params.NeuralNetSoftMaxThresh = 0.50;       
+%     Params.Use3Features = true;
+% %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
+% %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
+%     Params.NeuralNetFunction =  'MLP_7DoF_PnP_2022July_lg'; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+%     Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_06292022C'));
+%     Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_06292022C;
+%     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
     %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
@@ -138,7 +143,8 @@ Params.ChPooling = true;
 Params.BetaBarHeight = 300; % pixels
 Params.BetaBarValue = 20; % projected beta band value
 
-
+% Params.MaxValue = 20;
+% Params.MinValue = -20;
 
 %% IMPORT PC WEIGHTS AND MEAN FOR BETA BAND ANALYSIS
 
@@ -290,7 +296,7 @@ Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 Params.lowGainMode = 0; 
 
-Params.BetaThreshold = 0;
+Params.BetaThreshold = 0.5;
 
 Params.PathLim = [-0.15, -0.55];
 Params.NumCycles = 2;

@@ -97,9 +97,9 @@ end
 
 %% Use ensemble neural network
 Params.NeuralNetEnsemble = false;
-Params.NeuralNetSoftMaxThresh = 0.45;   
-Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
-Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+% Params.NeuralNetSoftMaxThresh = 0.45;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer

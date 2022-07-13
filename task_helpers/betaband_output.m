@@ -29,9 +29,12 @@ beta_wts = Params.BetaWts.betawts_stop;
 %     beta_scalar = sign(beta_scalar)*Params.BetaBarValue;
 % end
 
-if abs(beta_scalar)>Params.BetaBarValue
-    beta_scalar = sign(beta_scalar)*Params.BetaBarValue;
-end
+% if abs(beta_scalar)>Params.BetaBarValue
+%     beta_scalar = sign(beta_scalar)*Params.BetaBarValue;
+% end
 % 
-% beta_scalar
+max_val = 20;
+min_val = -20;
+
+beta_scalar = (beta_scalar - min_val)/(max_val - min_val);
 end
