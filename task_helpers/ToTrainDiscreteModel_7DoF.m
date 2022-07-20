@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220701/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220720/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -200,7 +200,7 @@ cd(root_path)
 %FOR IMAGINED MOVEMENT DATA, 
 
 %foldernames = {'111214', '111833', '112240', '112646','142116','141531','135832','135152'};
-foldernames = {'132653', '133226', '133609', '133932', '134335', '134718'};
+foldernames = {};
 
 
 D1=[];
@@ -261,7 +261,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'135514', '135809'};
+foldernames = {};
 
 cd(root_path)
  
@@ -318,8 +318,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220701/RealRobotBatch';
-foldernames = {'140416', '140855', '141151', '141914', '142150', '142455', '142809', '143059'};
+root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotBatch';
+foldernames = {'112447', '112720', '113050', '113336'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -427,26 +427,26 @@ T(aa(1):aa(end),7)=1;
 %%%%%% NEW CODE SNIPPET FOR CREATING A DECODER FROM SCRATCH 05/25/2005 %%%%%
 
 %if new from scratch
-clear net 
-net = patternnet([48 48 48]) ;
-net.performParam.regularization=0.2;
-
-% if loading from pretrained
-%load net_new_7DoF_ZWrist_05252022 
-%net = net_new_7DoF_ZWrist_05252022.net 
-
-
-net = train(net,N,T');
-
-% give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
-% 87 of GetParams
-net_new_7DoF_ZWrist_07012022D = net;
-
-% save the weights
-cd('/home/ucsf/Projects/bci/clicker')
-save net_new_7DoF_ZWrist_07012022D net_new_7DoF_ZWrist_07012022D
-classifier_name = 'MLP_7DoF_ZWrist_07012022D'; % enter the name
-genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
+% clear net 
+% net = patternnet([48 48 48]) ;
+% net.performParam.regularization=0.2;
+% 
+% % if loading from pretrained
+% %load net_new_7DoF_ZWrist_05252022 
+% %net = net_new_7DoF_ZWrist_05252022.net 
+% 
+% 
+% net = train(net,N,T');
+% 
+% % give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
+% % 87 of GetParams
+% net_new_7DoF_ZWrist_07012022D = net;
+% 
+% % save the weights
+% cd('/home/ucsf/Projects/bci/clicker')
+% save net_new_7DoF_ZWrist_07012022D net_new_7DoF_ZWrist_07012022D
+% classifier_name = 'MLP_7DoF_ZWrist_07012022D'; % enter the name
+% genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
 
 
 
@@ -467,15 +467,15 @@ genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
 % 
 % classifier_name = 'MLP_7DoF_PnP_2022Mar_2norm_0518_pm1'; % enter the name
 % genFunction(net_7DoF_PnP_2022Mar_2norm,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
+% 
+% %%%% limit the nunber of epochs the NN trains for
+% net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=25
+% 
+% %%%% lower the learning rate of the NN weight change
+% net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
 
-%%%%% limit the nunber of epochs the NN trains for
-%net_7DoF_PnP_2022Mar_2norm.trainParam.epochs=25
-
-%%%%% lower the learning rate of the NN weight change
-%net_7DoF_PnP_2022Mar_2norm.trainParam.sigma=5e-7
-
-
-%updating the ensemble decoder
+% 
+% updating the ensemble decoder
 % load net_7DoF_PnP4_ensemble_batch_0520A
 % net_7DoF_PnP4_ensemble_batch_0520B=net_7DoF_PnP4_ensemble_batch_0520A;
 % for i=2:length(net_7DoF_PnP4_ensemble_batch_0520B)
@@ -485,7 +485,7 @@ genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
 % end
 % cd('/home/ucsf/Projects/bci/clicker')
 % save net_7DoF_PnP4_ensemble_batch_0520B net_7DoF_PnP4_ensemble_batch_0520B
-% 
+
 
 
 % 
@@ -580,7 +580,7 @@ genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220701/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220720/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -593,7 +593,7 @@ cd(root_path)
 %FOR IMAGINED MOVEMENT DATA, 
 
 %foldernames = {'111214', '111833', '112240', '112646','142116','141531','135832','135152'};
-foldernames = {'132653', '133226', '133609', '133932', '134335', '134718'};
+foldernames = {};
 
 
 D1=[];
@@ -654,7 +654,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'135514', '135809'};
+foldernames = {};
 
 cd(root_path)
  
@@ -690,7 +690,7 @@ for ii=1:length(foldernames)
             new_temp= [new_temp pooled_data];
         end
         temp_data=new_temp;
-        
+        temp = temp_data;
         
         if TrialData.TargetID == 1
             D1 = [D1 temp];
@@ -713,8 +713,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220701/RealRobotBatch';
-foldernames = {'140416', '140855', '141151', '141914', '142150', '142455', '142809', '143059'};
+root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotBatch';
+foldernames = {'134560', '134858', '135135', '135418'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -748,7 +748,7 @@ for ii=1:length(foldernames)
             new_temp= [new_temp pooled_data];
         end
         temp_data=new_temp;
-        
+        temp = temp_data;
         
         if TrialData.TargetID == 1
             D1 = [D1 temp];
@@ -837,7 +837,7 @@ net = train(net,N,T');
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-classifier_name = 'XX'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022July_lg_0720_PM'; % enter the name
 genFunction(net,classifier_name);
 
 

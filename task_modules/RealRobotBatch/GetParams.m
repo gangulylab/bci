@@ -52,7 +52,7 @@ Params.PixelLength = 0.05;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
-Params.FeatureBufferSize = 4;
+Params.FeatureBufferSize = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -70,10 +70,10 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.50;       
+    Params.NeuralNetSoftMaxThresh = 0.35;       
     Params.Use3Features = false;
     Params.Use4Features = true; % for low gamma
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0720_PM';%'MLP_7DoF_PnP_2022July_lg';
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
@@ -90,9 +90,10 @@ end
 
 %% Use ensemble neural network
 Params.NeuralNetEnsemble = false;
-Params.NeuralNetSoftMaxThresh = 0.45;   
-Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
-Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+% Params.NeuralNetSoftMaxThresh = 0.45;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+
 
 %% Neural network 2 classifier option
 % Trained in a different way using different optimizer

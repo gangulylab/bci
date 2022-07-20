@@ -53,7 +53,7 @@ TargetID = 0; % Target that cursor is in, 0 for no targets
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Right Wrist', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
+TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Lips', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
 pause()
@@ -300,9 +300,9 @@ if ~Data.ErrorID
 
                 ClickToSend = RunningMode_ClickDec;   
                 ClickToSend
-                if ClickToSend ~= Data.TargetID
-                    ClickToSend = 0;
-                end
+%                 if ClickToSend ~= Data.TargetID
+%                     ClickToSend = 0;
+%                 end
                 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
