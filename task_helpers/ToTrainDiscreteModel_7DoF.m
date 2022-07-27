@@ -769,6 +769,58 @@ for ii=1:length(foldernames)
 end
 size(D7)
 
+
+
+% REAL ROBOT PATH
+root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotPath';
+foldernames = {'142134', '142520', '143141', '144433'};
+
+for ii=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = [ find(TrialData.TaskState==3)];
+        temp = cell2mat(features(kinax));
+        
+        
+        % get the pooled data
+        new_temp=[];
+        [xx yy] = size(TrialData.Params.ChMap);
+        for k=1:size(temp,2)
+            tmp1 = temp(129:256,k);tmp1 = tmp1(TrialData.Params.ChMap);
+            tmp2 = temp(513:640,k);tmp2 = tmp2(TrialData.Params.ChMap);
+            tmp3 = temp(769:896,k);tmp3 = tmp3(TrialData.Params.ChMap);
+            tmp4 = temp(641:768,k);tmp4 = tmp4(TrialData.Params.ChMap);%low gamma
+            pooled_data=[];
+            for i=1:2:xx
+                for j=1:2:yy
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    lg = (tmp4(i:i+1,j:j+1));lg=mean(lg(:));
+                    pooled_data = [pooled_data; delta; beta ;lg;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp_data=new_temp;
+        temp = temp_data;
+        
+        % select bins in trial for each directions
+        D1 = [D1 temp(:,TrialData.CorrectDecode == 1)];
+        D2 = [D2 temp(:,TrialData.CorrectDecode == 2)];
+        D3 = [D3 temp(:,TrialData.CorrectDecode == 3)];
+        D4 = [D4 temp(:,TrialData.CorrectDecode == 4)];
+        D5 = [D5 temp(:,TrialData.CorrectDecode == 5)];
+        D6 = [D6 temp(:,TrialData.CorrectDecode == 6)];
+        D7 = [D7 temp(:,TrialData.CorrectDecode == 7)];
+    end
+end
+size(D7)
+
 clear condn_data
 % combing delta beta and high gamma
 idx=[1:size(D1,1)];
