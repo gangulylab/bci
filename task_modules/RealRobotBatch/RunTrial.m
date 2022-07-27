@@ -299,11 +299,27 @@ if ~Data.ErrorID
                 RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
 
                 ClickToSend = RunningMode_ClickDec;   
-                ClickToSend
-%                 if ClickToSend ~= Data.TargetID
-%                     ClickToSend = 0;
-%                 end
+%                 ClickToSend
                 
+                % Clamp to correct action
+                if Params.ClampCorrect
+                    if ClickToSend ~= Data.TargetID
+                        ClickToSend = 0;
+                    end
+                end
+                
+                % Beta stopping
+                beta_scalar = betaband_output(Params,Neuro); 
+                Data.BetaScalar(1,end+1)    = beta_scalar;
+                if Params.UseBetaStop
+                     if (beta_scalar >= Params.BetaThreshold)
+                         ClickToSend = 0;
+                     end
+                    Data.BetaClickerState(1,end+1) = ClickToSend;
+                end
+                
+                fprintf('Decode: %i Beta: %2.2f\n',ClickToSend, beta_scalar)
+
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
                 A = Params.dA;
@@ -313,9 +329,7 @@ if ~Data.ErrorID
                 U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
                 U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
                 U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec == 6);
-                
-                
-                
+
                 vTarget = (Data.TargetPosition'- Cursor.State(1:3));
 
                 if norm(vTarget) ~= 0

@@ -143,7 +143,10 @@ Params.AdaptiveBaseline = false;
 % set this 1 only during online control
 Params.ChPooling = true; 
 
+%% IMPORT PC WEIGHTS AND MEAN FOR BETA BAND ANALYSIS
 
+Params.BetaWts = load(fullfile('clicker','betawts_stop'));
+Params.BetaMean = load(fullfile('clicker','betamean'));
 %% Targets: radial layout
 
 Params.ReachTargetRadius = 180;
@@ -338,5 +341,10 @@ Params.graspOrientation     = 1;
 Params.wl = [-50, -65, 10];
 Params.wu = [5, -15 45];
 
+Params.ClampCorrect     = 0;
+
+% Beta
+Params.UseBetaStop      = 1;
+Params.BetaThreshold = 0.5;
 
 end % GetParams

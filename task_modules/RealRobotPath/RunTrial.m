@@ -270,10 +270,20 @@ if ~Data.ErrorID
             Data.PathSegInd(1,end+1)        = pathInd;
             Data.ClickToSend(1,end+1)       = ClickToSend;
             
-            fprintf('Correct: %i,  Decoder Output: %i\n',correctDecode, RunningMode_ClickDec)
-            
-            write(Params.udp, [6, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort);  % send vel
 
+             % Beta stopping
+            beta_scalar = betaband_output(Params,Neuro); 
+            Data.BetaScalar(1,end+1)    = beta_scalar;
+            if Params.UseBetaStop
+                 if (beta_scalar >= Params.BetaThreshold)
+                     ClickToSend = 0;
+                 end
+                 Data.BetaClickerState(1,end+1) = ClickToSend;
+            end
+
+            write(Params.udp, [6, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort);  % send vel
+            fprintf('Correct: %i,  Decoder Output: %i,  Beta: %2.2f\n',correctDecode, RunningMode_ClickDec, beta_scalar)
+            
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;

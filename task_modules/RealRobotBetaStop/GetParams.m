@@ -305,6 +305,5 @@ Params.StopSignal = 1;
 Params.StopSignalBins = 10;
 Params.StopLocation = mean(Params.PathLim);
 
-
 Params.MaxReachTime =Params.NumCycles*60;
 end % GetParams
