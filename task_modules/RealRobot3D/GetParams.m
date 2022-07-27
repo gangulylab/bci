@@ -71,10 +71,10 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.35;       
+    Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false;
     Params.Use4Features = true; % for low gamma
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0720_PM';%'MLP_7DoF_PnP_2022July_lg';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0722_PM3'; %'MLP_7DoF_PnP_2022July_lg_0720_PM';%'MLP_7DoF_PnP_2022July_lg';
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 

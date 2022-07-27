@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220720/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220727/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -261,7 +261,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {};
+foldernames = {'105959', '110625', '111023', '111324', '111624'};
 
 cd(root_path)
  
@@ -319,7 +319,7 @@ size(D7)
 
 % ROBOT BATCH
 root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotBatch';
-foldernames = {'112447', '112720', '113050', '113336'};
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -580,7 +580,7 @@ T(aa(1):aa(end),7)=1;
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220720/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220727/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -654,7 +654,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {};
+foldernames = {'131235', '131806','132102', '132445', '132755'};
 
 cd(root_path)
  
@@ -713,8 +713,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotBatch';
-foldernames = {'134560', '134858', '135135', '135418'};
+root_path = '/home/ucsf/Data/bravo1/20220722/RealRobotBatch';
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -773,7 +773,7 @@ size(D7)
 
 % REAL ROBOT PATH
 root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotPath';
-foldernames = {'142134', '142520', '143141', '144433'};
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -889,14 +889,17 @@ net = train(net,N,T');
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-classifier_name = 'MLP_7DoF_PnP_2022July_lg_0720_PM'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022July_lg_0727_PM'; % enter the name
 genFunction(net,classifier_name);
 
 
 
-
-
-
+% clc;clear
+% cd('/home/ucsf/Projects/bci')
+%  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% %  cd('/home/ucsf/Projects/bci')
+%   ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+% ExperimentStart('Robot3D','bravo1',4,1,0)
 
 
 
