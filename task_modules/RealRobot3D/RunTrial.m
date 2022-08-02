@@ -266,11 +266,24 @@ if ~Data.ErrorID
 
                 ClickToSend = RunningMode_ClickDec;        
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+                
+                % Beta stopping
+                beta_scalar = betaband_output(Params,Neuro); 
+                Data.BetaScalar(1,end+1)    = beta_scalar;
+                if Params.UseBetaStop
+                     if (beta_scalar >= Params.BetaThreshold)
+                         ClickToSend = 0;
+                     end
+                    Data.BetaClickerState(1,end+1) = ClickToSend;
+                end
+                
+                fprintf('Decode: %i Beta: %2.2f\n',ClickToSend, beta_scalar)
+                
      
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
 
-            ClickToSend
-            write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); ; % send vel
+            
+            write(Params.udp, [5, 0,0,0,0,0,0,0,0,0, ClickToSend], "127.0.0.1", Params.pythonPort); % send vel
 
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
