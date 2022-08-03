@@ -74,7 +74,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false;
     Params.Use4Features = true; % for low gamma
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0722_PM3'; %'MLP_7DoF_PnP_2022July_lg_0720_PM';%'MLP_7DoF_PnP_2022July_lg';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0803_PM1';%'MLP_7DoF_PnP_2022July_lg_0722_PM3'; %'MLP_7DoF_PnP_2022July_lg_0720_PM';%'MLP_7DoF_PnP_2022July_lg';
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
@@ -273,7 +273,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 Params.RobotMode    = 3; 
 Params.wl           = [-50, -67, 10];
-Params.wu           = [5, -15 50];
+Params.wu           = [5, -15 55];
 
 if Params.RobotMode == 1 % lateral R2G boxes
     Params.ValidDir             = [1:9];

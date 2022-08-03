@@ -580,7 +580,7 @@ T(aa(1):aa(end),7)=1;
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220727/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20220803/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -654,7 +654,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'131235', '131806','132102', '132445', '132755'};
+foldernames = {};
 
 cd(root_path)
  
@@ -713,8 +713,8 @@ end
 size(D7)
 
 % ROBOT BATCH
-root_path = '/home/ucsf/Data/bravo1/20220722/RealRobotBatch';
-foldernames = {};
+root_path = '/home/ucsf/Data/bravo1/20220803/RealRobotBatch';
+foldernames = {'134555', '135020', '135355', '135658', '140016', '140303'};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -772,7 +772,7 @@ size(D7)
 
 
 % REAL ROBOT PATH
-root_path = '/home/ucsf/Data/bravo1/20220720/RealRobotPath';
+root_path = '/home/ucsf/Data/bravo1/20220803/RealRobotPath';
 foldernames = {};
 
 for ii=1:length(foldernames)
@@ -889,16 +889,16 @@ net = train(net,N,T');
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-classifier_name = 'MLP_7DoF_PnP_2022July_lg_0727_PM'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022July_lg_0803_PM1'; % enter the name
 genFunction(net,classifier_name);
 
 
 
-% clc;clear
+clc;clear
 % cd('/home/ucsf/Projects/bci')
-%  %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
-% %  cd('/home/ucsf/Projects/bci')
-%   ExperimentStart('RealRobotBatch','bravo1',4,1,0)
+% %ExperimentStart('Robot3DArrow','bravo1',4,1,0)
+% % %  cd('/home/ucsf/Projects/bci')
+% ExperimentStart('RealRobotBatch','bravo1',4,1,0)
 % ExperimentStart('Robot3D','bravo1',4,1,0)
 
 

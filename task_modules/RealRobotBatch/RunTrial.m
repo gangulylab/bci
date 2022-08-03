@@ -318,7 +318,7 @@ if ~Data.ErrorID
                     Data.BetaClickerState(1,end+1) = ClickToSend;
                 end
                 
-                fprintf('Decode: %i Beta: %2.2f\n',ClickToSend, beta_scalar)
+                fprintf('Decode: %i Beta: %2.2f\n',RunningMode_ClickDec, beta_scalar)
 
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 

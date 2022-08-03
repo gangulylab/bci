@@ -73,7 +73,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false;
     Params.Use4Features = true; % for low gamma
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0727_PM';%'MLP_7DoF_PnP_2022July_lg';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0803_PM1';%'MLP_7DoF_PnP_2022July_lg_0727_PM';%'MLP_7DoF_PnP_2022July_lg';
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
@@ -280,12 +280,12 @@ Params.TargetOrder          = [1:7];
 Params.index = 1;
 Params.clickOrder = [9*ones(50,1),8*ones(50,1)];
 
-% Params.clickOrder = ones(100,1)*7;
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.limit = [-100, 300; -200 200; 180 450];
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+% Params.clickOrder = ones(100,1)*7;
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder          = [Params.TargetOrder, 1];
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
@@ -344,7 +344,7 @@ Params.wu = [5, -15 45];
 Params.ClampCorrect     = 0;
 
 % Beta
-Params.UseBetaStop      = 0;
+Params.UseBetaStop      = 1;
 Params.BetaThreshold = 0.5;
 
 end % GetParams
