@@ -714,7 +714,7 @@ size(D7)
 
 % ROBOT BATCH
 root_path = '/home/ucsf/Data/bravo1/20220803/RealRobotBatch';
-foldernames = {'134555', '135020', '135355', '135658', '140016', '140303'};
+foldernames = {};
 
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
@@ -772,8 +772,8 @@ size(D7)
 
 
 % REAL ROBOT PATH
-root_path = '/home/ucsf/Data/bravo1/20220803/RealRobotPath';
-foldernames = {};
+root_path = '/home/ucsf/Data/bravo1/20220810/RealRobotPath';
+foldernames = {'134229','134856','135054','135328','135552', '135750', '135929', '140329', '140610', '140905','141058','141357'};
 
 
 nSkipBins = 5;
@@ -853,7 +853,32 @@ for ii=1:length(foldernames)
 
     end
 end
+
+% sample data to have equal number per action
+minBins = min([size(D1,2),size(D2,2),size(D3,2),size(D4,2),size(D5,2),size(D6,2),size(D7,2)] );
+
+D1 = D1(:, randsample(size(D1,2),minBins));
+D2 = D2(:, randsample(size(D2,2),minBins));
+D3 = D3(:, randsample(size(D3,2),minBins));
+D4 = D4(:, randsample(size(D4,2),minBins));
+D5 = D5(:, randsample(size(D5,2),minBins));
+D6 = D6(:, randsample(size(D6,2),minBins));
+D7 = D7(:, randsample(size(D7,2),minBins));
+
+
+
+
 size(D7)
+
+
+
+
+
+
+
+
+
+
 
 clear condn_data
 % combing delta beta and high gamma
@@ -923,7 +948,7 @@ net = train(net,N,T');
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-classifier_name = 'MLP_7DoF_PnP_2022July_lg_0803_PM1'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022July_lg_0810_PM1'; % enter the name
 genFunction(net,classifier_name);
 
 
