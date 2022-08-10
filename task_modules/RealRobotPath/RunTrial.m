@@ -113,11 +113,11 @@ if ~Data.ErrorID && Params.CueTime>0
     InTargetTotalTime = 0;
     
 %     Send target position
-    [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
-    [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
-    [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
-
-    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID], "127.0.0.1", Params.pythonPort); 
+%     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
+%     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
+%     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
+% 
+%     write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID], "127.0.0.1", Params.pythonPort); 
     
     while ~done
         % Update Time & Position

@@ -76,7 +76,7 @@ write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0
 write(Params.udp, [0,11,Params.autoCenterDist,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,12,Params.wristStartX,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,13,Params.wristStartZ,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,14,Params.OperationModeReset,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 % write(Params.udp, [0,15,Params.zlim,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,16,Params.lowGainMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,17,Params.graspOrientation,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -94,7 +94,6 @@ write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 [ya,yb,yc] = doubleToUDP(Params.wu(2)); 
 [za,zb,zc] = doubleToUDP(Params.wu(3)) ;
 write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
-
 
 write(Params.udp, [0,26,Params.k_v*10,Params.k_i,Params.r_v*10,Params.r_i,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
@@ -166,7 +165,7 @@ for Block=1:NumBlocks, % Block Loop
         TrialData.Block = Block;
         TrialData.Trial = Trial;
         TrialData.TargetID = TargetID;
-        TrialData.TargetPosition = Params.ReachTargetPositions(TargetID,:);
+%         TrialData.TargetPosition = Params.ReachTargetPositions(TargetID,:);
         TrialData.NextTargetID = NextTargetID;
         TrialData.NextTargetPosition = Params.ReachTargetPositions(NextTargetID,:);
         
@@ -198,6 +197,13 @@ for Block=1:NumBlocks, % Block Loop
         write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
         write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
         write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+        
+        [xa,xb,xc] = doubleToUDP(Params.StartWristX(TargetID));
+        [ya,yb,yc] = doubleToUDP(Params.StartWristY(TargetID)); 
+        [za,zb,zc] = doubleToUDP(Params.StartWristZ(TargetID)) ;
+        
+        write(Params.udp, [0,14,Params.OperationModeReset(TargetID),0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+        write(Params.udp, [0,31, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
         write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
         [TrialData,Neuro,KF,Params,Clicker] = ...
@@ -205,6 +211,7 @@ for Block=1:NumBlocks, % Block Loop
         TrialData.TrialEndTime    = GetSecs;
                 
         % Save Data from Single Trial
+        
         save(...
             fullfile(DataDir,sprintf('Data%04i.mat',Trial)),...
             'TrialData',...

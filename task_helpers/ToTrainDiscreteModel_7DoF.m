@@ -775,6 +775,9 @@ size(D7)
 root_path = '/home/ucsf/Data/bravo1/20220803/RealRobotPath';
 foldernames = {};
 
+
+nSkipBins = 5;
+
 for ii=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{ii},'BCI_Fixed');
     D=dir(folderpath);
@@ -810,13 +813,44 @@ for ii=1:length(foldernames)
         temp = temp_data;
         
         % select bins in trial for each directions
-        D1 = [D1 temp(:,TrialData.CorrectDecode == 1)];
-        D2 = [D2 temp(:,TrialData.CorrectDecode == 2)];
-        D3 = [D3 temp(:,TrialData.CorrectDecode == 3)];
-        D4 = [D4 temp(:,TrialData.CorrectDecode == 4)];
-        D5 = [D5 temp(:,TrialData.CorrectDecode == 5)];
-        D6 = [D6 temp(:,TrialData.CorrectDecode == 6)];
-        D7 = [D7 temp(:,TrialData.CorrectDecode == 7)];
+%         D1 = [D1 temp(:,TrialData.CorrectDecode == 1)];
+%         D2 = [D2 temp(:,TrialData.CorrectDecode == 2)];
+%         D3 = [D3 temp(:,TrialData.CorrectDecode == 3)];
+%         D4 = [D4 temp(:,TrialData.CorrectDecode == 4)];
+%         D5 = [D5 temp(:,TrialData.CorrectDecode == 5)];
+%         D6 = [D6 temp(:,TrialData.CorrectDecode == 6)];
+%         D7 = [D7 temp(:,TrialData.CorrectDecode == 7)];
+        
+        for seg = 1:max(TrialData.PathSegInd)
+            ind1    = find(TrialData.PathSegInd == seg,1);
+            ind_st = ind1 + nSkipBins;
+            
+            if seg < max(TrialData.PathSegInd)  %find end og segment
+               ind_en =  find(TrialData.PathSegInd == seg+1,1) - 1;
+            else  %last segment
+                ind_en = length(TrialData.PathSegInd);
+            end
+            
+            ind = ind_st:ind_en;
+            tmp_d   = TrialData.CorrectDecode(ind1);
+            
+            if tmp_d == 1
+                D1 = [D1 temp(:,ind)];
+            elseif tmp_d == 2
+                D2 = [D2 temp(:,ind)];
+            elseif tmp_d == 3
+                D3 = [D3 temp(:,ind)];
+            elseif tmp_d == 4
+                D4 = [D4 temp(:,ind)];
+            elseif tmp_d == 5
+                D5 = [D5 temp(:,ind)];
+            elseif tmp_d == 6
+                D6 = [D6 temp(:,ind)];
+            elseif tmp_d == 7
+                D7 = [D7 temp(:,ind)];
+            end            
+        end
+
     end
 end
 size(D7)
