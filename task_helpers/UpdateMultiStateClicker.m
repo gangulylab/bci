@@ -11,22 +11,8 @@ if Params.ControlMode == 2 %mouse
     Click_Distance = 0;
     
 else,
-    if Params.biLSTMFlag == 1
-        filtered_data=zeros(size(Neuro.DataBuf',1),size(Neuro.DataBuf',2),8);
-        for i=1:length(Params.FilterBank)
-            filtered_data(:,:,i) =  ((filter(...
-                Params.FilterBank(i).b, ...
-                Params.FilterBank(i).a, ...
-                Neuro.DataBuf')));
-        end
-        tmp_hg = squeeze(mean(filtered_data.^2,3));
-        tmp_lp = filter(Params.lpFilt,Neuro.DataBuf');
-        tmp_lp = resample(tmp_lp,200,800);
-        tmp_hg = resample(tmp_hg,200,800)*5e2;
-        %tmp_lp = spatial_pool(tmp_lp,Params.ChMap);
-        %tmp_hg = spatial_pool(tmp_hg,Params.ChMap);
-        tmp = [tmp_hg tmp_lp];
-        pred = net.predict(tmp');
+    if Params.biLSTMFlag == 1        
+        pred = net.predict(Neuro.LSTMFeatures);
         [aa bb]=max(pred);
         if aa >= Neuro.biLSTMMaxSoftThresh
             Click_Decision = bb;

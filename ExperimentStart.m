@@ -194,7 +194,7 @@ Neuro.FeatureMask       = Params.FeatureMask;
 Neuro.FeatureBufferSize = Params.FeatureBufferSize;
 Neuro.SmoothDataFlag = Params.SmoothDataFlag;
 Neuro.biLSTMFlag = Params.biLSTMFlag;
-Neuro.biLSTMMaxSoftThresh = Params.biLSTMSoftMaxThresh;
+Neuro.biLSTMSoftMaxThresh = Params.biLSTMSoftMaxThresh;
 Neuro.LSTMBufferSize = Params.LSTMBufferSize;
 
 % initialize filter bank state
@@ -208,8 +208,8 @@ Neuro.FilteredFeatures = zeros(Neuro.NumFeatures*Neuro.NumChannels,1);
 
 
 % initialize the number of data bins for LSTM model
-Neuro.LSTMBuffer = 0.25*randn(128,Neuro.LSTMBufferSize);
-Neuro.LSTMFeatures = 0.25*randn(200,256);
+Neuro.LSTMBuffer = 0.05*randn(128,Neuro.LSTMBufferSize);
+Neuro.LSTMFeatures = 0.05*randn(80,256);
 
 
 % initialize stats for each channel for z-scoring
@@ -328,7 +328,9 @@ try
         Neuro.DimRed.Flag = false;
 
         % collect data during baseline period
+        Params.BaselineRunningFlag=true;
         Neuro = RunBaseline(Params,Neuro);
+        Params.BaselineRunningFlag=false;
         
         % set flags back to original vals
         Neuro.UpdateChStatsFlag = Params.UpdateChStatsFlag;

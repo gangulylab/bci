@@ -14,9 +14,11 @@ if Neuro.Blackrock,
         Neuro = ZscoreChannels(Neuro);
     end
     %     Neuro = ApplyFilterBank(Neuro);
-    %    Neuro = UpdateNeuroBuf(Neuro);
+    %    Neuro = UpdateNeuroBuf(Neuro);    
 
-    Neuro = UpdateLSTMBuffer(Neuro);
+    if ~Params.BaselineRunningFlag
+        Neuro = UpdateLSTMBuffer(Neuro);
+    end
 
     %     Neuro = CompNeuralFeatures(Neuro);
     %     if Neuro.UpdateFeatureStatsFlag,

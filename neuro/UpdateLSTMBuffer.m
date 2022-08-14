@@ -20,10 +20,29 @@ tmp_hg = squeeze(mean(filtered_data.^2,3));
 tmp_lp = filter(Neuro.lpFilt,Neuro.DataBuf');
 
 % down sampling
-tmp_lp = resample(tmp_lp,200,800);
-tmp_hg = resample(tmp_hg,200,800)*5e2;
+tmp_hg = resample(tmp_hg,80,800)*5e2;
+tmp_lp = resample(tmp_lp,80,800);
+
+% removing errors in the data
+I = abs(tmp_hg>15);
+I = sum(I);
+[aa bb]=find(I>0);
+tmp_hg(:,bb) = 1e-5*randn(size(tmp_hg(:,bb)));
+
+I = abs(tmp_lp>15);
+I = sum(I);
+[aa bb]=find(I>0);
+tmp_lp(:,bb) = 1e-5*randn(size(tmp_lp(:,bb)));
+
+% normalizing between 0 and 1
+tmp_hg = (tmp_hg - min(tmp_hg(:)))/(max(tmp_hg(:))-min(tmp_hg(:)));
+tmp_lp = (tmp_lp - min(tmp_lp(:)))/(max(tmp_lp(:))-min(tmp_lp(:)));
 
 % concatenating into LSTM features
-
+Neuro.LSTMFeatures = [tmp_hg tmp_lp]';
 
 end
+
+
+
+
