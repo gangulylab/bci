@@ -74,7 +74,7 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.35;       
     Params.Use3Features = false;
     Params.Use4Features = true; % for low gamma
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg';%'MLP_7DoF_PnP_2022July_lg';
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg_0817_PM1';%'MLP_7DoF_PnP_2022July_lg';
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
@@ -256,7 +256,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [4];
+Params.TargetOrder          = [5];
 
 
 %% CLDA Parameters
@@ -388,7 +388,7 @@ Params.GraspBinThresh   = 0.7;
 
 
 % Beta
-Params.UseBetaStop      = 0;
-Params.BetaThreshold = 0.4;
+Params.UseBetaStop      = 1;
+Params.BetaThreshold = 0.45;
 
 end % GetParams

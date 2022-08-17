@@ -772,8 +772,8 @@ size(D7)
 
 
 % REAL ROBOT PATH
-root_path = '/home/ucsf/Data/bravo1/20220810/RealRobotPath';
-foldernames = {'134229','134856','135054','135328','135552', '135750', '135929', '140329', '140610', '140905','141058','141357'};
+root_path = '/home/ucsf/Data/bravo1/20220817/RealRobotPath';
+foldernames = {'133915', '134123', '134257', '134528','134720', '134934', '135134', '135326'};
 
 
 nSkipBins = 5;
@@ -948,7 +948,7 @@ net = train(net,N,T');
 
 % save the weights
 cd('/home/ucsf/Projects/bci/clicker')
-classifier_name = 'MLP_7DoF_PnP_2022July_lg_0810_PM1'; % enter the name
+classifier_name = 'MLP_7DoF_PnP_2022July_lg_0817_PM1'; % enter the name
 genFunction(net,classifier_name);
 
 
