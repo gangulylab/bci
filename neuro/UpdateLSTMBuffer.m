@@ -8,7 +8,7 @@ Neuro.LSTMBuffer(:,(end-samps+1):end) = Neuro.BroadbandData{end}';
 
 % do the hg filtering
 filtered_data=zeros(size(Neuro.LSTMBuffer',1),size(Neuro.LSTMBuffer',2),8);
-for i=1:length(Neuro.FilterBank)
+for i=9:16%hg features
     filtered_data(:,:,i) =  ((filter(...
         Neuro.FilterBank(i).b, ...
         Neuro.FilterBank(i).a, ...
@@ -17,7 +17,7 @@ end
 tmp_hg = squeeze(mean(filtered_data.^2,3));
 
 % low pass filtering
-tmp_lp = filter(Neuro.lpFilt,Neuro.DataBuf');
+tmp_lp = filter(Neuro.lpFilt,Neuro.LSTMBuffer');
 
 % down sampling
 tmp_hg = resample(tmp_hg,80,800)*5e2;

@@ -2,6 +2,11 @@ function varargout = NeuroPipeline(Neuro,Data,Params),
 % function Neuro = NeuroPipeline(Neuro)
 % function [Neuro,Data] = NeuroPipeline(Neuro,Data)
 % Neuro processing pipeline. To change processing, edit this function.
+%
+% For LSTM -> Nothing changes in the pipeline during collection of baseline
+%             data. During online control, only hG and low pass filt.
+%             signal collected and stored in LSTM buffer and all other
+%             processing paused to speed up computations
 
 % process neural data
 if Neuro.Blackrock,
@@ -13,26 +18,28 @@ if Neuro.Blackrock,
     if Neuro.ZscoreRawFlag,
         Neuro = ZscoreChannels(Neuro);
     end
-    %     Neuro = ApplyFilterBank(Neuro);
-    %    Neuro = UpdateNeuroBuf(Neuro);    
 
-    if ~Params.BaselineRunningFlag
+    if  Params.BaselineRunningFlag
+        Neuro = ApplyFilterBank(Neuro);
+        Neuro = UpdateNeuroBuf(Neuro);
+        Neuro = CompNeuralFeatures(Neuro);
+        if Neuro.UpdateFeatureStatsFlag,
+            Neuro = UpdateFeatureStats(Neuro);
+        end
+        if Neuro.ZscoreFeaturesFlag,
+            Neuro = ZscoreFeatures(Neuro);
+        end
+    else
+        Neuro.NeuralFeatures=[];
+        Neuro.FilteredFeatures=[];
         Neuro = UpdateLSTMBuffer(Neuro);
     end
 
-    %     Neuro = CompNeuralFeatures(Neuro);
-    %     if Neuro.UpdateFeatureStatsFlag,
-    %         Neuro = UpdateFeatureStats(Neuro);
-    %     end
-    %     if Neuro.ZscoreFeaturesFlag,
-    %         Neuro = ZscoreFeatures(Neuro);
-    %     end
-    %
-    %     % smoothing option
-    %     if Neuro.SmoothDataFlag
-    %         Neuro = SmoothNeuro(Neuro);
-    %     end
-    %
+    % smoothing option
+%     if Neuro.SmoothDataFlag
+%         Neuro = SmoothNeuro(Neuro);
+%     end
+
 end
 
 % override neural data if generating neural features
@@ -66,7 +73,9 @@ if exist('Data','var') && ~isempty(Data),
     
     Data.NeuralFeatures{end+1} = Neuro.NeuralFeatures;
     Data.SmoothedNeuralFeatures{end+1} = Neuro.FilteredFeatures;
-    Data.LSTMFeatures{end+1} = Neuro.LSTMFeatures;
+    if Params.SaveLSTMFeatures
+        Data.LSTMFeatures{end+1} = Neuro.LSTMFeatures;
+    end
     if Neuro.DimRed.Flag,
         Data.NeuralFactors{end+1} = Neuro.NeuralFactors;
     end

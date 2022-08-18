@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=3;
+Params.ClickCounter=5;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -93,10 +93,12 @@ end
 %% biLSTM classifier option
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
-    Params.biLSTMSoftMaxThresh = 0.55;
+    Params.biLSTMSoftMaxThresh = 0.4;
 end
-Params.LSTMBufferSize
-Params.LSTMFunction = '';
+Params.LSTMFunction = 'net_bilstm';
+Params.LSTMBufferSize = 800;
+Params.SaveLSTMFeatures = false;
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option

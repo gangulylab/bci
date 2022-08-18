@@ -208,8 +208,8 @@ Neuro.FilteredFeatures = zeros(Neuro.NumFeatures*Neuro.NumChannels,1);
 
 
 % initialize the number of data bins for LSTM model
-Neuro.LSTMBuffer = 0.05*randn(128,Neuro.LSTMBufferSize);
-Neuro.LSTMFeatures = 0.05*randn(80,256);
+Neuro.LSTMBuffer = 1e-5*randn(128,Neuro.LSTMBufferSize);
+Neuro.LSTMFeatures = 1e-5*randn(Neuro.LSTMBufferSize/10,256);
 
 
 % initialize stats for each channel for z-scoring
