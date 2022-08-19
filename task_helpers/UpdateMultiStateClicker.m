@@ -12,7 +12,8 @@ if Params.ControlMode == 2 %mouse
     
 else,
     if Params.biLSTMFlag == 1        
-        pred =  predict(Params.LSTM,Neuro.LSTMFeatures);
+        %pred =  predict(Params.LSTM,Neuro.LSTMFeatures);
+        pred=rand(1,7);
         [aa bb]=max(pred);
         if aa >=  Params.biLSTMSoftMaxThresh
             Click_Decision = bb;

@@ -21,7 +21,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 30; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -37,9 +37,74 @@ Params.MaxVelocity              = 200;
 %% Sync to Blackrock
 Params.ArduinoSync = false;
 
+%% Neural feature smoothing
+Params.SmoothDataFlag = true;
+Params.FeatureBufferSize = 5;
+
 %% Timing
-Params.ScreenRefreshRate = 10; % Hz
-Params.UpdateRate = 10; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
+
+%% Discrete Decoder name
+Params.UseSVM = false;
+Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
+
+%% Multi State Decision Boundary
+% set this to negative values. I would say -0.3 to -0.6 would be okay
+Params.MultiDecisionBoundary = 0; 
+
+%% Neural network classifier option
+% set this to true to use neural network
+% also set the softmax option
+Params.NeuralNetFlag = false;
+if Params.NeuralNetFlag
+    Params.NeuralNetSoftMaxThresh = 0.55;       
+    Params.Use3Features = true;
+%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
+    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP3';%'MLP_PreTrained_7DoF_PnP';
+    
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';
+%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
+
+else
+    Params.NeuralNetSoftMaxThresh = 0;
+end
+
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.4;
+end
+
+Params.LSTMFunctionName = 'net_bilstm';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm;
+Params.LSTMBufferSize = 800;
+Params.SaveLSTMFeatures = false;
+
+
+%% CONVOLUTIONAL NEURAL NET OPTION
+% set this to true to use neural network
+% also set the softmax option
+Params.ConvNeuralNetFlag =false;
+if Params.ConvNeuralNetFlag
+    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
+    Params.ConvUse3Features = true;
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
+else
+    Params.ConvNeuralNetSoftMaxThresh = 0;
+end
+
+%% ADAPTIVE BASELINE FLAG 
+% data is baseline to state 1 data
+Params.AdaptiveBaseline = false;
+
+%% POOLING CHANNELS FOR CONTROL
+% set this 1 only during online control
+Params.ChPooling = true; 
 
 %% Arrow length to hit the target
 % The number of bins of successful decodes to hit the target
