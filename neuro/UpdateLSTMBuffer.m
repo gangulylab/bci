@@ -3,9 +3,12 @@ function Neuro = UpdateLSTMBuffer(Neuro)
 
 % update the buffer 
 samps = size(Neuro.BroadbandData,1);  
+%disp(samps)
+
 if samps>Neuro.LSTMBufferSize
     samps = Neuro.LSTMBufferSize;
 end
+
 Neuro.LSTMBuffer = circshift(Neuro.LSTMBuffer,-samps,2);
 Neuro.LSTMBuffer(:,(end-samps+1):end) = Neuro.BroadbandData(end-samps+1:end,:)';
 

@@ -69,7 +69,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false;
@@ -90,7 +90,7 @@ else
 end
 
 %% Use ensemble neural network
-% Params.NeuralNetEnsemble = false;
+ Params.NeuralNetEnsemble = false;
 % Params.NeuralNetSoftMaxThresh = 0.45;   
 % Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
 % Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
@@ -133,6 +133,19 @@ if Params.ConvNeuralNetFlag
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
+
+%% biLSTM classifier option
+
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.4;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_robot_20220817';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220817;
+Params.LSTMBufferSize = 800;
+Params.SaveLSTMFeatures = false;
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data

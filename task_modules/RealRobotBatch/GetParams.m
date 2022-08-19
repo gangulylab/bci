@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -68,7 +68,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false;
@@ -133,6 +133,18 @@ if Params.ConvNeuralNetFlag
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
+
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.4;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_robot_20220817';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220817;
+Params.LSTMBufferSize = 800;
+Params.SaveLSTMFeatures = false;
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
@@ -344,7 +356,7 @@ Params.wu = [5, -15 45];
 Params.ClampCorrect     = 0;
 
 % Beta
-Params.UseBetaStop      = 1;
+Params.UseBetaStop      = 0;
 Params.BetaThreshold = 0.5;
 
 end % GetParams
