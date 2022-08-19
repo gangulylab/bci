@@ -19,26 +19,25 @@ if Neuro.Blackrock,
         Neuro = ZscoreChannels(Neuro);
     end
 
-    if  Params.BaselineRunningFlag
-        Neuro = ApplyFilterBank(Neuro);
-        Neuro = UpdateNeuroBuf(Neuro);
-        Neuro = CompNeuralFeatures(Neuro);
-        if Neuro.UpdateFeatureStatsFlag,
-            Neuro = UpdateFeatureStats(Neuro);
-        end
-        if Neuro.ZscoreFeaturesFlag,
-            Neuro = ZscoreFeatures(Neuro);
-        end
-    else
-        Neuro.NeuralFeatures=[];
-        Neuro.FilteredFeatures=[];
-        Neuro = UpdateLSTMBuffer(Neuro);
+
+    Neuro = ApplyFilterBank(Neuro);
+    Neuro = UpdateNeuroBuf(Neuro);
+    Neuro = CompNeuralFeatures(Neuro);
+    if Neuro.UpdateFeatureStatsFlag,
+        Neuro = UpdateFeatureStats(Neuro);
+    end
+    if Neuro.ZscoreFeaturesFlag,
+        Neuro = ZscoreFeatures(Neuro);
     end
 
     % smoothing option
-%     if Neuro.SmoothDataFlag
-%         Neuro = SmoothNeuro(Neuro);
-%     end
+    if Neuro.SmoothDataFlag
+        Neuro = SmoothNeuro(Neuro);
+    end
+
+    if Params.biLSTMFlag && ~Params.BaselineRunningFlag
+        Neuro = UpdateLSTMBuffer(Neuro);
+    end
 
 end
 
@@ -73,7 +72,7 @@ if exist('Data','var') && ~isempty(Data),
     
     Data.NeuralFeatures{end+1} = Neuro.NeuralFeatures;
     Data.SmoothedNeuralFeatures{end+1} = Neuro.FilteredFeatures;
-    if Neuro.SaveLSTMFeatures
+    if Params.SaveLSTMFeatures
         Data.LSTMFeatures{end+1} = Neuro.LSTMFeatures;
     end
     if Neuro.DimRed.Flag,
