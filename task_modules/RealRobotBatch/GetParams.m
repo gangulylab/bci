@@ -68,7 +68,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.4;       
     Params.Use3Features = true;
@@ -94,6 +94,19 @@ if Params.ConvNeuralNetFlag
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.4;
+end
+
+Params.LSTMFunctionName = 'net_bilstm';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm;
+Params.LSTMBufferSize = 800;
+Params.SaveLSTMFeatures = false;
+
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
