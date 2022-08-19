@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=3;
+Params.ClickCounter=4;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -75,7 +75,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.50;       
     Params.Use3Features = false;
@@ -139,6 +139,18 @@ if Params.ConvNeuralNetFlag
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
+
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.4;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_20220817';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_20220817;
+Params.LSTMBufferSize = 800;
+Params.SaveLSTMFeatures = false;
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data

@@ -28,6 +28,12 @@ if Neuro.Blackrock,
         Neuro = SmoothNeuro(Neuro);
     end
     
+    % LSTM option
+    if Params.biLSTMFlag && ~Params.BaselineRunningFlag
+        Neuro = UpdateLSTMBuffer(Neuro);
+    end
+    
+    
 end
 
 % override neural data if generating neural features
@@ -61,6 +67,9 @@ if exist('Data','var') && ~isempty(Data),
     
     Data.NeuralFeatures{end+1} = Neuro.NeuralFeatures;
     Data.SmoothedNeuralFeatures{end+1} = Neuro.FilteredFeatures;
+    if Neuro.SaveLSTMFeatures
+        Data.LSTMFeatures{end+1} = Neuro.LSTMFeatures;
+    end
     if Neuro.DimRed.Flag,
         Data.NeuralFactors{end+1} = Neuro.NeuralFactors;
     end

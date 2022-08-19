@@ -153,6 +153,13 @@ for i=1:length(Params.FilterBank),
     Params.FilterBank(i).a = a;
 end
 
+
+% get lpfilt
+lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
+    'PassbandFrequency',25,'PassbandRipple',0.2, ...
+    'SampleRate',1e3);
+Params.lpFilt = lpFilt;
+
 % unique pwr feature + all phase features
 Params.NumBuffer = sum([Params.FilterBank.buffer_flag]);
 Params.NumHilbert = sum([Params.FilterBank.hilbert_flag]);

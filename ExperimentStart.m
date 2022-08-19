@@ -196,6 +196,10 @@ Neuro.SpatialFiltering  = Params.SpatialFiltering;
 Neuro.FeatureMask       = Params.FeatureMask;
 Neuro.FeatureBufferSize = Params.FeatureBufferSize;
 Neuro.SmoothDataFlag = Params.SmoothDataFlag;
+Neuro.biLSTMFlag = Params.biLSTMFlag;
+Neuro.LSTMBufferSize = Params.LSTMBufferSize;
+Neuro.SaveLSTMFeatures = Params.SaveLSTMFeatures;
+Neuro.lpFilt = Params.lpFilt;
 
 % initialize filter bank state
 for i=1:length(Params.FilterBank)
@@ -205,6 +209,10 @@ end
 % initialize feature buffer
 Neuro.FeatureDataBuffer = zeros(Neuro.FeatureBufferSize,Neuro.NumFeatures*Neuro.NumChannels);
 Neuro.FilteredFeatures = zeros(Neuro.NumFeatures*Neuro.NumChannels,1);
+
+% initialize the number of data bins for LSTM model
+Neuro.LSTMBuffer = 1e-5*randn(128,Neuro.LSTMBufferSize);
+Neuro.LSTMFeatures = 1e-5*randn(Neuro.LSTMBufferSize/10,256);
 
 % initialize stats for each channel for z-scoring
 Neuro.ChStats.mean      = zeros(1,Params.NumChannels); % estimate of mean for each channel
@@ -227,7 +235,8 @@ if Neuro.NumFeatureBins>1,
         Neuro.NumFeatureBins);
 end
 
-% create buffer to smooth neural features over 100s of ms
+% params  setting for LSTM
+Params.BaselineRunningFlag=false;
 
 
 
@@ -322,7 +331,10 @@ try
         Neuro.DimRed.Flag = false;
 
         % collect data during baseline period
+        %Neuro = RunBaseline(Params,Neuro);        
+        Params.BaselineRunningFlag=true;
         Neuro = RunBaseline(Params,Neuro);
+        Params.BaselineRunningFlag=false;
         
         % set flags back to original vals
         Neuro.UpdateChStatsFlag = Params.UpdateChStatsFlag;

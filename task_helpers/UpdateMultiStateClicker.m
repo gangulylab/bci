@@ -11,6 +11,20 @@ if Params.ControlMode == 2 %mouse
     Click_Distance = 0;
     
 else,
+    if Params.biLSTMFlag == 1
+        pred =  predict(Params.LSTM,Neuro.LSTMFeatures);        
+        [aa bb]=max(pred);
+        if aa >=  Params.biLSTMSoftMaxThresh
+            Click_Decision = bb;
+            Click_Distance = aa;
+        else
+            Click_Decision = 0;
+            Click_Distance = 0;
+        end
+        disp(['LSTM o/p'  num2str(Click_Decision)])
+    end
+    
+    
     if Params.NeuralNetFlag == 1
         if Params.ChPooling == 0
             %if Params.SmoothDataFlag==1
