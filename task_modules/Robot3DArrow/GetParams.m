@@ -95,14 +95,13 @@ Params.biLSTMFlag = true;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
-<<<<<<< Updated upstream
-Params.LSTMFunction = 'net_bilstm';
+
+Params.LSTMFunctionName = 'net_bilstm';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm;
 Params.LSTMBufferSize = 800;
 Params.SaveLSTMFeatures = false;
-=======
-Params.LSTMBufferSize = 800;
-Params.LSTMFunction = 'net_bilstm_test';
->>>>>>> Stashed changes
+
 
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network

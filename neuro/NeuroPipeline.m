@@ -73,7 +73,7 @@ if exist('Data','var') && ~isempty(Data),
     
     Data.NeuralFeatures{end+1} = Neuro.NeuralFeatures;
     Data.SmoothedNeuralFeatures{end+1} = Neuro.FilteredFeatures;
-    if Params.SaveLSTMFeatures
+    if Neuro.SaveLSTMFeatures
         Data.LSTMFeatures{end+1} = Neuro.LSTMFeatures;
     end
     if Neuro.DimRed.Flag,

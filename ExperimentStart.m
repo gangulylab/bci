@@ -196,6 +196,7 @@ Neuro.SmoothDataFlag = Params.SmoothDataFlag;
 Neuro.biLSTMFlag = Params.biLSTMFlag;
 Neuro.biLSTMSoftMaxThresh = Params.biLSTMSoftMaxThresh;
 Neuro.LSTMBufferSize = Params.LSTMBufferSize;
+Neuro.SaveLSTMFeatures = Params.SaveLSTMFeatures;
 
 % initialize filter bank state
 for i=1:length(Params.FilterBank)

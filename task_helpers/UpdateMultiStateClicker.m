@@ -12,9 +12,9 @@ if Params.ControlMode == 2 %mouse
     
 else,
     if Params.biLSTMFlag == 1        
-        pred = net.predict(Neuro.LSTMFeatures);
+        pred =  predict(Params.LSTM,Neuro.LSTMFeatures);
         [aa bb]=max(pred);
-        if aa >= Neuro.biLSTMMaxSoftThresh
+        if aa >=  Params.biLSTMSoftMaxThresh
             Click_Decision = bb;
             Click_Distance = aa;
         else
@@ -22,6 +22,7 @@ else,
             Click_Distance = 0;
         end
     end
+    
 
     
         
