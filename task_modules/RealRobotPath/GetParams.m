@@ -140,10 +140,10 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220817';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220817;
-Params.LSTMBufferSize = 800;
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824;
+Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
 %% ADAPTIVE BASELINE FLAG 

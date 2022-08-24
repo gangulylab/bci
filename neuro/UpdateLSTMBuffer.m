@@ -26,8 +26,8 @@ tmp_hg = squeeze(mean(filtered_data.^2,3));
 tmp_lp = filter(Neuro.lpFilt,Neuro.LSTMBuffer');
 
 % down sampling
-tmp_hg = resample(tmp_hg,80,800)*5e2;
-tmp_lp = resample(tmp_lp,80,800);
+tmp_hg = resample(tmp_hg,Neuro.LSTMBufferSize/10,Neuro.LSTMBufferSize)*5e2;
+tmp_lp = resample(tmp_lp,Neuro.LSTMBufferSize/10,Neuro.LSTMBufferSize);
 
 % removing errors in the data
 I = abs(tmp_hg>15);
