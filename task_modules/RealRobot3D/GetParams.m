@@ -135,16 +135,15 @@ else
 end
 
 %% biLSTM classifier option
-
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220817';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824;
-Params.LSTMBufferSize = 1000;
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220817;
+Params.LSTMBufferSize = 800;
 Params.SaveLSTMFeatures = false;
 
 %% ADAPTIVE BASELINE FLAG 
@@ -361,8 +360,8 @@ Params.r_i      = 100;
 
 Params.r_v      = 0.7;
 Params.r_i      = 90;
-Params.r_v      = 0.7;
-Params.r_i      = 150;
+% Params.r_v      = 0.7;
+% Params.r_i      = 150;
 
 Params.LongTrial = 0;
 Params.RobotClicker     = 1;

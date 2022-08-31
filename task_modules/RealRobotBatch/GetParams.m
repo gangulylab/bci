@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -140,10 +140,10 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220817';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824;
-Params.LSTMBufferSize = 1000;
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220817;
+Params.LSTMBufferSize = 800;
 Params.SaveLSTMFeatures = false;
 
 %% ADAPTIVE BASELINE FLAG 
