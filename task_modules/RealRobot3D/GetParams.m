@@ -306,13 +306,19 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartPos          = [-150, 0,200];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
-    Params.OperationModeReset = 0;
+    Params.OperationModeReset = 1;
     Params.wristStartX = 3.1415*10; 
     Params.wristStartZ = 0; 
     Params.autoCenterOverTarget = 0;
     Params.autoCenterDist = 5;
     Params.zlim = 5;
     Params.graspOrientation = 0;
+    
+    Params.StartWristX = [3.1415]*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    
+    
     
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
@@ -324,6 +330,11 @@ elseif Params.RobotMode == 3  % lateral R2G wall
     Params.wristStartX          = 3.1415/2*10; 
     Params.wristStartZ          = 0; 
     Params.graspOrientation     = 1;
+    
+    
+    Params.StartWristX = [3.1415/2]*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];        
 
 end
 
@@ -350,6 +361,8 @@ Params.r_i      = 100;
 
 Params.r_v      = 0.7;
 Params.r_i      = 90;
+Params.r_v      = 0.7;
+Params.r_i      = 150;
 
 Params.LongTrial = 0;
 Params.RobotClicker     = 1;

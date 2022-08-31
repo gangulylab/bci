@@ -196,7 +196,16 @@ for Block=1:NumBlocks, % Block Loop
         write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
         write(Params.udp, [0,10,Params.autoCenterOverTarget,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
-        write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
+
+        [xa,xb,xc] = doubleToUDP(Params.StartWristX);
+        [ya,yb,yc] = doubleToUDP(Params.StartWristY); 
+        [za,zb,zc] = doubleToUDP(Params.StartWristZ) ;
+        
+        write(Params.udp, [0,14,Params.OperationModeReset(TargetID),0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+        write(Params.udp, [0,31, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+        
+                write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
+        
         [TrialData,Neuro,KF,Params,Clicker] = ...
             RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
         TrialData.TrialEndTime    = GetSecs;
