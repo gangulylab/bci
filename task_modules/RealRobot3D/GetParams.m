@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -139,6 +139,8 @@ Params.biLSTMFlag = true;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
+% 
+% Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
 
 Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
@@ -268,7 +270,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 150;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -321,8 +323,8 @@ elseif Params.RobotMode == 2 % vertical R2G
     
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
-    Params.StartPos             = [100, -90, 410]; % vertically alligned start
-%     Params.StartPos             = [100, -90, 320]; %
+%     Params.StartPos             = [-200, 200, 220]; % vertically alligned start
+    Params.StartPos             = [100, -90, 320]; %
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset   = 0;
@@ -353,7 +355,7 @@ Params.deltaT   = 1/Params.UpdateRate;
 % Params.k_v      = 0.7;
 % Params.k_i      = 40;
 Params.k_v      = 0.8;
-Params.k_i      = 18;
+Params.k_i      = 20;    % standard: 18
 
 Params.r_v      = 0.8;
 Params.r_i      = 100;

@@ -269,7 +269,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 1;
-Params.TargetOrder          = [5];
+Params.TargetOrder          = [2];
 
 
 %% CLDA Parameters
