@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -285,7 +285,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 3; 
+Params.RobotMode    = 2; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -355,7 +355,7 @@ Params.deltaT   = 1/Params.UpdateRate;
 % Params.k_v      = 0.7;
 % Params.k_i      = 40;
 Params.k_v      = 0.8;
-Params.k_i      = 20;    % standard: 18
+Params.k_i      = 18;    % standard: 18
 
 Params.r_v      = 0.8;
 Params.r_i      = 100;
