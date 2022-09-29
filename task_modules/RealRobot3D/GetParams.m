@@ -142,9 +142,9 @@ end
 % 
 % Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
+Params.LSTMFunctionName = 'net_bilstm_robot_20220928';%net_bilstm_robot_20220824_early_stop
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824B;%net_bilstm_robot_20220824_early_stop
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220928;%net_bilstm_robot_20220824_early_stop
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
