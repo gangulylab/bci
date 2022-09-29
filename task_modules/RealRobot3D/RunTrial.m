@@ -295,16 +295,16 @@ if ~Data.ErrorID
 
 
 
-            % check if mode Switch
-            f = read(Params.udp, 1, "string");
-            
-            if strcmp("1",f)     
-                PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepHigh; Params.beepHigh]);
-                PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
-            elseif strcmp("2",f)
-                PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepLow; Params.beepLow]);
-                PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
-            end
+%             % check if mode Switch
+%             f = read(Params.udp, 1, "string");
+%             
+%             if strcmp("1",f)     
+%                 PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepHigh; Params.beepHigh]);
+%                 PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
+%             elseif strcmp("2",f)
+%                 PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepLow; Params.beepLow]);
+%                 PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
+%             end
              
         % end if takes too long
         if TotalTime > Params.MaxReachTime

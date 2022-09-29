@@ -140,11 +140,11 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
 % 
-% Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220928'; %net_bilstm_robot_20220928B        %net_bilstm_robot_20220824_early_stop
+% Params.LSTMFunctionName = 'net_bilstm_robot_20220928'; %net_bilstm_robot_20220928B        %net_bilstm_robot_20220824_early_stop
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220928;%net_bilstm_robot_20220824_early_stop
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824B;%net_bilstm_robot_20220824_early_stop
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -307,7 +307,7 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartPos          = [-150, -150,300];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
-    Params.OperationModeReset = 1;
+    Params.OperationModeReset = 0;
     Params.wristStartX = 3.1415*10; 
     Params.wristStartZ = 0; 
     Params.autoCenterOverTarget = 0;
@@ -319,7 +319,7 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     
-Params.wl           = [-50, -67, 20];
+Params.wl           = [-50, -67, 16];
 Params.wu           = [5, -15 55];
     
     
