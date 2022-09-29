@@ -304,7 +304,7 @@ if Params.RobotMode == 1 % lateral R2G boxes
 
 elseif Params.RobotMode == 2 % vertical R2G
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-150, 0,200];
+    Params.StartPos          = [-150, -150,300];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 1;
@@ -319,6 +319,8 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     
+Params.wl           = [-50, -67, 20];
+Params.wu           = [5, -15 55];
     
     
 elseif Params.RobotMode == 3  % lateral R2G wall
