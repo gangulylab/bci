@@ -135,18 +135,19 @@ else
 end
 
 %% biLSTM classifier option
+
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.4;
 end
-% 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
 
-% Params.LSTMFunctionName = 'net_bilstm_robot_20220928'; %net_bilstm_robot_20220928B        %net_bilstm_robot_20220824_early_stop
+%Params.LSTMFunctionName = 'net_bilstm_robot_20220824B'; %net_bilstm_robot_20220928B %'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
+Params.LSTMFunctionName = 'net_bilstm_robot_20220929';% OR TRY 'net_bilstm_robot_20220824B';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824B;%net_bilstm_robot_20220824_early_stop
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220929;%OR TRY net_bilstm_robot_20220824B
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
+
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
