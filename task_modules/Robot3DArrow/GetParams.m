@@ -143,12 +143,12 @@ end
 %% biLSTM classifier option
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
-    Params.biLSTMSoftMaxThresh = 0.4;
+    Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_20220928';%'net_bilstm_20220824'; % or use net_bilstm_20220824A
+Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220824'; % or use net_bilstm_20220824A
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_20220928; % or use net_bilstm_20220824A
+Params.LSTM = Params.LSTM.net_bilstm_20220824; % or use net_bilstm_20220824A
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
