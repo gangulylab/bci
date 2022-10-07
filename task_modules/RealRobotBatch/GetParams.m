@@ -349,7 +349,7 @@ Params.SwitchBinNum = 8;
 Params.SwitchBinThresh = 0.7;
 Params.GraspBinNum = 8;
 Params.GraspBinThresh = 0.7;
-Params.graspOrientation     = 1;
+Params.graspOrientation     = 0;
 
 Params.wl = [-50, -65, 10];
 Params.wu = [5, -15 45];

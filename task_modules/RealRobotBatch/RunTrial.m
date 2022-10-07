@@ -163,6 +163,8 @@ if ~Data.ErrorID && Params.CueTime>0
     TotalTime = 0;
     InTargetTotalTime = 0;
     
+    
+    write(Params.udp, [0, 29, Data.TargetID,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 %     Send target position
     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
