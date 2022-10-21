@@ -134,21 +134,31 @@ else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
+% %% biLSTM classifier option
+% 
+% Params.biLSTMFlag = true;
+% if Params.biLSTMFlag
+%     Params.biLSTMSoftMaxThresh = 0.4;
+% end
+% 
+% %Params.LSTMFunctionName = 'net_bilstm_robot_20220824B'; %net_bilstm_robot_20220928B %'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
+% Params.LSTMFunctionName = 'net_bilstm_robot_20220824B';%'net_bilstm_robot_20220929';% OR TRY 'net_bilstm_robot_20220824B';
+% Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+% Params.LSTM = Params.LSTM.net_bilstm_robot_20220824B; %net_bilstm_robot_20220929;%OR TRY net_bilstm_robot_20220824B
+% Params.LSTMBufferSize = 1000;
+% Params.SaveLSTMFeatures = false;
+% 
 %% biLSTM classifier option
-
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
-    Params.biLSTMSoftMaxThresh = 0.4;
+    Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-%Params.LSTMFunctionName = 'net_bilstm_robot_20220824B'; %net_bilstm_robot_20220928B %'net_bilstm_robot_20220824B';%net_bilstm_robot_20220824_early_stop
-Params.LSTMFunctionName = 'net_bilstm_robot_20220929';% OR TRY 'net_bilstm_robot_20220824B';
+Params.LSTMFunctionName = 'net_bilstm_20220824_update';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220929;%OR TRY net_bilstm_robot_20220824B
+Params.LSTM = Params.LSTM.net_bilstm_20220824_update; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
-
-
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
@@ -286,7 +296,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 2; 
+Params.RobotMode    = 3; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 

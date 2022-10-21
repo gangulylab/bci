@@ -5,7 +5,7 @@ addpath '/home/ucsf/Projects/bci/task_helpers/'
 addpath '/home/ucsf/Projects/bci/clicker/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20220902'};
+foldernames = {'20221021'};
 
 % filter bank hg
 Params=[];
@@ -36,7 +36,7 @@ lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
 % get all the folders
 filepath = fullfile(root_path,foldernames{1},'Robot3DArrow');
 folders = dir(filepath);
-folders=folders(3:end);
+folders=folders(3:end-3);
 %folders=folders(3:8);
 
 % load the decoder.. use the decoder name run in the experiment 
@@ -61,7 +61,7 @@ end
 % update the decoder
 batch_size=128;
 val_freq = floor(length(XTrain)/batch_size);
-learning_rate = 5e-4;
+learning_rate = 1e-4;
 options = trainingOptions('adam', ...
     'MaxEpochs',50, ...
     'MiniBatchSize',batch_size, ...
@@ -70,13 +70,13 @@ options = trainingOptions('adam', ...
     'ValidationFrequency',val_freq,...
     'Shuffle','every-epoch', ...
     'ValidationData',{XTest,YTest},...
-    'ValidationPatience',6,...
+    'ValidationPatience',5,...
     'Plots','training-progress',...
     'LearnRateSchedule','piecewise',...
-    'LearnRateDropFactor',0.1,...
-    'OutputNetwork','best-validation-loss',...
+    'LearnRateDropFactor',0.1,...    
     'LearnRateDropPeriod',30,...
-    'InitialLearnRate',learning_rate);
+    'InitialLearnRate',learning_rate,...
+    'CheckpointPath','/home/ucsf/Projects/bci/lstm_models');
 
 % train the model
 % IMPORTANT -> VALIDATION SHOULD NOT BE WILDLY DIFFERENT THAT TRAINING
@@ -86,10 +86,14 @@ options = trainingOptions('adam', ...
 clear net
 layers = net_bilstm.Layers;
 net = trainNetwork(XTrain,YTrain,layers,options);
+
+
 net_bilstm_20220824_update = net;
 save net_bilstm_20220824_update net_bilstm_20220824_update
 
-
+tmp=load('net_checkpoint__252__2022_10_21__14_58_38.mat')
+net_bilstm_20220824_update = tmp.net;
+save net_bilstm_20220824_update net_bilstm_20220824_update
 
 %% FINE TUNING LSTM MODEL FOR A BATCH UPDATE ON ROBOT CENTER OUT DATA
 
