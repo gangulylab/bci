@@ -1,6 +1,6 @@
 function [XTrain,XTest,YTrain,YTest] = get_lstm_features_robotBatch(files,Params,lpFilt,chmap)
 
-
+disp('Getting the data for LSTM')
 % get the raw data
 D1={};
 D2={};
