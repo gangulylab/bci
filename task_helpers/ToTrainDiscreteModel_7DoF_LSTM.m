@@ -3,9 +3,12 @@
 clc;clear
 addpath '/home/ucsf/Projects/bci/task_helpers/'
 addpath '/home/ucsf/Projects/bci/clicker/'
+addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
 foldernames = {'20221021'};
+lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
+clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
 % filter bank hg
 Params=[];
@@ -36,7 +39,7 @@ lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
 % get all the folders
 filepath = fullfile(root_path,foldernames{1},'Robot3DArrow');
 folders = dir(filepath);
-folders=folders(3:end-3);
+folders=folders(4:end-3);
 %folders=folders(3:8);
 
 % load the decoder.. use the decoder name run in the experiment 
@@ -58,42 +61,73 @@ end
 % get inidividual samples
 [XTrain,XTest,YTrain,YTest] = get_lstm_features(files_train,Params,lpFilt);
 
-% update the decoder
+% decoder fine tune params 
 batch_size=128;
 val_freq = floor(length(XTrain)/batch_size);
 learning_rate = 1e-4;
+patience = 6;
+tmp_time = clock;
+saved_folder=[];
+for i=4:6
+    saved_folder =[saved_folder num2str(round(tmp_time(i)))];
+end
+todays_date = [num2str(tmp_time(1)) num2str(tmp_time(2)) num2str(tmp_time(3))];
+check_pt_foldername = fullfile(lstm_folder_path,todays_date,saved_folder);
+if ~exist(check_pt_foldername)
+    mkdir(check_pt_foldername)
+end
+
 options = trainingOptions('adam', ...
-    'MaxEpochs',50, ...
+    'MaxEpochs',60, ...
     'MiniBatchSize',batch_size, ...
     'GradientThreshold',10, ...
     'Verbose',true, ...
     'ValidationFrequency',val_freq,...
     'Shuffle','every-epoch', ...
     'ValidationData',{XTest,YTest},...
-    'ValidationPatience',5,...
+    'ValidationPatience',patience,...
     'Plots','training-progress',...
     'LearnRateSchedule','piecewise',...
     'LearnRateDropFactor',0.1,...    
-    'LearnRateDropPeriod',30,...
+    'LearnRateDropPeriod',40,...
     'InitialLearnRate',learning_rate,...
-    'CheckpointPath','/home/ucsf/Projects/bci/lstm_models');
+    'CheckpointPath',check_pt_foldername);
+
+
+% get rid of batch normalization layer as it throws an error due to matlab
+% version issues
+clear net
+layers = net_bilstm.Layers;
+idx=[];
+for i = 1:length(layers)
+    if ~strcmp(layers(i).Name,'batchnorm')
+        idx=[idx i];        
+    end
+end
+layers = layers(idx);
 
 % train the model
 % IMPORTANT -> VALIDATION SHOULD NOT BE WILDLY DIFFERENT THAT TRAINING
 % LOSS. IF SO, REDUCE LEARNING RATE (2E-4 TO 1E-4 ETC.) AND RE RUN. IF IT
 % CONVERGES TOO QUICKLY (<10 EPOCHS) RE RUN AGAIN AS IT IS STUCK IN LOCAL
 % MINIMA
-clear net
-layers = net_bilstm.Layers;
+
+cd(check_pt_foldername) % if you want to  see the models being saved at each epoch
 net = trainNetwork(XTrain,YTrain,layers,options);
 
+% loading the best performing (goat) model 
+saved_nets = dir(check_pt_foldername);
+saved_nets = saved_nets(3:end);
+[~,idx] = sort([saved_nets.datenum]);
+saved_nets = saved_nets(idx);
+goat_model = saved_nets(end-patience).name;
+goat_model = load(fullfile(check_pt_foldername,goat_model));
 
-net_bilstm_20220824_update = net;
+% saving to clicker folder
+cd(clicker_path)
+net_bilstm_20220824_update = goat_model.net;
 save net_bilstm_20220824_update net_bilstm_20220824_update
 
-tmp=load('net_checkpoint__252__2022_10_21__14_58_38.mat')
-net_bilstm_20220824_update = tmp.net;
-save net_bilstm_20220824_update net_bilstm_20220824_update
 
 %% FINE TUNING LSTM MODEL FOR A BATCH UPDATE ON ROBOT CENTER OUT DATA
 
@@ -101,9 +135,12 @@ save net_bilstm_20220824_update net_bilstm_20220824_update
 clc;clear
 addpath '/home/ucsf/Projects/bci/task_helpers/'
 addpath '/home/ucsf/Projects/bci/clicker/'
+addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20220902'};
+foldernames = {'20221021'};
+lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
+clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
 % filter bank hg
 Params=[];
@@ -135,7 +172,7 @@ lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
 filepath = fullfile(root_path,foldernames{1},'RealRobotBatch');
 folders = dir(filepath);
 folders=folders(3:end);
-%folders=folders(3:8);
+
 
 % load the decoder.. use the decoder name run in the experiment 
 load net_bilstm_robot_20220824
@@ -156,36 +193,76 @@ end
 % get inidividual samples
 [XTrain,XTest,YTrain,YTest] = get_lstm_features_robotBatch(files_train,Params,lpFilt);
 
-% update the decoder
+% decoder fine tune params 
 batch_size=128;
 val_freq = floor(length(XTrain)/batch_size);
-learning_rate = 2e-4; % important parameter to tune
+learning_rate = 1e-4;
+patience = 6;
+tmp_time = clock;
+saved_folder=[];
+for i=4:6
+    saved_folder =[saved_folder num2str(round(tmp_time(i)))];
+end
+todays_date = [num2str(tmp_time(1)) num2str(tmp_time(2)) num2str(tmp_time(3))];
+check_pt_foldername = fullfile(lstm_folder_path,todays_date,saved_folder);
+if ~exist(check_pt_foldername)
+    mkdir(check_pt_foldername)
+end
+
 options = trainingOptions('adam', ...
-    'MaxEpochs',50, ...
+    'MaxEpochs',60, ...
     'MiniBatchSize',batch_size, ...
     'GradientThreshold',10, ...
     'Verbose',true, ...
     'ValidationFrequency',val_freq,...
     'Shuffle','every-epoch', ...
     'ValidationData',{XTest,YTest},...
-    'ValidationPatience',6,...
+    'ValidationPatience',patience,...
     'Plots','training-progress',...
     'LearnRateSchedule','piecewise',...
-    'LearnRateDropFactor',0.1,...
-    'OutputNetwork','best-validation-loss',...
-    'LearnRateDropPeriod',30,...
-    'InitialLearnRate',learning_rate);
+    'LearnRateDropFactor',0.1,...    
+    'LearnRateDropPeriod',40,...
+    'InitialLearnRate',learning_rate,...
+    'CheckpointPath',check_pt_foldername);
+
+% get rid of batch normalization layer as it throws an error due to matlab
+% version issues
+clear net
+layers = net_bilstm.Layers;
+idx=[];
+for i = 1:length(layers)
+    if ~strcmp(layers(i).Name,'batchnorm')
+        idx=[idx i];        
+    end
+end
+layers = layers(idx);
 
 % train the model
 % IMPORTANT -> VALIDATION SHOULD NOT BE WILDLY DIFFERENT THAT TRAINING
 % LOSS. IF SO, REDUCE LEARNING RATE (2E-4 TO 1E-4 ETC.) AND RE RUN. IF IT
 % CONVERGES TOO QUICKLY (<10 EPOCHS) RE RUN AGAIN AS IT IS STUCK IN LOCAL
 % MINIMA
-clear net
-layers = net_bilstm.Layers;
+
+cd(check_pt_foldername) % if you want to  see the models being saved at each epoch
 net = trainNetwork(XTrain,YTrain,layers,options);
-net_bilstm_robot_20220824_update = net;
-save net_bilstm_robot_20220824_update net_bilstm_robot_20220824_update
+
+% loading the best performing (goat) model 
+saved_nets = dir(check_pt_foldername);
+saved_nets = saved_nets(3:end);
+[~,idx] = sort([saved_nets.datenum]);
+saved_nets = saved_nets(idx);
+goat_model = saved_nets(end-patience).name;
+goat_model = load(fullfile(check_pt_foldername,goat_model));
+
+% saving to clicker folder
+cd(clicker_path)
+net_bilstm_20220824_update = goat_model.net;
+save net_bilstm_robt_20220824_update net_bilstm_robt_20220824_update
+
+
+
+
+
 
 
 
