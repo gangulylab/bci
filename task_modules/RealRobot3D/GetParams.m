@@ -154,9 +154,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_20220824_update';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_20220824_update; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 %% ADAPTIVE BASELINE FLAG 
@@ -373,10 +373,10 @@ Params.k_v      = 0.8;
 Params.k_i      = 18;    % standard: 18
 
 Params.r_v      = 0.8;
-Params.r_i      = 100;
+Params.r_i      = 120;
 
-Params.r_v      = 0.7;
-Params.r_i      = 90;
+% Params.r_v      = 0.7;
+% Params.r_i      = 90;
 % Params.r_v      = 0.7;
 % Params.r_i      = 150;
 
@@ -389,21 +389,21 @@ Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp        = 0;
 Params.GraspTask        = 1;
-Params.lowGainMode      = 0;
+Params.lowGainMode      = 1;
 Params.autoCenterOverTarget    = 0;
 Params.autoCenterDist   = 0;
 
 Params.SwitchBinNum     = 8;
-Params.SwitchBinThresh  = 0.7;
+Params.SwitchBinThresh  = 0.6;
 Params.GraspBinNum      = 8;
-Params.GraspBinThresh   = 0.7;
+Params.GraspBinThresh   = 0.6;
 
 % Beta
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
 %Flip
-Params.FlipStop         = 0;
+Params.FlipStop         = 1;
 Params.FlipBinNum       = 5*8; 
 Params.FlipBinThresh    = 3;
 
