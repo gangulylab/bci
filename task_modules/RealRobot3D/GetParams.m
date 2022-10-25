@@ -296,7 +296,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 3; 
+Params.RobotMode    = 2; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -354,11 +354,13 @@ end
 
 Params.index        = 1;
 Params.clickOrder   = [ones(5,1)];
+
+Params.clickOrder = [1*ones(8,1);3*ones(8,1); 1*ones(8,1); 3*ones(8,1);1*ones(20,1);7*ones(10,1);1*ones(7,1);7*ones(100,1);];
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.TargetOrder  = [Params.TargetOrder, 1];
 
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+Params.RunningModeZero      = 1;  % 1: 0 output if not winner, 0: maintain prior decision if no winner
 
 Params.RobotTargetRadius    = 50;
 Params.RobotTargetDim       = 1;
@@ -389,7 +391,7 @@ Params.AutoGrasp        = 0;
 Params.GraspTask        = 1;
 Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
-Params.autoCenterDist = 0;
+Params.autoCenterDist   = 0;
 
 Params.SwitchBinNum     = 8;
 Params.SwitchBinThresh  = 0.7;
@@ -399,5 +401,11 @@ Params.GraspBinThresh   = 0.7;
 % Beta
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
+
+%Flip
+Params.FlipStop         = 0;
+Params.FlipBinNum       = 5*8; 
+Params.FlipBinThresh    = 3;
+
 
 end % GetParams

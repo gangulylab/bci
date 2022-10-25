@@ -274,9 +274,9 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
-Params.InstructedDelayTime = 1;
-Params.CueTime = 0.75;
+Params.InterTrialInterval = 0.25;
+Params.InstructedDelayTime = 0.25;
+Params.CueTime = 2.0;
 Params.MaxStartTime = 50;
 Params.MaxReachTime = 10;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
@@ -364,7 +364,7 @@ Params.GraspBinNum = 8;
 Params.GraspBinThresh = 0.7;
 Params.graspOrientation     = 0;
 
-Params.wl = [-50, -65, 10];
+Params.wl = [-50, -65, 5];
 Params.wu = [5, -15 45];
 
 Params.ClampCorrect     = 0;

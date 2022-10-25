@@ -37,8 +37,8 @@ end
 [za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
 
 write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
-write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
+% write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+% write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 
 if Data.TargetID == 3 && Params.OperationModeReset == 1
     l = "LEFT"
@@ -56,7 +56,7 @@ fprintf('\nTrial: %i\n',Data.Trial)
 TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Head', 'Lips', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
-pause()
+
 % fprintf('  Target: %i\n',Data.TargetPosition)
 if Params.Verbose
     if TaskFlag==2
@@ -93,7 +93,7 @@ Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
 
-
+pause(4.0)
 
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
@@ -166,12 +166,12 @@ if ~Data.ErrorID && Params.CueTime>0
     
     write(Params.udp, [0, 29, Data.TargetID,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 %     Send target position
-    [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
-    [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
-    [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
-
-    write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID], "127.0.0.1", Params.pythonPort); 
-    
+%     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
+%     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
+%     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
+% 
+%     write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID], "127.0.0.1", Params.pythonPort); 
+%     
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -220,6 +220,8 @@ if ~Data.ErrorID && Params.CueTime>0
 end % only complete if no errors
 
 %% Go to reach target
+
+a = "GOOOOOOO"
 if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
@@ -522,7 +524,7 @@ else
     WaitSecs(Params.ErrorWaitTime);
 end
 
-pause()
+% pause()
 
 end % RunTrial
 

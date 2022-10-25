@@ -45,17 +45,6 @@ if Params.BLACKROCK
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
 
-% reset cursor
-% if Params.LongTrial
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.LongStartPos(Data.TargetID,:);
-% else
-%         Cursor.State = [0,0,0,0,0,0]';
-%         Cursor.State(1:3) = Params.StartPos;
-% end
-%     Cursor.IntendedState = [0,0,0,0,1]';
-
-
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
@@ -196,6 +185,8 @@ if ~Data.ErrorID
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
     temp_dir = [0,0,0];
     ClickToSend = 0;
+
+    Flip_Buffer = zeros(3,Params.FlipBinNum);
     
     while ~done
         % Update Time & Position
@@ -253,33 +244,63 @@ if ~Data.ErrorID
                 end 
             end              
                 
-                Cursor.ClickState = Click_Decision;
-                Cursor.ClickDistance = Click_Distance;
-                Data.ClickerState(1,end+1) = Cursor.ClickState;
-                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-                                
-                ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
-                ClickDec_Buffer(end) = Click_Decision;
-                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);  
-                
-                RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
+            Cursor.ClickState = Click_Decision;
+            Cursor.ClickDistance = Click_Distance;
+            Data.ClickerState(1,end+1) = Cursor.ClickState;
+            Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
 
-                ClickToSend = RunningMode_ClickDec;        
-                Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
-                
-                % Beta stopping
-                beta_scalar = betaband_output(Params,Neuro); 
-                Data.BetaScalar(1,end+1)    = beta_scalar;
-                if Params.UseBetaStop
-                     if (beta_scalar >= Params.BetaThreshold)
-                         ClickToSend = 0;
-                     end
-                    Data.BetaClickerState(1,end+1) = ClickToSend;
-                end
-                
-                fprintf('Decode: %i Beta: %2.2f\n',ClickToSend, beta_scalar)
-                
-     
+            ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+            ClickDec_Buffer(end) = Click_Decision;
+            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);  
+
+            RunningMode_ClickDec = any(Params.ValidDir == RunningMode_ClickDec)*RunningMode_ClickDec; % Filter by allowable directions
+
+            ClickToSend = RunningMode_ClickDec;        
+            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+
+            % Beta stopping
+            beta_scalar = betaband_output(Params,Neuro); 
+            Data.BetaScalar(1,end+1)    = beta_scalar;
+            if Params.UseBetaStop
+                 if (beta_scalar >= Params.BetaThreshold)
+                     ClickToSend = 0;
+                 end
+                Data.BetaClickerState(1,end+1) = ClickToSend;
+            end
+
+
+            if Params.FlipStop
+            
+            % Check for flipping opposite inputs
+
+            ux = int8(RunningMode_ClickDec== 1) - int8(RunningMode_ClickDec == 3);
+            uy = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
+            uz = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
+   
+            Flip_Buffer(:,1:end-1)    = Flip_Buffer(:,2:end);
+            Flip_Buffer(:,end)        = [ux;uy;uz];
+            
+            for i = 1:3
+                flips(i) = CountFlips(Flip_Buffer(i,:));
+            end
+            
+            nFlips = max(flips)-1;
+            
+            fprintf('Decode: %i    Beta: %2.2f     Flips: %i \n',ClickToSend, beta_scalar, nFlips)
+
+            if nFlips > Params.FlipBinThresh  % send to robot
+                write(Params.udp, [0,32,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+                Flip_Buffer = zeros(3,Params.FlipBinNum);
+                flipStop = 1;
+            else
+                flipStop = 0;
+
+            end
+            
+            Data.FlipStop(:,end+1) = flipStop;
+            Data.NumFlips(:,end+1) = nFlips; 
+            
+            end
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
 
             
@@ -291,9 +312,6 @@ if ~Data.ErrorID
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
-
-
-
 
 %             % check if mode Switch
 %             f = read(Params.udp, 1, "string");

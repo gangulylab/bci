@@ -187,6 +187,7 @@ for Block=1:NumBlocks % Block Loop
         TrialData.FeatureStats.Var = Neuro.FeatureStats.var;
         
         % Run Trial
+
         TrialData.TrialStartTime  = GetSecs;
         [TrialData,Neuro,KF,Params,Clicker] = ...
             RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
