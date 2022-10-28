@@ -355,7 +355,7 @@ end
 Params.index        = 1;
 Params.clickOrder   = [ones(5,1)];
 
-Params.clickOrder = [1*ones(8,1);3*ones(8,1); 1*ones(8,1); 3*ones(8,1);1*ones(20,1);7*ones(10,1);1*ones(7,1);7*ones(100,1);];
+Params.clickOrder = [7*ones(8,1);7*ones(8,1); 7*ones(8,1); 7*ones(8,1);7*ones(20,1);7*ones(10,1);1*ones(7,1);7*ones(100,1);];
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.TargetOrder  = [Params.TargetOrder, 1];
 
@@ -389,7 +389,7 @@ Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp        = 0;
 Params.GraspTask        = 1;
-Params.lowGainMode      = 1;
+Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
 Params.autoCenterDist   = 0;
 
@@ -407,5 +407,6 @@ Params.FlipStop         = 1;
 Params.FlipBinNum       = 5*8; 
 Params.FlipBinThresh    = 3;
 
-
+% Mode switch sound
+Params.UseSoundModeSwitch = 1;
 end % GetParams

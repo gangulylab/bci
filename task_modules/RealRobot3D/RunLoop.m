@@ -96,6 +96,28 @@ write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 write(Params.udp, [0,26,Params.k_v*10,Params.k_i,Params.r_v*10,Params.r_i,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 % pause(2.0)
+%% Initiate SOund
+
+if Params.UseSoundModeSwitch
+PsychPortAudio('Close')
+
+InitializePsychSound(1);
+Params.sound_nrchannels = 2;                                                         % Number of channels and Frequency of the sound
+Params.sound_freq = 48000;
+Params.sound_pahandle = PsychPortAudio('Open', [], 1, 1, Params.sound_freq, Params.sound_nrchannels);
+PsychPortAudio('Volume', Params.sound_pahandle, 0.5);                                % Set the volume to half for this demo
+
+Params.beepHigh    = MakeBeep(1000, 0.1, Params.sound_freq);
+% Params.beepLow     = MakeBeep(500, 0.25, Params.sound_freq);
+freq = 500;
+duration = .1;
+samplingRate = 48000;
+
+s = sin(2*pi*freq*(0:duration*samplingRate-1)/samplingRate);
+
+Params.beepLow  = [s, zeros(1,1000),s];
+
+end
 
 
 %%  Loop Through Blocks of Trials
