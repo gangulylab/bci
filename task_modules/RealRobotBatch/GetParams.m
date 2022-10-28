@@ -155,9 +155,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 %% ADAPTIVE BASELINE FLAG 
@@ -274,9 +274,9 @@ end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 0.25;
-Params.InstructedDelayTime = 0.25;
-Params.CueTime = 2.0;
+Params.InterTrialInterval = 1;
+Params.InstructedDelayTime = 1;
+Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
 Params.MaxReachTime = 10;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen

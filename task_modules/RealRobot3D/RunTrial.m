@@ -268,7 +268,7 @@ if ~Data.ErrorID
                 Data.BetaClickerState(1,end+1) = ClickToSend;
             end
 
-
+            nFlips = 0;
             if Params.FlipStop
             
             % Check for flipping opposite inputs
@@ -286,7 +286,7 @@ if ~Data.ErrorID
             
             nFlips = max(flips)-1;
             
-            fprintf('Decode: %i    Beta: %2.2f     Flips: %i \n',ClickToSend, beta_scalar, nFlips)
+
 
             if nFlips > Params.FlipBinThresh  % send to robot
                 write(Params.udp, [0,32,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -301,6 +301,8 @@ if ~Data.ErrorID
             Data.NumFlips(:,end+1) = nFlips; 
             
             end
+
+            fprintf('Decode: %i    Beta: %2.2f     Flips: %i \n',ClickToSend, beta_scalar, nFlips)
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
 
             
@@ -314,16 +316,17 @@ if ~Data.ErrorID
             Data.TaskState(1,end+1)=Cursor.TaskState;
 
 %             % check if mode Switch
-%             f = read(Params.udp, 1, "string");
-%             
-%             if strcmp("1",f)     
-%                 PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepHigh; Params.beepHigh]);
-%                 PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
-%             elseif strcmp("2",f)
-%                 PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepLow; Params.beepLow]);
-%                 PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
-%             end
-             
+            
+            if Params.UseSoundModeSwitch
+                f = read(Params.udp, 1, "string");
+            if strcmp("1",f)     
+                PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepHigh; Params.beepHigh]);
+                PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
+            elseif strcmp("2",f)
+                PsychPortAudio('FillBuffer', Params.sound_pahandle, [Params.beepLow; Params.beepLow]);
+                PsychPortAudio('Start', Params.sound_pahandle, 1, 0, 0);
+            end
+            end
         % end if takes too long
         if TotalTime > Params.MaxReachTime
             done = 1;

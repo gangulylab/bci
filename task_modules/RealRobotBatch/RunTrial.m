@@ -93,8 +93,8 @@ Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
 
-pause(4.0)
-
+% pause(4.0)
+pause()
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
     tstart  = GetSecs;

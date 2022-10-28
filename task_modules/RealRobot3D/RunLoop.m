@@ -104,7 +104,7 @@ PsychPortAudio('Close')
 InitializePsychSound(1);
 Params.sound_nrchannels = 2;                                                         % Number of channels and Frequency of the sound
 Params.sound_freq = 48000;
-Params.sound_pahandle = PsychPortAudio('Open', [], 1, 1, Params.sound_freq, Params.sound_nrchannels);
+Params.sound_pahandle = PsychPortAudio('Open', [1], 1, 1, Params.sound_freq, Params.sound_nrchannels);
 PsychPortAudio('Volume', Params.sound_pahandle, 0.5);                                % Set the volume to half for this demo
 
 Params.beepHigh    = MakeBeep(1000, 0.1, Params.sound_freq);

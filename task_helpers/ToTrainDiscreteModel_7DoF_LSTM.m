@@ -138,7 +138,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20221025'};
+foldernames = {'20221028'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -191,13 +191,13 @@ for j=1:length(folders_train)
 end
 
 % get inidividual samples
-% [XTrain,XTest,YTrain,YTest] = get_lstm_features_robotBatch(files_train,Params,lpFilt);
-[XTrain,XTest,YTrain,YTest] = get_lstm_features(files_train,Params,lpFilt);
+ [XTrain,XTest,YTrain,YTest] = get_lstm_features_robotBatch(files_train,Params,lpFilt);
+%[XTrain,XTest,YTrain,YTest] = get_lstm_features(files_train,Params,lpFilt);
 
 % decoder fine tune params 
-batch_size=128;
+batch_size=64;
 val_freq = floor(length(XTrain)/batch_size);
-learning_rate = 2e-4;
+learning_rate = 1e-4;
 patience = 6;
 tmp_time = clock;
 saved_folder=[];
@@ -257,8 +257,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_robot_20220824_update = goat_model.net;
-save net_bilstm_robot_20220824_update net_bilstm_robot_20220824_update
+net_bilstm_robot_20220824_update_1028 = goat_model.net;
+save net_bilstm_robot_20220824_update_1028 net_bilstm_robot_20220824_update_1028
 
 
 

@@ -151,14 +151,16 @@ end
 %% biLSTM classifier option
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
-    Params.biLSTMSoftMaxThresh = 0.45;
+    Params.biLSTMSoftMaxThresh = 0.4;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
+
+
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
@@ -315,7 +317,7 @@ if Params.RobotMode == 1 % lateral R2G boxes
 
 elseif Params.RobotMode == 2 % vertical R2G
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-150, -150,300];
+    Params.StartPos          = [-250, 0,300];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -403,10 +405,10 @@ Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
 %Flip
-Params.FlipStop         = 1;
+Params.FlipStop         = 0;
 Params.FlipBinNum       = 5*8; 
 Params.FlipBinThresh    = 3;
 
 % Mode switch sound
-Params.UseSoundModeSwitch = 1;
+Params.UseSoundModeSwitch = 0;
 end % GetParams
