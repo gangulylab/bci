@@ -97,7 +97,7 @@ end
 % scales the probabilities of the decoder towards a specific action by a
 % prespecific amount
 
-Params.NeuralBias = true;
+Params.NeuralBias = false;
 Params.NeuralNetBiasDirection = 2; % class o/p that has the bias. 
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
@@ -120,6 +120,26 @@ else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
 
+
+
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.45;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTMBufferSize = 1000;
+Params.SaveLSTMFeatures = false;
+
+Params.LSTM_Output_Method = true;
+if Params.LSTM_Output_Method
+    f = load(fullfile('clicker','lstm_output_pattern.mat'));
+    Params.lstm_output_pattern = f.lstm_output_pattern;
+    Params.LSTM_Output_Method_Thresh = 0.95;
+end
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
