@@ -156,7 +156,7 @@ Params.LSTM_Output_Method = true;
 if Params.LSTM_Output_Method
     f = load(fullfile('clicker','lstm_output_pattern.mat'));
     Params.lstm_output_pattern = f.lstm_output_pattern;
-    Params.LSTM_Output_Method_Thresh = 0.95;
+    Params.LSTM_Output_Method_Thresh = 0.85;
 end
 
 %% ADAPTIVE BASELINE FLAG 
