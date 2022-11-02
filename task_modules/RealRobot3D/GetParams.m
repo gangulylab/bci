@@ -160,6 +160,13 @@ Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
+Params.LSTM_Output_Method = true;
+if Params.LSTM_Output_Method
+    f = load(fullfile('clicker','lstm_output_pattern.mat'));
+    Params.lstm_output_pattern = f.lstm_output_pattern;
+    Params.LSTM_Output_Method_Thresh = 0.95;
+end
+
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data

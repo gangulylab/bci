@@ -6,26 +6,48 @@ function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro
 global Cursor
 
 if Params.ControlMode == 2 %mouse
-        Click_Decision  = Params.clickOrder(Params.index);
-%     Click_Decision = Params.TargetID;
+    Click_Decision  = Params.clickOrder(Params.index);
+    %     Click_Decision = Params.TargetID;
     Click_Distance = 0;
-    
+
 else,
     if Params.biLSTMFlag == 1
-        pred =  predict(Params.LSTM,Neuro.LSTMFeatures,'ExecutionEnvironment','cpu');
-%         pred = pred +  [0.1, 0, -0.3, 0, 0, 0, 0];
-        [aa bb]=max(pred);
-        if aa >=  Params.biLSTMSoftMaxThresh
-            Click_Decision = bb;
-            Click_Distance = aa;
+        if Params.LSTM_Output_Method
+            pred = activations(Params.LSTM,Neuro.LSTMFeatures,'fc_2','ExecutionEnvironment','cpu');
+            if size(pred,1) > size(pred,2)
+                pred=pred';
+            end
+            X = [pred;Params.lstm_output_pattern];
+            R = corrcoef(X');
+            pred = R(1,2:end);
+            [aa bb]=max(pred);
+            if aa >= Params.LSTM_Output_Method_Thresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+
         else
-            Click_Decision = 0;
-            Click_Distance = 0;
+            pred =  predict(Params.LSTM,Neuro.LSTMFeatures,'ExecutionEnvironment','cpu');
+
+            %         pred = pred +  [0.1, 0, -0.3, 0, 0, 0, 0];
+            [aa bb]=max(pred);
+            if aa >=  Params.biLSTMSoftMaxThresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
         end
+
+
         %disp(['LSTM o/p '  num2str(Click_Decision)])
     end
-    
-    
+
+
     if Params.NeuralNetFlag == 1
         if Params.ChPooling == 0
             %if Params.SmoothDataFlag==1
@@ -39,18 +61,18 @@ else,
                 idx=[1:128 385:512 513:640 641:768];
             end
             X=X(idx);
-            
+
             % 2-norm
             if Params.Norm2
                 X = X./norm(X);
             end
-            
+
             if Params.AdaptiveBaseline
                 m = bl_mean(idx+128);
                 s = bl_std(idx+128);
                 X = (X-m)./s;
             end
-            
+
             %Decision_Prob = multilayer_perceptron_Day1to7(X);
             Decision_Prob = feval(Params.NeuralNetFunction,X);
             %disp(Decision_Prob);
@@ -62,7 +84,7 @@ else,
                 Click_Decision = 0;
                 Click_Distance = 0;
             end
-            
+
         else
             chmap=Params.ChMap;
             [xx yy] = size(chmap);
@@ -117,21 +139,21 @@ else,
                 end
                 X = pooled_data;
             end
-            
+
             % 2-norm
             if Params.Norm2
                 X = X./norm(X);
             end
-            
+
             % eval the classifier
             Decision_Prob = feval(Params.NeuralNetFunction,X);
             %Decision_Prob = Params.NeuralNet(X);
-            
+
             if Params.NeuralBias
                 Decision_Prob(Params.NeuralNetBiasDirection) = ...
                     Decision_Prob(Params.NeuralNetBiasDirection) - Params.NeuralNetBiasCorrection;
             end
-            
+
             [aa bb]=max(Decision_Prob);
             if aa >= Params.NeuralNetSoftMaxThresh
                 Click_Decision = bb;
@@ -140,7 +162,7 @@ else,
                 Click_Decision = 0;
                 Click_Distance = 0;
             end
-            
+
         end
     elseif Params.NeuralNet2Flag==1
         chmap=Params.ChMap;
@@ -166,19 +188,19 @@ else,
             end
         end
         X = pooled_data;
-        
+
         % 2-norm
         if Params.Norm2
             X = X./norm(X);
         end
-        
+
         act = predict(Params.NeuralNet2.net, X' ,'ExecutionEnvironment','cpu')';
-        
+
         if Params.NeuralBias
             act(Params.NeuralNetBiasDirection) = ...
                 act(Params.NeuralNetBiasDirection) - Params.NeuralNetBiasCorrection;
         end
-        
+
         [aa bb]=max(act);
         if aa >=  Params.NeuralNet2SoftMaxThresh
             Click_Decision = bb;
@@ -187,7 +209,7 @@ else,
             Click_Decision = 0;
             Click_Distance = 0;
         end
-        
+
     elseif Params.ConvNeuralNetFlag == 1
         chtemp=[];
         chmap=Params.ChMap;
@@ -195,12 +217,12 @@ else,
         X = X(:);
         feat_idx = [129:256 513:640 769:896];
         X = X(feat_idx);
-        
+
         % 2-norm
         if Params.Norm2
             X = X./norm(X);
         end
-        
+
         f1 = (X(1:128));
         f2 = (X(129:256));
         f3 = (X(257:384));
@@ -228,7 +250,7 @@ else,
         X = X(:);
         feat_idx = [129:256 513:640 769:896];
         X = X(feat_idx);
-        
+
         % pooling
         f1 = (X(1:128));
         f2 = (X(129:256));
@@ -246,26 +268,26 @@ else,
             end
         end
         X = pooled_data;
-        
+
         % 2-norm
         if Params.Norm2
             X = X./norm(X);
         end
-        
+
         % eval the classifier
-        nets = Params.NeuralNetFunction(1).(Params.NeuralNetName);    
+        nets = Params.NeuralNetFunction(1).(Params.NeuralNetName);
         Decision_Prob=[];
         for iter=1:1%length(nets)
             Decision_Prob = [Decision_Prob nets{iter}(X)];
         end
-        %Decision_Prob = mean(Decision_Prob,2);    
-        
-        
+        %Decision_Prob = mean(Decision_Prob,2);
+
+
         if Params.NeuralBias
             Decision_Prob(Params.NeuralNetBiasDirection) = ...
                 Decision_Prob(Params.NeuralNetBiasDirection) - Params.NeuralNetBiasCorrection;
         end
-        
+
         [aa bb]=max(Decision_Prob);
         if aa >= Params.NeuralNetSoftMaxThresh
             Click_Decision = bb;
@@ -275,7 +297,7 @@ else,
             Click_Distance = 0;
         end
     end
-    
+
     %     else
     %         if Params.SmoothDataFlag ==1
     %             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
