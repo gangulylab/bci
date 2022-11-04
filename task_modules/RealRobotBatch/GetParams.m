@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -161,7 +161,7 @@ Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
-Params.LSTM_Output_Method = true;
+Params.LSTM_Output_Method = false;
 if Params.LSTM_Output_Method
     f = load(fullfile('clicker','lstm_output_pattern.mat'));
     Params.lstm_output_pattern = f.lstm_output_pattern;

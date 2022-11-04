@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter=4;
+Params.ClickCounter = 2;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -294,7 +294,7 @@ Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
 Params.RobotTargetRadius    = 40;
 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 1;  % 1: No filtering, 3+: running mode filter of last n bins
 
 if Params.RobotMode == 0
     Params.RobotTargetDim = 2;

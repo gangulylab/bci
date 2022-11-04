@@ -160,7 +160,7 @@ Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
-Params.LSTM_Output_Method = true;
+Params.LSTM_Output_Method = false;
 if Params.LSTM_Output_Method
     f = load(fullfile('clicker','lstm_output_pattern.mat'));
     Params.lstm_output_pattern = f.lstm_output_pattern;
@@ -339,7 +339,7 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     
-Params.wl           = [-50, -67, 18];
+Params.wl           = [-50, -67, 19];
 Params.wu           = [5, -15 55];
     
     
@@ -382,7 +382,7 @@ Params.k_v      = 0.8;
 Params.k_i      = 18;    % standard: 18
 
 Params.r_v      = 0.8;
-Params.r_i      = 120;
+Params.r_i      = 90;
 
 % Params.r_v      = 0.7;
 % Params.r_i      = 90;
@@ -402,8 +402,8 @@ Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
 Params.autoCenterDist   = 0;
 
-Params.SwitchBinNum     = 8;
-Params.SwitchBinThresh  = 0.6;
+Params.SwitchBinNum     = 4;
+Params.SwitchBinThresh  = 0.75;
 Params.GraspBinNum      = 8;
 Params.GraspBinThresh   = 0.6;
 
