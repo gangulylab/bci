@@ -339,7 +339,7 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     
-Params.wl           = [-50, -67, 19];
+Params.wl           = [-50, -67, 20];
 Params.wu           = [5, -15 55];
     
     

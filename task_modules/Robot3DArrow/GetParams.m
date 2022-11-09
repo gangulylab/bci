@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter = 2;
+Params.ClickCounter = 4;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -152,7 +152,7 @@ Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
-Params.LSTM_Output_Method = true;
+Params.LSTM_Output_Method = false;
 if Params.LSTM_Output_Method
     f = load(fullfile('clicker','lstm_output_pattern.mat'));
     Params.lstm_output_pattern = f.lstm_output_pattern;
