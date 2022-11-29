@@ -79,12 +79,9 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
                 Cursor.LastUpdateTime = tim;
                 
                 Data.NeuralTime(1,end+1) = tim;
-                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);
-                
+                [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);              
             end
-            
-            
-            
+
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Cursor.State= [0 0 0 0 0]';
@@ -261,12 +258,18 @@ if ~Data.ErrorID
             Data.ClickerState(1,end+1) = Cursor.ClickState;
             
             % Running Mode
-            ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
-            ClickDec_Buffer(end) = Click_Decision;
-            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
 
-            ClickToSend = RunningMode_ClickDec;
-            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+            if TaskFlag == 1  % imagined - no running mode
+                RunningMode_ClickDec  = Click_Decision;
+                ClickToSend =  Click_Decision;
+            else
+                ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+                ClickDec_Buffer(end) = Click_Decision;
+                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+
+                ClickToSend = RunningMode_ClickDec;
+                Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+            end
              
             % counter only if correct target is hit, training mode for now
             if TaskFlag == 1

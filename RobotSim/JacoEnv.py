@@ -456,6 +456,51 @@ class JacoEnv(object):
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
     elif key == 1:
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+    elif key == 10:
+      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+      self.pos3 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+    elif key == 11:
+      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+      self.pos3 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 12:
+      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+      self.pos3 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 13:
+      self.pos2 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+      self.pos3 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+    elif key == 14:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+      self.pos3 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 15:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+      self.pos3 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 16:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+      self.pos3 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 17:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+      self.pos3 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+    elif key == 18:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+      self.pos3 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 19:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+      self.pos3 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 20:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+      self.pos3 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 21:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
+      self.pos3 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+    elif key == 22:
+      self.pos2 = [self.pos[0] + self.debuglen, self.pos[1], self.pos[2]]
+      self.pos3 = [self.pos[0] - self.debuglen, self.pos[1], self.pos[2]]
+    elif key == 23: 
+      self.pos2 = [self.pos[0], self.pos[1] + self.debuglen, self.pos[2]]
+      self.pos3 = [self.pos[0], self.pos[1] - self.debuglen, self.pos[2]]
+    elif key == 24:
+      self.pos2 = [self.pos[0], self.pos[1], self.pos[2] + self.debuglen]
+      self.pos3 = [self.pos[0], self.pos[1], self.pos[2] - self.debuglen]
     else:
       self.pos2 = [self.pos[0], self.pos[1], self.pos[2]] 
 
@@ -722,7 +767,6 @@ class JacoEnv(object):
           p3 = [self.pos[0], self.pos[1] + .15, self.pos2[2] - 0.15]
           p.addUserDebugLine(p1, p2, [0,1,1], 8, self.bciRate)
           p.addUserDebugLine(p2, p3, [0,1,1], 8, self.bciRate)
-          print("Here")
         else:
           p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2]], [self.pos2[0], self.pos2[1], self.pos2[2]], [1,0,0,], 8, self.bciRate)  
       elif self.mode == 3 or self.mode == 4 or self.mode > 5:
@@ -756,6 +800,9 @@ class JacoEnv(object):
           p.addUserDebugLine(p2, p3, [1,1,0], 8, self.bciRate)
           p.addUserDebugLine(p3, p4, [1,1,0], 8, self.bciRate)
           p.addUserDebugLine(p4, p5, [1,1,0], 8 , self.bciRate)
-    
+
+        elif self.key>9:
+          p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)
+          p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos3[0], self.pos3[1], self.pos3[2] + .05], [1,0,0,], 8, self.bciRate)
         else:
           p.addUserDebugLine([self.pos[0], self.pos[1], self.pos[2] + 0.05], [self.pos2[0], self.pos2[1], self.pos2[2] + .05], [1,0,0,], 8, self.bciRate)

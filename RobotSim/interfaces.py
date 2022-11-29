@@ -55,7 +55,7 @@ class DiscreteActionsRobot():
         pos = cpos.copy()
         if st == 1:
             color = [0,1,0];
-            if target < 8:
+            if target < 8 or target > 9:
                 self.robotenv.set_cubeTarget(pos, color)
             else:
                 color = [0,0,1]
@@ -153,6 +153,8 @@ class DiscreteActionsRobot():
             self.key = 101
         elif key == 9:
             self.key = 102
+        elif key > 9 and key < 100:
+            self.key = key
         else:
             self.key = 0
         self.robotenv.set_robotPos(rp, self.key)

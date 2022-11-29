@@ -175,6 +175,8 @@ Params.InnerCircleRadius = 150; % defines inner edge of target
 % Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
 Params.ReachTargetRadius = 200;
+dl    = Params.ReachTargetRadius/sqrt(2);
+
 
 Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0, Params.ReachTargetRadius, 0; ...
@@ -183,8 +185,25 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0,0,Params.ReachTargetRadius;...
     0, 0,-Params.ReachTargetRadius;...
     0,0,0;...
-    0.5*Params.ReachTargetRadius,0,40;...
-    -0.5*Params.ReachTargetRadius,0,40];
+    0.5*Params.ReachTargetRadius,0,40;... % wrist rotation
+    -0.5*Params.ReachTargetRadius,0,40;...; % wrist rotation
+    dl,-dl,0;...  %  diagonals
+    dl, dl,0;
+    -dl, dl, 0;...
+    -dl, -dl,0;...
+    dl,0,dl;...
+    0, dl, dl;...
+    -dl,0,dl;...
+    0, -dl, dl;
+    dl,0,-dl;...
+    0, dl,-dl;...
+    -dl,0,-dl;...
+    0, -dl,-dl;...
+    0,0,0;...
+    0,0,0;...
+    0,0,0];
+    
+
 
 
 %% Kalman Filter Properties
@@ -207,18 +226,31 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
-%Params.NumTrialsPerBlock    = 27;
+%Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
 %Params.TargetOrder          = [1:9,1:9,1:9];
+
+%Params.NumTrialsPerBlock    = 21;              % standard 7
+%Params.TargetOrder          = [1:7,1:7,1:7];
+
+Params.NumTrialsPerBlock    = 12;                % co-activation - center plane
+Params.TargetOrder          = [10:13, 10:13, 10:13];
+
+% Params.NumTrialsPerBlock    = 12;                % co-activation - top plane
+% Params.TargetOrder          = [14:17, 14:17, 14:17];
 % 
-Params.NumTrialsPerBlock    = 21;
-Params.TargetOrder          = [1:7,1:7,1:7];
+% Params.NumTrialsPerBlock    = 12;                % co-activation - bottom plane
+% Params.TargetOrder          = [18:21, 18:21, 18:21];
+% 
+% Params.NumTrialsPerBlock    = 9;                % co-activation - opposing
+% Params.TargetOrder          = [22:24, 22:24, 22:24];
 
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 2];
 
 %% CLDA Parameters
@@ -282,18 +314,15 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 Params.flipView = 0;
-
 if Params.flipView
     Params.RobotMode        = 14; 
 else
     Params.RobotMode            = 4; 
 end
-
 Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
-
 Params.RobotTargetRadius    = 40;
-
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+
 Params.RunningModeBinNum    = 1;  % 1: No filtering, 3+: running mode filter of last n bins
 
 if Params.RobotMode == 0
