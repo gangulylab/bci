@@ -151,12 +151,12 @@ end
 %% biLSTM classifier option
 Params.biLSTMFlag = true;
 if Params.biLSTMFlag
-    Params.biLSTMSoftMaxThresh = 0.4;
+    Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update_1129';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update_1129; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -384,7 +384,7 @@ elseif Params.RobotMode == 4 % TopDown with assist
     Params.wu           = [5, -15 55];
 end
 
-Params.GoalPos1     = [0, 0, 170];
+Params.GoalPos1     = [0, 50, 200];
 Params.GoalPos2     = [0, -200, 170];
 Params.GoalAng      = [pi/2];
 Params.index        = 1;
@@ -407,7 +407,7 @@ Params.deltaT   = 1/Params.UpdateRate;
 Params.k_v      = 0.8;
 Params.k_i      = 18;    % standard: 18
 
-Params.r_v      = 0.8;
+Params.r_v      = 0.85;
 Params.r_i      = 90;
 
 % Params.r_v      = 0.7;
@@ -428,9 +428,9 @@ Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
 
 Params.SwitchBinNum     = 4;
-Params.SwitchBinThresh  = 0.75;
-Params.GraspBinNum      = 8;
-Params.GraspBinThresh   = 0.6;
+Params.SwitchBinThresh  = 0.74;
+Params.GraspBinNum      = 4;
+Params.GraspBinThresh   = 0.74;
 
 % Beta
 Params.UseBetaStop      = 0;
