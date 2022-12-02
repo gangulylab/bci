@@ -305,7 +305,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 2; 
+Params.RobotMode    = 4; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -321,7 +321,8 @@ if Params.RobotMode == 1 % lateral R2G boxes
     Params.autoCenterOverTarget = 0;
     Params.autoCenterDist       = 5;
     Params.graspOrientation     = 1;
-
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
 elseif Params.RobotMode == 2 % vertical R2G
     Params.ValidDir          = [1:9];
     Params.StartPos          = [-250, 0,300];
@@ -341,7 +342,8 @@ elseif Params.RobotMode == 2 % vertical R2G
     
 Params.wl           = [-50, -67, 20];
 Params.wu           = [5, -15 55];
-    
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
     
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
@@ -357,14 +359,38 @@ elseif Params.RobotMode == 3  % lateral R2G wall
     
     Params.StartWristX = [3.1415/2]*10;                    
     Params.StartWristZ = 10*[0];
-    Params.StartWristY = 10*[0];        
-
+    Params.StartWristY = 10*[0]; 
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
+elseif Params.RobotMode == 4 % TopDown with assist
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [-250, 0,300];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 10;
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
+    
+    Params.StartWristX = [3.1415]*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    Params.UseNewAutoGrasp = 1;
+    Params.WaitForGraspSignal = 1;
+    Params.wl           = [-50, -67, 20];
+    Params.wu           = [5, -15 55];
 end
 
+Params.GoalPos1     = [0, 0, 170];
+Params.GoalPos2     = [0, -200, 170];
+Params.GoalAng      = [pi/2];
 Params.index        = 1;
-Params.clickOrder   = [ones(5,1)];
 
-Params.clickOrder = [7*ones(8,1);7*ones(8,1); 7*ones(8,1); 7*ones(8,1);7*ones(20,1);7*ones(10,1);1*ones(7,1);7*ones(100,1);];
+
+Params.clickOrder = [4*ones(20,1);1*ones(40,1); 1*ones(100,1)];
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.TargetOrder  = [Params.TargetOrder, 1];
 
@@ -395,12 +421,11 @@ Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 0.0;
+Params.AssistAlpha      = 0.3;
 Params.AutoGrasp        = 0;
 Params.GraspTask        = 1;
 Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
-Params.autoCenterDist   = 0;
 
 Params.SwitchBinNum     = 4;
 Params.SwitchBinThresh  = 0.75;
@@ -418,4 +443,7 @@ Params.FlipBinThresh    = 3;
 
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
+
+
+
 end % GetParams

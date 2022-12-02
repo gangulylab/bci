@@ -65,6 +65,24 @@ write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
 [za,zb,zc] = doubleToUDP(Params.StartPos(1,3) - 256) ;
 
 write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
+[xa,xb,xc] = doubleToUDP(Params.GoalPos1(1,1));
+[ya,yb,yc] = doubleToUDP(Params.GoalPos1(1,2)); 
+[za,zb,zc] = doubleToUDP(Params.GoalPos1(1,3) - 256) ;
+
+write(Params.udp, [2, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
+
+[xa,xb,xc] = doubleToUDP(Params.GoalPos2(1,1));
+[ya,yb,yc] = doubleToUDP(Params.GoalPos2(1,2)); 
+[za,zb,zc] = doubleToUDP(Params.GoalPos2(1,3) - 256) ;
+
+write(Params.udp, [3, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
+% [xa,xb,xc] = doubleToUDP(Params.GoalAng);
+% write(Params.udp, [3, xa,xb,xc,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
+
 write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -94,6 +112,8 @@ write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 [za,zb,zc] = doubleToUDP(Params.wu(3)) ;
 write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 write(Params.udp, [0,26,Params.k_v*10,Params.k_i,Params.r_v*10,Params.r_i,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,33,Params.UseNewAutoGrasp,Params.WaitForGraspSignal,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 % pause(2.0)
 %% Initiate Sound
