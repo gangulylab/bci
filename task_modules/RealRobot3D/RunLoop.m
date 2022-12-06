@@ -113,7 +113,7 @@ write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 write(Params.udp, [0,26,Params.k_v*10,Params.k_i,Params.r_v*10,Params.r_i,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,33,Params.UseNewAutoGrasp,Params.WaitForGraspSignal,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,33,Params.UseNewAutoGrasp,Params.WaitForGraspSignal,Params.UseHeightDist,Params.AutoGraspHorzDist ,Params.AutoGraspVertDist ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 % pause(2.0)
 %% Initiate Sound

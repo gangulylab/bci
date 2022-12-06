@@ -378,19 +378,24 @@ elseif Params.RobotMode == 4 % TopDown with assist
     Params.StartWristX = [3.1415]*10;                    
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
-    Params.UseNewAutoGrasp = 1;
-    Params.WaitForGraspSignal = 1;
+    Params.UseNewAutoGrasp      = 1;
+    Params.UseHeightDist  = 1;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+    Params.WaitForGraspSignal   = 1;
     Params.wl           = [-50, -67, 20];
     Params.wu           = [5, -15 55];
 end
 
-Params.GoalPos1     = [0, 50, 200];
-Params.GoalPos2     = [0, -200, 170];
+Params.GoalPos1     = [0, 50, 220];  %red short
+% Params.GoalPos1     = [-100, -150, 220];  %green short
+Params.GoalPos2     = [100, -180, 180]; %red diag
 Params.GoalAng      = [pi/2];
 Params.index        = 1;
 
 
 Params.clickOrder = [4*ones(20,1);1*ones(40,1); 1*ones(100,1)];
+Params.clickOrder = [0*ones(1000,1)];
 Params.ReachTargets      = [1,2,3,4,5,6];
 Params.TargetOrder  = [Params.TargetOrder, 1];
 
