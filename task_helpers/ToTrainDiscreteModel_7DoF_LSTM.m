@@ -138,7 +138,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20221129'};
+foldernames = {'20221206'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -257,8 +257,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_robot_20220824_update_1129 = goat_model.net;
-save net_bilstm_robot_20220824_update_1129 net_bilstm_robot_20220824_update_1129
+net_bilstm_robot_20220824_update_1206 = goat_model.net;
+save net_bilstm_robot_20220824_update_1206 net_bilstm_robot_20220824_update_1206
 
 
 

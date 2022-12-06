@@ -154,9 +154,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update_1129';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update_1206';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update_1129; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update_1206; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -290,7 +290,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 150;
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -387,8 +387,8 @@ elseif Params.RobotMode == 4 % TopDown with assist
     Params.wu           = [5, -15 55];
 end
 
-Params.GoalPos1     = [0, 50, 220];  %red short
-% Params.GoalPos1     = [-100, -150, 220];  %green short
+% Params.GoalPos1     = [0, 50, 220];  %red short
+Params.GoalPos1     = [-100, -150, 220];  %green short
 Params.GoalPos2     = [100, -180, 180]; %red diag
 Params.GoalAng      = [pi/2];
 Params.index        = 1;
