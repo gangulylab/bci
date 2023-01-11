@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 20; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -73,7 +73,8 @@ Params.ImaginedMvmt = {'Right Thumb','Right Index','Right Middle','Right Ring','
     'Left Shoulder Shrug',...
     'Right Bicep','Left Bicep',...
     'Right Tricep','Left Tricep',...
-    'Right Leg','Left Leg',...
+    'Right Knee','Left Knee',...
+    'Right Ankle','Left Ankle',...
     'Lips','Tongue'};
 
 
@@ -97,10 +98,10 @@ Params.NumTrialsPerBlock    = length(Params.TargetList);
 Params.ERPs=true;
 
 %% Trial Duration times 
-Params.InterTrialInterval = 1; % rest period between trials 
-Params.InstructedDelayTime = 1; % text appears telling subject which action to imagine
-Params.CueTime = 1; % A red square; subject has to get ready
-Params.ImaginedMvmtTime = 1; % A green square, subject has actively imagine the action
+Params.InterTrialInterval = 2; % rest period between trials 
+Params.InstructedDelayTime = 2; % text appears telling subject which action to imagine
+Params.CueTime = 2; % A red square; subject has to get ready
+Params.ImaginedMvmtTime = 4; % A green square, subject has actively imagine the action
 
 % random legacy stuff
 Params.TargetHoldTime = 1;
