@@ -106,12 +106,21 @@ for Block=1:NumBlocks, % Block Loop
         
         % update trial
         Trial = Trial + 1;
+        disp(Trial)
         
         
         % update target and next target
         TargetID = NextTargetID;
-%         while NextTargetID==TargetID,
+        %         while NextTargetID==TargetID,
+        
+        if Trial < length(Params.TargetOrder)
+            
+            
             NextTargetID =  Params.TargetOrder(Trial+1);
+        else
+            NextTargetID=[];
+        end
+    
 %             NextTargetID = Params.ReachTargets(randperm(numel(Params.ReachTargets),1));
 %         end
         

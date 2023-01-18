@@ -290,7 +290,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 240;
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -331,7 +331,7 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.OperationModeReset = 0;
     Params.wristStartX = 3.1415*10; 
     Params.wristStartZ = 0; 
-    Params.autoCenterOverTarget = 0;
+    Params.autoCenterOverTarget = 0; 
     Params.autoCenterDist = 5;
     Params.zlim = 5;
     Params.graspOrientation = 0;
@@ -383,12 +383,12 @@ elseif Params.RobotMode == 4 % TopDown with assist
     Params.AutoGraspHorzDist = 10;
     Params.AutoGraspVertDist = 15;
     Params.WaitForGraspSignal   = 1;
-    Params.wl           = [-50, -67, 20];
-    Params.wu           = [5, -15 55];
+    Params.wl           = [-50, -67, 16];
+    Params.wu           = [5, -15 50];
 end
 
-% Params.GoalPos1     = [0, 50, 220];  %red short
-Params.GoalPos1     = [-100, -150, 220];  %green short
+Params.GoalPos1     = [0, 50, 220];  %red short
+% Params.GoalPos1     = [-100, -150, 220];  %green short
 Params.GoalPos2     = [100, -180, 180]; %red diag
 Params.GoalAng      = [pi/2];
 Params.index        = 1;
@@ -412,7 +412,7 @@ Params.deltaT   = 1/Params.UpdateRate;
 Params.k_v      = 0.8;
 Params.k_i      = 18;    % standard: 18
 
-Params.r_v      = 0.85;
+Params.r_v      = 0.75;
 Params.r_i      = 90;
 
 % Params.r_v      = 0.7;
