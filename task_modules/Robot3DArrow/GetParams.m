@@ -226,18 +226,18 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 0;
+Params.NumImaginedBlocks    = 1;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
 % Params.TargetOrder          = [1:9,1:9,1:9];
 % 
-Params.NumTrialsPerBlock    = 21;              % standard 7
-Params.TargetOrder          = [1:7,1:7,1:7];
+% Params.NumTrialsPerBlock    = 21;              % standard 7
+% Params.TargetOrder          = [1:7,1:7,1:7];
 
-% Params.NumTrialsPerBlock    = 20;                % co-activation - center plane
-% Params.TargetOrder          = [10:13, 10:13, 10:13, 10:13, 10:13];
+Params.NumTrialsPerBlock    = 20;                % co-activation - center plane
+Params.TargetOrder          = [10:13, 10:13, 10:13, 10:13, 10:13];
 
 % Params.NumTrialsPerBlock    = 20;                % co-activation - top plane
 % Params.TargetOrder          = [14:17, 14:17, 14:17, 14:17, 14:17];
