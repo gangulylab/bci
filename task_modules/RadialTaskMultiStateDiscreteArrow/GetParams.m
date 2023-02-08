@@ -103,7 +103,7 @@ else
 end
 
 %% LOAD THE CHMAP FILE
-tmp = load(fullfile('clicker','ECOG_Grid_8596-002131.mat'));
+tmp = load(fullfile('clicker','ECOG_Grid_8596_000063_B3.mat'));
 Params.ChMapB2 = tmp.ecog_grid;
 
 %% Targets: radial layout
