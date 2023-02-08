@@ -305,7 +305,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 4; 
+Params.RobotMode    = 2; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -340,10 +340,13 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     
-Params.wl           = [-50, -67, 20];
-Params.wu           = [5, -15 55];
+    Params.wl           = [-50, -67, 20];
+    Params.wu           = [5, -15 55];
     Params.UseNewAutoGrasp = 0;
     Params.WaitForGraspSignal = 0;
+    Params.UseHeightDist  = 0;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
     
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
