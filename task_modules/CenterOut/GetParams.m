@@ -42,8 +42,8 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
 
 %% Timing 
-Params.ScreenRefreshRate = 6; % Hz
-Params.UpdateRate = 6; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Targets
 Params.TargetSize = 90;
@@ -92,7 +92,7 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 8;
+Params.NumImaginedBlocks    = 10;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 0;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles)*3;
@@ -147,15 +147,15 @@ end
 %% Hold Times
 Params.TargetHoldTime = .1;
 Params.InterTrialInterval = 1.0;
-if Params.CenterReset,
-    Params.InstructedDelayTime = 0;
-else,
-    Params.InstructedDelayTime = 0;
-end
+%if Params.CenterReset,
+%    Params.InstructedDelayTime = 0;
+%else,
+Params.InstructedDelayTime = 0;
+%end
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 10;     
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
-Params.ImaginedMvmtTime = 6.0;
+Params.ImaginedMvmtTime = 4.0;
 
 %% Feedback
 Params.FeedbackSound = false;

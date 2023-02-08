@@ -13,8 +13,17 @@ else
         %if Params.SmoothDataFlag==1
         X = Neuro.FilteredFeatures;
         X = X(:);
-        X = X(129:end);% all features
-        %X = X(769:end);% only hG
+
+         % get delta, beta and hG removing bad channels 
+        X = X([257:512 1025:1280 1537:1792]);        
+        bad_ch = [108 113 118];
+        good_ch = ones(length(X),1);
+        for ii=1:length(bad_ch)
+            bad_ch_tmp = bad_ch(ii)*[1 2 3];
+            good_ch(bad_ch_tmp)=0;
+        end
+        X = X(logical(good_ch));
+
         %Decision_Prob = multilayer_perceptron_Day1to7(X);
         Decision_Prob = feval(Params.NeuralNetFunction,X);
         [aa bb]=max(Decision_Prob);
