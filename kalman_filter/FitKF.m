@@ -25,7 +25,26 @@ end
 % If Initialization Mode = 4, load kf params from persistence folder
 if KF.InitializationMode==4 && fitFlag==0,
     f=load(fullfile(Params.Persistencedir, 'kf_params.mat'));
-    if all(Params.FeatureMask == f.FeatureMask), % load reduced KF
+
+    % TRY UNCOMMENTING AND RUNNING THIS BLOCK 
+
+    %%% block start
+%     KF.Lambda = Params.CLDA.Lambda;
+%     KF.P = [];
+%     KF.R  = [];
+%     KF.ESS = [];
+%     KF.S = [];
+%     KF.T = [];
+%     KF.C = [];
+%     KF.Q = [];
+%     KF.Tinv = [];
+%     KF.Qinv = [];
+%%% block END
+
+    % ELSE UNCOMMENT AND RUN THIS BLOCK
+    %%% block start
+
+    %if all(Params.FeatureMask == f.FeatureMask), % load reduced KF
         KF.Lambda = Params.CLDA.Lambda;
         KF.P = f.KF.P;
         KF.R = f.KF.R;
@@ -36,19 +55,21 @@ if KF.InitializationMode==4 && fitFlag==0,
         KF.Q = f.KF.Q;
         KF.Tinv = f.KF.Tinv;
         KF.Qinv = f.KF.Qinv;
-    else, % load full KF
-        f=load(fullfile(Params.Persistencedir, 'full_kf_params.mat'));
-        KF.Lambda = Params.CLDA.Lambda;
-        KF.P = f.KF.P;
-        KF.R = f.KF.R;
-        KF.ESS = f.KF.ESS;
-        KF.S = f.KF.S(Params.FeatureMask,:);
-        KF.T = f.KF.T(Params.FeatureMask,Params.FeatureMask);
-        KF.C = f.KF.C(Params.FeatureMask,:);
-        KF.Q = f.KF.Q(Params.FeatureMask,Params.FeatureMask);
-        KF.Tinv = f.KF.Tinv(Params.FeatureMask,Params.FeatureMask);
-        KF.Qinv = f.KF.Qinv(Params.FeatureMask,Params.FeatureMask);
-    end
+    %%% block END
+      
+    %else, % load full KF
+%         f=load(fullfile(Params.Persistencedir, 'full_kf_params.mat'));
+%         KF.Lambda = Params.CLDA.Lambda;
+%         KF.P = f.KF.P;
+%         KF.R = f.KF.R;
+%         KF.ESS = f.KF.ESS;
+%         KF.S = f.KF.S(Params.FeatureMask,:);
+%         KF.T = f.KF.T(Params.FeatureMask,Params.FeatureMask);
+%         KF.C = f.KF.C(Params.FeatureMask,:);
+%         KF.Q = f.KF.Q(Params.FeatureMask,Params.FeatureMask);
+%         KF.Tinv = f.KF.Tinv(Params.FeatureMask,Params.FeatureMask);
+%         KF.Qinv = f.KF.Qinv(Params.FeatureMask,Params.FeatureMask);
+    %end
     fprintf('\n\nLoading Previous Kalman Filter:\n')
     return
 end
