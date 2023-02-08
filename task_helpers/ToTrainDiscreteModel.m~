@@ -51,8 +51,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230208/RadialTaskMultiStateDiscreteArrow';
-foldernames = {'135926', '140350', '140710'};
+root_path = '/home/ucsf/Data/Bravo2/20210203/DiscreteArrow';
+foldernames = {};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -122,7 +122,7 @@ net = patternnet([64 64 ]) ;
 net.performParam.regularization=0.2;
 net = train(net,N,T','UseGPU','yes');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_4Dir_Imagined_B3_Day1_2')
+genFunction(net,'MLP_4Dir_Imagined_B3_Day1')
 
 
 

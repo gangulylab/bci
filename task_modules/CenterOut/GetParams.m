@@ -5,6 +5,7 @@
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
+Params.Task = 'CenterOut';
 switch Params.ControlMode,
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -35,7 +36,7 @@ Params.MaxVelocityFlag          = false;
 Params.MaxVelocity              = 200;
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
@@ -92,7 +93,7 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 10;
+Params.NumImaginedBlocks    = 8;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 0;
 Params.NumTrialsPerBlock    = length(Params.ReachTargetAngles)*3;
