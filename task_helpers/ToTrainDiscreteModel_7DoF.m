@@ -179,7 +179,7 @@ cd('/home/ucsf/Projects/bci')
 
  %ExperimentStart('Robot3D','bravo1',4,1,0)
 % 
-% ExperimentStart('RobotReachStop','bravo1',4,1,0)
+% ExperimentStart('RobotReachBatch','bravo1',4,1,0)
 
 %% TO CREATE CLASSIFIER BASED ON POOLING DATA
 

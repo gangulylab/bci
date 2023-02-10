@@ -290,7 +290,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 180;
+Params.MaxReachTime = 240;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -366,7 +366,8 @@ elseif Params.RobotMode == 3  % lateral R2G wall
     
 elseif Params.RobotMode == 4 % TopDown with assist
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-250, 0,300];
+    Params.StartPos          = [-250, 0,300];  % standard
+%     Params.StartPos          = [0, 250,300];  % 
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -415,9 +416,9 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     
 end
 
-Params.GoalPos1     = [0, 50, 220];  %red short
-% Params.GoalPos1     = [-100, -150, 220];  %green short
-Params.GoalPos2     = [100, -180, 180]; %red diag
+% Params.GoalPos1     = [0, 50, 220];  %red short
+Params.GoalPos1     = [-100, -150, 220];  %green short
+Params.GoalPos2     = [100, -180, 170]; %red diag
 Params.GoalAng      = [pi/2];
 Params.index        = 1;
 
