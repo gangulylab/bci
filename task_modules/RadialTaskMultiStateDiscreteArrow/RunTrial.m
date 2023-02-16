@@ -276,6 +276,11 @@ if ~Data.ErrorID,
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
+
+    ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
+
+
+
     while ~done,
         % Update Time & Position
         tim = GetSecs;
@@ -382,21 +387,32 @@ if ~Data.ErrorID,
             Cursor.ClickDistance = Click_Distance;
             Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
             Data.ClickerState(1,end+1) = Cursor.ClickState;
-            if Click_Decision == 1
+
+            % run it through mode filter            
+            ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+            ClickDec_Buffer(end) = Click_Decision;
+            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+
+
+
+
+
+            if RunningMode_ClickDec == 1
                 temp_dir = .40*Params.ReachTargetPositions(1,:);
-            elseif Click_Decision == 2
+            elseif RunningMode_ClickDec == 2
                 temp_dir = 0.4*Params.ReachTargetPositions(2,:);
-            elseif Click_Decision == 3
+            elseif RunningMode_ClickDec == 3
                 temp_dir = 0.4*Params.ReachTargetPositions(3,:);
-            elseif Click_Decision == 4
+            elseif RunningMode_ClickDec == 4
                 temp_dir = 0.4*Params.ReachTargetPositions(4,:);
-            elseif Click_Decision == 0 % null class
+            elseif RunningMode_ClickDec == 0 % null class
                 temp_dir = 0;
             end
             ArrowEnd = Params.Center + temp_dir;
             
             % counter only if correct target is hit, training mode for now
-            if Click_Decision == Data.TargetID
+            if RunningMode_ClickDec == Data.TargetID
                 Cursor.Counter = Cursor.Counter+1;
             else
                 Cursor.Counter = 0;
@@ -406,10 +422,10 @@ if ~Data.ErrorID,
             if Cursor.Counter == Params.ClickCounter
                 done=1;                        
                 %Cursor.State(1:2) = Params.ReachTargetPositions(Click_Decision,:);
-                Data.SelectedTargetID = Click_Decision;
+                Data.SelectedTargetID = RunningMode_ClickDec;
                 CursorCol = Params.InTargetColor';
                 CursorRect = Params.CursorRect;
-                reach_loc = 0.8*Params.ReachTargetPositions(Click_Decision,:);
+                reach_loc = 0.8*Params.ReachTargetPositions(RunningMode_ClickDec,:);
                 CursorRect([1,3]) = CursorRect([1,3]) + Params.Center(1) + reach_loc(1); % add x-pos
                 CursorRect([2,4]) = CursorRect([2,4]) + Params.Center(2)+ reach_loc(2); % add y-pos
                 Screen('FillOval', Params.WPTR, ...

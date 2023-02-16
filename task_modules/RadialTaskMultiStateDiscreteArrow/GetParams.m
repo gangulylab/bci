@@ -88,6 +88,16 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% POOLING CHANNELS FOR CONTROL
+% set this 1 only during online control
+Params.ChPooling = true; 
+
+%% Mode filtering option
+Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins
+
+%% 2-norm
+Params.Norm2 = true;
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option

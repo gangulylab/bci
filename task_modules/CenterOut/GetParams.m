@@ -46,6 +46,10 @@ Params.FeatureBufferSize = 5;
 Params.ScreenRefreshRate = 5; % Hz
 Params.UpdateRate = 5; % Hz
 
+%% LOAD THE CHMAP FILE
+tmp = load(fullfile('clicker','ECOG_Grid_8596_000063_B3.mat'));
+Params.ChMapB2 = tmp.ecog_grid;
+
 %% Targets
 Params.TargetSize = 90;
 Params.OutTargetColor = [55,255,0];

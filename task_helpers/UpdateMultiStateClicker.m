@@ -14,29 +14,79 @@ else
         X = Neuro.FilteredFeatures;
         X = X(:);
 
-         % get delta, beta and hG removing bad channels 
-        X = X([257:512 1025:1280 1537:1792]);        
-        bad_ch = [108 113 118];
-        good_ch = ones(length(X),1);
-        for ii=1:length(bad_ch)
-            bad_ch_tmp = bad_ch(ii)*[1 2 3];
-            good_ch(bad_ch_tmp)=0;
-        end
-        X = X(logical(good_ch));
+        if Params.ChPooling == 1
 
-        %Decision_Prob = multilayer_perceptron_Day1to7(X);
-        Decision_Prob = feval(Params.NeuralNetFunction,X);
-        [aa bb]=max(Decision_Prob);
-        if aa >= Params.NeuralNetSoftMaxThresh
-            Click_Decision = bb;
-            Click_Distance = aa;
+             % get delta, beta and hG removing bad channels
+            X = X([257:512 1025:1280 1537:1792]);
+
+            chmap=Params.ChMapB2;
+            [xx, yy] = size(chmap);           
+
+            % perform spatial pooling
+            f1 = (X(1:256));
+            f2 = (X(257:512));
+            f3 = (X(513:768));
+
+            f1 = f1(chmap);
+            f1(:,end+1)=f1(:,end);
+            f1(end+1,:) = f1(end,:);
+            f2 = f2(chmap);
+            f2(:,end+1)=f2(:,end);
+            f2(end+1,:) = f2(end,:);
+            f3 = f3(chmap);
+            f3(:,end+1)=f3(:,end);
+            f3(end+1,:) = f3(end,:);
+            pooled_data=[];
+            for i=1:2:xx-1
+                for j=1:2:yy-1
+                    delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (f3(i:i+1,j:j+1));hg=mean(hg(:));
+                    pooled_data = [pooled_data; delta; beta ;hg];
+                end
+            end
+            X = pooled_data;
+
+             % norm
+            if Params.Norm2
+                X = X./norm(X);
+            end
+
+            Decision_Prob = feval(Params.NeuralNetFunction,X);
+            [aa bb]=max(Decision_Prob);
+            if aa >= Params.NeuralNetSoftMaxThresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+
         else
-            Click_Decision = 0;
-            Click_Distance = 0;
+            % get delta, beta and hG removing bad channels
+            X = X([257:512 1025:1280 1537:1792]);
+            bad_ch = [108 113 118];
+            good_ch = ones(length(X),1);
+            for ii=1:length(bad_ch)
+                bad_ch_tmp = bad_ch(ii)*[1 2 3];
+                good_ch(bad_ch_tmp)=0;
+            end
+            X = X(logical(good_ch));
+
+            %Decision_Prob = multilayer_perceptron_Day1to7(X);
+            Decision_Prob = feval(Params.NeuralNetFunction,X);
+            [aa bb]=max(Decision_Prob);
+            if aa >= Params.NeuralNetSoftMaxThresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+            %else
+            %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);
+            %end
         end
-        %else
-        %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);
-        %end
         
     elseif Params.ConvNeuralNetFlag == 1
         chtemp=[];

@@ -126,6 +126,182 @@ genFunction(net,'MLP_4Dir_Imagined_B3_Day1_2')
 
 
 
+%% CREATING A MLP FOR B3, WITH POOLING
+
+clc;clear
+close all
+
+
+% IMAGINED CURSOR CENTER OUT
+clc;clear
+root_path = '/home/ucsf/Data/Bravo3/20230208/CenterOut';
+foldernames = {'132036', '133325', '134412'};
+cd(root_path)
+
+
+D1=[];
+D2=[];
+D3=[];
+D4=[];
+for ii=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{ii},'Imagined');
+    D=dir(folderpath);
+    for jj=3:length(D)
+        filepath=fullfile(folderpath,D(jj).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        %kinax = length(features)-20:length(features);
+        kinax = 1:length(features);
+        temp = cell2mat(features(kinax));
+        temp = temp([257:512 1025:1280 1537:1792],:); % only delta, beta, hg
+
+        new_temp=[];
+        chmap = TrialData.Params.ChMapB2;
+        [xx,yy] = size(chmap);
+        for k=1:size(temp,2)
+            tmp1 = temp(1:256,k); tmp1 = tmp1(chmap);
+            tmp2 = temp(257:512,k);  tmp2 = tmp2(chmap);
+            tmp3 = temp(513:768,k); tmp3 = tmp3(chmap);
+
+            tmp1(:,end+1)=tmp1(:,end);
+            tmp1(end+1,:) = tmp1(end,:);
+
+            tmp2(:,end+1)=tmp2(:,end);
+            tmp2(end+1,:) = tmp2(end,:);
+
+            tmp3(:,end+1)=tmp3(:,end);
+            tmp3(end+1,:) = tmp3(end,:);
+            pooled_data=[];
+            for i=1:2:xx-1
+                for j=1:2:yy-1
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    pooled_data = [pooled_data; delta; beta ;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp=new_temp;
+
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+% ONLINE DATA AS WELL
+root_path = '/home/ucsf/Data/Bravo3/20230208/RadialTaskMultiStateDiscreteArrow';
+foldernames = {'135921', '140821', '141419'};
+cd(root_path)
+
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for jj=3:length(D)
+        filepath=fullfile(folderpath,D(jj).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = find(TrialData.TaskState==3);
+        temp = cell2mat(features(kinax));
+        temp = temp([257:512 1025:1280 1537:1792],:); % only delta, beta, hg
+
+        new_temp=[];
+        chmap = TrialData.Params.ChMapB2;
+        [xx,yy] = size(chmap);
+        for k=1:size(temp,2)
+            tmp1 = temp(1:256,k); tmp1 = tmp1(chmap);
+            tmp2 = temp(257:512,k);  tmp2 = tmp2(chmap);
+            tmp3 = temp(513:768,k); tmp3 = tmp3(chmap);
+
+            tmp1(:,end+1)=tmp1(:,end);
+            tmp1(end+1,:) = tmp1(end,:);
+
+            tmp2(:,end+1)=tmp2(:,end);
+            tmp2(end+1,:) = tmp2(end,:);
+
+            tmp3(:,end+1)=tmp3(:,end);
+            tmp3(end+1,:) = tmp3(end,:);
+            pooled_data=[];
+            for i=1:2:xx-1
+                for j=1:2:yy-1
+                    delta = (tmp1(i:i+1,j:j+1));delta=mean(delta(:));
+                    beta = (tmp2(i:i+1,j:j+1));beta=mean(beta(:));
+                    hg = (tmp3(i:i+1,j:j+1));hg=mean(hg(:));
+                    pooled_data = [pooled_data; delta; beta ;hg];
+                end
+            end
+            new_temp= [new_temp pooled_data];
+        end
+        temp=new_temp;
+
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        end
+    end
+end
+
+
+
+clear condn_data
+% combing both onlien plus offline
+idx=1;
+condn_data{1}=[D1(idx:end,:) ]'; % right hand
+condn_data{2}= [D2(idx:end,:)]'; % both feet
+condn_data{3}=[D3(idx:end,:)]'; % left hand
+condn_data{4}=[D4(idx:end,:)]'; % head
+
+% 2norm
+for i=1:length(condn_data)
+   tmp = condn_data{i}; 
+   for j=1:size(tmp,1)
+       tmp(j,:) = tmp(j,:)./norm(tmp(j,:));
+   end
+   condn_data{i}=tmp;
+end
+
+
+A = condn_data{1};
+B = condn_data{2};
+C = condn_data{3};
+D = condn_data{4};
+
+clear N
+N = [A' B' C' D'];
+T1 = [ones(size(A,1),1);2*ones(size(B,1),1);3*ones(size(C,1),1);4*ones(size(D,1),1);...
+    ];
+T = zeros(size(T1,1),4);
+[aa bb]=find(T1==1);[aa(1) aa(end)]
+T(aa(1):aa(end),1)=1;
+[aa bb]=find(T1==2);[aa(1) aa(end)]
+T(aa(1):aa(end),2)=1;
+[aa bb]=find(T1==3);[aa(1) aa(end)]
+T(aa(1):aa(end),3)=1;
+[aa bb]=find(T1==4);[aa(1) aa(end)]
+T(aa(1):aa(end),4)=1;
+
+% code to train a neural network
+net = patternnet([64 64 ]) ;
+net.performParam.regularization=0.2;
+net = train(net,N,T','UseGPU','yes');
+cd('/home/ucsf/Projects/bci/clicker')
+genFunction(net,'MLP_4Dir_Imagined_B3_Day1_2')
+
+
+
 %%
 
 % 
