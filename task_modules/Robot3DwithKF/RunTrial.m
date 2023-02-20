@@ -261,6 +261,7 @@ if ~Data.ErrorID,
                 Cursor.ClickDistance = 0;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+                Data.FilteredClickerState(1,end+1) = 0;
             else
                 if TaskFlag==1 % imagined movements
                     if TargetID == Data.TargetID
@@ -275,13 +276,14 @@ if ~Data.ErrorID,
                     end
                 end
                 Cursor.ClickState = Click_Decision;
-                Cursor.ClickDistance = Click_Distance;
+                Cursor.ClickDistance = 1;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-
-                ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
-                ClickDec_Buffer(end) = Click_Decision;
-                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+                
+                %ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+                %ClickDec_Buffer(end) = Click_Decision;
+                %RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+                RunningMode_ClickDec = Click_Decision;
 
                 StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
                 StopClicker_Buffer(end) = RunningMode_ClickDec == 7;
