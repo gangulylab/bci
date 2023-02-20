@@ -157,7 +157,7 @@ Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = true; 
+Params.ChPooling = false; 
 
 %% SMOOTH BATCH KALMAN FILTER -> LOAD PARAMETER MATRICES
 

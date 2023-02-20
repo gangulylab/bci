@@ -237,9 +237,9 @@ if ~Data.ErrorID,
             %if Click_Decision>7
             %    Click_Decision=0;
             %end
-            %Click_Decision            
+            %Click_Decision
 
-            
+
 
             % KF Robot during online control or Imagined mvmts
             if Params.KF_Imagined == false
@@ -263,13 +263,6 @@ if ~Data.ErrorID,
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
                 Data.FilteredClickerState(1,end+1) = 0;
 
-                % if inside target, then intended velocity is 0 (ReFit
-                % Assumption)
-                if TargetID == Data.TargetID
-                    Cursor.IntendedState = [0,0,0,0,0,0,0]';
-                end
-
-
             else
                 if TaskFlag==1 % imagined movements
                     if TargetID == Data.TargetID
@@ -287,7 +280,7 @@ if ~Data.ErrorID,
                 Cursor.ClickDistance = 1;
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-                
+
                 %ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
                 %ClickDec_Buffer(end) = Click_Decision;
                 %RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
@@ -428,10 +421,15 @@ if ~Data.ErrorID,
         end % Reach Target Loop
     end % only complete if no errors
 
+
     %% Inter trial interval
     % blank screen at end of trial but continue collecting data
 
+
     if Params.InterTrialInterval>0,
+        
+        Cursor.State = [0,0,0,0,0,0,1]';
+        Cursor.IntendedState = [0,0,0,0,0,0,0]';
         tstart  = GetSecs;
         Data.Events(end+1).Time = tstart;
         Data.Events(end).Str  = 'Inter Trial Interval';
@@ -510,7 +508,7 @@ if ~Data.ErrorID,
         % reset cursor
         Cursor.ClickState = 0;
         % reset cursor
-        %     Cursor.State = [0,0,0,0,0,0]';
+        Cursor.State = [0,0,0,0,0,0,1]';
         Cursor.IntendedState = [0,0,0,0,0,0,0]';
 
         fprintf('ERROR: %s\n', Data.ErrorStr)
