@@ -233,79 +233,84 @@ if ~Data.ErrorID,
             Params.TargetID =  Data.TargetID;
 
             Params.index = Params.index + 1;
-            [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            if Click_Decision>7
-                Click_Decision=0;
-            end
-            %Click_Decision
+            %[Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+            %if Click_Decision>7
+            %    Click_Decision=0;
+            %end
+            %Click_Decision            
 
-            if TaskFlag==1 % imagined movements
-                if TargetID == Data.TargetID
-                    Click_Decision = 0;
-                    Cursor.State(4:6) = [0;0;0];
+            
 
-                    Data.StopState(1,end+1)=1;
-
-                else
-                    Click_Decision = Params.TargetID;
-                    Data.StopState(1,end+1)=0;
-                end
-            end
-
-            Cursor.ClickState = Click_Decision;
-            Cursor.ClickDistance = Click_Distance;
-            Data.ClickerState(1,end+1) = Cursor.ClickState;
-            Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
-
-            ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
-            ClickDec_Buffer(end) = Click_Decision;
-            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
-
-            StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
-            StopClicker_Buffer(end) = RunningMode_ClickDec == 7;
-
-            ClickToSend = RunningMode_ClickDec;
-
-            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
-
-            if Params.ClickerBreak == 1 && RunningMode_ClickDec == 7
-                Cursor.State(4:6) = Cursor.State(4:6)*Params.BreakGain;
-            end
-
-            % KF Robot
-            Y = Neuro.FilteredFeatures;
-            Y = Y(:);
-            Y = Y(129:end);% all features except delta phase            
-            if Params.Use3Features
+            % KF Robot during online control or Imagined mvmts
+            if Params.KF_Imagined == false
+                Y = Neuro.FilteredFeatures;
+                Y = Y(:);
+                Y = Y(129:end);% all features except delta phase
+                % get delta beta hG
                 idx=[1:128 385:512 641:768];
-            elseif Params.Use4Features
-                idx=[1:128 385:512 513:640 641:768];
+                Y=Y(idx);
+                if Params.ChPooling
+                    Y = pool_features(Y,Params.ChMap);
+                end
+                pred_state = Params.KF_robot.A*Cursor.State;
+                Cursor.IntendedState = ...
+                    Params.KF_robot.K*(Y - Params.KF_robot.C*pred_state);
+                Cursor.State = pred_state + Cursor.IntendedState;
+
+                Cursor.ClickState = 0;
+                Cursor.ClickDistance = 0;
+                Data.ClickerState(1,end+1) = Cursor.ClickState;
+                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+            else
+                if TaskFlag==1 % imagined movements
+                    if TargetID == Data.TargetID
+                        Click_Decision = 0;
+                        Cursor.State(4:6) = [0;0;0];
+
+                        Data.StopState(1,end+1)=1;
+
+                    else
+                        Click_Decision = Params.TargetID;
+                        Data.StopState(1,end+1)=0;
+                    end
+                end
+                Cursor.ClickState = Click_Decision;
+                Cursor.ClickDistance = Click_Distance;
+                Data.ClickerState(1,end+1) = Cursor.ClickState;
+                Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
+
+                ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
+                ClickDec_Buffer(end) = Click_Decision;
+                RunningMode_ClickDec = RunningMode(ClickDec_Buffer);
+
+                StopClicker_Buffer(1:end-1) = StopClicker_Buffer(2:end);
+                StopClicker_Buffer(end) = RunningMode_ClickDec == 7;
+
+                ClickToSend = RunningMode_ClickDec;
+
+                Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+
+                if Params.ClickerBreak == 1 && RunningMode_ClickDec == 7
+                    Cursor.State(4:6) = Cursor.State(4:6)*Params.BreakGain;
+                end
+
+                A = Params.dA;
+                B = Params.dB;
+
+                U = zeros(3,1);
+                U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
+                U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
+                U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
+
+                vTarget = (Data.TargetPosition'- Cursor.State(1:3));
+                norm_vTarget = vTarget/norm(vTarget);
+
+                AssistVel = Params.AssistAlpha*B*norm_vTarget;
+                Data.AssistVel(:,end+1) = AssistVel;
+
+                Cursor.State(:,1:6) = A*Cursor.State(:,1:6) + ...
+                    (1-Params.AssistAlpha)*B*U + AssistVel;
             end
-            Y=Y(idx);
-            Y = pool_features(Y,Params.ChMap);  
-            A = Params.KF_robot.A;
-            K = Params.KF_robot.K;
-            C = Params.KF_robot.C;
-            Cursor.IntendedState = K*(Y - C*A*Cursor.State);
-            Cursor.State = A*Cursor.State + Cursor.IntendedState;
-
-
-            A = Params.dA;
-            B = Params.dB;
-
-            U = zeros(3,1);
-            U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
-            U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
-            U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
-
-            vTarget = (Data.TargetPosition'- Cursor.State(1:3));
-            norm_vTarget = vTarget/norm(vTarget);
-
-            AssistVel = Params.AssistAlpha*B*norm_vTarget;
-            Data.AssistVel(:,end+1) = AssistVel;
-
-            Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-            Cursor.IntendedState = [0 0 0 0 0]';
 
 
 
@@ -496,7 +501,7 @@ if ~Data.ErrorID,
         Cursor.ClickState = 0;
         % reset cursor
         %     Cursor.State = [0,0,0,0,0,0]';
-        Cursor.IntendedState = [0,0,0,0,1]';
+        Cursor.IntendedState = [0,0,0,0,0,0,0]';
 
         fprintf('ERROR: %s\n', Data.ErrorStr)
 

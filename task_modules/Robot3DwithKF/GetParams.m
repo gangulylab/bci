@@ -278,8 +278,7 @@ if ParamsNumImaginedBlocks > 0
 else
     Params.KF_Imagined = false;
 end
-Params.KF_Adapt = false;
-Params.KF_Fixed = false;
+
 
 
 %% CLDA Parameters
