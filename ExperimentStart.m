@@ -250,6 +250,27 @@ else,
     KF = [];
 end
 
+%% KF for Robot3D-CLDA (To-Do)
+%  if Params.KF_Imagined == true
+%      KF_Robot = [];
+%  else
+%      % load the KF for robot
+%      f=load(fullfile(Params.Persistencedir, 'kf_robot_params.mat'));
+%      KF_Robot.R=f.KF.R;
+%      KF_Robot.S=f.KF.S;
+%      KF_Robot.T=f.KF.T;
+%      KF_Robot.EBS=f.KF.EBS;
+%      KF_Robot.P=f.KF.P;
+%      KF_Robot.W=f.W;
+%      KF_Robot.A=f.A;
+%      KF_Robot.lambda=Params.CLDA.Lambda;
+%      KF_Robot.dt=(1/Params.UpdateRate);
+%      KF_Robot.C = f.KF.C;
+%      KF_Robot.Q = f.KF.Q;
+%      KF_Robot.K=f.KF.K;
+%      clear('f')
+%  end
+
 %% Check Important Params with User
 LogicalStr = {'off', 'on'};
 IMStr = {'imagined mvmts', 'shuffled imagined mvmts', 'prev mvmts', 'prev adapted'};

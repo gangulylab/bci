@@ -13,30 +13,32 @@ if Neuro.Blackrock,
     if Neuro.ZscoreRawFlag,
         Neuro = ZscoreChannels(Neuro);
     end
-    
-    if Params.BaselineRunningFlag
-        Neuro = ApplyFilterBank(Neuro);
-        Neuro = UpdateNeuroBuf(Neuro);
-        Neuro = CompNeuralFeatures(Neuro);
-        if Neuro.UpdateFeatureStatsFlag,
-            Neuro = UpdateFeatureStats(Neuro);
-        end
-        if Neuro.ZscoreFeaturesFlag,
-            Neuro = ZscoreFeatures(Neuro);
-        end
-        
-        % smoothing option
-        if Neuro.SmoothDataFlag
-            Neuro = SmoothNeuro(Neuro);
-        end
+
+    %if Params.BaselineRunningFlag
+    Neuro = ApplyFilterBank(Neuro);
+    Neuro = UpdateNeuroBuf(Neuro);
+    Neuro = CompNeuralFeatures(Neuro);
+    if Neuro.UpdateFeatureStatsFlag,
+        Neuro = UpdateFeatureStats(Neuro);
     end
-    
-    % LSTM option
-    if Params.biLSTMFlag && ~Params.BaselineRunningFlag
-        Neuro = UpdateLSTMBuffer(Neuro);
-        Neuro.NeuralFeatures=zeros(896,1);
-        Neuro.FilteredFeatures=zeros(896,1);
+    if Neuro.ZscoreFeaturesFlag,
+        Neuro = ZscoreFeatures(Neuro);
     end
+
+    % smoothing option
+    if Neuro.SmoothDataFlag
+        Neuro = SmoothNeuro(Neuro);
+    end
+    %end
+
+%     % LSTM option
+%     if Params.biLSTMFlag && ~Params.BaselineRunningFlag
+%         Neuro = UpdateLSTMBuffer(Neuro);
+%         Neuro.NeuralFeatures=zeros(896,1);
+%         Neuro.FilteredFeatures=zeros(896,1);
+%     else
+%         Neuro.LSTMFeatures = [];
+%     end
     
     
 end

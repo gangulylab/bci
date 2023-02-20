@@ -133,7 +133,7 @@ end
 
 
 %% biLSTM classifier option
-Params.biLSTMFlag = true;
+Params.biLSTMFlag = false;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
@@ -158,6 +158,41 @@ Params.AdaptiveBaseline = false;
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
 Params.ChPooling = true; 
+
+%% SMOOTH BATCH KALMAN FILTER -> LOAD PARAMETER MATRICES
+
+f = load(fullfile('clicker','kf_robot_params.mat'));
+Params.KF_robot.C = f.KF_robot.C;
+Params.KF_robot.Q = f.KF_robot.Q;
+Params.KF_robot.A = f.KF_robot.A;
+Params.KF_robot.W = f.KF_robot.W;
+Params.KF_robot.K = f.KF_robot.K;
+Params.KF_robot.P = f.KF_robot.P;
+
+% check update rate
+if Params.UpdateRate ~= 5
+    Params.KF_robot.A(1,4) = 1/Params.UpdateRate;
+    Params.KF_robot.A(2,5) = 1/Params.UpdateRate;
+    Params.KF_robot.A(3,6) = 1/Params.UpdateRate;
+end
+
+% change velocity update coefficent if needed
+Params.KF_robot_vel_gain = 0.85;
+if Params.KF_robot.A(4,4) ~= Params.KF_robot_vel_gain
+    Params.KF_robot.A(4,4) = Params.KF_robot_vel_gain;
+    Params.KF_robot.A(5,5) = Params.KF_robot_vel_gain;
+    Params.KF_robot.A(6,6) = Params.KF_robot_vel_gain;
+end
+
+% change process noise if needed
+Params.KF_robot_noise_w = 125;
+if Params.KF_robot.W(4,4) ~= Params.KF_robot_noise_w
+    Params.KF_robot.W(4,4) = Params.KF_robot_noise_w;
+    Params.KF_robot.W(5,5) = Params.KF_robot_noise_w;
+    Params.KF_robot.W(6,6) = Params.KF_robot_noise_w;
+end
+
+
 
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
@@ -236,6 +271,16 @@ Params.TargetOrder          = [1:6,1:6];
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
+
+%% KF for 3D robot
+if ParamsNumImaginedBlocks > 0
+    Params.KF_Imagined = true;
+else
+    Params.KF_Imagined = false;
+end
+Params.KF_Adapt = false;
+Params.KF_Fixed = false;
+
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};

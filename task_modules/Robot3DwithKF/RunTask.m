@@ -1,4 +1,4 @@
-function [Neuro,KF,Params] = RunTask(Params,Neuro,TaskFlag,KF)
+function [Neuro,KF,Params] = RunTask(Params,Neuro,TaskFlag,KF,KF_Robot)
 % Explains the task to the subject, and serves as a reminder for pausing
 % and quitting the experiment (w/o killing matlab or something)
 
