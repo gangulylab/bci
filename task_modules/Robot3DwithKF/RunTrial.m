@@ -262,6 +262,14 @@ if ~Data.ErrorID,
                 Data.ClickerState(1,end+1) = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1) = Cursor.ClickDistance;
                 Data.FilteredClickerState(1,end+1) = 0;
+
+                % if inside target, then intended velocity is 0 (ReFit
+                % Assumption)
+                if TargetID == Data.TargetID
+                    Cursor.IntendedState = [0,0,0,0,0,0,0]';
+                end
+
+
             else
                 if TaskFlag==1 % imagined movements
                     if TargetID == Data.TargetID
