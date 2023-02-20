@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot';
+Params.Task = 'RobotKF';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -256,13 +256,13 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 1;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 12;
-Params.TargetOrder          = [1:6,1:6];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
 
 %Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 8;
@@ -273,7 +273,7 @@ Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% KF for 3D robot
-if ParamsNumImaginedBlocks > 0
+if Params.NumImaginedBlocks > 0
     Params.KF_Imagined = true;
 else
     Params.KF_Imagined = false;
@@ -327,7 +327,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 15 ;
+Params.MaxReachTime = 20;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 5;
 

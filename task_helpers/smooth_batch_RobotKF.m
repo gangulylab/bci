@@ -18,8 +18,8 @@ clear;
 close all
 
 %%%% CHANGE THIS ACCORDINGLY 
-folderpath = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220520\Robot';
-folders={'141735','142458','143022','144223','144607','145327','145327'};
+folderpath = '/home/ucsf/Data/bravo1/20230220/RobotKF';
+folders={'102528','103151','103544','104517','105110'};
 %%%%%
 
 addpath(fullfile('task_helpers'))
@@ -126,7 +126,13 @@ KF_robot.K = K;
 
 save(fullfile('clicker','kf_robot_params'),'KF_robot','-v7.3','-nocompression');
 disp('Kalman Filter seeded on imagined data')
-clearvars -except KF_robot
+%clearvars -except KF_robot
+
+clear
+clc
+cd('/home/ucsf/Projects/bci')
+ExperimentStart('Robot3DwithKF','bravo1',4,1,0)
+
 
 %% STEP 2: UPDATING KF FROM CLOSED-LOOP ONLINE DATA USING SMOOTH BATCH
 
@@ -136,9 +142,11 @@ close all
 
 addpath(fullfile('task_helpers'))
 
-%%%%% CHANGE AS REQUIRED %%%%%
-folderpath = 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate clicker\20220520\Robot';
-folders={'141735','142458','143022','144223','144607','145327','145327'};
+
+%%%% CHANGE THIS ACCORDINGLY 
+folderpath = '/home/ucsf/Data/bravo1/20230220/RobotKF';
+%folders={'110103','110650','111006'}; % CL1
+folders={'112144','112608'}; % CL2
 %%%%% CHANGE AS REQUIRED %%%%%
 
 

@@ -244,6 +244,7 @@ if ~Data.ErrorID,
             % KF Robot during online control or Imagined mvmts
             if Params.KF_Imagined == false
                 Y = Neuro.FilteredFeatures;
+                %Y=randn(896,1);
                 Y = Y(:);
                 Y = Y(129:end);% all features except delta phase
                 % get delta beta hG
@@ -311,7 +312,7 @@ if ~Data.ErrorID,
                 AssistVel = Params.AssistAlpha*B*norm_vTarget;
                 Data.AssistVel(:,end+1) = AssistVel;
 
-                Cursor.State(:,1:6) = A*Cursor.State(:,1:6) + ...
+                Cursor.State(1:6) = A*Cursor.State(1:6) + ...
                     (1-Params.AssistAlpha)*B*U + AssistVel;
             end
 

@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -235,7 +235,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 0;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 4;
@@ -402,8 +402,8 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.zlim = 5;
     Params.graspOrientation = 0;
     
-%     Params.StartWristX = [3.1415]*10;    
-    Params.StartWristX = [3.1415]/2*10;                    
+    Params.StartWristX = [3.1415]*10;    
+%     Params.StartWristX = [3.1415]/2*10;                    
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     Params.UseNewAutoGrasp = 2;
