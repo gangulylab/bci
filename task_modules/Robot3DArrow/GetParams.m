@@ -84,7 +84,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_4Dir_Imagined_B3_Day1_2';
+   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230223_CL02_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -105,13 +105,21 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% LOAD THE CHMAP FILE
+tmp = load(fullfile('clicker','ECOG_Grid_8596_000063_B3.mat'));
+Params.ChMapB2 = tmp.ecog_grid;
+
+
+%% 2-norm
+Params.Norm2 = false;
+
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = true; 
+Params.ChPooling = false; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 7;
@@ -172,9 +180,9 @@ Params.DrawVelCommand.Flag = true;
 Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 
 %% Trial and Block Types
-Params.NumImaginedBlocks    = 1;
+Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 0;
+Params.NumFixedBlocks       = 1;
 
 Params.NumTrialsPerBlock    = 21;              % standard 7
 Params.TargetOrder          = [1:7,1:7,1:7];

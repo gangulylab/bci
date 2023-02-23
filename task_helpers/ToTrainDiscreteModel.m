@@ -5,10 +5,11 @@ clc;clear
 close all
 
 
+
 % IMAGINED CURSOR CENTER OUT
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230208/CenterOut';
-foldernames = {'132036', '133325', '134412'};
+root_path = '/home/ucsf/Data/Bravo3/20230216/CenterOut';
+foldernames = {'114946', '120657'};
 cd(root_path)
 
 
@@ -51,8 +52,9 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230208/RadialTaskMultiStateDiscreteArrow';
-foldernames = {'135926', '140350', '140710'};
+root_path = '/home/ucsf/Data/Bravo3/20230216/RadialTaskMultiStateDiscreteArrow';
+foldernames = {'122733', '123155', '123740', '124104',...
+    '124733','125041','125322','125620'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -118,13 +120,18 @@ T(aa(1):aa(end),3)=1;
 T(aa(1):aa(end),4)=1;
 
 % code to train a neural network
-net = patternnet([64 64 ]) ;
+clear net
+net = patternnet([96 96 96]) ;
 net.performParam.regularization=0.2;
-net = train(net,N,T','UseGPU','yes');
+net = train(net,N,T','UseParallel','yes');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_4Dir_Imagined_B3_Day1_2')
+%net_CL2=net;
+%save net_CL2 net_CL2
+genFunction(net,'MLP_4Dir_Imagined_B3_20230216_CL03_NoPooling')
 
-
+clear
+cd('/home/ucsf/Projects/bci')
+ExperimentStart('RadialTaskMultiStateDiscreteArrow','Bravo3',4,1,0)
 
 %% CREATING A MLP FOR B3, WITH POOLING
 
@@ -134,8 +141,8 @@ close all
 
 % IMAGINED CURSOR CENTER OUT
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230208/CenterOut';
-foldernames = {'132036', '133325', '134412'};
+root_path = '/home/ucsf/Data/Bravo3/20230216/CenterOut';
+foldernames = {'114946', '120657'};
 cd(root_path)
 
 
@@ -294,13 +301,17 @@ T(aa(1):aa(end),3)=1;
 T(aa(1):aa(end),4)=1;
 
 % code to train a neural network
-net = patternnet([64 64 ]) ;
+clear net
+net = patternnet([64 64 64 ]) ;
 net.performParam.regularization=0.2;
-net = train(net,N,T','UseGPU','yes');
+net = train(net,N,T','UseParallel','yes');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_4Dir_Imagined_B3_Day1_2')
+genFunction(net,'MLP_4Dir_Imagined_B3_20230216_CL01')
 
 
+clear
+cd('/home/ucsf/Projects/bci')
+ExperimentStart('RadialTaskMultiStateDiscreteArrow','Bravo3',4,1,0)
 
 %%
 

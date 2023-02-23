@@ -57,8 +57,8 @@ Params.FeatureBufferSize = 5;
 Params.ClickCounter=5;
 
 %% Timing
-Params.ScreenRefreshRate = 6; % Hz
-Params.UpdateRate = 6; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Discrete Decoder name
 Params.DiscreteDecoder = 'clicker_svm_mdl_OnlineDays1to6_4Dir_hG.mat';
@@ -80,8 +80,8 @@ Params.MultiDecisionBoundary =-2;
 % also set the softmax option
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-   Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_4Dir_Imagined_B3_Day1_2';
+   Params.NeuralNetSoftMaxThresh = 0.3;
+   Params.NeuralNetFunction = 'MLP_4Dir_Imagined_B3_20230216_CL03_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -90,10 +90,10 @@ end
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = true; 
+Params.ChPooling = false; 
 
 %% Mode filtering option
-Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 1;  % 1: No filtering, 3+: running mode filter of last n bins
 
 %% 2-norm
 Params.Norm2 = true;
@@ -179,7 +179,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 2;
+Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
@@ -226,7 +226,7 @@ end
 Params.TargetHoldTime = 1;
 Params.InterTrialInterval = 1.0;
 Params.InstructedDelayTime = 1.0;
-Params.CueTime = 1;
+Params.CueTime = 2;
 Params.MaxStartTime = 25;
 Params.MaxReachTime = 8 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
