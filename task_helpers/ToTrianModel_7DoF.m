@@ -7,8 +7,8 @@ close all
 
 % IMAGINED CURSOR CENTER OUT
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230301/Robot3DArrow';
-foldernames = {'113743', '114316', '114639', '114958'};
+root_path = '/home/ucsf/Data/Bravo3/20230302/Robot3DArrow';
+foldernames = {'122334', '122931', '123406', '124341','125002'};
 cd(root_path)
 
 
@@ -22,7 +22,7 @@ D7=[];
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'Imagined');
     D=dir(folderpath);
-    for j=5:length(D)
+    for j=3:length(D)
         filepath=fullfile(folderpath,D(j).name);
         load(filepath)
         features  = TrialData.SmoothedNeuralFeatures;
@@ -60,8 +60,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230301/Robot3DArrow';
-foldernames = {'120038', '120246', '120505', '120825'};
+root_path = '/home/ucsf/Data/Bravo3/20230302/Robot3DArrow';
+foldernames = {'125915', '130405', '130751', '131139','131614'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -150,13 +150,15 @@ net = patternnet([96 96 96]) ;
 net.performParam.regularization=0.2;
 net = train(net,N,T','UseParallel','yes');
 cd('/home/ucsf/Projects/bci/clicker')
+%net_OL_03022023 = net;
+%save net_OL_03022023 net_OL_03022023 
 %net_CL2=net;
 %save net_CL2 net_CL2
-genFunction(net,'MLP_7Dir_Imagined_B3_20230301_CL1_NoPooling')
+genFunction(net,'MLP_7Dir_Imagined_B3_20230302_CL2_NoPooling')
 % 
-% clear
-% cd('/home/ucsf/Projects/bci')
-% ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+ clear
+ cd('/home/ucsf/Projects/bci')
+ ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
 
 
 

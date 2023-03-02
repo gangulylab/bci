@@ -58,7 +58,7 @@ Params.FeatureBufferSize = 5;
 % The number of bins of successful decodes to hit the target
 % Set this to 2/3 bins if enforcing a null class i.e.
 % Params.MultiDecisionBoundary <0
-Params.ClickCounter = 4;
+Params.ClickCounter = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -84,7 +84,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230301_CL1_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230302_CL2_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -275,7 +275,7 @@ Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
 Params.RobotTargetRadius    = 40;
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 
-Params.RunningModeBinNum    = 1;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins
 Params.RobotTargetDim       = 1;
 
 Params.ReachTargets         = [1,2,3,4,5,6,7];
