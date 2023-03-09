@@ -8,8 +8,8 @@ close all
 
 % IMAGINED CURSOR CENTER OUT
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230216/CenterOut';
-foldernames = {'114946', '120657'};
+root_path = '/home/ucsf/Data/Bravo3/20230308/Robot3DArrow';
+foldernames = {'114109', '114632', '114940', '115300','115621'};
 cd(root_path)
 
 
@@ -52,9 +52,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230216/RadialTaskMultiStateDiscreteArrow';
-foldernames = {'122733', '123155', '123740', '124104',...
-    '124733','125041','125322','125620'};
+root_path = '/home/ucsf/Data/Bravo3/20230308/Robot3DArrow';
+foldernames = {'120914','121201','121443','121702','121926'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -127,11 +126,11 @@ net = train(net,N,T','UseParallel','yes');
 cd('/home/ucsf/Projects/bci/clicker')
 %net_CL2=net;
 %save net_CL2 net_CL2
-genFunction(net,'MLP_4Dir_Imagined_B3_20230216_CL03_NoPooling')
+genFunction(net,'MLP_4Dir_Imagined_B3_20230308_CL1_NoPooling')
 
-clear
-cd('/home/ucsf/Projects/bci')
-ExperimentStart('RadialTaskMultiStateDiscreteArrow','Bravo3',4,1,0)
+% clear
+% cd('/home/ucsf/Projects/bci')
+% ExperimentStart('RadialTaskMultiStateDiscreteArrow','Bravo3',4,1,0)
 
 %% CREATING A MLP FOR B3, WITH POOLING
 

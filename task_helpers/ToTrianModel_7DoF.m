@@ -7,8 +7,8 @@ close all
 
 % IMAGINED CURSOR CENTER OUT
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230302/Robot3DArrow';
-foldernames = {'122334', '122931', '123406', '124341','125002'};
+root_path = '/home/ucsf/Data/Bravo3/20230309/Robot3DArrow';
+foldernames = {'135628', '140326', '140904', '141504','142051'};
 cd(root_path)
 
 
@@ -60,8 +60,9 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230302/Robot3DArrow';
-foldernames = {'125915', '130405', '130751', '131139','131614'};
+root_path = '/home/ucsf/Data/Bravo3/20230309/Robot3DArrow';
+foldernames = {'143001','143435','143906','144336','144737',...
+   '145319','145814','150300' };
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -107,13 +108,13 @@ end
 clear condn_data
 % combing both onlien plus offline
 idx=1;
-condn_data{1}=[D1(idx:end,:) ]'; % right hand
+condn_data{1}=[D1(idx:end,:) ]'; % right thumb
 condn_data{2}= [D2(idx:end,:)]'; % both feet
-condn_data{3}=[D3(idx:end,:)]'; % left hand
+condn_data{3}=[D3(idx:end,:)]'; % left pinch
 condn_data{4}=[D4(idx:end,:)]'; % head
-condn_data{5}=[D5(idx:end,:)]'; % head
-condn_data{6}=[D6(idx:end,:)]'; % head
-condn_data{7}=[D7(idx:end,:)]'; % head
+condn_data{5}=[D5(idx:end,:)]'; % lips
+condn_data{6}=[D6(idx:end,:)]'; % tong
+condn_data{7}=[D7(idx:end,:)]'; % both hands
 
 
 A = condn_data{1};
@@ -146,7 +147,7 @@ T(aa(1):aa(end),7)=1;
 
 % code to train a neural network
 clear net
-net = patternnet([96 96 96]) ;
+net = patternnet([64 64 64]) ;
 net.performParam.regularization=0.2;
 net = train(net,N,T','UseParallel','yes');
 cd('/home/ucsf/Projects/bci/clicker')
@@ -154,11 +155,11 @@ cd('/home/ucsf/Projects/bci/clicker')
 %save net_OL_03022023 net_OL_03022023 
 %net_CL2=net;
 %save net_CL2 net_CL2
-genFunction(net,'MLP_7Dir_Imagined_B3_20230302_CL2_NoPooling')
+genFunction(net,'MLP_7Dir_Imagined_B3_20230309_CL3_NoPooling')
 % 
- clear
- cd('/home/ucsf/Projects/bci')
- ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+clear
+cd('/home/ucsf/Projects/bci')
+ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
 
 
 
