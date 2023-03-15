@@ -32,7 +32,7 @@ class JacoEnv(object):
     self.debuglen       = 0.3
     self.fu             = 1.35
     self.fl             = 0.
-    self.center         = np.array([-0.35, 0.3, 0.25])
+    self.center         = np.array([-0.35, 0.3, 0.27])
     self.bciRate        = 0.125
     self.key            = 0
     self.robotTargetRad = .05

@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'Robot3DArrow';
+Params.Task = 'Robot3D';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -39,7 +39,7 @@ Params.MaxVelocity              = 200;
 Params.ClickerBins = -1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
 Params.ClickerDataCollection = true; % if true, does not use clicker, freezes cursor when in target
-if Params.ClickerDataCollection
+if Params.ClickerDataCollection,
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
@@ -53,12 +53,6 @@ Params.PixelLength = 0.05;
 %% Neural feature smoothing
 Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
-
-%% Bins for successful target selection
-% The number of bins of successful decodes to hit the target
-% Set this to 2/3 bins if enforcing a null class i.e.
-% Params.MultiDecisionBoundary <0
-Params.ClickCounter = 5;
 
 %% Timing
 Params.ScreenRefreshRate = 5; % Hz
@@ -108,7 +102,6 @@ end
 tmp = load(fullfile('clicker','ECOG_Grid_8596_000063_B3.mat'));
 Params.ChMapB2 = tmp.ecog_grid;
 
-
 %% 2-norm
 Params.Norm2 = false;
 
@@ -120,16 +113,18 @@ Params.AdaptiveBaseline = false;
 % set this 1 only during online control
 Params.ChPooling = false; 
 
-%% Targets: radial layout
-Params.NumReachTargets   = 7;
+%% TARGET
+
+Params.NumReachTargets   = 6;
 Params.TargetSpacing     = 10; % px
 Params.OuterCircleRadius = 350; % defines outer edge of target
 Params.InnerCircleRadius = 150; % defines inner edge of target
 % Params.ReachTargetRadius = .5*(Params.InnerCircleRadius + Params.OuterCircleRadius);
 
 Params.ReachTargetRadius = 200;
-dl    = Params.ReachTargetRadius/sqrt(2);
 
+d2 = sqrt(1/2);
+d3 = sqrt(1/3);
 
 Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0, Params.ReachTargetRadius, 0; ...
@@ -137,24 +132,38 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     0, -Params.ReachTargetRadius, 0; ...
     0,0,Params.ReachTargetRadius;...
     0, 0,-Params.ReachTargetRadius;...
-    0,0,0;...
-    0.5*Params.ReachTargetRadius,0,40;... % wrist rotation
-    -0.5*Params.ReachTargetRadius,0,40;...; % wrist rotation
-    dl,-dl,0;...  %  diagonals
-    dl, dl,0;
-    -dl, dl, 0;...
-    -dl, -dl,0;...
-    dl,0,dl;...
-    0, dl, dl;...
-    -dl,0,dl;...
-    0, -dl, dl;
-    dl,0,-dl;...
-    0, dl,-dl;...
-    -dl,0,-dl;...
-    0, -dl,-dl;...
-    0,0,0;...
-    0,0,0;...
-    0,0,0];
+    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
+    -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
+    -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
+    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
+    0,    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius;...
+    0, -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius;...
+    0, -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius;...
+    0, d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius;...
+        d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
+    -d2*Params.ReachTargetRadius, 0, d2*Params.ReachTargetRadius;...
+    -d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
+    d2*Params.ReachTargetRadius, 0, -d2*Params.ReachTargetRadius;...
+        d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+        d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
+    -d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius;...
+    d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius];
+    
+Params.LongStartPos =  [Params.ReachTargetPositions(3,:);...
+    Params.ReachTargetPositions(4,:);...
+    Params.ReachTargetPositions(1,:);...
+    Params.ReachTargetPositions(2,:);...
+    Params.ReachTargetPositions(6,:);...
+    Params.ReachTargetPositions(5,:);...
+    Params.ReachTargetPositions(9,:);...
+    Params.ReachTargetPositions(10,:);...
+    Params.ReachTargetPositions(7,:);...
+    Params.ReachTargetPositions(8,:)];    
+
 
 %% Kalman Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -162,12 +171,12 @@ G = Params.Gain;
 t = 1/Params.UpdateRate;
 a = 0.91;%.825;
 w = 120;
-if Params.ControlMode>=3
+if Params.ControlMode>=3,
     Params = LoadKF2dDynamics(Params, G, t, a, w);
 end
 
 %% LQR Optimal Velocity Controller
-if Params.OptimalVeloctityMode==2
+if Params.OptimalVeloctityMode==2,
     Params = LoadLQR2dDynamics(Params, G, t, a);
 end
 
@@ -180,26 +189,22 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 21;              % standard 7
-Params.TargetOrder          = [1:7,1:7,1:7];
+% Cardinal Directions
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:6,1:6];
 
-% Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
-% Params.TargetOrder          = [1:9,1:9,1:9];
-% 
-% Params.NumTrialsPerBlock    = 20;                % co-activation - center plane
-% Params.TargetOrder          = [10:13, 10:13, 10:13, 10:13, 10:13];
-% 
-% Params.NumTrialsPerBlock    = 20;                % co-activation - top plane
-% Params.TargetOrder          = [14:17, 14:17, 14:17, 14:17, 14:17];
-% 
-% Params.NumTrialsPerBlock    = 12;                % co-activation - bottom plane
-% Params.TargetOrder          = [18:21, 18:21, 18:21];
-% 
-% Params.NumTrialsPerBlock    = 9;                % co-activation - opposing
-% Params.TargetOrder          = [22:24, 22:24, 22:24];
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
-% Params.TargetOrder          = [Params.TargetOrder, 2];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
+
+
+%Diagonals in the Horizontal Plane
+% Params.NumTrialsPerBlock    = 8;
+% Params.TargetOrder          = [7:14];
+
+
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -222,34 +227,34 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType
-    case 'none'
+switch Params.CLDA.AdaptType,
+    case 'none',
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear'
-        switch Params.CLDA.Type
-            case 2 % smooth batch
+    case 'linear',
+        switch Params.CLDA.Type,
+            case 2, % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
-            case 3 % RML
+            case 3, % RML
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise % none or refit
+            otherwise, % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
 
 %% Hold Times
-Params.TargetHoldTime       = 1;
-Params.InterTrialInterval   = 1;
-Params.InstructedDelayTime  = 1;
-Params.CueTime              = 1.0;
-Params.MaxStartTime         = 25;
-Params.MaxReachTime         = 5 ;
-Params.InterBlockInterval   = 10; % 0-10s, if set to 10 use instruction screen
-% Params.ImaginedMvmtTime = 3;
+Params.TargetHoldTime = 1;
+Params.InterTrialInterval = 2;
+Params.InstructedDelayTime = 1;
+Params.CueTime = 0.75;
+Params.MaxStartTime = 25;
+Params.MaxReachTime = 15 ;
+Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
+Params.ImaginedMvmtTime = 5;
 
 %% Feedback
 Params.FeedbackSound = false;
@@ -261,23 +266,64 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
-Params.flipView = 0;
-if Params.flipView
-    Params.RobotMode        = 14; 
-else
-    Params.RobotMode        = 4; 
-end
-Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
-Params.RobotTargetRadius    = 40;
-Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.limit = [-256, 256; -256 256; -256 256];
+Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
+Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+
+if Params.RobotMode == 0
+    Params.RobotTargetDim = 2;
+elseif Params.RobotMode == 1
+    Params.RobotTargetDim = 1;
+end
+
+Params.RobotTargetRadius    = 30;
 Params.RobotTargetDim       = 1;
 
-Params.ReachTargets         = [1,2,3,4,5,6,7];
-Params.ValidDir             = [1:7];
+Params.ReachTargets      = [1,2,3,4,5,6];
+Params.ValidDir          = [1:6,7];
+
+Params.deltaT = 1/Params.UpdateRate;
+
+% Params.k_v = 0.95;
+% Params.k_i = 15;
+
+Params.k_v = 0.9;
+Params.k_i = 10;
+
+Params.dA = [1 0 0  Params.deltaT 0 0;...
+                    0 1 0 0 Params.deltaT 0;...
+                    0 0 1 0 0 Params.deltaT;...
+                    0 0 0 Params.k_v 0 0;...
+                    0 0 0 0 Params.k_v 0;...
+                    0 0 0 0 0 Params.k_v];
+                
+Params.dB = [zeros(3);eye(3)];
+Params.dB = Params.dB*Params.k_i;
+
+Params.LongTrial = 0;
+
+% Clicker
+Params.RobotClicker     = 0;     % 0: trial ends with hold time, 1: trial ends with click
+Params.ClickerBinNum    = 3;
+Params.ClickerBinThresh = 0.7;
+
+
+Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
+Params.ClickerBreak     = 1;
+Params.BreakGain        = 0.75;
+
+Params.TargetHoldTime   = 1.0;
+
+
+Params.boundaryDist = 1;
+Params.boundaryVel  = 0;
+Params.AssistAlpha  = 0.0;
 
 %% For Debug
+
 Params.index = 1;
-Params.clickOrder = [8*ones(1,5)];
+Params.clickOrder = [1,1,1,1,1,1,1,1,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0];
 end % GetParams
