@@ -7,8 +7,8 @@ close all
 
 % IMAGINED CURSOR CENTER OUT
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230309/Robot3DArrow';
-foldernames = {'135628', '140326', '140904', '141504','142051'};
+root_path = '/home/ucsf/Data/Bravo3/20230315/Robot3DArrow';
+foldernames = {'114014', '114328', '114637', '114946'};
 cd(root_path)
 
 
@@ -60,9 +60,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230309/Robot3DArrow';
-foldernames = {'143001','143435','143906','144336','144737',...
-   '145319','145814','150300' };
+root_path = '/home/ucsf/Data/Bravo3/20230315/Robot3DArrow';
+foldernames = {'115850', '120057', '120307', '120613','121138','121335','121544'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -155,11 +154,11 @@ cd('/home/ucsf/Projects/bci/clicker')
 %save net_OL_03022023 net_OL_03022023 
 %net_CL2=net;
 %save net_CL2 net_CL2
-genFunction(net,'MLP_7Dir_Imagined_B3_20230309_CL3_NoPooling')
+genFunction(net,'MLP_7Dir_Imagined_B3_20230315_CL2_NoPooling')
 % 
 clear
 cd('/home/ucsf/Projects/bci')
-ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+% ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
 
 
 

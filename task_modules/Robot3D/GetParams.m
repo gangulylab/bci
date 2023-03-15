@@ -77,7 +77,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230309_CL3_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230315_CL2_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -193,11 +193,6 @@ Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = 12;
 Params.TargetOrder          = [1:6,1:6];
 
-
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
-
-
 %Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 8;
 % Params.TargetOrder          = [7:14];
@@ -270,7 +265,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.limit = [-256, 256; -256 256; -256 256];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 4;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0
@@ -279,7 +274,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius    = 30;
+Params.RobotTargetRadius    = 50;
 Params.RobotTargetDim       = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -315,7 +310,7 @@ Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.ClickerBreak     = 1;
 Params.BreakGain        = 0.75;
 
-Params.TargetHoldTime   = 1.0;
+Params.TargetHoldTime   = 0.2;
 
 
 Params.boundaryDist = 1;

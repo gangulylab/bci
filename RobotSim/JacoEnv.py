@@ -669,7 +669,7 @@ class JacoEnv(object):
     if self.mode == 0:
       self.pos =list([-0.35, 0.3, 0.2])
     elif self.mode ==3 or self.mode == 9:
-      self.pos =list([-0.35, 0.3, 0.25])
+      self.pos =list([-0.35, 0.3, 0.27])
     else:
       self.pos =list([-0.35, 0.3, 0.2])
 
