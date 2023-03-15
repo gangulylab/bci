@@ -305,7 +305,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 5; 
+Params.RobotMode    = 2; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
