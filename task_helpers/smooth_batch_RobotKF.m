@@ -18,8 +18,8 @@ clear;
 close all
 
 %%%% CHANGE THIS ACCORDINGLY 
-folderpath = '/home/ucsf/Data/bravo1/20230220/RobotKF';
-folders={'102528','103151','103544','104517','105110'};
+folderpath = '/home/ucsf/Data/bravo1/20230315/RobotKF';
+folders={'103701','104112','104246','104421','104548'};
 %%%%%
 
 addpath(fullfile('task_helpers'))
@@ -144,9 +144,9 @@ addpath(fullfile('task_helpers'))
 
 
 %%%% CHANGE THIS ACCORDINGLY 
-folderpath = '/home/ucsf/Data/bravo1/20230220/RobotKF';
-%folders={'110103','110650','111006'}; % CL1
-folders={'112144','112608'}; % CL2
+folderpath = '/home/ucsf/Data/bravo1/20230315/RobotKF';
+%folders={'105260','105948','110323','110631'}; % CL1
+folders={'111229','111639','112018','112331'}; % CL2
 %%%%% CHANGE AS REQUIRED %%%%%
 
 
