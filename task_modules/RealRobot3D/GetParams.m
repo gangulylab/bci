@@ -305,7 +305,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 2; 
+Params.RobotMode    = 3; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -351,7 +351,7 @@ elseif Params.RobotMode == 2 % vertical R2G
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
 %     Params.StartPos             = [-200, 200, 220]; % vertically alligned start
-    Params.StartPos             = [100, -90, 320]; %
+    Params.StartPos             = [100, -90, 360]; %
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset   = 0;
@@ -363,6 +363,12 @@ elseif Params.RobotMode == 3  % lateral R2G wall
     Params.StartWristY = 10*[0]; 
     Params.UseNewAutoGrasp = 0;
     Params.WaitForGraspSignal = 0;
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
+    Params.UseHeightDist  = 0;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+Params.autoCenterDist       = 5;
     
 elseif Params.RobotMode == 4 % TopDown with assist
     Params.ValidDir          = [1:9];
