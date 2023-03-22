@@ -289,8 +289,6 @@ if ~Data.ErrorID,
                 Cursor.State = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
                 Cursor.IntendedState = [0 0 0 0 0]';  
                 
-                Cursor.State(3)
-                
                 % Stop robot at boundaries
                 
                 if Cursor.State(1) <= Params.limit(1,1)
@@ -348,7 +346,7 @@ if ~Data.ErrorID,
                 if Params.RobotClicker
                     mean(StopClicker_Buffer);
                     if mean(StopClicker_Buffer) > Params.ClickerBinThresh
-                        
+                        click = "CLICK"
                         done = 1;
                         Data.SelectedTargetID = TargetID;
                         Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
@@ -385,7 +383,7 @@ if ~Data.ErrorID,
         end
         
         % end if in target for hold time (not using clicker)
-        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
+        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.RobotClicker==0)
             done = 1;
             Data.SelectedTargetID = TargetID;
             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 

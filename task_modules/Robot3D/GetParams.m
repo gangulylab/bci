@@ -77,7 +77,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230315_CL2_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230322_CL2_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -190,15 +190,15 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 12;
-Params.TargetOrder          = [1:6,1:6];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = [1:6];
 
 %Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 8;
 % Params.TargetOrder          = [7:14];
 
 
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -262,7 +262,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.limit = [-256, 256; -256 256; -256 256];
+Params.limit = [-250, 250; -250 250; -220 250];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
@@ -274,7 +274,7 @@ elseif Params.RobotMode == 1
     Params.RobotTargetDim = 1;
 end
 
-Params.RobotTargetRadius    = 50;
+Params.RobotTargetRadius    = 100;
 Params.RobotTargetDim       = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
@@ -301,16 +301,16 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 % Clicker
-Params.RobotClicker     = 0;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum    = 3;
-Params.ClickerBinThresh = 0.7;
+Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.ClickerBinNum    = 1;
+Params.ClickerBinThresh = 0.1;
 
 
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.ClickerBreak     = 1;
 Params.BreakGain        = 0.75;
 
-Params.TargetHoldTime   = 0.2;
+Params.TargetHoldTime   = 1.2;
 
 
 Params.boundaryDist = 1;
