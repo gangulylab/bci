@@ -83,7 +83,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230322_CL1_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_Imagined_B3_20230323_CL2_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -247,7 +247,7 @@ Params.InterTrialInterval   = 1;
 Params.InstructedDelayTime  = 1;
 Params.CueTime              = 1.0;
 Params.MaxStartTime         = 25;
-Params.MaxReachTime         = 5 ;
+Params.MaxReachTime         = 25 ;
 Params.InterBlockInterval   = 10; % 0-10s, if set to 10 use instruction screen
 % Params.ImaginedMvmtTime = 3;
 
