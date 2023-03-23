@@ -236,7 +236,7 @@ if ~Data.ErrorID,
                 if Click_Decision>7
                     Click_Decision=0;
                 end
-                Click_Decision
+%                 Click_Decision
                 
             if TaskFlag==1 % imagined movements
                 if TargetID == Data.TargetID
@@ -270,7 +270,6 @@ if ~Data.ErrorID,
                 if Params.ClickerBreak == 1 && RunningMode_ClickDec == 7
                     Cursor.State(4:6) = Cursor.State(4:6)*Params.BreakGain;          
                 end
-
 
                 A = Params.dA;
                 B = Params.dB;
@@ -346,7 +345,7 @@ if ~Data.ErrorID,
                 if Params.RobotClicker
                     mean(StopClicker_Buffer);
                     if mean(StopClicker_Buffer) > Params.ClickerBinThresh
-                        click = "CLICK"
+                         fprintf('SUCCESSFUL CLICK \n')
                         done = 1;
                         Data.SelectedTargetID = TargetID;
                         Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 

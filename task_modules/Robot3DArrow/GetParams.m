@@ -267,6 +267,7 @@ if Params.flipView
 else
     Params.RobotMode        = 4; 
 end
+Params.AltView              = 0;
 Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
 Params.RobotTargetRadius    = 40;
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines

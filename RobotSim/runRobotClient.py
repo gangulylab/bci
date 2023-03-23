@@ -118,7 +118,9 @@ while True:
 			if startOrn == 2:
 				interface.robotenv.set_robotOrn([0, -math.pi/2, 0])
 			interface.render()
-
+		if val1 == 25: # robot view
+			interface.robotenv.view2 = val2
+			print ("VIEW2, ", val2)
 
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000

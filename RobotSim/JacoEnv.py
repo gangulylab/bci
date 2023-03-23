@@ -37,6 +37,7 @@ class JacoEnv(object):
     self.key            = 0
     self.robotTargetRad = .05
     self.opMode         = 0
+    self.view2          = 0
 
     p.loadURDF("plane.urdf",[0,0,-.65])
     p.loadURDF("table/table.urdf", basePosition=[-0.6,0.45,-0.65])
@@ -52,6 +53,9 @@ class JacoEnv(object):
         p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=-45, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 3  or self.mode == 4 or self.mode == 6 or self.mode == 8:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+      if self.view2 == 1:
+        print("VIEW2")
+        p.resetDebugVisualizerCamera(cameraDistance=0.8, cameraYaw= 30, cameraPitch=-30, cameraTargetPosition=[-0.35,0.2,0.1])
     elif self.mode == 5:
       p.resetDebugVisualizerCamera(cameraDistance=0.4, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 9:
@@ -72,7 +76,9 @@ class JacoEnv(object):
     self.jd                   = [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
     self.JP                   = [0,0,0,0,0,0]
 
-    self.RP = [0,2.4,-1.4,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi,0]
+    # self.RP = [0,2.4,-1.4,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi,0]
+    self.RP = [0.58, -2.59, -4.59, -0.37, 1.34, 0.20, 3.14, 1.24, 0.24]
+
 
     self.cube1Id = p.loadURDF("cube_small.urdf",[-0.2, 0, -0.2] + self.center, [0,0,0,1],  globalScaling=3)
     # self.cube1Id = p.loadURDF("domino/domino.urdf",[0.2, 1.0, -2] + self.center, [ 0.4996018, 0.4999998, 0.4999998, 0.5003982 ],   globalScaling=3)
@@ -598,6 +604,8 @@ class JacoEnv(object):
         p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw=-45, cameraPitch=-10, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 3  or self.mode == 4 or self.mode == 8:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+      if self.view2 == 1:
+        p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 25, cameraPitch=-25, cameraTargetPosition=[-0.35,0.2,0.3])
     elif self.mode == 10:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 15, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 5:
@@ -671,7 +679,7 @@ class JacoEnv(object):
     elif self.mode ==3 or self.mode == 9:
       self.pos =list([-0.35, 0.3, 0.27])
     else:
-      self.pos =list([-0.35, 0.3, 0.2])
+      self.pos =list([-0.35, 0.3, 0.22])
 
     self.orn = p.getQuaternionFromEuler([math.pi,0,math.pi])
     # self.pos   = list([-0.5, 0.0, 0.25])
