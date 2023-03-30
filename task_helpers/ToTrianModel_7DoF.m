@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230323/Robot3DArrow';
-foldernames = {'121940', '122551', '123155', '123616','124027'};
+root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3DArrow';
+foldernames = {'122117', '123029', '124354', '125220','125810'};
 cd(root_path)
 
 
@@ -60,8 +60,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230323/Robot3DArrow';
-foldernames = {'124808', '125147', '130225', '130821','131616','132215'};
+root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3DArrow';
+foldernames = {'130524', '131124', '131630', '132104','132647','133231'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -105,8 +105,8 @@ end
 
 
 % ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
-root_path = '/home/ucsf/Data/Bravo3/20230322/Robot3D';
-foldernames = {};
+root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3D';
+foldernames = {'133810'};
 % cd(root_path)
 
 for i=1:length(foldernames)
@@ -195,15 +195,15 @@ T(aa(1):aa(end),7)=1;
 
 % code to train a neural network
 clear net
-net = patternnet([64 64 64]) ;
+net = patternnet([64 64 ]) ;
 net.performParam.regularization=0.2;
-net = train(net,N,T','UseParallel','yes');
+net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
 %net_OL_03022023 = net;
 %save net_OL_03022023 net_OL_03022023 
 %net_CL2=net;
 %save net_CL2 net_CL2
-genFunction(net,'MLP_7Dir_Imagined_B3_20230323_CL3_NoPooling')
+genFunction(net,'MLP_7Dir_Imagined_B3_20230330_CL4_NoPooling')
 % 
 
 cd('/home/ucsf/Projects/bci')
