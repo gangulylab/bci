@@ -185,17 +185,10 @@ Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, 0;...
     d3*Params.ReachTargetRadius, -d3*Params.ReachTargetRadius, d3*Params.ReachTargetRadius];
     
 Params.LongStartPos =  [200, -200, 0; -200, 200, 0; 200, 0, -100; -200, 0, -100; 200, -100, 0; 200, 180, 0;...
-    200, 0, -200];
+ 200, -200, 0; -200 200 0;  200, -200, 0; -100 -100 0; 0,0,0 ];
 
 Params.ReachTargetPositions = [-200, 200, 0; 200, -200, 0; -200. 0. -100; 200, 0, -100;...
-200, 180,0; 200, -100,0;0,0,280];
-
-Params.Paths{1} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
-Params.Paths{2} = [[0.2, 0.2, 0]; [0., 0.2, 0]; [0,0,0];  [-0.2, 0,0]; [-0.2, -0.2, 0]]*1000;
-Params.Paths{3} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
-Params.Paths{4} = [[0.2,0,-0.1]; [0.2, 0.0, 0.1]; [0.0, 0.0, 0.1];[0., 0., -0.1]; [-0.2, 0.0, -0.1]]*1000;
-Params.Paths{5} = [[0.2, 0.1, 0]; [0, 0.1, 0]; [-0.1414, -0.0414, 0]; [0, -0.18, 0]; [0.2, -0.18, 0]]*1000;
-
+200, 180,0; 200, -100,0;-200 200 0;  200, -200, 0;  -100 -100 0;  200, -200, 0; 0,0,0];
 
 %% Kal,an Filter Properties
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
@@ -222,8 +215,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1,2,3,4,5,6];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [7,8,9,10];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -324,7 +317,7 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 1;
 
 % Target
-Params.RobotTargetRadius = 100;  % increase radius if task too hard
+Params.RobotTargetRadius = 50;  % increase radius if task too hard
 Params.TargetHoldTime = 10;
 
 % Clicker
