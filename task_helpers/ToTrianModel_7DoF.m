@@ -193,18 +193,28 @@ T(aa(1):aa(end),6)=1;
 [aa bb]=find(T1==7);[aa(1) aa(end)]
 T(aa(1):aa(end),7)=1;
 
-% code to train a neural network
+%%%%%%%% CODE TO UPDATE THE PNP DECODER %%%%%%%
+cd('/home/ucsf/Projects/bci/clicker')
+load net_mlp_pnp % this is the original PnP... if updating and saving, use the name below
+net = net_mlp_pnp;
+net = train(net,N,T','UseParallel','no');
+genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update1')
+net_mlp_pnp_update1 = net;
+save net_mlp_pnp_update1 net_mlp_pnp_update1
+%%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
+
+
+%%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
 clear net
 net = patternnet([64 64 ]) ;
 net.performParam.regularization=0.2;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-%net_OL_03022023 = net;
-%save net_OL_03022023 net_OL_03022023 
-%net_CL2=net;
-%save net_CL2 net_CL2
 genFunction(net,'MLP_7Dir_Imagined_B3_20230330_CL4_NoPooling')
-% 
+%%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
+
+
+
 
 cd('/home/ucsf/Projects/bci')
 clear
