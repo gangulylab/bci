@@ -263,7 +263,9 @@ if ~Data.ErrorID
 
                 ClickToSend = RunningMode_ClickDec;
                 
+                RunningMode_ClickDec = ClickToSend*any(ClickToSend == Params.ValidDir);
                 Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+                
                 
 
                 if Params.RobotClickerStop == 1 && RunningMode_ClickDec == 7
@@ -344,9 +346,8 @@ if ~Data.ErrorID
                 inTargetOld = 1;
                 InTargetTotalTime = InTargetTotalTime + dt;
                 if Params.RobotClicker
-                    mean(StopClicker_Buffer);
+                    mean(StopClicker_Buffer)
                     if mean(StopClicker_Buffer) > Params.ClickerBinThresh
-                        
                         done = 1;
                         Data.SelectedTargetID = TargetID;
                         Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 

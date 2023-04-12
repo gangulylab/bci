@@ -297,7 +297,7 @@ end
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:6,7];
+Params.ValidDir          = [1:4];
 
 Params.deltaT = 1/Params.UpdateRate;
 Params.k_v = 0.9;
@@ -317,13 +317,13 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 1;
 
 % Target
-Params.RobotTargetRadius = 50;  % increase radius if task too hard
+Params.RobotTargetRadius = 75;  % increase radius if task too hard
 Params.TargetHoldTime = 10;
 
 % Clicker
 Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 10;
-Params.ClickerBinThresh = 0.7;
+Params.ClickerBinNum = 5;
+Params.ClickerBinThresh = .5;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
 Params.boundaryDist = 10;
