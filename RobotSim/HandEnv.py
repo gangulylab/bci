@@ -29,6 +29,7 @@ class HandEnv(object):
 		print(action)
 		print(s)
 
+
 		l = 0.6
 
 		if action == 1:		# thumb
@@ -140,10 +141,6 @@ class HandEnv(object):
 			p.resetJointState(self.handId, 27, 0)
 			p.resetJointState(self.handId, 3, -2*s + 1)
 
-
-		
-		
-
 	def reset(self):
 		# p.resetJointState(self.handId, 3, -0.4)
 		print('RESET')
@@ -184,7 +181,7 @@ class HandEnv(object):
 
 
 	def displayDecodes(self):
-		self.reset()
+		# self.reset()
 		c = [1, 1, 1]
 		t = 0
 		d = 10
@@ -215,6 +212,24 @@ class HandEnv(object):
 	
 		p1 = [-0.4,0.0,0.21]
 		p2 = [-0.3,0.04, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+
+
+		p1 = [-0.43,0.06,0.21]
+		p2 = [-0.43,0.01, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+	
+		p1 = [-0.43,0.0,0.21]
+		p2 = [-0.43,-0.05, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+
+
+		p1 = [-0.6,-0.02,0.21]
+		p2 = [-0.7,-0.02, 0.21]
+		p.addUserDebugLine(p1, p2, c, d, t)
+	
+		p1 = [-0.4,-0.02,0.21]
+		p2 = [-0.3,-0.02, 0.21]
 		p.addUserDebugLine(p1, p2, c, d, t)
 
 
@@ -259,16 +274,50 @@ class HandEnv(object):
 			p1 = [-0.45,0.16,0.2101]
 			p2 = [-0.45,0.20, 0.2101]
 			p.addUserDebugLine(p1, p2, c, d, t)
-		if action == 8:	
+		if action == 7:  # pinch
+			p1 = [-0.58,0.11,0.2101]
+			p2 = [-0.58,0.15, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.515,0.19,0.2101]
+			p2 = [-0.515,0.23, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)	
+		if action == 8:
+			p1 = [-0.58,0.11,0.2101]
+			p2 = [-0.58,0.15, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.515,0.19,0.2101]
+			p2 = [-0.515,0.23, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			p1 = [-0.49,0.20,0.2101]
+			p2 = [-0.49,0.24, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 10:	
 			p1 = [-0.6,0.0,0.2101]
 			p2 = [-0.7,0.04, 0.2101]
 			p.addUserDebugLine(p1, p2, c, d, t)
-		if action == 7:
+		if action == 9:
 			p1 = [-0.4,0.0,0.2101]
 			p2 = [-0.3,0.04, 0.2101]
 			p.addUserDebugLine(p1, p2, c, d, t)
 
-		
+		if action == 11:	
+			p1 = [-0.43,0.06,0.2101]
+			p2 = [-0.43,0.01, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 12:	
+			p1 = [-0.43,0.0,0.2101]
+			p2 = [-0.43,-0.05, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+
+		if action == 13:
+			p1 = [-0.6,-0.02,0.2101]
+			p2 = [-0.7,-0.02, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+		if action == 14:
+			p1 = [-0.4,-0.02,0.2101]
+			p2 = [-0.3,-0.02, 0.2101]
+			p.addUserDebugLine(p1, p2, c, d, t)
+			
 
 
 	def hideHand(self):
@@ -276,7 +325,6 @@ class HandEnv(object):
 
 	def showHand(self):
 		a = p.getBasePositionAndOrientation(self.handId)
-		print(a)
 		p.resetBasePositionAndOrientation(self.handId,[-0.5,0,0.2],a[1])
 
 	def displayCue(self, cue,c):

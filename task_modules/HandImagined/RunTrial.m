@@ -7,16 +7,16 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
-ReachTargetPos = Data.TargetPosition;
-TargetID = 0; % Target that cursor is in, 0 for no targets
+ReachTargetPos  = Data.TargetPosition;
+TargetID        = 0; % Target that cursor is in, 0 for no targets
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 fprintf('  Target: %i\n',Data.TargetPosition)
-if Params.Verbose,
-    if TaskFlag==2,
+if Params.Verbose
+    if TaskFlag==2
         fprintf('    Cursor Assistance: %.2f%%\n',100*Cursor.Assistance)
-        if Params.CLDA.Type==3,
+        if Params.CLDA.Type==3
             fprintf('    Lambda 1/2 life: %.2fsecs\n',KF.Lambda)
         end
     end
@@ -46,9 +46,7 @@ Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
 
-
 fwrite(Params.udp, [0,16,Data.TargetID]);
-
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0,
     tstart  = GetSecs;
@@ -118,7 +116,7 @@ end % only complete if no errors
 
 
 %% Cue time
-if ~Data.ErrorID && Params.CueTime>0,
+if ~Data.ErrorID && Params.CueTime>0
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Cue';
@@ -178,8 +176,7 @@ end % only complete if no errors
 
 %% Go to reach target
 
-
-if ~Data.ErrorID,
+if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -190,12 +187,12 @@ if ~Data.ErrorID,
     InTargetTotalTime = 0;
     
     ClickDec_Buffer = zeros(Params.RunningModeBinNum, 1);
-    temp_dir = [0,0,0];
-    ClickToSend = 0;
+    temp_dir        = [0,0,0];
+    ClickToSend     = 0;
     
     step = 0;
     fwrite(Params.udp, [5, Data.TargetID, 1])
-    while ~done,
+    while ~done
         
         % Update Time & Position
         tim = GetSecs;
@@ -249,11 +246,8 @@ if ~Data.ErrorID,
 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
-
             
             Data.CursorState(:,end+1) = Cursor.State;
-            Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
-            Data.CursorAssist(1,end+1) = Cursor.Assistance;
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;

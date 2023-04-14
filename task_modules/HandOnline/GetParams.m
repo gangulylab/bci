@@ -127,7 +127,24 @@ if Params.ConvNeuralNetFlag
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
+%% biLSTM classifier option
+Params.biLSTMFlag = false;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.45;
+end
 
+Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTMBufferSize = 1000;
+Params.SaveLSTMFeatures = false;
+
+Params.LSTM_Output_Method = false;
+if Params.LSTM_Output_Method
+    f = load(fullfile('clicker','lstm_output_pattern.mat'));
+    Params.lstm_output_pattern = f.lstm_output_pattern;
+    Params.LSTM_Output_Method_Thresh = 0.85;
+end
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
@@ -173,17 +190,7 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-% Cardinal Directions
-% Params.NumTrialsPerBlock    = 6;
-% Params.TargetOrder          = [1:6];
-% 
-% % Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 20;
-% % Params.TargetOrder          = [7:10];
-% 
-% 
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-% Params.TargetOrder          = [Params.TargetOrder, 1];
+Params.NumTrialsPerBlock    = 14;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -254,10 +261,9 @@ Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of 
 %Target order: 1:thumb, 2:index, 3:middle, 5:ring, 5:pinky, 6:power, ...
 %7:pinch, 8:tripod, 9:wrist add, 10:wrist abd
 
-Params.NumTrialsPerBlock    = 8;
-Params.TargetOrder          = [1:6,9,10];
-Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
-
+Params.NumTrialsPerBlock    = 14;
+Params.TargetOrder          = [1:14];
+%Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.handVis = 1;
@@ -268,7 +274,7 @@ delta = 1/(0.5*Params.ActionDuration*Params.UpdateRate);
 Params.angles = [0.1:-delta:-1,-1:delta:0.1, 0.1, 0.1, 0.1];
 Params.angles1d = [0.1:-0.5*delta:-1, -1, -1, -1];
 
-Params.d1 = [0,0,0,0,0,0,0,0,1,1];
+Params.d1 = [0,0,0,0,0,0,0,0,1,1,1,1,1,1];
 
 Params.numCorrectDecode = 10;
 Params.correctStep = -1/Params.numCorrectDecode ;

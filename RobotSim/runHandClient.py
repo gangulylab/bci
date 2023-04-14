@@ -10,7 +10,7 @@ sock.bind(server_address)
 
 
 env = HandEnv()
-robot_pos = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+robot_pos = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
 
 while True:
@@ -69,27 +69,35 @@ while True:
 		robot_pos[0] = ((val1-1) *(val2 + val3/100))/80
 		robot_pos[1] = ((val4-1) *(val5 + val6/100))/80
 		robot_pos[2] = ((val7-1) *(val8 + val9/100))/80
-		print(robot_pos)
+		# print(robot_pos)
 
 	if command == 4:
 		robot_pos[3] = ((val1-1) *(val2 + val3/100))/80
 		robot_pos[4] = ((val4-1) *(val5 + val6/100))/80
 		robot_pos[5] = ((val7-1) *(val8 + val9/100))/80
 
+	if command == 8:
+		robot_pos[6] = ((val1-1) *(val2 + val3/100))/80
+		robot_pos[7] = ((val4-1) *(val5 + val6/100))/80
 
 	if command == 15:
 		action = val1
 
 		if action < 6 and action > 0:
 			env.setGrasp(action, robot_pos[action - 1])
-		if action == 6:
+		if action == 6 or 7 or 8:
 			env.setGrasp(1, robot_pos[0])
 			env.setGrasp(2, robot_pos[1])
 			env.setGrasp(3, robot_pos[2])
 			env.setGrasp(4, robot_pos[3])
 			env.setGrasp(5, robot_pos[4])
-		if action == 7 or action == 8:
-			env.setGrasp(10, robot_pos[5])		
+		if action == 9 or action == 10:
+			env.setGrasp(10, robot_pos[5])
+		if action == 11 or action == 12:
+			env.setGrasp(12, robot_pos[6])
+		if action == 13 or action == 14:
+			env.setGrasp(14, robot_pos[7])
+
 
 		print(action)
 		if env.showDecodes:
@@ -102,6 +110,9 @@ while True:
 		robot_pos[2] = ((val7-1) *(val8 + val9/100))/80
 
 		env.setGrasp(val10, robot_pos[0])	
+
+		if env.showDecodes:
+			env.displayCurrentDecode(key)	
 
 	if command == 5:
 		env.displayCue(val1,val2)

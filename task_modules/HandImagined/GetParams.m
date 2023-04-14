@@ -65,6 +65,8 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+
+
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
@@ -83,6 +85,24 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% biLSTM classifier option
+Params.biLSTMFlag = false;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.45;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTMBufferSize = 1000;
+Params.SaveLSTMFeatures = false;
+
+Params.LSTM_Output_Method = false;
+if Params.LSTM_Output_Method
+    f = load(fullfile('clicker','lstm_output_pattern.mat'));
+    Params.lstm_output_pattern = f.lstm_output_pattern;
+    Params.LSTM_Output_Method_Thresh = 0.85;
+end
 %% Targets: radial layout
 Params.NumReachTargets   = 6;
 Params.TargetSpacing     = 10; % px
@@ -273,5 +293,5 @@ end
 Params.angles = [Params.angles, st,st,st,st];
 
 Params.d1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-Params.showDecodeLines = 0;
+Params.showDecodeLines = 1;
 end % GetParams

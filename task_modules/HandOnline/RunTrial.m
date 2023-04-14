@@ -7,11 +7,12 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
-ReachTargetPos = Data.TargetPosition;
+% ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
 TargetNames = {'Thumb', 'Index', 'Middle', 'Ring', 'Pinky', 'Power Grasp',...
-    'Pinch Grasp', 'Tripod Grasp', 'Wrist Out', 'Wrist In'};
+    'Pinch Grasp', 'Tripod Grasp', 'Wrist Out', 'Wrist In','Wrist Flex',...
+    'Wrist Extend', 'Wrist Pronate', 'Wrist Supinate'};
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
@@ -42,8 +43,8 @@ if Params.d1(Data.TargetID)
     Params.angles = Params.angles1d;
 end
 
-Cursor.State = [0,0,0,0,0,0]';
-TargetProgress = [0,0,0,0,0,0,0,0]';
+Cursor.State = zeros(8,1);
+TargetProgress = zeros(14,1);
 Cursor.State(axis) = Params.angles(1);
 
 Cursor.ClickState = 0;
@@ -238,8 +239,8 @@ if ~Data.ErrorID
 
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            Click_Decision
-            targetInd = [1:6,0,0,7,8];
+            
+            targetInd = [1:14];
                 
             % Mode filter
             
@@ -253,7 +254,7 @@ if ~Data.ErrorID
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
 
             ClickToSend = RunningMode_ClickDec;
-            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
+            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec
 
             
             if RunningMode_ClickDec == targetInd(Data.TargetID)
@@ -275,15 +276,31 @@ if ~Data.ErrorID
                 for f = 1:5
                     Cursor.State(f) = Cursor.State(f) + step;
                 end
-            elseif RunningMode_ClickDec == 7
+            elseif RunningMode_ClickDec == 7  % pinch grasp
+                for f = 1:2
+                    Cursor.State(f) = Cursor.State(f) + step;
+                end
+            elseif RunningMode_ClickDec == 8  % tripod grasp
+                for f = 1:3
+                    Cursor.State(f) = Cursor.State(f) + step;
+                end
+            elseif RunningMode_ClickDec == 9  % wrist out
                 Cursor.State(6) = Cursor.State(6) - step;
-            elseif RunningMode_ClickDec == 8
+            elseif RunningMode_ClickDec == 10 % wrist in
                 Cursor.State(6) = Cursor.State(6) + step;
+            elseif RunningMode_ClickDec == 11  % wrist flex
+                Cursor.State(7) = Cursor.State(7) - step;
+            elseif RunningMode_ClickDec == 12  % wrist extend
+                Cursor.State(7) = Cursor.State(7) + step;
+            elseif RunningMode_ClickDec == 13 % wrist pronate
+                Cursor.State(8) = Cursor.State(8) - step;
+            elseif RunningMode_ClickDec == 14 % wrist supinate
+                Cursor.State(8) = Cursor.State(8) + step;
             end
 
             % Boundaries
-            Cursor.State = max(Cursor.State, -1*ones(6,1));
-            Cursor.State = min(Cursor.State, [0,0,0,0,0,1]');
+%             Cursor.State = max(Cursor.State, -1*ones(8,1));
+%             Cursor.State = min(Cursor.State, [0,0,0,0,0,1,1,1]');
                 
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
@@ -294,9 +311,13 @@ if ~Data.ErrorID
             [ya,yb,yc] = doubleToUDP(Cursor.State(5)*80); 
             [za,zb,zc] = doubleToUDP(Cursor.State(6)*80);
 
+            [wfa,wfb,wfc] = doubleToUDP(Cursor.State(7)*80);
+            [wra,wrb,wrc] = doubleToUDP(Cursor.State(8)*80);
+
+
             fwrite(Params.udp, [14, ta,tb,tc,va,vb,vc, wa,wb,wc, Data.TargetID]);
             fwrite(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, Data.TargetID]);
-
+            fwrite(Params.udp, [8, wfa,wfb,wfc,wra,wrb,wrc,0,0,0 Data.TargetID]);
             fwrite(Params.udp, [15, RunningMode_ClickDec,0,0,0,0,0,0,0,0,0,0]);
 
             Data.CursorState(:,end+1) = Cursor.State;
@@ -305,10 +326,7 @@ if ~Data.ErrorID
                        
             Cursor.TaskState = 3;
             Data.TaskState(1,end+1)=Cursor.TaskState;
-            
-            
-            
-    
+
         % end if takes too long
         if TotalTime > Params.MaxReachTime,
             done = 1;
@@ -320,7 +338,7 @@ if ~Data.ErrorID
         end
         
        
-        targetInd = [1:6,0,0,7,8];
+        targetInd = [1:14];
         
         % end if clicks in a target
 %         if (Cursor.State(TargetAxis) - Params.goalState(TargetID)) < 0.1
@@ -334,7 +352,7 @@ if ~Data.ErrorID
         if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
             done = 1;
             Data.SelectedTargetID = TargetID;
-            Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
+%             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
         end
         
     end % Reach Target Loop
