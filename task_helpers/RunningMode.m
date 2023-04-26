@@ -23,9 +23,10 @@ if (length(idx) >  1) % tie
     modeVal = 0;
 elseif (maxVal <= 0.5* length(v)) % 
     modeVal = 0;
-% elseif idx == 10
-%     modeVal = 0;
+elseif idx == 10
+    modeVal = 0;
 else
-    modeVal = idx;
-    
+    modeVal = idx;    
 end
+
+
