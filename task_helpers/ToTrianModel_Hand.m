@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3DArrow';
-foldernames = {'122117', '123029', '124354', '125220','125810'};
+root_path = '/home/ucsf/Data/Bravo3/20230427/HandImagined';
+foldernames = {'114508', '115147', '115514', '120217', '120855', '121420', '121733'};
 cd(root_path)
 
 
@@ -92,8 +92,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3DArrow';
-foldernames = {'130524', '131124', '131630', '132104','132647','133231'};
+root_path = '/home/ucsf/Data/Bravo3/20230427/HandImagined';
+foldernames = {};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -189,9 +189,9 @@ genFunction(net,'MLP_Hand_04272023_CL1_NoPooling')
 %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 
 
-cd('/home/ucsf/Projects/bci')
-clear
+% cd('/home/ucsf/Projects/bci')
+% clear
 %ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
-ExperimentStart('HandOnline','Bravo3',4,1,0)
+% ExperimentStart('HandOnline','Bravo3',4,1,0)
 
 

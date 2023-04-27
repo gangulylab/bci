@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3DArrow';
-foldernames = {'122117', '123029', '124354', '125220','125810'};
+root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3DArrow';
+foldernames = {};
 cd(root_path)
 
 
@@ -60,8 +60,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3DArrow';
-foldernames = {'130524', '131124', '131630', '132104','132647','133231'};
+root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3DArrow';
+foldernames = {'112557', '113058', '113344', '113560'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -105,9 +105,9 @@ end
 
 
 % ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
-root_path = '/home/ucsf/Data/Bravo3/20230330/Robot3D';
-foldernames = {'133810'};
-% cd(root_path)
+root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
+foldernames = {'113952', '114341', '114820', '115318', '120050', '120326'};
+cd(root_path)
 
 for i=1:length(foldernames)
     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
@@ -198,27 +198,27 @@ cd('/home/ucsf/Projects/bci/clicker')
 load net_mlp_pnp % this is the original PnP... if updating and saving, use the name below
 net = net_mlp_pnp;
 net = train(net,N,T','UseParallel','no');
-genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update1')
+genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2')
 net_mlp_pnp_update1 = net;
 save net_mlp_pnp_update1 net_mlp_pnp_update1
 %%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
 
 
-%%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
-clear net
-net = patternnet([64 64 ]) ;
-net.performParam.regularization=0.2;
-net = train(net,N,T','UseParallel','no');
-cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_Imagined_B3_20230330_CL4_NoPooling')
-%%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
-
-
-
-
-cd('/home/ucsf/Projects/bci')
-clear
-%ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
-ExperimentStart('Robot3D','Bravo3',4,1,0)
+% %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
+% clear net
+% net = patternnet([64 64 ]) ;
+% net.performParam.regularization=0.2;
+% net = train(net,N,T','UseParallel','no');
+% cd('/home/ucsf/Projects/bci/clicker')
+% genFunction(net,'MLP_7Dir_Imagined_B3_20230330_CL4_NoPooling')
+% %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
+% 
+% 
+% 
+% 
+% cd('/home/ucsf/Projects/bci')
+% clear
+% %ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+% ExperimentStart('Robot3D','Bravo3',4,1,0)
 
 
