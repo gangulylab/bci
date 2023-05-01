@@ -31,25 +31,26 @@ for i=1:length(foldernames)
         filepath=fullfile(folderpath,D(j).name);
         load(filepath)
         features  = TrialData.SmoothedNeuralFeatures;
-        %kinax = length(features)-20:length(features);
-        kinax = find(TrialData.TaskState==3);
+        kinax = TrialData.TaskState;
 
         %%%%% if screen update rate is different from decoder update rate
 
         if length(TrialData.Time) ~= length(TrialData.NeuralTime)
-            time_exp = TrialData.Time(kinax);
+            time_exp = TrialData.Time;
             time_neural = TrialData.NeuralTime;
-            kinax_neural=[];
+            time_exp = time_exp-time_exp(1);
+            time_neural = time_neural-time_neural(1);
+            time_exp = time_exp(find(kinax==3));
+            kinax_neural=[];diff_times=[];
             for k=1:length(time_exp) % find the index of closed neural time
                 [aa bb]= min(abs(time_neural - time_exp(k)));
                 kinax_neural= [kinax_neural bb];
             end
-            figure;stem(time_neural(kinax_neural) - time_exp)
+            kinax_neural=unique(kinax_neural);
             temp = cell2mat(features(kinax_neural));
         else
             temp = cell2mat(features(kinax));
         end
-
         %%%%%%%%%%%%%%%%%%
 
         % get delta, beta and hG removing bad channels 
