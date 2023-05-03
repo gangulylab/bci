@@ -261,8 +261,8 @@ Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of 
 %Target order: 1:thumb, 2:index, 3:middle, 5:ring, 5:pinky, 6:power, ...
 %7:pinch, 8:tripod, 9:wrist add, 10:wrist abd
 
-Params.NumTrialsPerBlock    = 14;
-Params.TargetOrder          = [1:14];
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:12];
 %Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
