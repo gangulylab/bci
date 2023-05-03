@@ -87,7 +87,15 @@ C = [zeros(size(C,1),3) C];
 % get estimates of Q 
 q = Y-C*X;
 Q = cov(q');
-%Q = (1/size(Y,2)-1)* (q*q');
+
+% % least squares formula
+% C1 = (Y*X(4:end,:)') * inv(X(4:end,:)*X(4:end,:)');
+% C1 = [zeros(size(C1,1),3) C1];
+% q1 = Y-C1*X;
+% q1=(q1'-mean(q1'))';
+% Q1 = (1/(size(Y,2)-1))* (q1*q1');
+
+
 
 % compute Kalman Gain and Error Covariance 
 P = rand(7);
