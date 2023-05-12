@@ -19,7 +19,7 @@ else
              % get delta, beta and hG removing bad channels
             X = X([257:512 1025:1280 1537:1792]);
 
-            chmap=Params.ChMapB2;
+            chmap=Params.ChMap;
             [xx, yy] = size(chmap);           
 
             % perform spatial pooling
@@ -90,7 +90,7 @@ else
         
     elseif Params.ConvNeuralNetFlag == 1
         chtemp=[];
-        chmap=Params.ChMapB2;
+        chmap=Params.ChMap;
         X = Neuro.FilteredFeatures;
         X = X(:);
         feat_idx = [129:256 257:384 385:512 513:640 641:768 769:896];

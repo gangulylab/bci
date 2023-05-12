@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230427/HandImagined';
-foldernames = {'114508', '115147', '115514', '120217', '120855', '121420', '121733'};
+root_path = '/home/ucsf/Data/Bravo3/20230510/HandImagined';
+foldernames = {'114718', '115447', '120026', '120552', '121111', '121639'};
 cd(root_path)
 
 
@@ -49,6 +49,7 @@ for i=1:length(foldernames)
             kinax_neural=unique(kinax_neural);
             temp = cell2mat(features(kinax_neural));
         else
+            kinax=find(kinax==3);
             temp = cell2mat(features(kinax));
         end
         %%%%%%%%%%%%%%%%%%
@@ -93,8 +94,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230427/HandImagined';
-foldernames = {};
+root_path = '/home/ucsf/Data/Bravo3/20230510/HandOnline';
+foldernames = {'122957','123819','124556','125329','130014'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -104,8 +105,29 @@ for i=1:length(foldernames)
         filepath=fullfile(folderpath,D(j).name);
         load(filepath)
         features  = TrialData.SmoothedNeuralFeatures;
-        kinax = find(TrialData.TaskState==3);
-        temp = cell2mat(features(kinax));
+        kinax = TrialData.TaskState;
+
+        %%%%% if screen update rate is different from decoder update rate
+
+        if length(TrialData.Time) ~= length(TrialData.NeuralTime)
+            time_exp = TrialData.Time;
+            time_neural = TrialData.NeuralTime;
+            time_exp = time_exp-time_exp(1);
+            time_neural = time_neural-time_neural(1);
+            time_exp = time_exp(find(kinax==3));
+            kinax_neural=[];diff_times=[];
+            for k=1:length(time_exp) % find the index of closed neural time
+                [aa bb]= min(abs(time_neural - time_exp(k)));
+                kinax_neural= [kinax_neural bb];
+            end
+            kinax_neural=unique(kinax_neural);
+            temp = cell2mat(features(kinax_neural));
+        else
+            kinax=find(kinax==3);
+            temp = cell2mat(features(kinax));
+        end
+        %%%%%%%%%%%%%%%%%%
+
 
         % get delta, beta and hG removing bad channels
         temp = temp([257:512 1025:1280 1537:1792],:);
@@ -182,17 +204,17 @@ end
 
 %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
 clear net
-net = patternnet([64 64 ]) ;
-net.performParam.regularization=0.2;
-net = train(net,N,T','UseParallel','yes');
+net = patternnet([128 128 ]) ;
+net.performParam.regularization=0.3;
+net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_Hand_04272023_CL1_NoPooling')
+genFunction(net,'MLP_Hand_05102023_CL2_NoPooling')
 %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 
 
-% cd('/home/ucsf/Projects/bci')
-% clear
+cd('/home/ucsf/Projects/bci')
+clear
 %ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
-% ExperimentStart('HandOnline','Bravo3',4,1,0)
+ExperimentStart('HandOnline','Bravo3',4,1,0)
 
 

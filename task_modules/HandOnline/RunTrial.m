@@ -239,7 +239,7 @@ if ~Data.ErrorID
 
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-            
+            %Click_Decision = randperm(12,1);
             targetInd = [1:14];
                 
             % Mode filter
@@ -251,7 +251,8 @@ if ~Data.ErrorID
 
             ClickDec_Buffer(1:end-1) = ClickDec_Buffer(2:end);
             ClickDec_Buffer(end) = Click_Decision;
-            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
+            RunningMode_ClickDec = RunningMode(ClickDec_Buffer);  
+            %RunningMode_ClickDec = randperm(12,1);
 
             ClickToSend = RunningMode_ClickDec;
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;

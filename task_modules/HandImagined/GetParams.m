@@ -85,6 +85,10 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% L2 normalization
+Params.Norm2 = false;
+
+
 %% biLSTM classifier option
 Params.biLSTMFlag = false;
 % if Params.biLSTMFlag
