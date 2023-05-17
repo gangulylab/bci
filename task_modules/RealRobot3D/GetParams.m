@@ -305,7 +305,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 3; 
+Params.RobotMode    = 5; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -397,7 +397,7 @@ elseif Params.RobotMode == 4 % TopDown with assist
     
 elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-250, 0,300];
+    Params.StartPos          = [-250, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -408,8 +408,8 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.zlim = 5;
     Params.graspOrientation = 0;
     
-%     Params.StartWristX = [3.1415]*10;    
-    Params.StartWristX = [3.1415]/2*10;                    
+    Params.StartWristX = [3.1415]*10;    
+%     Params.StartWristX = [3.1415]/2*10;                    
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     Params.UseNewAutoGrasp = 2;
@@ -419,6 +419,8 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.WaitForGraspSignal   = 1;
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
+    
+    Params.AssistMode = 2;
     
 end
 
