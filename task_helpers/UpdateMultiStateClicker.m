@@ -9,6 +9,44 @@ if Params.ControlMode == 2 %mouse
     Click_Decision = randperm(5,1)-1;
     Click_Distance = 0;
 else
+    
+    if Params.biLSTMFlag == 1
+        if Params.LSTM_Output_Method
+            pred = activations(Params.LSTM,Neuro.LSTMFeatures,'fc_2','ExecutionEnvironment','cpu');
+            if size(pred,1) > size(pred,2)
+                pred=pred';
+            end
+            X = [pred;Params.lstm_output_pattern];
+            R = corrcoef(X');
+            pred = R(1,2:end);
+            [aa bb]=max(pred);
+            if aa >= Params.LSTM_Output_Method_Thresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+
+        else
+            pred =  predict(Params.LSTM,Neuro.LSTMFeatures,'ExecutionEnvironment','cpu');
+
+            %         pred = pred +  [0.1, 0, -0.3, 0, 0, 0, 0];
+            [aa bb]=max(pred);
+            if aa >=  Params.biLSTMSoftMaxThresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+        end
+
+
+        %disp(['LSTM o/p '  num2str(Click_Decision)])
+    end
+
+
     if Params.NeuralNetFlag == 1
         %if Params.SmoothDataFlag==1
         X = Neuro.FilteredFeatures;

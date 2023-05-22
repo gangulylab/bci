@@ -104,6 +104,25 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% biLSTM classifier option
+Params.biLSTMFlag = true;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.45;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_20230521_lstm';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_20230521_lstm; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTMBufferSize = 1000;
+Params.SaveLSTMFeatures = false;
+
+Params.LSTM_Output_Method = false;
+if Params.LSTM_Output_Method
+    f = load(fullfile('clicker','lstm_output_pattern.mat'));
+    Params.lstm_output_pattern = f.lstm_output_pattern;
+    Params.LSTM_Output_Method_Thresh = 0.85;
+end
+
 %% LOAD THE CHMAP FILE
 tmp = load(fullfile('clicker','ECOG_Grid_8596_000063_B3.mat'));
 Params.ChMapB2 = tmp.ecog_grid;
