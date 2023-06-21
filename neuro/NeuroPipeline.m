@@ -14,7 +14,7 @@ if Neuro.Blackrock,
         Neuro = ZscoreChannels(Neuro);
     end
     
-    if Params.BaselineRunningFlag
+    if Params.BaselineRunningFlag || Params.NeuralNetFlag || Params.NeuralNet2Flag
         Neuro = ApplyFilterBank(Neuro);
         Neuro = UpdateNeuroBuf(Neuro);
         Neuro = CompNeuralFeatures(Neuro);
