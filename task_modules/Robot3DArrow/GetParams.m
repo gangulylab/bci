@@ -75,22 +75,12 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.50;       
-    Params.Use3Features = false;
-    Params.Use4Features = true; % for low gamma
-    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg';%'MLP_7DoF_PnP_2022July_lg';
-%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
-%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
-
-%    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_07012022B '; %'MLP_7DoF_PnP_2022Feb_2norm'; 
-%    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_07012022B'));
-%    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_07012022B;
-    
-%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
-    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
-
+    Params.NeuralNetSoftMaxThresh = 0.45;       
+    Params.Use3Features = false; % only delta beta hG
+    Params.Use4Features = true; % inlcuding lg
+    Params.NeuralNetFunction = 'MLP_9DoF_New_July2023';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -141,7 +131,7 @@ else
 end
 
 %% biLSTM classifier option
-Params.biLSTMFlag = true;
+Params.biLSTMFlag = false;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
@@ -165,7 +155,7 @@ Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = true; 
+Params.ChPooling = false; 
 
 %% Targets: radial layout
 Params.NumReachTargets   = 7;
