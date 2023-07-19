@@ -97,54 +97,54 @@ else,
                 feat_idx = [129:256 513:640 769:896];
                 X = X(feat_idx);
 
-                if Params.ChPooling
-                    % pooling
-                    f1 = (X(1:128));
-                    f2 = (X(129:256));
-                    f3 = (X(257:384));
+                
+                % pooling
+                f1 = (X(1:128));
+                f2 = (X(129:256));
+                f3 = (X(257:384));
 
-                    f1 = f1(chmap);
-                    f2 = f2(chmap);
-                    f3 = f3(chmap);
-                    pooled_data=[];
-                    for i=1:2:xx
-                        for j=1:2:yy
-                            delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
-                            beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
-                            hg = (f3(i:i+1,j:j+1));hg=mean(hg(:));
-                            pooled_data = [pooled_data; delta; beta ;hg];
-                        end
+                f1 = f1(chmap);
+                f2 = f2(chmap);
+                f3 = f3(chmap);
+                pooled_data=[];
+                for i=1:2:xx
+                    for j=1:2:yy
+                        delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
+                        beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
+                        hg = (f3(i:i+1,j:j+1));hg=mean(hg(:));
+                        pooled_data = [pooled_data; delta; beta ;hg];
                     end
-                    X = pooled_data;
                 end
+                X = pooled_data;
+
 
             elseif Params.Use4Features
                 feat_idx = [129:256 513:640 641:768 769:896];
                 X = X(feat_idx);
 
-                if Params.ChPooling
-                    % pooling
-                    f1 = (X(1:128));
-                    f2 = (X(129:256));
-                    f3 = (X(257:384));
-                    f4 = (X(385:512));
 
-                    f1 = f1(chmap);
-                    f2 = f2(chmap);
-                    f3 = f3(chmap);
-                    f4 = f4(chmap);
-                    pooled_data=[];
-                    for i=1:2:xx
-                        for j=1:2:yy
-                            delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
-                            beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
-                            lg = (f3(i:i+1,j:j+1));lg=mean(lg(:));
-                            hg = (f4(i:i+1,j:j+1));hg=mean(hg(:));
-                            pooled_data = [pooled_data; delta; beta ;lg;hg];
-                        end
+                % pooling
+                f1 = (X(1:128));
+                f2 = (X(129:256));
+                f3 = (X(257:384));
+                f4 = (X(385:512));
+
+                f1 = f1(chmap);
+                f2 = f2(chmap);
+                f3 = f3(chmap);
+                f4 = f4(chmap);
+                pooled_data=[];
+                for i=1:2:xx
+                    for j=1:2:yy
+                        delta = (f1(i:i+1,j:j+1));delta=mean(delta(:));
+                        beta = (f2(i:i+1,j:j+1));beta=mean(beta(:));
+                        lg = (f3(i:i+1,j:j+1));lg=mean(lg(:));
+                        hg = (f4(i:i+1,j:j+1));hg=mean(hg(:));
+                        pooled_data = [pooled_data; delta; beta ;lg;hg];
                     end
-                    X = pooled_data;
                 end
+                X = pooled_data;
+
             end
 
             % 2-norm
