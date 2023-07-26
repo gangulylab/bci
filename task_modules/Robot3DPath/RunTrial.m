@@ -224,8 +224,19 @@ if ~Data.ErrorID
             
             Cursor.Center = Params.Center;
     
-            TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
+%             TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID)
+
+% Check Target
+
+    dist =  Cursor.State(1:3)' - ReachTargetPos
+    if norm(dist) < Params.RobotTargetRadius
+        TargetID = Data.TargetID;
+    else
+        TargetID = 0;
+    end
             
+    
+    TargetID
             if TargetID == Data.TargetID
                 fwrite(Params.udp, [0, 5, 0])
             end

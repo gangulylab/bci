@@ -187,7 +187,7 @@ cd('/home/ucsf/Projects/bci')
 
 clc;clear
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20220727/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20230412/Robot3DArrow';
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For exaple: 
 
@@ -261,7 +261,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED ARROW
-foldernames = {'105959', '110625', '111023', '111324', '111624'};
+foldernames = {'102518', '103048', '103405', '103934', '104304', '104634', '105840', '110217', '110511', '111539'};
 
 cd(root_path)
  
@@ -426,27 +426,27 @@ T(aa(1):aa(end),7)=1;
 
 %%%%%% NEW CODE SNIPPET FOR CREATING A DECODER FROM SCRATCH 05/25/2005 %%%%%
 
-%if new from scratch
-% clear net 
-% net = patternnet([48 48 48]) ;
-% net.performParam.regularization=0.2;
-% 
-% % if loading from pretrained
-% %load net_new_7DoF_ZWrist_05252022 
-% %net = net_new_7DoF_ZWrist_05252022.net 
-% 
-% 
-% net = train(net,N,T');
-% 
-% % give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
-% % 87 of GetParams
-% net_new_7DoF_ZWrist_07012022D = net;
-% 
-% % save the weights
-% cd('/home/ucsf/Projects/bci/clicker')
-% save net_new_7DoF_ZWrist_07012022D net_new_7DoF_ZWrist_07012022D
-% classifier_name = 'MLP_7DoF_ZWrist_07012022D'; % enter the name
-% genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
+% if new from scratch
+clear net 
+net = patternnet([48 48 48]) ;
+net.performParam.regularization=0.2;
+
+% if loading from pretrained
+%load net_new_7DoF_ZWrist_05252022 
+%net = net_new_7DoF_ZWrist_05252022.net 
+
+
+net = train(net,N,T');
+
+% give it a name, this goes to  Params.NeuralNetFunctionName in line 86 and
+% 87 of GetParams
+net_new_7DoF_ZWrist_07012022D = net;
+
+% save the weights
+cd('/home/ucsf/Projects/bci/clicker')
+save net_new_7DoF_07012022D net_new_7DoF_ZWrist_07012022D
+classifier_name = 'MLP_7DoF_ZWrist_07012022D_20230412'; % enter the name
+genFunction(net_new_7DoF_ZWrist_07012022D,classifier_name);
 
 
 

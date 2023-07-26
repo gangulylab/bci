@@ -71,6 +71,8 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = false;
 
 %% Neural network classifier option
 % set this to true to use neural network
@@ -82,7 +84,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_Hand';
+    Params.NeuralNetFunction = 'MLP_Hand_12DoF_CL2_05192023_noPool';
     
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
@@ -151,7 +153,7 @@ Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
-Params.ChPooling = true; 
+Params.ChPooling = false; 
 
 
 %% Targets: radial layout
@@ -190,7 +192,7 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 14;
+Params.NumTrialsPerBlock    = 12;
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -238,7 +240,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 20 ;
+Params.MaxReachTime = 15 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -259,11 +261,13 @@ Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of 
 
 %% Hand
 %Target order: 1:thumb, 2:index, 3:middle, 5:ring, 5:pinky, 6:power, ...
-%7:pinch, 8:tripod, 9:wrist add, 10:wrist abd
+%7:pinch, 8:tripod, 9:wrist add, 10:wrist abd, 11: wrist flex, 12 : wrist
+%extend, 13: wrist pronate, 14: wrist supinate
 
-Params.NumTrialsPerBlock    = 14;
-Params.TargetOrder          = [1:14];
-%Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:12];
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
+
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.handVis = 1;

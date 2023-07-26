@@ -64,6 +64,8 @@ TrialBatch = {};
 tlast = GetSecs;
 Cursor.LastPredictTime = tlast;
 Cursor.LastUpdateTime = tlast;
+BlkCntCorrect = 0;
+BlkCntDirError = zeros(1,max(Params.TargetOrder));
 for Block=1:NumBlocks, % Block Loop
 
     % initialize cursor state(s)
@@ -154,7 +156,11 @@ for Block=1:NumBlocks, % Block Loop
         [TrialData,Neuro,KF,Params,Clicker] = ...
             RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
         TrialData.TrialEndTime    = GetSecs;
-                
+        BlkCntCorrect = BlkCntCorrect + int8(TrialData.ErrorID == 0);
+        BlkCntDirError(TargetID) = BlkCntDirError(TargetID) + int8(TrialData.ErrorID ~= 0);
+        
+        
+        
         % Save Data from Single Trial
         save(...
             fullfile(DataDir,sprintf('Data%04i.mat',Trial)),...
@@ -177,6 +183,11 @@ for Block=1:NumBlocks, % Block Loop
     end
     
 end % Block Loop
+
+fprintf('\nTotal Correct: %i / %i \n', BlkCntCorrect,Params.NumTrialsPerBlock)
+fprintf('Errors Per Action: [');
+fprintf('%g ', BlkCntDirError);
+fprintf(']\n');
 %#ok<*NASGU>
 
 end % RunLoop

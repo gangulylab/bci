@@ -69,7 +69,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false;
@@ -149,14 +149,14 @@ end
 % Params.SaveLSTMFeatures = false;
 % 
 %% biLSTM classifier option
-Params.biLSTMFlag = true;
+Params.biLSTMFlag = false;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update_20230526';%'net_bilstm_20220824_update'; %'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update_20230526; % net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -166,8 +166,6 @@ if Params.LSTM_Output_Method
     Params.lstm_output_pattern = f.lstm_output_pattern;
     Params.LSTM_Output_Method_Thresh = 0.85;
 end
-
-
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
@@ -290,7 +288,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 240;
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -321,11 +319,13 @@ if Params.RobotMode == 1 % lateral R2G boxes
     Params.autoCenterOverTarget = 0;
     Params.autoCenterDist       = 5;
     Params.graspOrientation     = 1;
+    Params.UseHeightDist  = 0;
     Params.UseNewAutoGrasp = 0;
     Params.WaitForGraspSignal = 0;
 elseif Params.RobotMode == 2 % vertical R2G
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-250, 0,300];
+%     Params.StartPos          = [-250, 0,300];
+        Params.StartPos          = [-250, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -348,10 +348,13 @@ elseif Params.RobotMode == 2 % vertical R2G
     Params.AutoGraspHorzDist = 10;
     Params.AutoGraspVertDist = 15;
     
+    
+    Params.AssistMode = 0;
+    
 elseif Params.RobotMode == 3  % lateral R2G wall
     Params.ValidDir             = [1:9];
 %     Params.StartPos             = [-200, 200, 220]; % vertically alligned start
-    Params.StartPos             = [100, -90, 360]; %
+    Params.StartPos             = [100, -70, 380]; %
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset   = 0;
@@ -387,7 +390,7 @@ elseif Params.RobotMode == 4 % TopDown with assist
     Params.StartWristX = [3.1415]*10;                    
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
-    Params.UseNewAutoGrasp = 1;
+    Params.UseNewAutoGrasp = 0;
     Params.UseHeightDist  = 1;
     Params.AutoGraspHorzDist = 10;
     Params.AutoGraspVertDist = 15;
@@ -421,6 +424,7 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wu           = [5, -15 50];
     
     Params.AssistMode = 2;
+
     
 end
 
@@ -469,9 +473,9 @@ Params.GraspTask        = 1;
 Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
 
-Params.SwitchBinNum     = 4;
+Params.SwitchBinNum     = 5;
 Params.SwitchBinThresh  = 0.74;
-Params.GraspBinNum      = 4;
+Params.GraspBinNum      = 5;
 Params.GraspBinThresh   = 0.74;
 
 % Beta

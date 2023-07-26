@@ -55,7 +55,7 @@ Params.SmoothDataFlag = true;
 Params.FeatureBufferSize = 5;
 
 %% Timing
-Params.ScreenRefreshRate = 20; % Hz
+Params.ScreenRefreshRate = 5; % Hz
 Params.UpdateRate = 5; % Hz
 
 %% Discrete Decoder name
@@ -83,6 +83,11 @@ if Params.NeuralNetFlag
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
+end
+%% biLSTM classifier option
+Params.biLSTMFlag = false;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.45;
 end
 
 %% biLSTM classifier option
@@ -248,10 +253,11 @@ Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of 
 
 %% Hand
 %Target order: 1:thumb, 2:index, 3:middle, 5:ring, 5:pinky, 6:power, ...
-%7:pinch, 8:tripod, 9:wrist add, 10:wrist abd
+%7:pinch, 8:tripod, 9:wrist add, 10:wrist abd, 11: wrist flex, 12 : wrist
+%extend, 13: wrist pronate, 14: wrist supinate
 
-Params.NumTrialsPerBlock    = 14;
-Params.TargetOrder          = [1:14];
+Params.NumTrialsPerBlock    = 12;
+Params.TargetOrder          = [1:12];
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.handVis = 1;

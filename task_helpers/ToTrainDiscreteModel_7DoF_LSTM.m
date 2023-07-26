@@ -6,7 +6,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20221129'};
+foldernames = {'20230419'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -39,7 +39,7 @@ lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
 % get all the folders
 filepath = fullfile(root_path,foldernames{1},'Robot3DArrow');
 folders = dir(filepath);
-folders=folders(4:end-3);
+folders=folders(3:end);
 %folders=folders(3:8);
 
 % load the decoder.. use the decoder name run in the experiment 
@@ -52,8 +52,14 @@ folders_train = folders;
 
 % get the files
 files_train=[];
-for j=1:length(folders_train)
+for j=1:5%length(folders_train)
     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'BCI_Fixed');
+    tmp = findfiles('mat',subfolder,1)';
+    files_train =[files_train;tmp];
+end
+
+for j=6:length(folders_train)
+    subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'Imagined');
     tmp = findfiles('mat',subfolder,1)';
     files_train =[files_train;tmp];
 end
@@ -125,8 +131,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_20220824_update = goat_model.net;
-save net_bilstm_20220824_update net_bilstm_20220824_update
+net_bilstm_20220824_update_20230419 = goat_model.net;
+save net_bilstm_20220824_update_20230419 net_bilstm_20220824_update_20230419
 
 
 %% FINE TUNING LSTM MODEL FOR A BATCH UPDATE ON ROBOT CENTER OUT DATA
@@ -138,7 +144,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20230127'};
+foldernames = {'20230526'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -224,7 +230,8 @@ options = trainingOptions('adam', ...
     'LearnRateDropFactor',0.1,...    
     'LearnRateDropPeriod',40,...
     'InitialLearnRate',learning_rate,...
-    'CheckpointPath',check_pt_foldername);
+    'CheckpointPath',check_pt_foldername)
+%     'ExecutionEnvironment', 'cpu');
 
 % get rid of batch normalization layer as it throws an error due to matlab
 % version issues
@@ -257,8 +264,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_robot_20220824_update_01272023 = goat_model.net;
-save net_bilstm_robot_20220824_update_01272023 net_bilstm_robot_20220824_update_01272023
+net_bilstm_robot_20220824_update_20230526_p = goat_model.net;
+save net_bilstm_robot_20220824_update_20230526_p net_bilstm_robot_20220824_update_20230526_p
 
 
 

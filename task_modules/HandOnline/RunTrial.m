@@ -10,9 +10,13 @@ global Cursor
 % ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
 
-TargetNames = {'Thumb', 'Index', 'Middle', 'Ring', 'Pinky', 'Power Grasp',...
+TargetNames = {'Thumb', 'Index', 'Middle', 'Ring', 'Pinky', 'Power Grasp',...    
     'Pinch Grasp', 'Tripod Grasp', 'Wrist Out', 'Wrist In','Wrist Flex',...
     'Wrist Extend', 'Wrist Pronate', 'Wrist Supinate'};
+
+%Target order: 1:thumb, 2:index, 3:middle, 5:ring, 5:pinky, 6:power, ...
+%7:pinch, 8:tripod, 9:wrist add, 10:wrist abd, 11: wrist flex, 12 : wrist
+%extend, 13: wrist pronate, 14: wrist supinate
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
@@ -43,8 +47,8 @@ if Params.d1(Data.TargetID)
     Params.angles = Params.angles1d;
 end
 
-Cursor.State = zeros(8,1);
 TargetProgress = zeros(14,1);
+Cursor.State = zeros(8,1);
 Cursor.State(axis) = Params.angles(1);
 
 Cursor.ClickState = 0;
@@ -239,6 +243,8 @@ if ~Data.ErrorID
 
             Params.TargetID =  Data.TargetID;
             [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
+%             Click_Decision = randperm(14,1);
+%             Click_Distance=rand(1);
             
             targetInd = [1:14];
                 
@@ -254,7 +260,7 @@ if ~Data.ErrorID
             RunningMode_ClickDec = RunningMode(ClickDec_Buffer);              
 
             ClickToSend = RunningMode_ClickDec;
-            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec
+            Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
             
             if RunningMode_ClickDec == targetInd(Data.TargetID)

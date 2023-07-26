@@ -84,14 +84,45 @@ Params.MultiDecisionBoundary = 0;
 % also set the softmax option
 Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
-    Params.NeuralNetSoftMaxThresh = 0.55;       
-    Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';
-%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_1006_AM2';    
+    Params.NeuralNetSoftMaxThresh = 0.50;       
+    Params.Use3Features = false;
+    Params.Use4Features = true; % for low gamma
+    Params.NeuralNetFunction = 'MLP_7DoF_PnP_2022July_lg';%'MLP_7DoF_PnP_2022July_lg';
+%     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
+%     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
+
+%    Params.NeuralNetFunction =  'MLP_7DoF_ZWrist_07012022B '; %'MLP_7DoF_PnP_2022Feb_2norm'; 
+%    Params.NeuralNetFunctionName = load(fullfile('clicker','net_new_7DoF_ZWrist_07012022B'));
+%    Params.NeuralNet = Params.NeuralNetFunctionName.net_new_7DoF_ZWrist_07012022B;
+    
+%     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';
+    %Params.NeuralNetFunction = 'MLP_6DoF_PlusOK_Trained4mAllData_20210212';    
 
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% Use ensemble neural network
+Params.NeuralNetEnsemble = false;
+% Params.NeuralNetSoftMaxThresh = 0.45;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+
+%% Neural network 2 classifier option
+% Trained in a different way using different optimizer
+
+Params.NeuralNet2Flag = false;
+if Params.NeuralNet2Flag
+    Params.NeuralNet2SoftMaxThresh = 0.45    ;       
+    Params.Use3Features = true;
+    Params.NeuralNet2 = load(fullfile('clicker','net_new_7DoF_ZWrist_05252022')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
+else
+    Params.NeuralNet2SoftMaxThresh = 0;
+end
+
+%% NORMALIZING THE NEURAL FEATURES
+Params.Norm2 = true;
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
@@ -102,25 +133,19 @@ Params.NeuralNetBiasDirection = 2; % class o/p that has the bias.
 Params.NeuralNetBiasCorrection = 0.7; % pulls decision probabilities by this amount
 
 
-%% ADAPTIVE BASELINE FLAG 
-% data is baseline to state 1 data
-Params.AdaptiveBaseline = false;
-
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
-Params.ConvNeuralNetFlag = false;
+Params.ConvNeuralNetFlag =false;
 if Params.ConvNeuralNetFlag
-    Params.ConvNeuralNetSoftMaxThresh = 0.4;       
+    Params.ConvNeuralNetSoftMaxThresh = 0.6;       
     Params.ConvUse3Features = true;
-%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins';    
-    Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
+    Params.ConvNeuralNetFunctionName = 'CNN_classifier_Online_Apr16_2021_B';%'CNN_classifier_B1_16thApr';%'CNN_classifier_B1_OnlyLastBins';    
+%     Params.ConvNeuralNetFunctionName = 'CNN_classifier_B1_OnlyLastBins_AndState2';    
     Params.ConvNeuralNet = load(fullfile('clicker','CNN_classifier'));
 else
     Params.ConvNeuralNetSoftMaxThresh = 0;
 end
-
-
 
 %% biLSTM classifier option
 Params.biLSTMFlag = true;
@@ -128,18 +153,22 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_20220824_update_20230419';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_20220824_update_20230419; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
-Params.LSTM_Output_Method = true;
+Params.LSTM_Output_Method = false;
 if Params.LSTM_Output_Method
     f = load(fullfile('clicker','lstm_output_pattern.mat'));
     Params.lstm_output_pattern = f.lstm_output_pattern;
-    Params.LSTM_Output_Method_Thresh = 0.95;
+    Params.LSTM_Output_Method_Thresh = 0.85;
 end
+
+%% ADAPTIVE BASELINE FLAG 
+% data is baseline to state 1 data
+Params.AdaptiveBaseline = false;
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
@@ -216,9 +245,9 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [7,8,9,10];
+Params.TargetOrder          = [1,2,7,9];
 
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
@@ -267,7 +296,7 @@ Params.InterTrialInterval = 2;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 25;
-Params.MaxReachTime = 120 ;
+Params.MaxReachTime = 60 ;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -297,7 +326,7 @@ end
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
-Params.ValidDir          = [1:4];
+Params.ValidDir          = [1:4,7];
 
 Params.deltaT = 1/Params.UpdateRate;
 Params.k_v = 0.9;
@@ -317,7 +346,7 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 1;
 
 % Target
-Params.RobotTargetRadius = 75;  % increase radius if task too hard
+Params.RobotTargetRadius = 100;  % increase radius if task too hard
 Params.TargetHoldTime = 10;
 
 % Clicker

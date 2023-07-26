@@ -80,7 +80,9 @@ if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false; % only delta beta hG
     Params.Use4Features = true; % inlcuding lg
-    Params.NeuralNetFunction = 'MLP_9DoF_New_July2023';
+%     Params.NeuralNetFunction = 'MLP_9DoF_New_July2023';
+    
+    Params.NeuralNetFunction = 'MLP_9DoF_07262023Update2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -105,7 +107,7 @@ else
 end
 
 %% NORMALIZING THE NEURAL FEATURES
-Params.Norm2 = true;
+Params.Norm2 = false;
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
@@ -158,7 +160,7 @@ Params.AdaptiveBaseline = false;
 Params.ChPooling = false; 
 
 %% Targets: radial layout
-Params.NumReachTargets   = 7;
+Params.NumReachTargets   = 9;
 Params.TargetSpacing     = 10; % px
 Params.OuterCircleRadius = 350; % defines outer edge of target
 Params.InnerCircleRadius = 150; % defines inner edge of target
@@ -220,11 +222,11 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-% Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
-% Params.TargetOrder          = [1:9,1:9,1:9];
+ Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
+ Params.TargetOrder          = [1:9,1:9,1:9];
 % 
-Params.NumTrialsPerBlock    = 21;              % standard 7
-Params.TargetOrder          = [1:7,1:7,1:7];
+% Params.NumTrialsPerBlock    = 21;              % standard 7
+% Params.TargetOrder          = [1:7,1:7,1:7];
 
 % Params.NumTrialsPerBlock    = 20;                % co-activation - center plane
 % Params.TargetOrder          = [10:13, 10:13, 10:13, 10:13, 10:13];
