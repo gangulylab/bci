@@ -8,12 +8,12 @@
 clc;clear
 
 % enter the root path from the Data folder
-root_path = '/home/ucsf/Data/bravo1/20230726/Robot3DArrow';
+root_path = '/home/ucsf/Data/bravo1/20230728/Robot3DArrow';
 
 % enter the folder names for the Task. These can be increased as more data
 % is collected. For example: 
 
-foldernames = {'132810', '133457', '133936', '134402'};
+foldernames = {'103350', '104123', '104547', '104952', '105450'};
 
 cd(root_path)
 
@@ -64,7 +64,7 @@ for ii=1:length(foldernames)
 end
 
 % FIXED CONTROL
-foldernames = {'135617', '140041', '140527', '140914'};
+foldernames = {'111555', '111960', '112404', '112801'};
 cd(root_path)
  
 for ii=1:length(foldernames)
@@ -207,7 +207,7 @@ net_9DoF_July2023.divideParam.trainRatio=0.85;
 net_9DoF_July2023.divideParam.valRatio=0.15;
 net_9DoF_July2023.divideParam.testRatio=0;
 net_9DoF_July2023 = train(net_9DoF_July2023,N,T','useParallel','yes');
-classifier_name = 'MLP_9DoF_07262023Update2'; % enter the name
+classifier_name = 'MLP_9DoF_07282023Update2'; % enter the name
 genFunction(net_9DoF_July2023,classifier_name); % make sure to update Params.NeuralNetFunction in GetParams with the new name of the classifier
 delete(gcp)
 

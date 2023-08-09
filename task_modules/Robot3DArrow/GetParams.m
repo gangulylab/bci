@@ -82,7 +82,7 @@ if Params.NeuralNetFlag
     Params.Use4Features = true; % inlcuding lg
 %     Params.NeuralNetFunction = 'MLP_9DoF_New_July2023';
     
-    Params.NeuralNetFunction = 'MLP_9DoF_07262023Update2';
+    Params.NeuralNetFunction = 'MLP_9DoF_07282023Update2';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
@@ -138,9 +138,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_9DoF';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_9DoF_update_20230809';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_9DoF; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_9DoF_update_20230809; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
