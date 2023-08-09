@@ -41,8 +41,12 @@ I = sum(I);
 tmp_lp(:,bb) = 1e-5*randn(size(tmp_lp(:,bb)));
 
 % normalizing between 0 and 1
-tmp_hg = (tmp_hg - min(tmp_hg(:)))/(max(tmp_hg(:))-min(tmp_hg(:)));
-tmp_lp = (tmp_lp - min(tmp_lp(:)))/(max(tmp_lp(:))-min(tmp_lp(:)));
+%tmp_hg = (tmp_hg - min(tmp_hg(:)))/(max(tmp_hg(:))-min(tmp_hg(:)));
+%tmp_lp = (tmp_lp - min(tmp_lp(:)))/(max(tmp_lp(:))-min(tmp_lp(:)));
+
+% L2 normalize to be 1
+tmp_hg = tmp_hg./norm(tmp_hg(:));
+tmp_lp = tmp_lp./norm(tmp_lp(:));
 
 % concatenating into LSTM features
 Neuro.LSTMFeatures = [tmp_hg tmp_lp]';
