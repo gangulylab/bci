@@ -75,7 +75,7 @@ Params.MultiDecisionBoundary = 0;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = false; % only delta beta hG
@@ -133,14 +133,14 @@ else
 end
 
 %% biLSTM classifier option
-Params.biLSTMFlag = false;
+Params.biLSTMFlag = true;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_9DoF';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_9DoF; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
