@@ -28,6 +28,7 @@ Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true
 
+
 %% Cursor Velocity
 Params.Gain                     = 7;
 Params.OptimalVeloctityMode     = 1; % 1-vector to target, 2-LQR
@@ -58,6 +59,15 @@ Params.FeatureBufferSize    = 5;
 Params.ScreenRefreshRate    = 5; % Hz
 Params.UpdateRate           = 5; % Hz
 
+%% Kalman Filter Properties
+Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
+G = Params.Gain;
+t = 1/Params.UpdateRate;
+a = 0.91;%.825;
+w = 120;
+if Params.ControlMode>=3
+    Params = LoadKF2dDynamics(Params, G, t, a, w);
+end
 %% Discrete Decoder name
 Params.UseSVM = false;
 Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_3Feat_462021.mat';
@@ -132,9 +142,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_9DoF_update_20230809';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_5DoF_update_20230811_2';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_9DoF_update_20230809; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_5DoF_update_20230811_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -257,7 +267,7 @@ Params.ValidDir          = [1:6,7];
 
 % dynamics
 Params.deltaT   = 1/Params.UpdateRate;
-Params.k_v      = 0.85;
+Params.k_v      = 0.9;
 Params.k_i      = 12;   
 Params.dA       = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
@@ -279,7 +289,7 @@ Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
 % assist
-Params.Assist               = 0;
+Params.Assist               = 1;
 Params.AssistAlpha          = 0.2;
 Params.AssistGain           = 2; 
 Params.ChangeAssistColor    = 1;

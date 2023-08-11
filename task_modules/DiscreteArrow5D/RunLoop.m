@@ -54,6 +54,8 @@ TrialBatch = {};
 tlast = GetSecs;
 Cursor.LastPredictTime = tlast;
 Cursor.LastUpdateTime = tlast;
+% BlkCntCorrect = 0;
+% BlkCntDirError = zeros(1,max(Params.TargetOrder));
 for Block=1:NumBlocks % Block Loop
 
     % initialize cursor state(s)
@@ -67,7 +69,7 @@ for Block=1:NumBlocks % Block Loop
     if Params.RandomizeOrder
         Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % rand order
     end
-    Params.TargetOrder = [Params.TargetOrder, 0];
+    Params.TargetOrder = [Params.TargetOrder, 1];
     
     % first target
     NextTargetID = Params.TargetOrder(1);
@@ -135,6 +137,8 @@ for Block=1:NumBlocks % Block Loop
         [TrialData,Neuro,KF,Params,Clicker] = ...
             RunTrial(TrialData,Params,Neuro,TaskFlag,KF,Clicker);
         TrialData.TrialEndTime    = GetSecs;
+%         BlkCntCorrect = BlkCntCorrect + int8(TrialData.ErrorID == 0);
+%         BlkCntDirError(TargetID) = BlkCntDirError(TargetID) + int8(TrialData.ErrorID ~= 0);
                 
         % Save Data from Single Trial
         save(...
@@ -158,7 +162,10 @@ for Block=1:NumBlocks % Block Loop
     else
         WaitSecs(Params.InterBlockInterval);
     end
-    
+%     fprintf('\nTotal Correct: %i / %i \n', BlkCntCorrect,Params.NumTrialsPerBlock)
+%     fprintf('Errors Per Action: [');
+%     fprintf('%g ', BlkCntDirError);
+%     fprintf(']\n');
 end % Block Loop
 %#ok<*NASGU>
 

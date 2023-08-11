@@ -79,9 +79,26 @@ end
 
 %% Use ensemble neural network
 Params.NeuralNetEnsemble = false;
+% Params.NeuralNetSoftMaxThresh = 0.45;   
+% Params.NeuralNetName = 'net_7DoF_PnP4_ensemble_batch_0520A';%'net_7DoF_PnP4_ensemble_batch';
+% Params.NeuralNetFunction = load(fullfile('clicker',Params.NeuralNetName)); 
+
+%% Neural network 2 classifier option
+% Trained in a different way using different optimizer
+
+Params.NeuralNet2Flag = false;
+if Params.NeuralNet2Flag
+    Params.NeuralNet2SoftMaxThresh = 0.45    ;       
+    Params.Use3Features = true;
+    Params.NeuralNet2 = load(fullfile('clicker','net_new_7DoF_ZWrist_05252022')); % 7DoF classifier trained in a different way
+    Params.NeuralNet2.net = Params.NeuralNet2.net_mlp_7DoF_Feb2022;
+else
+    Params.NeuralNet2SoftMaxThresh = 0;
+end
 
 %% NORMALIZING THE NEURAL FEATURES
-Params.Norm2 = true;
+Params.Norm2 = false;
+
 
 %% BIAS CORRECTION FOR LEFT LEG
 % scales the probabilities of the decoder towards a specific action by a
@@ -111,9 +128,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_5DoF_update_20230811_2';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_5DoF_update_20230811_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -201,7 +218,7 @@ Params.DrawVelCommand.Rect = [-425,-425,-350,-350];
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 2;
+Params.NumFixedBlocks       = 1;
 Params.NumTrialsPerBlock    = 15;
 
 Params.TargetOrder          = [1:5,1:5,1:5];

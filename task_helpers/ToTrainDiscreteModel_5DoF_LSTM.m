@@ -6,7 +6,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20230419'};
+foldernames = {'20230811'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -37,7 +37,7 @@ lpFilt = designfilt('lowpassiir','FilterOrder',4, ...
     'SampleRate',1e3);
 
 % get all the folders
-filepath = fullfile(root_path,foldernames{1},'Robot3DArrow');
+filepath = fullfile(root_path,foldernames{1},'DiscreteArrow5D');
 folders = dir(filepath);
 folders=folders(3:end);
 %folders=folders(3:8);
@@ -52,17 +52,17 @@ folders_train = folders;
 
 % get the files
 files_train=[];
-for j=1:5%length(folders_train)
+for j=3:length(folders_train)
     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'BCI_Fixed');
     tmp = findfiles('mat',subfolder,1)';
     files_train =[files_train;tmp];
 end
 
-for j=6:length(folders_train)
-    subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'Imagined');
-    tmp = findfiles('mat',subfolder,1)';
-    files_train =[files_train;tmp];
-end
+% for j=6:length(folders_train)
+%     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'Imagined');
+%     tmp = findfiles('mat',subfolder,1)';
+%     files_train =[files_train;tmp];
+% end
 
 % get inidividual samples
 [XTrain,XTest,YTrain,YTest] = get_lstm_features_5DoF(files_train,Params,lpFilt);
@@ -131,8 +131,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_20220824_update_20230419 = goat_model.net;
-save net_bilstm_20220824_update_20230419 net_bilstm_20220824_update_20230419
+net_bilstm_5DoF_update_20230811_2 = goat_model.net;
+save net_bilstm_5DoF_update_20230811_2 net_bilstm_5DoF_update_20230811_2
 
 
  %% FINE TUNING LSTM MODEL FOR A BATCH UPDATE ON ROBOT CENTER OUT DATA

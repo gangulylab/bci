@@ -301,7 +301,7 @@ if strcmpi(str,'n'),
 end
 
 %% Initialize Window
-Screen('Preference', 'SkipSyncTests', 0);
+Screen('Preference', 'SkipSyncTests', 1);
 
 if strcmp(Task(1:5), 'Robot') || strcmp(Task(1:4), 'Hand') || strcmp(Task(1:4), 'Grip') || strcmp(Task(1:4), 'Real') 
     Params.Center = [0,0,0];
