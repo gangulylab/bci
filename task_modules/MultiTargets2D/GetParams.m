@@ -142,9 +142,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_5DoF_update_20230811_2';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_5DoF_update_20230816_2';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_5DoF_update_20230811_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_5DoF_update_20230816_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -186,11 +186,11 @@ Params.CursorRect   = [-Params.CursorSize -Params.CursorSize ...
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 2;
+Params.NumFixedBlocks       = 4;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = Params.NumTargets*Params.NumStartPos;
-Params.NumTrialsPerBlock    = 6;
+Params.NumTrialsPerBlock    = 3;
 Params.TargetOrder          = 1:12;
 % Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -279,8 +279,8 @@ Params.dA       = [1 0 0  Params.deltaT 0 0;...
 Params.dB       = [zeros(3); eye(3)];
 Params.dB       = Params.dB*Params.k_i;
 
-Params.k_v2      = 0.6;
-Params.k_i2      = 15;   
+Params.k_v2      = 0.7;
+Params.k_i2      = 20;   
 Params.dA2       = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
                     0 0 1 0 0 Params.deltaT;...
@@ -302,8 +302,8 @@ Params.boundaryVel  = 0;
 
 % assist
 Params.Assist               = 1;
-Params.AssistAlpha          = 0.2;
-Params.AssistGain           = 3; 
+Params.AssistAlpha          = 0.25;
+Params.AssistGain           = 2; 
 Params.ChangeAssistColor    = 1;
 Params.ObservationFunc      = 3;  % 1: dist, 2: vel, 3: dist+vel
 Params.velk = 1;
