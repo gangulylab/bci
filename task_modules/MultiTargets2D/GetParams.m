@@ -168,11 +168,11 @@ Params.TargetSize       = 75;
 Params.OutTargetColor   = [55,255,0];
 Params.InTargetColor    = [255,55,0];
 
-Params.StartPositions  = [ 0, 200; -700, -200; 700, -200];
+Params.StartPositions  = [ 0, 400; -600, 0; 600, 0; 0 -400];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
-Params.ReachTargets = [-300,-300; 0, -250; 250, -400];
+Params.ReachTargets = [-300, 0; 0, 50; 250, -100];
 
 Params.NumTargets   = length(Params.ReachTargets);
 Params.NumStartPos  = length(Params.StartPositions);
@@ -186,11 +186,12 @@ Params.CursorRect   = [-Params.CursorSize -Params.CursorSize ...
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 2;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = Params.NumTargets*Params.NumStartPos;
-Params.TargetOrder          = [1:12];
+Params.NumTrialsPerBlock    = 6;
+Params.TargetOrder          = 1:12;
 % Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
@@ -267,8 +268,8 @@ Params.ValidDir          = [1:6,7];
 
 % dynamics
 Params.deltaT   = 1/Params.UpdateRate;
-Params.k_v      = 0.9;
-Params.k_i      = 12;   
+Params.k_v      = 0.85;
+Params.k_i      = 24;   
 Params.dA       = [1 0 0  Params.deltaT 0 0;...
                     0 1 0 0 Params.deltaT 0;...
                     0 0 1 0 0 Params.deltaT;...
@@ -277,6 +278,17 @@ Params.dA       = [1 0 0  Params.deltaT 0 0;...
                     0 0 0 0 0 Params.k_v];               
 Params.dB       = [zeros(3); eye(3)];
 Params.dB       = Params.dB*Params.k_i;
+
+Params.k_v2      = 0.6;
+Params.k_i2      = 15;   
+Params.dA2       = [1 0 0  Params.deltaT 0 0;...
+                    0 1 0 0 Params.deltaT 0;...
+                    0 0 1 0 0 Params.deltaT;...
+                    0 0 0 Params.k_v2 0 0;...
+                    0 0 0 0 Params.k_v2 0;...
+                    0 0 0 0 0 Params.k_v2];               
+Params.dB2       = [zeros(3); eye(3)];
+Params.dB2       = Params.dB2*Params.k_i2;
 
 % Clicker
 Params.ClickAction      = 5;
@@ -291,7 +303,7 @@ Params.boundaryVel  = 0;
 % assist
 Params.Assist               = 1;
 Params.AssistAlpha          = 0.2;
-Params.AssistGain           = 2; 
+Params.AssistGain           = 3; 
 Params.ChangeAssistColor    = 1;
 Params.ObservationFunc      = 3;  % 1: dist, 2: vel, 3: dist+vel
 Params.velk = 1;
@@ -299,6 +311,7 @@ Params.velB = 0.6;
 Params.distk = .001;
 Params.distB = 0.6;
 
+Params.SlowAtTarget   = 1;
 %%
 Params.index = 1;
 Params.clickOrder = [1,1,1,1,1,1,1,1,0,0,0,0,7,7,7,7,7,0,0,0,0,0,0,0];

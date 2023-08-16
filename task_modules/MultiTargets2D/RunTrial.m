@@ -102,13 +102,18 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0
             Data.CursorState(:,end+1) = Cursor.State;
            
             Cursor.TaskState = 1;
-            Data.TaskState(1,end+1)=Cursor.TaskState;
+            Data.TaskState(1,end+1)= Cursor.TaskState;
             Data.ClickerState(1,end+1)      = 0;
             Data.ClickerDistance(1,end+1)   = 0;
             Data.FilteredClickerState(1,end+1)   = 0;
             Data.UserVel(:,end+1)   = [0;0];
             Data.AssistVel(:,end+1)   = [0;0];
             Data.Belief(:,end+1)   = b3;
+            Data.InTarget(:,end+1)  = 0;
+            Data.Assist(:,end+1)    = 0;
+            Data.Dyn(:,end+1)       = 0;
+            Data.Click(end + 1)     = 0; 
+            
                    
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
@@ -194,6 +199,10 @@ if ~Data.ErrorID && Params.CueTime>0
             Data.UserVel(:,end+1)   = [0;0];
             Data.AssistVel(:,end+1)   = [0;0];
             Data.Belief(:,end+1)   = b3;
+            Data.InTarget(:,end+1)  = 0;
+            Data.Assist(:,end+1)    = 0;
+            Data.Dyn(:,end+1)      = 0;
+            Data.Click(end + 1)     = 0; 
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
            
@@ -368,13 +377,22 @@ if ~Data.ErrorID
         Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
         % Cursor Dynamics
-        A = Params.dA;
-        B = Params.dB;
+        
+        if Params.Assist && Params.SlowAtTarget && any(inTarget)
+            dyn = 2;
+            A = Params.dA2;
+            B = Params.dB2; 
+        else
+            dyn = 1;
+            A = Params.dA;
+            B = Params.dB;
+        end
 
         U = zeros(3,1);
         U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
         U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
-        U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
+%         U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
+        U(3) = 0;
                 
         userVel = A*userVel + B*U;
         if assist && Params.Assist
@@ -382,32 +400,7 @@ if ~Data.ErrorID
             norm_vTarget    = vTarget/norm(vTarget);
             AssistVel       = Params.AssistGain*Params.AssistAlpha*B*[norm_vTarget,0]';
             Cursor.State    = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-%             
-%             if any(inTarget)
-%                 pri = "HERE 1"
-%                 if find(inTarget) == assist_target && outside
-%                     pri = "HERE"
-%                     AssistVel = .01*norm(vTarget)*B*[norm_vTarget,0]';
-%                     Cursor.State([4,5]) = [0;0] + AssistVel([4,5]);
-%                     userVel = [0;0;0;0;0;0];
-%                     outside = 0;
-%                 else
-%                     if norm(vTarget) < 5
-%                     AssistVel = [0;0;0;0;0;0];
-%                     else
-%                     AssistVel  = .02*norm(vTarget)*B*[norm_vTarget,0]';
-%                     Cursor.State    = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-%                     end
-%                 end
-%             else 
-%                 pri = "NOT HERE"
-%                 AssistVel       = Params.AssistGain*Params.AssistAlpha*B*[norm_vTarget,0]';
-%                 Cursor.State    = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
-%             end
-%             
-%             if ~any(inTarget)
-%                 outside = 1;
-%             end
+             
         else
             AssistVel = zeros(6,1);
              Cursor.State = A*Cursor.State + B*U;
@@ -416,6 +409,13 @@ if ~Data.ErrorID
         Data.Belief(:,end+1)    = b;
         Data.UserVel(:,end+1)   = userVel([4,5]);
         Data.AssistVel(:,end+1) = AssistVel([4,5]);
+        if any(find(inTarget))
+            Data.InTarget(:,end+1)  = find(inTarget);
+        else
+            Data.InTarget(:,end+1)  = 0;
+        end
+        Data.Assist(:,end+1)    = assist & Params.Assist;
+        Data.Dyn(:,end+1)      = dyn;
 
         % draw targets
         for k = 1:Params.NumTargets
@@ -448,10 +448,7 @@ if ~Data.ErrorID
         CursorRect([1,3])           = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
         CursorRect([2,4])           = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
         
-        % save
-        Data.CursorState(:,end+1)   = Cursor.State;
-
-               
+        % save               
         if assist && Params.ChangeAssistColor && Params.Assist
             Screen('FillOval', Params.WPTR, [255,0,255], CursorRect)
         else
@@ -460,19 +457,20 @@ if ~Data.ErrorID
                 
         % Stop robot at boundaries
                 
-            %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
-            %%%%% DIRECTION
 
             Data.CursorState(:,end+1) = Cursor.State;
                        
             Cursor.TaskState = 3;
-            Data.TaskState(1,end+1)=Cursor.TaskState;
-             
-            if any(inTarget)
-                inTargetOld = 1;
-                InTargetTotalTime = InTargetTotalTime + dt;
+            Data.TaskState(1,end+1) = Cursor.TaskState;
+            
+            click = 0;
+
                 if Params.RobotClicker
                     if mean(StopClicker_Buffer) > Params.ClickerBinThresh
+                        click = 1;
+                        
+                        if any(inTarget)
+
                         done = 1;
                         StartTargetPos = Params.ReachTargets(find(inTarget),:);
                         StartRect = Params.TargetRect; % centered at (0,0)
@@ -483,6 +481,8 @@ if ~Data.ErrorID
                 end
             end
              
+           Data.Click(end + 1) = click; 
+           
         % end if takes too long
         if TotalTime > Params.MaxReachTime
             done = 1;
@@ -495,7 +495,11 @@ if ~Data.ErrorID
         
         % end if clicks in a target
         if done == 1
-            Data.SelectedTargetID = TargetID;
+            Data.SelectedTargetID = find(inTarget);
+            if Data.SelectedTargetID ~= TargetNum
+                Data.ErrorID = 4;
+                Data.ErrorStr = 'WrongTarget';
+            end
         end
  
         Screen('DrawingFinished', Params.WPTR);
@@ -507,6 +511,7 @@ end % only complete if no errors
 
 %% Inter trial interval
 % blank screen at end of trial but continue collecting data
+
 
 Screen('DrawingFinished', Params.WPTR);
 Screen('Flip', Params.WPTR);
@@ -559,6 +564,10 @@ if Params.InterTrialInterval>0
             Data.UserVel(:,end+1)   = [0;0];
             Data.AssistVel(:,end+1)   = [0;0];
             Data.Belief(:,end+1)   = b3;
+            Data.InTarget(:,end+1)  = 0;
+            Data.Assist(:,end+1)    = 0;
+            Data.Dyn(:,end+1)      = 0;
+            Data.Click(end + 1)     = 0; 
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
            
