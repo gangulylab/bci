@@ -142,9 +142,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_5DoF_update_20230816_2';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_5DoF';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_5DoF_update_20230816_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_5DoF; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -186,11 +186,11 @@ Params.CursorRect   = [-Params.CursorSize -Params.CursorSize ...
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 4;
+Params.NumFixedBlocks       = 2;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = Params.NumTargets*Params.NumStartPos;
-Params.NumTrialsPerBlock    = 3;
+Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = 1:12;
 % Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -303,7 +303,7 @@ Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
-Params.AssistMode = 0;
+Params.AssistMode = 1;
 
 if Params.AssistMode == 0
     Params.Assist               = 0;
