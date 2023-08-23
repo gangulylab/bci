@@ -47,7 +47,7 @@ p_theta_d = @(theta)exp(-Params.distB*Params.distk*theta);
 
 % cos_sim = @(a,b)dot(a,b)/(norm(a)*norm(b));
 cos_sim = @(a,b)(1 - acos(dot(a,b)/(norm(a)*norm(b))) / pi);
-c = 0.1;
+c = 0.05;
 P_g_g = ones(length(g), length(g)) * c/(length(g)-1) + eye(length(g))*((1-c) -  c/(length(g)-1) );
 
 b1(1,:) = ones(1, length(g));
@@ -113,8 +113,7 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0
             Data.Assist(:,end+1)    = 0;
             Data.Dyn(:,end+1)       = 0;
             Data.Click(end + 1)     = 0; 
-            
-                   
+                
             % start counting time            
             InTargetTotalTime = InTargetTotalTime + dt;
         end
@@ -228,10 +227,13 @@ if ~Data.ErrorID
     InTargetTotalTime   = 0;
     ClickDec_Buffer     = zeros(Params.RunningModeBinNum, 1);
     StopClicker_Buffer  = zeros(Params.ClickerBinNum, 1);
+    ChangeClicker_Buffer  = zeros(Params.ChangeBinNum, 1);
     temp_dir            = [0,0,0];
     ClickToSend         = 0;
     maxV = 0;
     outside = 1;
+    assist_target = 0;
+    last_ctim = GetSecs;
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -304,6 +306,7 @@ if ~Data.ErrorID
                 for j = 1:length(g)
                     a2_c = a2_c + P_g_g(cnt_g, j)*b1(j);
                 end
+                
                 b1_tmp(cnt_g) = a1_c*a2_c;
             end
                 b1 = b1_tmp/sum(b1_tmp);
@@ -335,6 +338,7 @@ if ~Data.ErrorID
         end
 
         b3_tmp(cnt_g) = a1_d*a2_d*a1_c;
+%         b3_tmp(cnt_g) = 50*a1_d*a2_d+ a1_c+a2_c;
             
         end
         b3 = b3_tmp/sum(b3_tmp);
@@ -347,13 +351,68 @@ if ~Data.ErrorID
         elseif Params.ObservationFunc == 3
             b = b3;
         end
-            
+%             
+%         figure(1)
+%         clf
+%         subplot(1,3,1)
+%         bar(b1)
+%         hold on
+%         ylim([0, 1.0])
+%         title("Belief")
+% 
+%         subplot(1,3,2)
+%         bar(b2)
+%         hold on
+%         ylim([0, 1.0])
+%         title("Belief")
+% 
+%         subplot(1,3,3)
+%         bar(b3)
+%         hold on
+%         ylim([0, 1.0])
+%         title("Belief")
+        
+        
         belief_sort = sort(b, 'descend');       
-        if belief_sort(1) - belief_sort(2) > 0.15
-            assist = 1;
-            [~,assist_target] = max(b);
+        
+        if Params.AssistLock
+            if ~assist
+                if belief_sort(1) - belief_sort(2) > Params.AssistThresh
+                    assist = 1;
+                    [~,assist_target] = max(b);
+                    ChangeClicker_Buffer  = zeros(Params.ChangeBinNum, 1);
+                    last_ctim =GetSecs;
+                else
+                    assist = 0;
+                end
+            else % assist on
+                a = ChangeClicker_Buffer;
+                ctim = GetSecs;
+               if (sum(a == mode(a))> Params.ChangeBinThresh) && mode(a)>0 && (ctim -last_ctim) > 4 % change target
+                   ChangeClicker_Buffer  = zeros(Params.ChangeBinNum, 1);
+                   last_ctim = ctim;
+                       if mode(a) == 1 % shift right
+                           if assist_target < 3
+                               assist_target = assist_target + 1;
+                           end
+                       elseif mode(a) == 3
+                           if assist_target > 1
+                               assist_target = assist_target - 1;
+                           end
+                       end
+               end
+            end
+                           
+                   
+                   
+            
         else
-            assist = 0;
+            if belief_sort(1) - belief_sort(2) > Params.AssistThresh
+                assist = 1;
+                [~,assist_target] = max(b);
+            else
+                assist = 0;
+            end
         end
             
         Params.TargetID =  Data.TargetID;
@@ -373,10 +432,27 @@ if ~Data.ErrorID
         StopClicker_Buffer(1:end-1)     = StopClicker_Buffer(2:end);
         StopClicker_Buffer(end)         = RunningMode_ClickDec == Params.ClickAction;
 
+        
+        ChangeClicker_Buffer(1:end-1)     = ChangeClicker_Buffer(2:end);
+        ChangeClicker_Buffer(end)         = RunningMode_ClickDec;
+
+        
         ClickToSend                     = RunningMode_ClickDec;
         Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
         % Cursor Dynamics
+        if Params.AssistLock
+            if Params.Assist && Params.SlowAtTarget && any(find(inTarget,1)==assist_target) && any(inTarget)
+            dyn = 2;
+            A = Params.dA2;
+            B = Params.dB2; 
+        else
+            dyn = 1;
+            A = Params.dA;
+            B = Params.dB;
+        end
+            
+        else
         
         if Params.Assist && Params.SlowAtTarget && any(inTarget)
             dyn = 2;
@@ -387,13 +463,17 @@ if ~Data.ErrorID
             A = Params.dA;
             B = Params.dB;
         end
+        
+        end
 
         U = zeros(3,1);
         U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
         U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
 %         U(3) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec== 6);
         U(3) = 0;
-                
+        
+        
+        
         userVel = A*userVel + B*U;
         if assist && Params.Assist
             vTarget         = (Params.ReachTargets(assist_target,:) - Cursor.State(1:2)');

@@ -295,21 +295,42 @@ Params.ClickAction      = 5;
 Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
 Params.ClickerBinNum    = 3;
 Params.ClickerBinThresh = 0.7;
+Params.ChangeBinNum    = 10;
+Params.ChangeBinThresh = 6;
+
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
-% assist
-Params.Assist               = 1;
-Params.AssistAlpha          = 0.25;
-Params.AssistGain           = 2; 
+Params.AssistMode = 0;
+
+if Params.AssistMode == 0
+    Params.Assist               = 0;
+    Params.AssistAlpha          = 0.0;
+    Params.AssistGain           = 0.0; 
+    Params.AssistThresh         = 0.0;
+    Params.AssistLock           = 0;
+elseif Params.AssistMode == 1
+    Params.Assist               = 1;
+    Params.AssistAlpha          = 0.5;
+    Params.AssistGain           = 1.; 
+    Params.AssistThresh         = 0.15;
+    Params.AssistLock           = 0;
+elseif Params.AssistMode == 2
+    Params.Assist               = 1;
+    Params.AssistAlpha          = 0.9;
+    Params.AssistGain           = 0.8; 
+    Params.AssistThresh         = 0.15;
+    Params.AssistLock           = 1;
+end
+
 Params.ChangeAssistColor    = 1;
 Params.ObservationFunc      = 3;  % 1: dist, 2: vel, 3: dist+vel
 Params.velk = 1;
-Params.velB = 0.6;
+Params.velB = 0.2;
 Params.distk = .001;
-Params.distB = 0.6;
+Params.distB = 0.2;
 
 Params.SlowAtTarget   = 1;
 %%
