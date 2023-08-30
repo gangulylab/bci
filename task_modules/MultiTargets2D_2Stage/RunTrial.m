@@ -461,7 +461,7 @@ if ~Data.ErrorID
             end
         end
 
-        U = zeros(3,1);
+        U    = zeros(3,1);
         U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
         U(2) = int8(RunningMode_ClickDec == 2) - int8(RunningMode_ClickDec == 4);
         U(3) = 0;
@@ -568,25 +568,25 @@ if ~Data.ErrorID
         
         if d == 1
                 
-                    StartTargetPos = g(find(inTarget),:);
-                    StartRect = Params.TargetRect; % centered at (0,0)
-                    StartRect([1,3]) = StartRect([1,3]) + StartTargetPos(1) + Params.Center(1); % add x-pos
-                    StartRect([2,4]) = StartRect([2,4]) + StartTargetPos(2) + Params.Center(2); % add y-pos
-                    Screen('FillOval', Params.WPTR, [0,200,200], StartRect)
-                    if taskStage == 1
-                        Data.SelectedTargetID(1) = find(inTarget);
-                       taskStage = 2;
-                       g = Params.ReachTargets2;
-                        b3(1,:) = ones(1, length(g));
-                        b3(1,:) = [b3(1,:)]/sum(b3(1,:) );  %combination
+            StartTargetPos = g(find(inTarget),:);
+            StartRect = Params.TargetRect; % centered at (0,0)
+            StartRect([1,3]) = StartRect([1,3]) + StartTargetPos(1) + Params.Center(1); % add x-pos
+            StartRect([2,4]) = StartRect([2,4]) + StartTargetPos(2) + Params.Center(2); % add y-pos
+            Screen('FillOval', Params.WPTR, [0,200,200], StartRect)
+            if taskStage == 1
+                Data.SelectedTargetID(1) = find(inTarget);
+               taskStage = 2;
+               g = Params.ReachTargets2;
+                b3(1,:) = ones(1, length(g));
+                b3(1,:) = [b3(1,:)]/sum(b3(1,:) );  %combination
 
-                        assist  = 0;
-                        userVel = [0,0,0,0,0,0]';
-                        Params.RobotClicker = 1;
-                       % reset inference
-                    elseif taskStage == 2
-                        Data.SelectedTargetID(2) = find(inTarget);
-                       done = 1;
+                assist  = 0;
+                userVel = [0,0,0,0,0,0]';
+                Params.RobotClicker = 1;
+               % reset inference
+            elseif taskStage == 2
+                Data.SelectedTargetID(2) = find(inTarget);
+                done = 1
                 end
             end
         

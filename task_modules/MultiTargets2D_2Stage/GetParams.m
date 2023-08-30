@@ -168,12 +168,12 @@ Params.TargetSize       = 75;
 Params.OutTargetColor   = [55,255,0];
 Params.InTargetColor    = [255,55,0];
 
-Params.StartPositions  = [ 0, 400];
+Params.StartPositions  = [ 0, 500];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
 Params.ReachTargets1 = [-300, 000; 0, 000; 300, 000];
-Params.ReachTargets2 = [-300, -400; 0, -400; 300, -400];
+Params.ReachTargets2 = [-300, -500; 0, -500; 300, -500];
 
 Params.NumTargets1   = length(Params.ReachTargets1);
 Params.NumTargets2   = length(Params.ReachTargets1);
@@ -305,7 +305,7 @@ Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
-Params.AssistMode = 1;
+Params.AssistMode = 2;
 
 if Params.AssistMode == 0
     Params.Assist               = 0;
@@ -322,7 +322,7 @@ elseif Params.AssistMode == 1
 elseif Params.AssistMode == 2
     Params.Assist               = 1;
     Params.AssistAlpha          = 1.0;
-    Params.AssistGain           = 0.8; 
+    Params.AssistGain           = 0.9; 
     Params.AssistThresh         = 0.15;
     Params.AssistLock           = 1;
 end
@@ -336,6 +336,7 @@ Params.distB = 0.2;
 
 Params.SlowAtTarget   = 1;
 
-Params.Disengage = 1;
+Params.Disengage = 0;
+Params.Planning = 1;
 
 end % GetParams
