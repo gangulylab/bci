@@ -4,10 +4,10 @@ clear all
 SaveMovie = 0;
     rate = 0.2;
 basedir     = '/media/sarah/Data/bravo1/';
-dates       = {'20230811'};
+dates       = {'20230823'};
 
-load('/media/sarah/Data/bravo1/20230811/GangulyServer/20230811/MultiTargets2D/105924/BCI_Fixed/Data0001.mat')
-Params = TrialData.Params;
+% load('/media/sarah/Data/bravo1/20230811/GangulyServer/20230811/MultiTargets2D/105924/BCI_Fixed/Data0001.mat')
+% Params = TrialData.Params;
 %% PTB
 
 Screen('Preference', 'SkipSyncTests', 1)
@@ -23,8 +23,6 @@ Screen('TextSize',Params.WPTR, 28);
 
 arrow = [1,0; 0, -1; -1,0; 0, 1];
 
-
-
 %%
 for dateInd = 1:numel(dates)
     date = dates{dateInd};
@@ -33,7 +31,7 @@ for dateInd = 1:numel(dates)
     blockDirs = {tmp.name};
     blockDirs = blockDirs(3:end);
 
-for blockInd = 2
+for blockInd = 4
     
     blkDir = [taskDir, blockDirs{blockInd}, '/BCI_Fixed'];
     tmp = dir(blkDir);
@@ -59,16 +57,16 @@ for blockInd = 2
 
 
 %% Fix CursorState
-
-find(TD.TaskState < 3 )
-st = find(TD.TaskState == 3,1);
-en = find(TD.TaskState == 4,1)-1;
-len  =length(find(TD.TaskState == 3));
-ind = st:2:(st+(len-1)*2);
-
-ind_tot = [find(TD.TaskState < 3 ), ind, ind(end)+2:length(TD.CursorState)];
-
-TD.CursorState = TD.CursorState(:,ind_tot);
+% 
+% find(TD.TaskState < 3 )
+% st = find(TD.TaskState == 3,1);
+% en = find(TD.TaskState == 4,1)-1;
+% len  =length(find(TD.TaskState == 3));
+% ind = st:2:(st+(len-1)*2);
+% 
+% ind_tot = [find(TD.TaskState < 3 ), ind, ind(end)+2:length(TD.CursorState)];
+% 
+% TD.CursorState = TD.CursorState(:,ind_tot);
 
 %% Set up trial
 ReachTargetPos  = TD.TargetPosition;
@@ -94,6 +92,7 @@ for bin = bin_inds
         bar(TD.Belief(:,bin))
         hold on
         ylim([0, 1.0])
+set(gca, 'fontsize', 24)
         title("Belief")
        subplot(2,1,2)
         hold on
@@ -109,11 +108,14 @@ for bin = bin_inds
         elseif dir == 5
             plot(0,0, 'mo', 'markerfacecolor', 'm', 'markersize', 16)
         end
+set(gca, 'fontsize', 24)
         title("Decode")
         pause(rate)   
 end % only complete if no errors
 
 %% Cue time
+
+   Params.Center = [750  500];
 
     % display targets
     for k = 1:Params.NumTargets
@@ -151,9 +153,11 @@ for bin = bin_inds
         bar(TD.Belief(:,bin))
         hold on
         ylim([0, 1.0])
+        set(gca, 'fontsize', 24)
         title("Belief")
        subplot(2,1,2)
         hold on
+        set(gca, 'fontsize', 24)
         axis equal
         xlim([-1, 1])
         ylim([-1,1])
@@ -164,9 +168,10 @@ for bin = bin_inds
             l = [0,0; arrow(dir,:)];
             plot(l(:,1), l(:,2),'r', 'linewidth', 2)
         elseif dir == 5
-            plot(0,0, 'mo', 'markerfacecolor', 'm', 'markersize', 16)
+            plot(0,0, 'ro', 'markerfacecolor', 'r', 'markersize', 50)
         end
         title("Decode")
+        set(gca, 'fontsize', 24)
         pause(rate)   
        
 end % only complete if no errors
@@ -236,6 +241,7 @@ for bin = bin_inds
         bar(TD.Belief(:,bin))
         hold on
         ylim([0, 1.0])
+set(gca, 'fontsize', 24)
         title("Belief")
        subplot(2,1,2)
         hold on
@@ -251,8 +257,10 @@ for bin = bin_inds
         elseif dir == 5
             plot(0,0, 'mo', 'markerfacecolor', 'm', 'markersize', 16)
         end
+set(gca, 'fontsize', 24)
         title("Decode")
         
+
         pause(rate)   
     
 end
@@ -273,6 +281,7 @@ for bin = bin_inds
         subplot(2,1,1)
         bar(TD.Belief(:,bin))
         hold on
+set(gca, 'fontsize', 24)
         ylim([0, 1.0])
         title("Belief")
        subplot(2,1,2)
@@ -289,6 +298,7 @@ for bin = bin_inds
         elseif dir == 5
             plot(0,0, 'mo', 'markerfacecolor', 'm', 'markersize', 16)
         end
+set(gca, 'fontsize', 24)
         title("Decode")
 
 end
