@@ -172,7 +172,7 @@ Params.StartPositions  = [ 0, 0];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
-Params.NumTargets   = 16;
+Params.NumTargets   = 8;
 Params.TargetRadius = 450;
 
 Params.ReachTargets = zeros(Params.NumTargets, 2);
@@ -202,11 +202,11 @@ Params.CursorRect   = [-Params.CursorSize -Params.CursorSize ...
 %% Trial and Block Types
 Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
-Params.NumFixedBlocks       = 1;
+Params.NumFixedBlocks       = 3;
 
 % Cardinal Directions
 % Params.NumTrialsPerBlock    = Params.NumTargets*Params.NumStartPos;
-Params.NumTrialsPerBlock    = 9;
+Params.NumTrialsPerBlock    = 1;
 Params.TargetOrder          = 1:9;
 % Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -260,7 +260,7 @@ Params.InterTrialInterval   = 2;
 Params.InstructedDelayTime  = 1;
 Params.CueTime              = 0.75;
 Params.MaxStartTime         = 25;
-Params.MaxReachTime         = 60;
+Params.MaxReachTime         = 90;
 Params.InterBlockInterval   = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime     = 5;
 
@@ -327,6 +327,7 @@ if Params.AssistMode == 0
     Params.AssistGain           = 0.0; 
     Params.AssistThresh         = 0.0;
     Params.AssistLock           = 0;
+        Params.RobotClicker = 1;
 elseif Params.AssistMode == 1
     Params.Assist               = 1;
     Params.AssistAlpha          = 0.5;
@@ -358,6 +359,6 @@ Params.distB = 0.2;
 Params.SlowAtTarget   = 1;
 
 Params.Disengage = 0;
-Params.Planning = 1;
+Params.Planning = 0;
 
 end % GetParams

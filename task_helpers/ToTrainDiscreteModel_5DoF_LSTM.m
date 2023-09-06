@@ -6,7 +6,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20230816'};
+foldernames = {'20230906'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -52,12 +52,13 @@ folders_train = folders;
 
 % get the files
 files_train=[];
-for j=1:length(folders_train)
+for j=8:length(folders_train)
     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'BCI_Fixed');
     tmp = findfiles('mat',subfolder,1)';
     files_train =[files_train;tmp];
 end
 
+files_train
 % for j=6:length(folders_train)
 %     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'Imagined');
 %     tmp = findfiles('mat',subfolder,1)';
@@ -131,8 +132,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_5DoF_update_20230816_2 = goat_model.net;
-save net_bilstm_5DoF_update_20230816_2 net_bilstm_5DoF_update_20230816_2
+net_bilstm_5DoF_update_20230906_3 = goat_model.net;
+save net_bilstm_5DoF_update_20230906_3 net_bilstm_5DoF_update_20230906_3
 
 
  %% FINE TUNING LSTM MODEL FOR A BATCH UPDATE ON ROBOT CENTER OUT DATA

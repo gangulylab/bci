@@ -305,7 +305,7 @@ Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
-Params.AssistMode = 2;
+Params.AssistMode = 1;
 
 if Params.AssistMode == 0
     Params.Assist               = 0;
