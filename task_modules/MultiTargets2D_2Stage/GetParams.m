@@ -142,9 +142,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_5DoF';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_5DoF_update_20230920_2';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_5DoF; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_5DoF_update_20230920_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -167,13 +167,21 @@ Params.ChPooling = false;
 Params.TargetSize       = 75;
 Params.OutTargetColor   = [55,255,0];
 Params.InTargetColor    = [255,55,0];
+% 
+% Params.StartPositions  = [ 0, 500];
+% Params.TargetRect = ...
+%     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
+% 
+% Params.ReachTargets1 = [-300, 000; 0, 000; 300, 000];
+% Params.ReachTargets2 = [-300, -500; 0, -500; 300, -500];
 
-Params.StartPositions  = [ 0, 500];
+
+Params.StartPositions  = [ 0, -500];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
 Params.ReachTargets1 = [-300, 000; 0, 000; 300, 000];
-Params.ReachTargets2 = [-300, -500; 0, -500; 300, -500];
+Params.ReachTargets2 = [-300, 500; 0, 500; 300, 500];
 
 Params.NumTargets1   = length(Params.ReachTargets1);
 Params.NumTargets2   = length(Params.ReachTargets1);
@@ -194,7 +202,7 @@ Params.NumFixedBlocks       = 1;
 % Params.NumTrialsPerBlock    = Params.NumTargets*Params.NumStartPos;
 Params.NumTrialsPerBlock    = 9;
 Params.TargetOrder          = 1:9;
-% Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 Params.TargetList = [repmat(1:Params.NumTargets1,1,Params.NumTargets2)', ...
@@ -305,7 +313,7 @@ Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
-Params.AssistMode = 1;
+Params.AssistMode = 2;
 
 if Params.AssistMode == 0
     Params.Assist               = 0;
@@ -336,7 +344,7 @@ Params.distB = 0.2;
 
 Params.SlowAtTarget   = 1;
 
-Params.Disengage = 0;
-Params.Planning = 1;
+Params.Disengage    = 1;
+Params.Planning     = 0;
 
 end % GetParams
