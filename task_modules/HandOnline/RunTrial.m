@@ -227,7 +227,7 @@ if ~Data.ErrorID
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);              
                 
                 % save kalman filter
-                if Params.ControlMode>=3 && TaskFlag>1 && Params.SaveKalmanFlag,
+                if Params.ControlMode>=3 && TaskFlag>1 && Params.SaveKalmanFlag
                     Data.KalmanGain{end+1} = [];
                     Data.KalmanGain{end}.K = KF.K;
                     Data.KalmanFilter{end+1} = [];
@@ -329,7 +329,7 @@ if ~Data.ErrorID
             Data.TaskState(1,end+1)=Cursor.TaskState;
 
         % end if takes too long
-        if TotalTime > Params.MaxReachTime,
+        if TotalTime > Params.MaxReachTime
             done = 1;
             Data.ErrorID = 3;
             Data.ErrorStr = 'ReachTarget';
@@ -350,7 +350,7 @@ if ~Data.ErrorID
         end
         
         % end if in target for hold time (not using clicker)
-        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1),
+        if (InTargetTotalTime>=Params.TargetHoldTime) && (Params.ClickerBins==-1)
             done = 1;
             Data.SelectedTargetID = TargetID;
 %             Data.SelectedTargetPosition = Params.ReachTargetPositions(TargetID,:); 
@@ -377,7 +377,7 @@ if Params.InterTrialInterval>0,
     InTargetTotalTime = 0;
 
     fwrite(Params.udp, [0,1,0])
-    while ~done,
+    while ~done
         % Update Time & Position
         tim = GetSecs;
         
@@ -385,7 +385,7 @@ if Params.InterTrialInterval>0,
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
         
         % Update Screen
-        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate,
+        if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
             % time
             dt = tim - Cursor.LastPredictTime;
             TotalTime = TotalTime + dt;
@@ -394,7 +394,7 @@ if Params.InterTrialInterval>0,
             Data.Time(1,end+1) = tim;
             
             % grab and process neural data
-            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate),
+            if ((tim-Cursor.LastUpdateTime)>1/Params.UpdateRate)
                 dT = tim-Cursor.LastUpdateTime;
                 dT_vec(end+1) = dT;
                 Cursor.LastUpdateTime = tim;
@@ -418,7 +418,7 @@ if Params.InterTrialInterval>0,
         end
         
         % end if in start target for hold time
-        if InTargetTotalTime > Params.InterTrialInterval,
+        if InTargetTotalTime > Params.InterTrialInterval
             done = 1;
         end
     end % Instructed Delay Loop
@@ -438,7 +438,7 @@ end
 % output feedback
 if Data.ErrorID==0,
     fprintf('SUCCESS\n')
-    if Params.FeedbackSound,
+    if Params.FeedbackSound
         sound(Params.RewardSound,Params.RewardSoundFs)
     end
 else

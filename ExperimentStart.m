@@ -262,7 +262,9 @@ if strcmp(Task(1:5), 'Robot') || strcmp(Task(1:4), 'Hand') || strcmp(Task(1:4), 
     Params.Center = [0,0,0];
     if strcmp(Task,'HandSequence')
         res = get(0, 'ScreenSize'); 
-        [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [0 0 res(3) round(res(4)*0.25)]);
+%         [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [0 0 res(3) round(res(4)*0.25)]);
+        [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [2160 0 res(3) 500]);
+        
         Params.Center = [0,0];
     end
 else

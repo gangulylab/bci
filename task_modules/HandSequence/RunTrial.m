@@ -173,12 +173,12 @@ if ~Data.ErrorID && Params.CueTime>0
     InTargetTotalTime = 0;
     ClickDec_Buffer     = zeros(Params.RunningModeBinNum, 1);
 
-    Screen('TextSize', Params.WPTR, 80);
+    Screen('TextSize', Params.WPTR, 120);
     
     l = length(cell2mat(CUE_txt));
     d = 0.9*Params.ScreenRectangle(3)/(l + 5*length(trial_actions));
      
-    s = 100;
+    s = 300;
     for i = 1:length(trial_actions)
         text_st(i) = s;
         s = s + (length(CUE_txt{i})+ 5)*d;
