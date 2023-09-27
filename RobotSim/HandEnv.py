@@ -235,7 +235,7 @@ class HandEnv(object):
 
 	def displayCurrentDecode(self, action):
 		c = [1, 0, 0]
-		t = 0.2
+		t = 0.23
 		d = 15
 
 		if action == 1:

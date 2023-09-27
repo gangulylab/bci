@@ -34,7 +34,8 @@ valid_tasks = {...
     'Robot3DArrow',...
     'Robot3D',...
     'HandImagined',...
-    'HandOnline'};
+    'HandOnline',...
+    'HandSequence'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -94,7 +95,7 @@ Params.YYYYMMDD = sprintf('%i',yyyymmdd(now));
 Params.HHMMSS = sprintf('%02i%02i%02i',now.Hour,now.Minute,round(now.Second));
 
 % if Subject is 'Test' or 'test' then can write over previous test
-if strcmpi(Params.Subject,'Test'),
+if strcmpi(Params.Subject,'Test')
     Params.YYYYMMDD = 'YYYYMMDD';
     Params.HHMMSS = 'HHMMSS';
 end
@@ -108,16 +109,16 @@ mkdir(Params.Datadir);
 Params.Persistencedir = fullfile(Params.Homedir,'persistence');
 
 %% Initialize Blackrock System
-if BLACKROCK,
-    if IsWin,
+if BLACKROCK
+    if IsWin
         addpath('C:\Program Files (x86)\Blackrock Microsystems\Cerebus Windows Suite')
-    elseif IsLinux,
+    elseif IsLinux
         addpath('/usr/local/CereLink');
     end
     cbmex('close'); % always close
     cbmex('open'); % open library
     cbmex('trialconfig', 1); % empty the buffer
-else,
+else
     Params.GenNeuralFeaturesFlag = true;
 end
 
@@ -126,7 +127,7 @@ f = load(fullfile('gridmaps',Params.ChMapFile));
 Params.ChMap = f.ecog_grid;
 
 %% Initialize Sync to Blackrock
-if Params.ArduinoSync,
+if Params.ArduinoSync
     Params.ArduinoPtr = arduino;
     Params.ArduinoPin = 'D13';
     writeDigitalPin(Params.ArduinoPtr, Params.ArduinoPin, 0); % make sure the pin is at 0
@@ -165,7 +166,7 @@ Neuro.FeatureBufferSize = Params.FeatureBufferSize;
 Neuro.SmoothDataFlag = Params.SmoothDataFlag;
 
 % initialize filter bank state
-for i=1:length(Params.FilterBank),
+for i=1:length(Params.FilterBank)
     Neuro.FilterBank(i).state = [];
 end
 
@@ -189,7 +190,7 @@ Neuro.FeatureStats.Buf      = cell(1,Neuro.FeatureStats.BufSize);
 
 % create low freq buffers
 Neuro.FilterDataBuf = zeros(Neuro.BufferSamps,Neuro.NumChannels,Neuro.NumBuffer);
-if Neuro.NumFeatureBins>1,
+if Neuro.NumFeatureBins>1
     Neuro.NeuralFeaturesBuf = zeros(Neuro.NumFeatures*Neuro.NumChannels,...
         Neuro.NumFeatureBins);
 end
@@ -199,11 +200,11 @@ end
 
 
 %% Kalman Filter
-if Params.ControlMode>=3,
+if Params.ControlMode>=3
     KF = Params.KF;
     KF.CLDA = Params.CLDA;
     KF.Lambda = Params.CLDA.Lambda;
-else,
+else
     KF = [];
 end
 
@@ -222,9 +223,9 @@ fprintf('\n    - debug mode: %s', LogicalStr{Params.DEBUG+1})
 fprintf('\n    - arduino sync: %s', LogicalStr{Params.ArduinoSync+1})
 
 fprintf('\n\n  Neuro Processing Pipeline:')
-if Params.GenNeuralFeaturesFlag,
+if Params.GenNeuralFeaturesFlag
     fprintf('\n    - generating neural features!')
-else,
+else
     fprintf('\n    - reference mode: %s', Params.ReferenceModeStr)
     fprintf('\n    - zscore raw: %s', LogicalStr{Params.ZscoreRawFlag+1})
     fprintf('\n    - zscore features: %s', LogicalStr{Params.ZscoreFeaturesFlag+1})
@@ -232,7 +233,7 @@ else,
     fprintf('\n    - save filtered data: %s', LogicalStr{Params.SaveProcessed+1})
 end
 fprintf('\n    - dimensionality reduction: %s', LogicalStr{Params.DimRed.Flag+1})
-if Params.DimRed.Flag,
+if Params.DimRed.Flag
     fprintf('\n      - method: %s', DimRedStr{Params.DimRed.Method})
     fprintf('\n      - before clda: %s', LogicalStr{Params.DimRed.InitAdapt+1})
     fprintf('\n      - before fixed: %s', LogicalStr{Params.DimRed.InitFixed+1})
@@ -242,7 +243,7 @@ fprintf('\n\n  BCI Parameters:')
 fprintf('\n    - Imagined Movements: %s', LogicalStr{double(Params.NumImaginedBlocks>0) +1})
 fprintf('\n      - initialization mode: %s', IMStr{Params.InitializationMode})
 fprintf('\n    - Adaptation Decoding: %s', LogicalStr{double(Params.NumAdaptBlocks>0) +1})
-if Params.NumAdaptBlocks>0,
+if Params.NumAdaptBlocks>0
     fprintf('\n      - adapt type: %s', Params.CLDA.TypeStr)
     fprintf('\n      - adapt change type: %s', Params.CLDA.AdaptType)
 end
@@ -250,7 +251,7 @@ fprintf('\n    - Fixed Decoding: %s', LogicalStr{double(Params.NumFixedBlocks>0)
 
 
 str = input('\n\nContinue? (''n'' to quit, otherwise continue)\n' ,'s');
-if strcmpi(str,'n'),
+if strcmpi(str,'n')
     fprintf('\n\nExperiment Ended\n\n')
     return
 end
@@ -259,6 +260,11 @@ end
 % Screen('Preference', 'SkipSyncTests', 0);
 if strcmp(Task(1:5), 'Robot') || strcmp(Task(1:4), 'Hand') || strcmp(Task(1:4), 'Grip') || strcmp(Task(1:4), 'Real') 
     Params.Center = [0,0,0];
+    if strcmp(Task,'HandSequence')
+        res = get(0, 'ScreenSize'); 
+        [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [0 0 res(3) round(res(4)*0.25)]);
+        Params.Center = [0,0];
+    end
 else
     if DEBUG
         [Params.WPTR, Params.ScreenRectangle] = Screen('OpenWindow', 0, 0, [50 0 1750 1000]);
@@ -274,14 +280,14 @@ end
 
 %% Initialze keyboard
 typing_tasks = {'RadialTyping','RadialTypingMultiClick', 'GridTyping'};
-if any(strcmp(Task,typing_tasks)),
+if any(strcmp(Task,typing_tasks))
     Params = SetKeyboardParams(Params);
 end
 
 %% Start
 try
     % Baseline 
-    if Params.BaselineTime>0,
+    if Params.BaselineTime>0
         % turn on update stats flags
         Neuro.UpdateChStatsFlag = true;
         Neuro.UpdateFeatureStatsFlag = true;
@@ -298,7 +304,7 @@ try
         % save of useful stats and params
         SavePersistence(Params,Neuro,KF,0)
         
-    else, % if baseline is set to 0, just load stats
+    else % if baseline is set to 0, just load stats
         f=load(fullfile(Params.Persistencedir, 'ch_stats.mat'));
         Neuro.ChStats = f.ch_stats;
         f=load(fullfile(Params.Persistencedir, 'feature_stats.mat'));
@@ -307,30 +313,30 @@ try
     end
     
     % Imagined Cursor Movements Loop
-    if Params.NumImaginedBlocks>0,
+    if Params.NumImaginedBlocks>0
         [Neuro,KF,Params] = RunTask(Params,Neuro,1,KF);
     end
     
     % Adaptation Loop
-    if Params.NumAdaptBlocks>0,
+    if Params.NumAdaptBlocks>0
         [Neuro,KF,Params] = RunTask(Params,Neuro,2,KF);
     end
     
     % Fixed Decoder Loop
-    if Params.NumFixedBlocks>0,
+    if Params.NumFixedBlocks>0
         [Neuro,KF,Params] = RunTask(Params,Neuro,3,KF);
     end
     
     % Pause and Finish!
     ExperimentStop(Params,0);
     
-catch ME, % handle errors gracefully
+catch ME % handle errors gracefully
     Screen('CloseAll')
-    for i=length(ME.stack):-1:1,
-        if i==1,
+    for i=length(ME.stack):-1:1
+        if i==1
             errorMessage = sprintf('Error in function %s() at line %d.\n\nError Message:\n%s\n\n', ...
                 ME.stack(1).name, ME.stack(1).line, ME.message);
-        else,
+        else
             errorMessage = sprintf('Error in function %s() at line %d.\n\n', ...
                 ME.stack(i).name, ME.stack(i).line);
         end

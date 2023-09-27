@@ -56,7 +56,7 @@ while True:
 		# interface.create_target3D(target_pos,1 )
 		print(val1, val2, val3, val4, val5, val6)
 		print(target_pos)
-	if command == 2:	# Set Dirr
+	if command == 2:	# Set Dir
 		key = val1
 		interface.update_joystick(key)
 		interface.render()
