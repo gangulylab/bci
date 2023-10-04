@@ -59,6 +59,8 @@ else,
     butter(1,[.1,.5]);
 end
 
+%/data/Bravo3 is the place where the new folder is mounted 
+
 % reset path
 rmpath(genpath(fullfile(projectdir)));
 % add non-task modules
