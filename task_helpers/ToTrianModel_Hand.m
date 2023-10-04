@@ -7,9 +7,13 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230927/HandImagined';
-foldernames = {'121960', '122326', '122645', '123148', '123507'};
+root_path = '/home/ucsf/Data/Bravo3/20231004/HandImagined';
+foldernames = {'115727', '120531', '121033', '121559', '122122', '122622'};
 cd(root_path)
+
+
+%SET BAD CHANNELS 
+Params.SetBadChannels = [];
 
 
 D1=[];
@@ -56,7 +60,7 @@ for i=1:length(foldernames)
 
         % get delta, beta and hG removing bad channels 
         temp = temp([257:512 1025:1280 1537:1792],:);        
-        bad_ch = [108 113 118];
+        bad_ch = [108 113 118 Params.SetBadChannels];
         good_ch = ones(size(temp,1),1);
         for ii=1:length(bad_ch)
             bad_ch_tmp = bad_ch(ii)*[1 2 3];
@@ -94,8 +98,9 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230927/HandOnline';
-foldernames = {'124152','124526'};
+root_path = '/home/ucsf/Data/Bravo3/20230929/HandOnline';
+foldernames = {'122659','123018','123319','123911','124247','124513','124951',...
+    '125216','125455'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -131,7 +136,7 @@ for i=1:length(foldernames)
 
         % get delta, beta and hG removing bad channels
         temp = temp([257:512 1025:1280 1537:1792],:);
-        bad_ch = [108 113 118];
+        bad_ch = [108 113 118 Params.SetBadChannels];
         good_ch = ones(size(temp,1),1);
         for ii=1:length(bad_ch)
             bad_ch_tmp = bad_ch(ii)*[1 2 3];
@@ -203,18 +208,23 @@ end
 
 
 %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
+cd('/home/ucsf/Projects/bci/clicker')
+load net_mlp_hand
 clear net
-net = patternnet([128 128 ]) ;
-net.performParam.regularization=0.3;
+net = net_mlp_hand;
+%net = patternnet([128 128 ]) ;
+%net.performParam.regularization=0.3;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_Hand_09272023_CL2_NoPooling')
+genFunction(net,'MLP_Hand_10042023_CL1_NoPooling_MimeHand_BadCh')
+
+
 %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 
 
 cd('/home/ucsf/Projects/bci')
 clear
-%ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+% %ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
 ExperimentStart('HandOnline','Bravo3',4,1,0)
 
 

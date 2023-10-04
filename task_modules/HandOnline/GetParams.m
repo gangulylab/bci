@@ -71,6 +71,9 @@ Params.DiscreteDecoder = 'clicker_svm_mdl_6Dir_hG.mat';
 % set this to negative values. I would say -0.3 to -0.6 would be okay
 Params.MultiDecisionBoundary = 0; 
 
+%% BAD CHANNELS
+
+Params.SetBadChannels = [];
 
 %% Neural network classifier option
 % set this to true to use neural network
@@ -83,7 +86,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_Hand_09272023_CL2_NoPooling';
+    Params.NeuralNetFunction = 'MLP_Hand_10042023_CL1_NoPooling_MimeHand_BadCh';
     
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';

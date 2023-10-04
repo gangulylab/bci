@@ -103,7 +103,7 @@ else
         else
             % get delta, beta and hG removing bad channels
             X = X([257:512 1025:1280 1537:1792]);
-            bad_ch = [108 113 118];
+            bad_ch = [108 113 118 Params.SetBadChannels];
             good_ch = ones(length(X),1);
             for ii=1:length(bad_ch)
                 bad_ch_tmp = bad_ch(ii)*[1 2 3];
