@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3DArrow';
-foldernames = {};
+root_path = '/home/ucsf/Data/Bravo3/20231101/Robot3DArrow';
+foldernames = {'150146','150711','151304','151907','152512'};
 cd(root_path)
 
 
@@ -60,8 +60,9 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3DArrow';
-foldernames = {'112557', '113058', '113344', '113560'};
+root_path = '/home/ucsf/Data/Bravo3/20231101/Robot3DArrow';
+foldernames = {'153413', '153959', '154552', '155027',...
+    '155816','160355','160855'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -195,30 +196,30 @@ T(aa(1):aa(end),7)=1;
 
 %%%%%%%% CODE TO UPDATE THE PNP DECODER %%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
-load net_mlp_pnp % this is the original PnP... if updating and saving, use the name below
-net = net_mlp_pnp;
-net = train(net,N,T','UseParallel','no');
-genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2')
-net_mlp_pnp_update1 = net;
-save net_mlp_pnp_update1 net_mlp_pnp_update1
+% load net_mlp_pnp % this is the original PnP... if updating and saving, use the name below
+% net = net_mlp_pnp;
+% net = train(net,N,T','UseParallel','no');
+% genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2')
+% net_mlp_pnp_update1 = net;
+% save net_mlp_pnp_update1 net_mlp_pnp_update1
 %%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
 
 
 % %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
-% clear net
-% net = patternnet([64 64 ]) ;
-% net.performParam.regularization=0.2;
-% net = train(net,N,T','UseParallel','no');
-% cd('/home/ucsf/Projects/bci/clicker')
-% genFunction(net,'MLP_7Dir_Imagined_B3_20230330_CL4_NoPooling')
+clear net
+net = patternnet([200 64  ]) ;
+net.performParam.regularization=0.2;
+net = train(net,N,T','UseParallel','no');
+cd('/home/ucsf/Projects/bci/clicker')
+genFunction(net,'MLP_7Dir_B3_20231101_CL3_NoPooling')
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
 % 
 % 
-% 
-% cd('/home/ucsf/Projects/bci')
-% clear
-% %ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
-% ExperimentStart('Robot3D','Bravo3',4,1,0)
+
+cd('/home/ucsf/Projects/bci')
+clear;clc
+%ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+ExperimentStart('Robot3D','Bravo3',4,1,0)
 
 

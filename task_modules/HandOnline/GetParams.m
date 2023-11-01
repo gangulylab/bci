@@ -86,7 +86,7 @@ if Params.NeuralNetFlag
 %     Params.NeuralNetFunction = 'MLP_FlipView3D_20210817_PM1';
 %     Params.NeuralNetFunction = 'MLP_PreTrained_7DoF_PnP4';%'MLP_PreTrained_7DoF_PnP';
 
-    Params.NeuralNetFunction = 'MLP_Hand_10042023_CL1_NoPooling_MimeHand_BadCh';
+    Params.NeuralNetFunction = 'MLP_Hand_10112023_CL4_NoPooling_MimeHand';
     
     
 %     Params.NeuralNetFunction = 'multilayer_perceptron_6DoF_Online_Apr16_2021';

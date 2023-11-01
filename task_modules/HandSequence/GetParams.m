@@ -80,7 +80,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
     Params.NeuralNetSoftMaxThresh = 0.45;       
     Params.Use3Features = true;
-    Params.NeuralNetFunction = 'MLP_Hand_05102023_CL2_NoPooling';
+    Params.NeuralNetFunction = 'MLP_Hand_10062023_CL4_NoPooling_MimeHand';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end

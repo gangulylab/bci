@@ -77,7 +77,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_PnP_04042023_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231101_CL3_NoPooling';
    %Params.NeuralNetFunction = 'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
@@ -99,6 +99,25 @@ else
     Params.NeuralNetSoftMaxThresh = 0;
 end
 
+%% biLSTM classifier option
+Params.biLSTMFlag = false;
+if Params.biLSTMFlag
+    Params.biLSTMSoftMaxThresh = 0.45;
+end
+
+Params.LSTMFunctionName = 'net_bilstm_20230521_lstm';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
+Params.LSTM = Params.LSTM.net_bilstm_20230521_lstm; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTMBufferSize = 1000;
+Params.SaveLSTMFeatures = false;
+
+Params.LSTM_Output_Method = false;
+if Params.LSTM_Output_Method
+    f = load(fullfile('clicker','lstm_output_pattern.mat'));
+    Params.lstm_output_pattern = f.lstm_output_pattern;
+    Params.LSTM_Output_Method_Thresh = 0.85;
+end
+
 %% LOAD THE CHMAP FILE
 tmp = load(fullfile('clicker','ECOG_Grid_8596_000063_B3.mat'));
 Params.ChMapB2 = tmp.ecog_grid;
@@ -109,6 +128,10 @@ Params.Norm2 = false;
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;
+
+%% BAD CHANNELS
+
+Params.SetBadChannels = [];
 
 %% POOLING CHANNELS FOR CONTROL
 % set this 1 only during online control
@@ -266,7 +289,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.limit = [-256, 256; -256 256; -256 256];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 0;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
 if Params.RobotMode == 0

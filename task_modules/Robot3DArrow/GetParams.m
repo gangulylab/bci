@@ -83,12 +83,17 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_PnP_04042023_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231101_CL2_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
 end
+
+%% BAD CHANNELS
+
+Params.SetBadChannels = [];
+
 
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
@@ -105,7 +110,7 @@ else
 end
 
 %% biLSTM classifier option
-Params.biLSTMFlag = true;
+Params.biLSTMFlag = false;
 if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
@@ -291,7 +296,7 @@ Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
 Params.RobotTargetRadius    = 40;
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins
 Params.RobotTargetDim       = 1;
 
 Params.ReachTargets         = [1,2,3,4,5,6,7];
