@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20231101/Robot3DArrow';
-foldernames = {'150146','150711','151304','151907','152512'};
+root_path = '/home/ucsf/Data/Bravo3/20231103/Robot3DArrow';
+foldernames = {'144108','144832','145350','145951','151106'};
 cd(root_path)
 
 
@@ -60,9 +60,9 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20231101/Robot3DArrow';
-foldernames = {'153413', '153959', '154552', '155027',...
-    '155816','160355','160855'};
+root_path = '/home/ucsf/Data/Bravo3/20231103/Robot3DArrow';
+foldernames = {'152228', '152729', '153240', '153723',...
+    };
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -207,11 +207,15 @@ cd('/home/ucsf/Projects/bci/clicker')
 
 % %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
 clear net
-net = patternnet([200 64  ]) ;
+net = patternnet([120]);
 net.performParam.regularization=0.2;
+net.divideParam.trainRatio=0.80;
+net.divideParam.valRatio=0.10;
+net.divideParam.testRatio=0.1;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_B3_20231101_CL3_NoPooling')
+genFunction(net,'MLP_7Dir_B3_20231103_CL2_NoPooling')
+save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
 % 
@@ -219,7 +223,7 @@ genFunction(net,'MLP_7Dir_B3_20231101_CL3_NoPooling')
 
 cd('/home/ucsf/Projects/bci')
 clear;clc
-%ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
-ExperimentStart('Robot3D','Bravo3',4,1,0)
+ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+%ExperimentStart('Robot3D','Bravo3',4,1,0)
 
 
