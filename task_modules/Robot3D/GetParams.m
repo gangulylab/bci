@@ -77,7 +77,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231110_CL3_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231113_CL3_NoPooling';
    %Params.NeuralNetFunction = 'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
@@ -218,8 +218,8 @@ Params.NumTrialsPerBlock    = 6;
 Params.TargetOrder          = [1:6];
 
 %Diagonals in the Horizontal Plane
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [7:11];
+% Params.NumTrialsPerBlock    = 4;
+% Params.TargetOrder          = [7:11];
 
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
