@@ -33,6 +33,7 @@ class JacoEnv(object):
     self.fu             = 1.35
     self.fl             = 0.
     self.center         = np.array([-0.35, 0.3, 0.27])
+    # self.center         = np.array([-0.3, 0.2, 0.26])
     self.bciRate        = 0.125
     self.key            = 0
     self.robotTargetRad = .05
@@ -131,7 +132,13 @@ class JacoEnv(object):
 
     ls = p.getLinkState(self.jacoId, self.jacoEndEffectorIndex)
     p.setRealTimeSimulation(self.useRealTimeSimulation)
-    p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1) 
+    p.configureDebugVisualizer(p.COV_ENABLE_RENDERING,1)
+
+  def set_center(self, n):
+    if n == 1:
+      self.center =  np.array([-0.35, 0.3, 0.27])
+    if n == 2:
+      self.center  = np.array([-0.3, 0.2, 0.26])
 
 
   def write_letter(self, dpos, c, targetID):
@@ -339,6 +346,56 @@ class JacoEnv(object):
     p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
     p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
 
+
+  def set_cubeSideColor(self,d):
+
+    c = [0,1,0]
+    lw = 5
+    p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+    p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+    p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+    p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
+
+    p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
+    p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
+    p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
+    p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
+
+    p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
+    p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
+    p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
+    p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
+
+    c   =  [1,0,1];
+
+    if (d[1] == 1) or (d[2] == -1):
+      p.addUserDebugLine(self.c1, self.c2, c, lw, 0, replaceItemUniqueId=self.l1)
+    if (d[0] == 1) or (d[1] == 1):
+      p.addUserDebugLine(self.c2, self.c3, c, lw, 0, replaceItemUniqueId=self.l2)
+    if (d[1] == 1) or (d[2] == 1):
+      p.addUserDebugLine(self.c3, self.c4, c, lw, 0, replaceItemUniqueId=self.l3)
+    if (d[0] == -1) or (d[1] == 1):
+      p.addUserDebugLine(self.c4, self.c1, c, lw, 0, replaceItemUniqueId=self.l4)
+    if (d[1] == -1) or (d[2] == -1):
+      p.addUserDebugLine(self.c5, self.c6, c, lw, 0, replaceItemUniqueId=self.l5)
+    if (d[0] == 1) or (d[1] == -1):
+      p.addUserDebugLine(self.c6, self.c7, c, lw, 0, replaceItemUniqueId=self.l6)
+    if (d[1] == -1) or (d[2] == 1):
+      p.addUserDebugLine(self.c7, self.c8, c, lw, 0, replaceItemUniqueId=self.l7)
+    if (d[0] == -1) or (d[1] == -1):
+      p.addUserDebugLine(self.c8, self.c5, c, lw, 0, replaceItemUniqueId=self.l8)
+    if (d[0] == -1) or (d[2] == -1):
+      p.addUserDebugLine(self.c1, self.c5, c, lw, 0, replaceItemUniqueId=self.l9)
+    if (d[0] == 1) or (d[2] == -1):
+      p.addUserDebugLine(self.c2, self.c6, c, lw, 0, replaceItemUniqueId=self.l10)
+    if (d[0] == 1) or (d[2] == 1):
+      p.addUserDebugLine(self.c3, self.c7, c, lw, 0, replaceItemUniqueId=self.l11)
+    if (d[0] == -1) or (d[2] == 1):
+      p.addUserDebugLine(self.c4, self.c8, c, lw, 0, replaceItemUniqueId=self.l12)
+
+
+
+     
 
   def drawBetaLine(self, betaScalar):
     print(betaScalar)
@@ -674,12 +731,16 @@ class JacoEnv(object):
       self.drawAxes()
     rp = [0,math.pi/4,math.pi,1.0*math.pi, 1.8*math.pi, 0*math.pi, 1.75*math.pi, 0.5*math.pi]
 
-    if self.mode == 0:
-      self.pos =list([-0.35, 0.3, 0.2])
-    elif self.mode ==3 or self.mode == 9:
-      self.pos =list([-0.35, 0.3, 0.27])
+    # if self.mode == 0:
+    #   self.pos =list([-0.35, 0.3, 0.2])
+    # elif self.mode ==3 or self.mode == 9:
+    #   self.pos =list([-0.35, 0.3, 0.27])
+    # else:
+    #   self.pos =list([-0.35, 0.3, 0.22])
+    if self.mode == 3 or self.mode == 9:
+      self.pos = list([self.center[0],self.center[1],self.center[2]])
     else:
-      self.pos =list([-0.35, 0.3, 0.22])
+      self.pos = list([self.center[0],self.center[1],self.center[2]-0.05])
 
     self.orn = p.getQuaternionFromEuler([math.pi,0,math.pi])
     # self.pos   = list([-0.5, 0.0, 0.25])

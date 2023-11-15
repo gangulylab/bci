@@ -60,6 +60,7 @@ fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
 fwrite(Params.udp, [0,18,Params.RobotTargetRadius])   % set target size
 fwrite(Params.udp, [0,25,Params.AltView])
+fwrite(Params.udp, [0,27,2])
 fwrite(Params.udp, [0,1,0])                  % reset robot
 %%  Loop Through Blocks of Trials
 Trial = 0;

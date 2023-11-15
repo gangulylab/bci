@@ -121,6 +121,11 @@ while True:
 		if val1 == 25: # robot view
 			interface.robotenv.view2 = val2
 			print ("VIEW2, ", val2)
+		if val1 == 26: #cube directions
+			interface.out_dir = [val2-1, val3-1, val4-1] 
+			interface.robotenv.set_cubeSideColor(interface.out_dir)
+		if val1 == 27: #cube directions
+			interface.robotenv.set_center(val2)
 
 	if command == 1:	# Set Target
 		target_pos[0] = ((val1-1) *(val2 + val3/100))/ 1000

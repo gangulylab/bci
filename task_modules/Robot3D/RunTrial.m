@@ -223,10 +223,12 @@ if ~Data.ErrorID,
             
             Cursor.Center = Params.Center;
     
-            TargetID = InTargetRobot3D(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
-            
+            [TargetID, out_dir ]= InTargetRobot3DCube(Cursor,Params.ReachTargetPositions,Params.RobotTargetRadius, Params.RobotTargetDim, Data.TargetID);
+
             if TargetID == Data.TargetID
                 fwrite(Params.udp, [0, 5, 0])
+            elseif Params.ShowCubeSides
+                fwrite(Params.udp, [0,26, out_dir(1)+1,out_dir(2)+1,out_dir(3)+1,0,0,0,0,0,0,0,0])    
             end
 
                 Params.TargetID =  Data.TargetID;
@@ -322,7 +324,9 @@ if ~Data.ErrorID,
                    end
                 end                
                 
+           
                 
+               f = Cursor.State(1:3)
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
 
