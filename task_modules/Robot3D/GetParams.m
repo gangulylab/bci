@@ -286,7 +286,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.limit = [-256, 256; -256 256; -256 256];
+Params.limit = [-220, 220; -220 220; -220 220];
 Params.RobotMode            = 3;  % 0: Horizontal, 1: Vertical+Gripper, 3: 3D robot 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
@@ -342,6 +342,8 @@ Params.TargetHoldTime   = 1.2;
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 Params.AssistAlpha  = 0.0;
+
+Params.ShowCubeSides = 1;
 
 %% For Debug
 
