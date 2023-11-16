@@ -326,7 +326,7 @@ if ~Data.ErrorID,
                 
            
                 
-               f = Cursor.State(1:3)
+               f = Cursor.State(1:3);
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
             %%%%% DIRECTION
 
