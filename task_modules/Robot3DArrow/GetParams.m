@@ -93,7 +93,7 @@ end
 %% NEURAL NET2 (USED FOR PNP)
 
 Params.NeuralNet2Flag = true;
-Params.NeuralNet2UseAllFeat=false;
+Params.NeuralNet2UseAllFeat=true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;
     if Params.NeuralNet2UseAllFeat
@@ -313,7 +313,7 @@ Params.LetterMode           = 0;  % 1: letter cues, 0: box cues
 Params.RobotTargetRadius    = 40;
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
 
-Params.RunningModeBinNum    = 3;  % 1: No filtering, 3+: running mode filter of last n bins
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins
 Params.RobotTargetDim       = 1;
 
 Params.ReachTargets         = [1,2,3,4,5,6,7];

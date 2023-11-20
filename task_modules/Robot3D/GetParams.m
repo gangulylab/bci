@@ -74,7 +74,7 @@ Params.MultiDecisionBoundary =-2;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = true;
+Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
    Params.NeuralNetFunction = 'MLP_7Dir_B3_20231115_CL3_NoPooling';
@@ -83,6 +83,23 @@ if Params.NeuralNetFlag
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
+end
+
+%% NEURAL NET2 (USED FOR PNP)
+
+Params.NeuralNet2Flag = true;
+Params.NeuralNet2UseAllFeat=true;
+if Params.NeuralNet2Flag
+    Params.NeuralNet2SoftMaxThresh = 0.4;
+    if Params.NeuralNet2UseAllFeat
+        Params.NeuralNet2FileName = 'net_PnP';
+        Params.NeuralNet2 = load(fullfile('clicker',Params.NeuralNet2FileName));
+        Params.NeuralNet2 = Params.NeuralNet2.net_PnP;
+    else
+        Params.NeuralNet2FileName = 'net_PnP_hG';
+        Params.NeuralNet2 = load(fullfile('clicker',Params.NeuralNet2FileName));
+        Params.NeuralNet2  = Params.NeuralNet2.net_PnP_hG;
+    end
 end
 
 %% CONVOLUTIONAL NEURAL NET OPTION
