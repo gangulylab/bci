@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20231115/Robot3DArrow';
-foldernames = {'144845', '145418', '145745', '150314', '150646'};
+root_path = '/home/ucsf/Data/Bravo3/20231117/Robot3DArrow';
+foldernames = {'151638', '152330','152731','153105','153525'};
 cd(root_path)
 
 
@@ -61,8 +61,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20231115/Robot3DArrow';
-foldernames = {'151230', '151519', '151819', '152110', '152707', '152950', '153216'};
+root_path = '/home/ucsf/Data/Bravo3/20231117/Robot3DArrow';
+foldernames = {'154040','154341','154645','155001'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -215,7 +215,7 @@ net.divideParam.valRatio=0.10;
 net.divideParam.testRatio=0.1;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_B3_20231115_CL3_NoPooling')
+genFunction(net,'MLP_7Dir_B3_20231117_CL2_NoPooling')
 save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 

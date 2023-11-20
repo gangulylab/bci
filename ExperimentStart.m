@@ -35,7 +35,8 @@ valid_tasks = {...
     'Robot3D',...
     'HandImagined',...
     'HandOnline',...
-    'HandSequence'};
+    'HandSequence',...
+    'Robot3DPath'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -55,8 +56,8 @@ elseif IsOSX
     projectdir = '/Users/daniel/Projects/bci/';
 else
     homedir = '~';
-%     projectdir = '~/Projects/bci/';
-    projectdir = '~/Documents/bravo3/bci/';
+    projectdir = '~/Projects/bci/';
+%     projectdir = '~/Documents/bravo3/bci/';
     butter(1,[.1,.5]);
 end
 

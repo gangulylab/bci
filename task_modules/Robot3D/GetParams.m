@@ -239,7 +239,7 @@ Params.TargetOrder          = [1:6];
 % Params.TargetOrder          = [7:11];
 
 
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
+Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters

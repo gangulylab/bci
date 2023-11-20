@@ -15,12 +15,12 @@ Cursor.ControlMode = Params.ControlMode;
 % end
 
 
-% Load Clicker
-f = load(fullfile('clicker',Params.DiscreteDecoder)); % load the parallel decoders
-Clicker.Model = f.model;
-Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model,Params.MultiDecisionBoundary); % calling function
+% % Load Clicker
+% f = load(fullfile('clicker',Params.DiscreteDecoder)); % load the parallel decoders
+% Clicker.Model = f.model;
+% Clicker.Func = @ (X) multistate_discrete(X,Clicker.Model,Params.MultiDecisionBoundary); % calling function
 
-
+Clicker = []
 switch TaskFlag,
     case 1, % Imagined Movements
 %         Instructions = [...

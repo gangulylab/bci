@@ -225,8 +225,8 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [1:4];
+Params.NumTrialsPerBlock    = 2;
+Params.TargetOrder          = [1,2];
 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
@@ -332,8 +332,8 @@ Params.TargetHoldTime = 10;
 
 % Clicker
 Params.RobotClicker = 1;     % 0: trial ends with hold time, 1: trial ends with click
-Params.ClickerBinNum = 5;
-Params.ClickerBinThresh = .5;
+Params.ClickerBinNum = 1;
+Params.ClickerBinThresh = .1;
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
 Params.boundaryDist = 10;

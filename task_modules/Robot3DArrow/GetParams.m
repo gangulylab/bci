@@ -83,7 +83,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = false;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231115_CL2_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231117_CL2_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
