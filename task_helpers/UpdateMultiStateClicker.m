@@ -9,7 +9,7 @@ if Params.ControlMode == 2 %mouse
     Click_Decision = randperm(5,1)-1;
     Click_Distance = 0;
 else
-    
+
     if Params.biLSTMFlag == 1
         if Params.LSTM_Output_Method
             pred = activations(Params.LSTM,Neuro.LSTMFeatures,'fc_2','ExecutionEnvironment','cpu');
@@ -54,11 +54,11 @@ else
 
         if Params.ChPooling == 1
 
-             % get delta, beta and hG removing bad channels
+            % get delta, beta and hG removing bad channels
             X = X([257:512 1025:1280 1537:1792]);
 
             chmap=Params.ChMap;
-            [xx, yy] = size(chmap);           
+            [xx, yy] = size(chmap);
 
             % perform spatial pooling
             f1 = (X(1:256));
@@ -85,7 +85,7 @@ else
             end
             X = pooled_data;
 
-             % norm
+            % norm
             if Params.Norm2
                 X = X./norm(X);
             end
@@ -106,7 +106,8 @@ else
             bad_ch = [108 113 118 Params.SetBadChannels];
             good_ch = ones(length(X),1);
             for ii=1:length(bad_ch)
-                bad_ch_tmp = bad_ch(ii)*[1 2 3];
+                %bad_ch_tmp = bad_ch(ii)*[1 2 3];
+                bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
                 good_ch(bad_ch_tmp)=0;
             end
             X = X(logical(good_ch));
@@ -125,8 +126,51 @@ else
             %    [ Click_Decision,Click_Distance] = multilayer_perceptron(Neuro.NeuralFeatures);
             %end
         end
-        
-    elseif Params.ConvNeuralNetFlag == 1
+
+    end
+
+    if Params.NeuralNet2Flag %used for PnP        
+        X = Neuro.FilteredFeatures;
+        X = X(:);
+        if Params.NeuralNet2UseAllFeat
+            X = X([257:512 1025:1280 1537:1792]); % all three features
+            bad_ch = [108 113 118];
+            good_ch = ones(length(X),1);
+            for ii=1:length(bad_ch)
+                %bad_ch_tmp = bad_ch(ii)*[1 2 3];
+                bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
+                good_ch(bad_ch_tmp)=0;
+            end
+            X = X(logical(good_ch));
+            Decision_Prob = predict(Params.NeuralNet2,X');
+            [aa bb]=max(Decision_Prob);
+            if aa >= Params.NeuralNet2SoftMaxThresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+        else            
+            X = X([1537:1792]);% only hG
+            bad_ch = [108 113 118];
+            good_ch = ones(length(X),1);
+            good_ch(bad_ch)=0;
+            X = X(logical(good_ch));
+            Decision_Prob = predict(Params.NeuralNet2,X');
+            [aa bb]=max(Decision_Prob);
+            if aa >= Params.NeuralNet2SoftMaxThresh
+                Click_Decision = bb;
+                Click_Distance = aa;
+            else
+                Click_Decision = 0;
+                Click_Distance = 0;
+            end
+        end
+
+    end
+
+    if Params.ConvNeuralNetFlag == 1
         chtemp=[];
         chmap=Params.ChMap;
         X = Neuro.FilteredFeatures;
@@ -155,12 +199,12 @@ else
             Click_Decision = bb;
             Click_Distance = aa;
         end
-    %else
-%         if Params.SmoothDataFlag ==1
-%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
-%         else
-%             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
-%         end
+        %else
+        %         if Params.SmoothDataFlag ==1
+        %             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.FilteredFeatures);
+        %         else
+        %             [ Click_Decision,Click_Distance] = Clicker.Func(Neuro.NeuralFeatures);
+        %         end
     end
 end
 

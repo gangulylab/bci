@@ -5,14 +5,14 @@ close all
 
 
 
-% IMAGINED 
+% IMAGINED
 clc;clear
 root_path = '/home/ucsf/Data/Bravo3/20231011/HandImagined';
 foldernames = {'143224', '143756', '144132', '145307', '145629', '150027'};
 cd(root_path)
 
 
-%SET BAD CHANNELS 
+%SET BAD CHANNELS
 Params.SetBadChannels = [];
 
 
@@ -58,12 +58,13 @@ for i=1:length(foldernames)
         end
         %%%%%%%%%%%%%%%%%%
 
-        % get delta, beta and hG removing bad channels 
-        temp = temp([257:512 1025:1280 1537:1792],:);        
+        % get delta, beta and hG removing bad channels
+        temp = temp([257:512 1025:1280 1537:1792],:);
         bad_ch = [108 113 118 Params.SetBadChannels];
         good_ch = ones(size(temp,1),1);
         for ii=1:length(bad_ch)
-            bad_ch_tmp = bad_ch(ii)*[1 2 3];
+            %bad_ch_tmp = bad_ch(ii)*[1 2 3];
+            bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
             good_ch(bad_ch_tmp)=0;
         end
         temp = temp(logical(good_ch),:);
@@ -138,7 +139,8 @@ for i=1:length(foldernames)
         bad_ch = [108 113 118 Params.SetBadChannels];
         good_ch = ones(size(temp,1),1);
         for ii=1:length(bad_ch)
-            bad_ch_tmp = bad_ch(ii)*[1 2 3];
+            %bad_ch_tmp = bad_ch(ii)*[1 2 3];
+            bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
             good_ch(bad_ch_tmp)=0;
         end
         temp = temp(logical(good_ch),:);
@@ -176,18 +178,18 @@ end
 
 clear condn_data
 idx=1;
-condn_data{1}=[D1(idx:end,:) ]'; 
-condn_data{2}= [D2(idx:end,:)]'; 
-condn_data{3}=[D3(idx:end,:)]'; 
-condn_data{4}=[D4(idx:end,:)]'; 
-condn_data{5}=[D5(idx:end,:)]'; 
-condn_data{6}=[D6(idx:end,:)]'; 
-condn_data{7}=[D7(idx:end,:)]'; 
-condn_data{8}=[D8(idx:end,:)]'; 
-condn_data{9}=[D9(idx:end,:)]'; 
-condn_data{10}=[D10(idx:end,:)]'; 
-condn_data{11}=[D11(idx:end,:)]'; 
-condn_data{12}=[D12(idx:end,:)]'; 
+condn_data{1}=[D1(idx:end,:) ]';
+condn_data{2}= [D2(idx:end,:)]';
+condn_data{3}=[D3(idx:end,:)]';
+condn_data{4}=[D4(idx:end,:)]';
+condn_data{5}=[D5(idx:end,:)]';
+condn_data{6}=[D6(idx:end,:)]';
+condn_data{7}=[D7(idx:end,:)]';
+condn_data{8}=[D8(idx:end,:)]';
+condn_data{9}=[D9(idx:end,:)]';
+condn_data{10}=[D10(idx:end,:)]';
+condn_data{11}=[D11(idx:end,:)]';
+condn_data{12}=[D12(idx:end,:)]';
 
 
 N=[];
