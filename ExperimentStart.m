@@ -45,17 +45,18 @@ if ~exist('DEBUG','var'), DEBUG = 0; end
 if strcmpi(Subject,'Test'), Subject = 'Test'; end % ignore case
 
 %% Set up path for running task dependent code
-if IsWin,
+if IsWin
     %homedir = 'C:\Users\ganguly-lab2\Documents\bci_data_test';
     %projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
     homedir='C:\Users\Nikhlesh\Documents\bci_data_test';
     projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\bci');
-elseif IsOSX,
+elseif IsOSX
     homedir = '/Users/daniel/';
     projectdir = '/Users/daniel/Projects/bci/';
-else,
+else
     homedir = '~';
-    projectdir = '~/Projects/bci/';
+%     projectdir = '~/Projects/bci/';
+    projectdir = '~/Documents/bravo3/bci/';
     butter(1,[.1,.5]);
 end
 

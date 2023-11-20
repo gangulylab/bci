@@ -672,7 +672,7 @@ class JacoEnv(object):
     elif self.mode == 9:
       p.resetDebugVisualizerCamera(cameraDistance=0.6, cameraYaw= 30, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 11:
-      p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 15, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
+      p.resetDebugVisualizerCamera(cameraDistance=0.7, cameraYaw= 10, cameraPitch=-45, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 12:
       p.resetDebugVisualizerCamera(cameraDistance=0.55, cameraYaw= 180, cameraPitch=-30, cameraTargetPosition=[-0.35,0.3,0.1])
     elif self.mode == 14:
