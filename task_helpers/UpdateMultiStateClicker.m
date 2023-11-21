@@ -142,6 +142,10 @@ else
                 good_ch(bad_ch_tmp)=0;
             end
             X = X(logical(good_ch));
+            
+            % 2-norm
+            X = X./norm(X);
+            
             Decision_Prob = predict(Params.NeuralNet2,X');
             [aa bb]=max(Decision_Prob);
             if aa >= Params.NeuralNet2SoftMaxThresh
@@ -157,6 +161,10 @@ else
             good_ch = ones(length(X),1);
             good_ch(bad_ch)=0;
             X = X(logical(good_ch));
+            
+            % 2-norm
+            X = X./norm(X);
+
             Decision_Prob = predict(Params.NeuralNet2,X');
             [aa bb]=max(Decision_Prob);
             if aa >= Params.NeuralNet2SoftMaxThresh
