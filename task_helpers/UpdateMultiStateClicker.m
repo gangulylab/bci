@@ -6,7 +6,11 @@ function [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params, Neuro
 global Cursor
 
 if Params.ControlMode == 2 %mouse
-    Click_Decision = randperm(5,1)-1;
+%     Click_Decision = randperm(5,1)-1;
+    Click_Decision = readNumPad();
+
+% Click_Decision  = Params.clickOrder(Params.index);
+%     Click_Decision = Params.TargetID;
     Click_Distance = 0;
 else
 
