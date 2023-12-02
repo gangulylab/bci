@@ -8,11 +8,11 @@ addpath('/home/ucsf/Projects/bci/task_helpers')
 
 % ROBOT DATA
 %root_path= 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate B3\20231127\Robot3D'
-root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
-folders = {'113952', '114341', '114820', '115318', '120050', '120326'};
+root_path = '/home/ucsf/Data/Bravo3/20231201/RealRobotBatch';
+folders = {'143632', '144301', '144653'};
 files=[];
 for ii=1:length(folders)
-    folderpath = fullfile(root_path, folders{ii},'BCI_Fixed');     
+    folderpath = fullfile(root_path, folders{ii},'Imagined');     
     files = [files;findfiles('',folderpath)'];
 end
 

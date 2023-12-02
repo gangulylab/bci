@@ -2,8 +2,8 @@
 
 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20231115/Robot3DArrow';
-folders = {'144845', '145418', '145745', '150314', '150646'};
+root_path = '/home/ucsf/Data/Bravo3/20231122/Robot3DArrow';
+folders = {'144133'};
 addpath('/home/ucsf/Projects/bci/task_helpers')
 
 files=[];

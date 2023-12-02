@@ -5,7 +5,7 @@ function Params = GetParams(Params)
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'RealRobotBatch';
+Params.Task = 'RealRobot3D';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -166,25 +166,29 @@ d2 = sqrt(1/2);
 d3 = sqrt(1/3);
 
 h = 260;
+% 
+% Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, h;...
+%     0, Params.ReachTargetRadius, h; ...
+%     -Params.ReachTargetRadius, 0, h;...
+%     0, -Params.ReachTargetRadius, h; ...
+%     0,0,450;...
+%     0, 0, 100;...
+%     d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
+%     -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
+%     -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
+%     d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0];
+% 
+% Params.ReachTargetPositions = [Params.ReachTargetPositions;...
+%     Params.ReachTargetPositions(1,1:2),-150;...
+%     Params.ReachTargetPositions(2,1:2),-150;...
+%     Params.ReachTargetPositions(3,1:2),-150;...
+%     Params.ReachTargetPositions(4,1:2),-150;
+%     Params.ReachTargetPositions(3,1:2),-150;...
+%     Params.ReachTargetPositions(4,1:2),-150];
 
-Params.ReachTargetPositions = [Params.ReachTargetRadius, 0, h;...
-    0, Params.ReachTargetRadius, h; ...
-    -Params.ReachTargetRadius, 0, h;...
-    0, -Params.ReachTargetRadius, h; ...
-    0,0,450;...
-    0, 0, 100;...
-    d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, d2*Params.ReachTargetRadius, 0;...
-    -d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0;...
-    d2*Params.ReachTargetRadius, -d2*Params.ReachTargetRadius, 0];
-
-Params.ReachTargetPositions = [Params.ReachTargetPositions;...
-    Params.ReachTargetPositions(1,1:2),-150;...
-    Params.ReachTargetPositions(2,1:2),-150;...
-    Params.ReachTargetPositions(3,1:2),-150;...
-    Params.ReachTargetPositions(4,1:2),-150;
-    Params.ReachTargetPositions(3,1:2),-150;...
-    Params.ReachTargetPositions(4,1:2),-150];
+Params.ReachTargetPositions = [240, -70, 410;...
+240, -220, 410;...
+240, 80, 410];
 
 
 %% Kalman Filter Properties
@@ -211,11 +215,12 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 14;
-Params.TargetOrder          = [1:7,1:7];
+% Cardinal Directions
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [1:4];
 % 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-Params.TargetOrder          = [Params.TargetOrder, 1];
+% Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -238,13 +243,13 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType
-    case 'none'
+switch Params.CLDA.AdaptType,
+    case 'none',
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear'
-        switch Params.CLDA.Type
-            case 2 % smooth batch
+    case 'linear',
+        switch Params.CLDA.Type,
+            case 2, % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
@@ -252,7 +257,7 @@ switch Params.CLDA.AdaptType
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise % none or refit
+            otherwise, % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
@@ -263,8 +268,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-% Params.MaxReachTime = 7;
-Params.MaxReachTime = 10;  %online
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -279,76 +283,193 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
+Params.RobotMode    = 5; 
+Params.wl           = [-50, -67, 10];
+Params.wu           = [5, -15 55];
 
-Params.ValidDir             = [1:7];
-Params.StartPos             = [-50,50,300];
-Params.StartPos             =     [0,0,300];
+if Params.RobotMode == 1 % lateral R2G boxes
+    Params.ValidDir             = [1:9];
+    Params.StartPos             = [-200, 200,220];
+    Params.StartPos             = [0, 30, 300];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset   = 1;
+    Params.wristStartX          = 3.1415/2*10; 
+    Params.wristStartZ          = 0; 
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist       = 5;
+    Params.graspOrientation     = 1;
+    Params.UseHeightDist  = 0;
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
+elseif Params.RobotMode == 2 % vertical R2G
+    Params.ValidDir          = [1:9];
+%     Params.StartPos          = [-250, 0,300];
+        Params.StartPos          = [-250, 0,350];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 0; 
+    Params.autoCenterDist = 5;
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
+    
+    Params.StartWristX = [3.1415]*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    
+    Params.wl           = [-50, -67, 20];
+    Params.wu           = [5, -15 55];
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
+    Params.UseHeightDist  = 0;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+    
+    
+    Params.AssistMode = 0;
+    
+elseif Params.RobotMode == 3  % lateral R2G wall
+    Params.ValidDir             = [1:9];
+%     Params.StartPos             = [-200, 200, 220]; % vertically alligned start
+    Params.StartPos             = [100, -70, 380]; %
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset   = 0;
+    Params.wristStartX          = 3.1415/2*10; 
+    Params.wristStartZ          = 0; 
+    Params.graspOrientation     = 1;   
+    Params.StartWristX = [3.1415/2]*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0]; 
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
+    Params.UseNewAutoGrasp = 0;
+    Params.WaitForGraspSignal = 0;
+    Params.UseHeightDist  = 0;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+Params.autoCenterDist       = 5;
+    
+elseif Params.RobotMode == 4 % TopDown with assist
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [-250, 0,300];  % standard
+%     Params.StartPos          = [0, 250,300];  % 
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 10;
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
+    
+    Params.StartWristX = [3.1415]*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    Params.UseNewAutoGrasp = 0;
+    Params.UseHeightDist  = 1;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+    Params.WaitForGraspSignal   = 1;
+    Params.wl           = [-50, -67, 16];
+    Params.wu           = [5, -15 50];
+    
+elseif Params.RobotMode == 5 % Auto-pose 2 object
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [-250, 0,350];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 10;
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
+    
+    Params.StartWristX = [3.1415]*10;    
+%     Params.StartWristX = [3.1415]/2*10;                    
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    Params.UseNewAutoGrasp = 2;
+    Params.UseHeightDist  = 1;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+    Params.WaitForGraspSignal   = 1;
+    Params.wl           = [-50, -67, 16];
+    Params.wu           = [5, -15 50];
+    
+    Params.AssistMode = 2;
 
-Params.index = 1;
-Params.clickOrder = [9*ones(50,1),8*ones(50,1)];
+    
+end
 
-Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
-Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
+% Params.GoalPos1     = [0, 50, 220];  %red short
+Params.GoalPos1     = [-100, -150, 220];  %green short
+Params.GoalPos2     = [100, -180, 170]; %red diag
+Params.GoalAng      = [pi/2];
+Params.index        = 1;
 
-Params.RobotTargetRadius = 50;
-Params.RobotTargetDim = 1;
 
+Params.clickOrder = [4*ones(20,1);1*ones(60,1); 7*ones(10,1); 3*ones(5,1);7*ones(10,1); 1*ones(100,1)];
+Params.clickOrder = [0*ones(5000,1)];
 Params.ReachTargets      = [1,2,3,4,5,6];
+Params.TargetOrder  = [Params.TargetOrder, 1];
 
-Params.deltaT = 1/Params.UpdateRate;
-Params.k_v = 0.9;
-Params.k_i = 10.0;
+Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
+Params.RunningModeZero      = 1;  % 1: 0 output if not winner, 0: maintain prior decision if no winner
 
-Params.dA = [1 0 0  Params.deltaT 0 0;...
-                    0 1 0 0 Params.deltaT 0;...
-                    0 0 1 0 0 Params.deltaT;...
-                    0 0 0 Params.k_v 0 0;...
-                    0 0 0 0 Params.k_v 0;...
-                    0 0 0 0 0 Params.k_v];
-                
-Params.dB = [zeros(3);eye(3)];
-Params.dB = Params.dB*Params.k_i;
+Params.RobotTargetRadius    = 50;
+Params.RobotTargetDim       = 1;
+
+% Robot Dynamics
+Params.deltaT   = 1/Params.UpdateRate;
+% Params.k_v      = 0.7;
+% Params.k_i      = 40;
+Params.k_v      = 0.8;
+Params.k_i      = 18;    % standard: 18
+
+Params.r_v      = 0.75;
+Params.r_i      = 90;
+
+% Params.r_v      = 0.7;
+% Params.r_i      = 90;
+% Params.r_v      = 0.7;
+% Params.r_i      = 150;
 
 Params.LongTrial = 0;
-
 Params.RobotClicker     = 1;
 Params.TargetHoldTime   = 0.25;
 
 Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
-Params.AssistAlpha      = 0.0;
-Params.AutoGrasp = 1;
+Params.AssistAlpha      = 0.3;
+Params.AutoGrasp        = 0;
+Params.GraspTask        = 1;
+Params.lowGainMode      = 0;
+Params.autoCenterOverTarget    = 0;
 
-Params.GraspTask = 1;
-
-Params.autoCenterOverTarget = 0;
-Params.autoCenterDist = 8;
-
-Params.OperationModeReset = 0;
-Params.wristStartX = 3.1415*10; % vertical
-% Params.wristStartX = 3.1415/2*10; %horixtonal
-Params.wristStartZ = 0; 
-Params.zlim = 10;
-
-Params.SwitchBinNum     = 8;
-Params.SwitchBinThresh  = 0.7;
-Params.GraspBinNum      = 8;
-Params.GraspBinThresh   = 0.7;
-Params.graspOrientation = 0;
-
-% Params.wl = [-50, -60, 5];
-% Params.wu = [5, -15 45];
-Params.wl = [-45, -55, 10];
-Params.wu = [-5, -15, 50];
-
-Params.ClampCorrect     = 0;
+Params.SwitchBinNum     = 5;
+Params.SwitchBinThresh  = 0.74;
+Params.GraspBinNum      = 5;
+Params.GraspBinThresh   = 0.74;
 
 % Beta
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
-Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
+%Flip
+Params.FlipStop         = 0;
+Params.FlipBinNum       = 5*8; 
+Params.FlipBinThresh    = 3;
+
+% Mode switch sound
+Params.UseSoundModeSwitch = 0;
+
+
 
 end % GetParams
