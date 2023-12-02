@@ -330,7 +330,6 @@ Params.OperationModeReset = 0;
 Params.wristStartX = 3.1415*10; % vertical
 % Params.wristStartX = 3.1415/2*10; %horixtonal
 Params.wristStartZ = 0; 
-Params.zlim = 10;
 
 Params.SwitchBinNum     = 8;
 Params.SwitchBinThresh  = 0.7;
@@ -342,6 +341,8 @@ Params.graspOrientation = 0;
 % Params.wu = [5, -15 45];
 Params.wl = [-45, -55, 10];
 Params.wu = [-5, -15, 50];
+Params.zlim = 10;
+
 
 Params.ClampCorrect     = 0;
 

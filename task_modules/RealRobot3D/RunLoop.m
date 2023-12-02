@@ -118,6 +118,8 @@ write(Params.udp, [0,33,Params.UseNewAutoGrasp,Params.WaitForGraspSignal,Params.
 write(Params.udp, [0,34,0,0,0,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 write(Params.udp, [0,35,Params.AssistMode,0,0,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,36,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 % pause(2.0)
 %% Initiate Sound
 

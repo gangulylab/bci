@@ -287,6 +287,11 @@ Params.RobotMode    = 5;
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
+Params.wl = [-45, -55, 10];
+Params.wu = [-5, -15, 45];
+Params.zlim = 10;
+
+
 if Params.RobotMode == 1 % lateral R2G boxes
     Params.ValidDir             = [1:9];
     Params.StartPos             = [-200, 200,220];
@@ -403,7 +408,8 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
     
-    Params.AssistMode = 2;
+    Params.AssistMode = 0;
+    
 
     
 end
@@ -470,6 +476,7 @@ Params.FlipBinThresh    = 3;
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
 
+Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
 
 
 end % GetParams
