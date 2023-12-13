@@ -284,6 +284,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 %% Robotics 
 
 Params.RobotMode    = 5; 
+
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -356,7 +357,7 @@ elseif Params.RobotMode == 3  % lateral R2G wall
     Params.UseHeightDist  = 0;
     Params.AutoGraspHorzDist = 10;
     Params.AutoGraspVertDist = 15;
-Params.autoCenterDist       = 5;
+    Params.autoCenterDist       = 5;
     
 elseif Params.RobotMode == 4 % TopDown with assist
     Params.ValidDir          = [1:9];
@@ -385,7 +386,7 @@ elseif Params.RobotMode == 4 % TopDown with assist
     
 elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-250, 0,350];
+    Params.StartPos          = [-300, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -408,9 +409,7 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
     
-    Params.AssistMode = 0;
-    
-
+    Params.AssistMode = 2;
     
 end
 
@@ -477,6 +476,6 @@ Params.FlipBinThresh    = 3;
 Params.UseSoundModeSwitch = 0;
 
 Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
-
-
+Params.UseModeSwitch = 0;
+Params.PreviewTarget = 0;
 end % GetParams
