@@ -268,7 +268,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 180;
+Params.MaxReachTime = 120;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -479,5 +479,5 @@ Params.UseSoundModeSwitch = 0;
 
 Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
 Params.UseModeSwitch = 0;
-Params.PreviewTarget = 0;
+Params.PreviewTarget = 1;
 end % GetParams
