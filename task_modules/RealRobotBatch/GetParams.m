@@ -351,5 +351,5 @@ Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
 Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
-
+Params.DisableModeSwitch = 1;
 end % GetParams

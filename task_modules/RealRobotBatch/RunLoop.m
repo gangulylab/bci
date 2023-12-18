@@ -94,7 +94,7 @@ write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 
 write(Params.udp, [0,33,0,0,0,100 ,100 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,36,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-
+write(Params.udp, [0,37,Params.DisableModeSwitch,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 % fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines

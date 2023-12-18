@@ -458,10 +458,12 @@ Params.GraspTask        = 1;
 Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
 
-Params.SwitchBinNum     = 5;
+Params.SwitchBinNum     = 5;   %Gripper Open/Close
 Params.SwitchBinThresh  = 0.74;
 Params.GraspBinNum      = 5;
 Params.GraspBinThresh   = 0.74;
+Params.InputBinNum      = 5;
+Params.InputBinThresh   = 0.7;
 
 % Beta
 Params.UseBetaStop      = 0;

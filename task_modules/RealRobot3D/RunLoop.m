@@ -121,6 +121,9 @@ write(Params.udp, [0,34,0,0,0,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPo
 write(Params.udp, [0,35,Params.AssistMode,0,0,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,36,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,37,Params.UseModeSwitch,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
+write(Params.udp, [0,39,Params.InputBinNum, Params.InputBinThresh*10,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 % write(Params.udp, [0,38,Params.PreviewTarget,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 % pause(2.0)
 %% Initiate Sound
