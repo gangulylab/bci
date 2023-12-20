@@ -231,12 +231,12 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
+% Params.NumTrialsPerBlock    = 6;
+% Params.TargetOrder          = [1:6];
 
 %Diagonals in the Horizontal Plane
-% Params.NumTrialsPerBlock    = 4;
-% Params.TargetOrder          = [7:11];
+Params.NumTrialsPerBlock    = 4;
+Params.TargetOrder          = [7:11];
 
 
 Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
@@ -328,7 +328,7 @@ Params.deltaT = 1/Params.UpdateRate;
 % Params.k_v = 0.95;
 % Params.k_i = 15;
 
-Params.k_v = 0.85;
+Params.k_v = 0.8;
 Params.k_i = 10;
 
 Params.dA = [1 0 0  Params.deltaT 0 0;...

@@ -479,5 +479,5 @@ Params.UseSoundModeSwitch = 0;
 
 Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
 Params.UseModeSwitch = 0;
-Params.PreviewTarget = 1;
+Params.PreviewTarget = 0;
 end % GetParams

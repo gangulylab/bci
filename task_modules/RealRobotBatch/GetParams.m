@@ -97,7 +97,7 @@ if Params.NeuralNet2Flag
 %         Params.NeuralNet2 = Params.NeuralNet2.net_PnP;
         Params.NeuralNet2 = Params.NeuralNet2.net_PnP_RobotBatchUpdate;
     else
-        Params.NeuralNet2FileName = 'net_PnP_hG';
+%         Params.NeuralNet2FileName = 'net_PnP_hG';
         Params.NeuralNet2 = load(fullfile('clicker',Params.NeuralNet2FileName));
         Params.NeuralNet2  = Params.NeuralNet2.net_PnP_hG;
     end
@@ -211,8 +211,8 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-Params.NumTrialsPerBlock    = 14;
-Params.TargetOrder          = [1:7,1:7];
+Params.NumTrialsPerBlock    = 7;
+Params.TargetOrder          = [1:7];
 % 
 % Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
