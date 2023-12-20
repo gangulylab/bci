@@ -260,12 +260,20 @@ if ~Data.ErrorID
     assist_target = 0;
     last_ctim = GetSecs;
     taskStage = 1;
+    
+    t_targetStart = tstart;
+    
     while ~done
         % Update Time & Position
         tim = GetSecs;
+                
+        dt_targetStart = tim - t_targetStart;  %time since target stage start
         
         % for pausing and quitting expt
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        
+        
+
         
         % Update Screen
         if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
@@ -380,7 +388,7 @@ if ~Data.ErrorID
         
         if Params.AssistLock
             if ~assist
-                if belief_sort(1) - belief_sort(2) > Params.AssistThresh
+                if ((belief_sort(1) - belief_sort(2)) > Params.AssistThresh) & (dt_targetStart > Params.AssistDelay)
                     assist = 1;
                     [~,assist_target] = max(b);
                     ChangeClicker_Buffer  = zeros(Params.ChangeBinNum, 1);
@@ -407,7 +415,7 @@ if ~Data.ErrorID
             end
 
         else
-            if belief_sort(1) - belief_sort(2) > Params.AssistThresh
+            if (belief_sort(1) - belief_sort(2) > Params.AssistThresh) && (dt_targetStart > Params.AssistDelay)
                 assist = 1;
                 [~,assist_target] = max(b);
             else
@@ -583,6 +591,7 @@ if ~Data.ErrorID
                 assist  = 0;
                 userVel = [0,0,0,0,0,0]';
                 Params.RobotClicker = 1;
+                t_targetStart = tim;
                % reset inference
             elseif taskStage == 2
                 Data.SelectedTargetID(2) = find(inTarget);

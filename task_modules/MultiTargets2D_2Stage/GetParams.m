@@ -167,7 +167,7 @@ Params.ChPooling = false;
 Params.TargetSize       = 75;
 Params.OutTargetColor   = [55,255,0];
 Params.InTargetColor    = [255,55,0];
-% 
+
 % Params.StartPositions  = [ 0, 500];
 % Params.TargetRect = ...
 %     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
@@ -346,5 +346,7 @@ Params.SlowAtTarget   = 1;
 
 Params.Disengage    = 1;
 Params.Planning     = 0;
+
+Params.AssistDelay = 5;   % seconds  
 
 end % GetParams
