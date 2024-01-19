@@ -32,7 +32,8 @@ for i=1:length(foldernames)
 
         % get delta, beta and hG removing bad channels 
         temp = temp([257:512 1025:1280 1537:1792],:);        
-        bad_ch = [108 113 118];
+        bad_ch = sort([108 113 118 TrialData.Params.SetBadChannels]);
+        %bad_ch = [108 113 118];
         good_ch = ones(size(temp,1),1);
         for ii=1:length(bad_ch)
             %bad_ch_tmp = bad_ch(ii)*[1 2 3];
@@ -77,7 +78,8 @@ for i=1:length(foldernames)
 
         % get delta, beta and hG removing bad channels
         temp = temp([257:512 1025:1280 1537:1792],:);
-        bad_ch = [108 113 118];
+        bad_ch = sort([108 113 118 TrialData.Params.SetBadChannels]);
+        %bad_ch = [108 113 118];
         good_ch = ones(size(temp,1),1);
         for ii=1:length(bad_ch)
             %bad_ch_tmp = bad_ch(ii)*[1 2 3];
