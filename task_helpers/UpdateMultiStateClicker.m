@@ -90,9 +90,9 @@ else
             X = pooled_data;
 
             % norm
-            if Params.Norm2
-                X = X./norm(X);
-            end
+%             if Params.Norm2
+%                 X = X./norm(X);
+%             end
 
             Decision_Prob = feval(Params.NeuralNetFunction,X);
             [aa bb]=max(Decision_Prob);
@@ -117,7 +117,7 @@ else
             X = X(logical(good_ch));
 
             % 2-norm
-            X = X./norm(X);
+            %X = X./norm(X);
 
             %Decision_Prob = multilayer_perceptron_Day1to7(X);
             Decision_Prob = feval(Params.NeuralNetFunction,X);

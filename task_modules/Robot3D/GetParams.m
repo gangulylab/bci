@@ -102,6 +102,10 @@ if Params.NeuralNet2Flag
     end
 end
 
+%% BAD CHANNELS
+
+Params.SetBadChannels = [];
+
 %% CONVOLUTIONAL NEURAL NET OPTION
 % set this to true to use neural network
 % also set the softmax option
