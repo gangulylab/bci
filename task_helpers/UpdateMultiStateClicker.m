@@ -107,7 +107,7 @@ else
         else
             % get delta, beta and hG removing bad channels
             X = X([257:512 1025:1280 1537:1792]);
-            bad_ch = [108 113 118 Params.SetBadChannels];
+            bad_ch = sort([108 113 118 Params.SetBadChannels]);
             good_ch = ones(length(X),1);
             for ii=1:length(bad_ch)
                 %bad_ch_tmp = bad_ch(ii)*[1 2 3];
@@ -115,6 +115,9 @@ else
                 good_ch(bad_ch_tmp)=0;
             end
             X = X(logical(good_ch));
+
+            % 2-norm
+            X = X./norm(X);
 
             %Decision_Prob = multilayer_perceptron_Day1to7(X);
             Decision_Prob = feval(Params.NeuralNetFunction,X);
@@ -138,7 +141,8 @@ else
         X = X(:);
         if Params.NeuralNet2UseAllFeat
             X = X([257:512 1025:1280 1537:1792]); % all three features
-            bad_ch = [108 113 118];
+            bad_ch = sort([108 113 118 Params.SetBadChannels]);
+            %bad_ch = [108 113 118];
             good_ch = ones(length(X),1);
             for ii=1:length(bad_ch)
                 %bad_ch_tmp = bad_ch(ii)*[1 2 3];
