@@ -8,8 +8,8 @@ addpath('/home/ucsf/Projects/bci/task_helpers')
 
 % ROBOT DATA
 %root_path= 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate B3\20231127\Robot3D'
-root_path = '/home/ucsf/Data/Bravo3/20231220/RealRobotBatch';
-folders = {'145847', '150405', '151018'};
+root_path = '/home/ucsf/Data/Bravo3/20231229/RealRobotBatch';
+folders = {'140019', '140316', '140555','141354'};
 files=[];
 for ii=1:length(folders)
     folderpath = fullfile(root_path, folders{ii},'BCI_Fixed');     
@@ -23,7 +23,7 @@ condn_data_overall = [load_data_for_MLP_TrialLevel_B3_bci(files,1)];
 num_classes=7; % 7-actions
 chk = 0;iter=0;
 while chk==0
-    test_idx = randperm(length(condn_data_overall),round(0.2*length(condn_data_overall)));
+    test_idx = randperm(length(condn_data_overall),round(0.3*length(condn_data_overall)));
     test_idx=test_idx(:);
     I = ones(length(condn_data_overall),1);
     I(test_idx)=0;

@@ -23,7 +23,7 @@ Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & la
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.BaselineTime         = 0; % secs
-Params.BadChannels          = [];
+Params.BadChannels          = [14,20,21,22];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true

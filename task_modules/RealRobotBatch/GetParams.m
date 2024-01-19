@@ -91,11 +91,11 @@ Params.NeuralNet2UseAllFeat=true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;
     if Params.NeuralNet2UseAllFeat
-%         Params.NeuralNet2FileName = 'net_PnP';
-        Params.NeuralNet2FileName = 'net_PnP_RobotBatchUpdate';
+        Params.NeuralNet2FileName = 'net_PnP';
+%         Params.NeuralNet2FileName = 'net_PnP_RobotBatchUpdate';
         Params.NeuralNet2 = load(fullfile('clicker',Params.NeuralNet2FileName));
-%         Params.NeuralNet2 = Params.NeuralNet2.net_PnP;
-        Params.NeuralNet2 = Params.NeuralNet2.net_PnP_RobotBatchUpdate;
+        Params.NeuralNet2 = Params.NeuralNet2.net_PnP;
+%         Params.NeuralNet2 = Params.NeuralNet2.net_PnP_RobotBatchUpdate;
     else
 %         Params.NeuralNet2FileName = 'net_PnP_hG';
         Params.NeuralNet2 = load(fullfile('clicker',Params.NeuralNet2FileName));
