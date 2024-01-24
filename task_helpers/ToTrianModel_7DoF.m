@@ -42,6 +42,11 @@ for i=1:length(foldernames)
         end
         temp = temp(logical(good_ch),:);
 
+        % 2-norm
+        for ii=1:size(temp,2)
+            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+        end
+
         if TrialData.TargetID == 1
             D1 = [D1 temp];
         elseif TrialData.TargetID == 2
@@ -88,6 +93,11 @@ for i=1:length(foldernames)
         end
         temp = temp(logical(good_ch),:);
 
+        % 2-norm
+        for ii=1:size(temp,2)
+            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+        end
+
         if TrialData.TargetID == 1
             D1 = [D1 temp];
         elseif TrialData.TargetID == 2
@@ -108,7 +118,7 @@ end
 
 
 
-ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
+%ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
 root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
 foldernames = {'113952', '114341', '114820', '115318', '120050', '120326'};
 cd(root_path)
@@ -137,6 +147,11 @@ for i=1:length(foldernames)
             good_ch(bad_ch_tmp)=0;
         end
         temp = temp(logical(good_ch),:);
+
+       % 2-norm
+        for ii=1:size(temp,2)
+            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+        end
 
         if TrialData.TargetID == 1
             D1 = [D1 temp];
@@ -207,7 +222,8 @@ net.divideParam.trainRatio=0.80;
 net.divideParam.valRatio=0.1;
 net.divideParam.testRatio=0.1;
 net = train(net,N,T','UseParallel','no');
-genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2') % use a different name
+% use an appropriate name and update GetParams NeuralNetFunction
+genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2') ;
 net_mlp_new7_update1 = net;
 save net_mlp_new7_update1 net_mlp_new7_update1
 %%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
