@@ -108,51 +108,53 @@ end
 
 
 
-% ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
-% root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
-% foldernames = {'113952', '114341', '114820', '115318', '120050', '120326'};
-% cd(root_path)
-% 
-% for i=1:length(foldernames)
-%     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
-%     D=dir(folderpath);
-%     for j=3:length(D)
-%         filepath=fullfile(folderpath,D(j).name);
-%         load(filepath)
-%         features  = TrialData.SmoothedNeuralFeatures;
-%         kinax = find(TrialData.TaskState==3);
-%         features =  features(kinax);
-%         l = min(length(features),8);
-%         features=features(1:l);
-%         temp = cell2mat(features);
-% 
-%         % get delta, beta and hG removing bad channels
-%         temp = temp([257:512 1025:1280 1537:1792],:);
-%         bad_ch = [108 113 118];
-%         good_ch = ones(size(temp,1),1);
-%         for ii=1:length(bad_ch)
-%             bad_ch_tmp = bad_ch(ii)*[1 2 3];
-%             good_ch(bad_ch_tmp)=0;
-%         end
-%         temp = temp(logical(good_ch),:);
-% 
-%         if TrialData.TargetID == 1
-%             D1 = [D1 temp];
-%         elseif TrialData.TargetID == 2
-%             D2 = [D2 temp];
-%         elseif TrialData.TargetID == 3
-%             D3 = [D3 temp];
-%         elseif TrialData.TargetID == 4
-%             D4 = [D4 temp];
-%         elseif TrialData.TargetID == 5
-%             D5 = [D5 temp];
-%         elseif TrialData.TargetID == 6
-%             D6 = [D6 temp];
-%         elseif TrialData.TargetID == 7
-%             D7 = [D7 temp];
-%         end
-%     end
-% end
+ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
+root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
+foldernames = {'113952', '114341', '114820', '115318', '120050', '120326'};
+cd(root_path)
+
+for i=1:length(foldernames)
+    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+    D=dir(folderpath);
+    for j=3:length(D)
+        filepath=fullfile(folderpath,D(j).name);
+        load(filepath)
+        features  = TrialData.SmoothedNeuralFeatures;
+        kinax = find(TrialData.TaskState==3);
+        features =  features(kinax);
+        l = min(length(features),8);
+        features=features(1:l);
+        temp = cell2mat(features);
+
+        % get delta, beta and hG removing bad channels
+        temp = temp([257:512 1025:1280 1537:1792],:);
+        bad_ch = sort([108 113 118 TrialData.Params.SetBadChannels]);
+        %bad_ch = [108 113 118];
+        good_ch = ones(size(temp,1),1);
+        for ii=1:length(bad_ch)
+            %bad_ch_tmp = bad_ch(ii)*[1 2 3];
+            bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
+            good_ch(bad_ch_tmp)=0;
+        end
+        temp = temp(logical(good_ch),:);
+
+        if TrialData.TargetID == 1
+            D1 = [D1 temp];
+        elseif TrialData.TargetID == 2
+            D2 = [D2 temp];
+        elseif TrialData.TargetID == 3
+            D3 = [D3 temp];
+        elseif TrialData.TargetID == 4
+            D4 = [D4 temp];
+        elseif TrialData.TargetID == 5
+            D5 = [D5 temp];
+        elseif TrialData.TargetID == 6
+            D6 = [D6 temp];
+        elseif TrialData.TargetID == 7
+            D7 = [D7 temp];
+        end
+    end
+end
 
 
 
@@ -199,26 +201,29 @@ T(aa(1):aa(end),7)=1;
 
 %%%%%%%% CODE TO UPDATE THE PNP DECODER %%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
-% load net_mlp_pnp % this is the original PnP... if updating and saving, use the name below
-% net = net_mlp_pnp;
-% net = train(net,N,T','UseParallel','no');
-% genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2')
-% net_mlp_pnp_update1 = net;
-% save net_mlp_pnp_update1 net_mlp_pnp_update1
-%%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
-
-
-% %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
-clear net
-net = patternnet([120]);
-net.performParam.regularization=0.2;
+load net_7DoF_New_HeadLips_Replaced % or use net_7DoF_New_Head_Replaced
+net = net_7DoF_New_HeadLips_Replaced; % or use net_7DoF_New_Head_Replaced
 net.divideParam.trainRatio=0.80;
-net.divideParam.valRatio=0.10;
+net.divideParam.valRatio=0.1;
 net.divideParam.testRatio=0.1;
 net = train(net,N,T','UseParallel','no');
-cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_B3_20231117_CL2_NoPooling')
-save net net
+genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2') % use a different name
+net_mlp_new7_update1 = net;
+save net_mlp_new7_update1 net_mlp_new7_update1
+%%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
+
+% 
+% % %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
+% clear net
+% net = patternnet([120]);
+% net.performParam.regularization=0.2;
+% net.divideParam.trainRatio=0.80;
+% net.divideParam.valRatio=0.10;
+% net.divideParam.testRatio=0.1;
+% net = train(net,N,T','UseParallel','no');
+% cd('/home/ucsf/Projects/bci/clicker')
+% genFunction(net,'MLP_7Dir_B3_20231117_CL2_NoPooling')
+% save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
 % 
