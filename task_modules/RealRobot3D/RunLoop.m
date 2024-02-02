@@ -83,7 +83,7 @@ write(Params.udp, [3, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pytho
 % [xa,xb,xc] = doubleToUDP(Params.GoalAng);
 % write(Params.udp, [3, xa,xb,xc,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
-
+write(Params.udp, [0,38,Params.PreviewTarget,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -118,6 +118,13 @@ write(Params.udp, [0,33,Params.UseNewAutoGrasp,Params.WaitForGraspSignal,Params.
 write(Params.udp, [0,34,0,0,0,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 write(Params.udp, [0,35,Params.AssistMode,0,0,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,36,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,37,Params.UseModeSwitch,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
+write(Params.udp, [0,39,Params.InputBinNum, Params.InputBinThresh*10,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
+
+
 % pause(2.0)
 %% Initiate Sound
 

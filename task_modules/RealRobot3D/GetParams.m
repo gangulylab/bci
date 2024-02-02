@@ -154,9 +154,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update_20230526';%'net_bilstm_20220824_update'; %'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_robot_20220824';%'net_bilstm_20220824_update'; %'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update_20230526; % net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_robot_20220824; % net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -477,6 +477,8 @@ Params.SwitchBinNum     = 5;
 Params.SwitchBinThresh  = 0.74;
 Params.GraspBinNum      = 5;
 Params.GraspBinThresh   = 0.74;
+Params.InputBinNum      = 5;
+Params.InputBinThresh   = 0.7;
 
 % Beta
 Params.UseBetaStop      = 0;
@@ -490,6 +492,8 @@ Params.FlipBinThresh    = 3;
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
 
-
+Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
+Params.UseModeSwitch = 0;
+Params.PreviewTarget = 1;
 
 end % GetParams
