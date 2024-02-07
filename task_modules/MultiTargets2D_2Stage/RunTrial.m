@@ -67,6 +67,8 @@ binInd = 0;
 
 taskStage = 0;
 Params.RobotClicker = 0;
+
+targetConfirmed = 0;
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
     tstart  = GetSecs;
@@ -397,23 +399,29 @@ if ~Data.ErrorID
                     assist = 0;
                 end
             else % assist on
-%                 a = ChangeClicker_Buffer;
-%                 ctim = GetSecs;
-%                if (sum(a == mode(a))> Params.ChangeBinThresh) && mode(a)>0 && (ctim -last_ctim) > 4 % change target
-%                    ChangeClicker_Buffer  = zeros(Params.ChangeBinNum, 1);
-%                    last_ctim = ctim;
-%                        if mode(a) == 1 % shift right
-%                            if assist_target < 3
-%                                assist_target = assist_target + 1;
-%                            end
-%                        elseif mode(a) == 3
-%                            if assist_target > 1
-%                                assist_target = assist_target - 1;
-%                            end
-%                        end
-%                end
-            end
+                
+                if ~targetConfirmed & Params.AssistMode == 3
+                a = ChangeClicker_Buffer;
+                ctim = GetSecs;
 
+               if (sum(a == mode(a))> Params.ChangeBinThresh) && mode(a)>0 && (ctim -last_ctim) > Params.SwitchTimeout % change target
+                   mode(a)
+                   ChangeClicker_Buffer  = zeros(Params.ChangeBinNum, 1);
+                   last_ctim = ctim;
+                       if mode(a) == 1 % shift right
+                           if assist_target < 3
+                               assist_target = assist_target + 1;
+                           end
+                       elseif mode(a) == 3  % shift left
+                           if assist_target > 1
+                               assist_target = assist_target - 1;
+                           end
+                       elseif mode(a) == 5 % select target
+                           targetConfirmed = 1;
+                       end
+               end
+            end
+            end
         else
             if (belief_sort(1) - belief_sort(2) > Params.AssistThresh) && (dt_targetStart > Params.AssistDelay)
                 assist = 1;
@@ -478,7 +486,7 @@ if ~Data.ErrorID
         if assist && Params.Assist
             vTarget         = (g(assist_target,:) - Cursor.State(1:2)');
             norm_vTarget    = vTarget/norm(vTarget);
-            AssistVel       = Params.AssistGain*Params.AssistAlpha*B*[norm_vTarget,0]';
+            AssistVel       = Params.AssistGain*Params.AssistAlpha*B*[norm_vTarget,0]'* norm(vTarget)*.005;
             Cursor.State    = A*Cursor.State + (1-Params.AssistAlpha)*B*U + AssistVel;
         else
             AssistVel = zeros(6,1);
@@ -526,7 +534,6 @@ if ~Data.ErrorID
          TargetPos = [0, -200];
         end
 
-        
          % draw trial target color
          TargetPos      = Params.ReachTargets2(TargetNum2,:);
          Rect           = Params.TargetRect; % centered at (0,0)
@@ -542,6 +549,18 @@ if ~Data.ErrorID
             StartRect([2,4])    = StartRect([2,4]) + StartTargetPos(2) + Params.Center(2); % add y-pos
 
             Screen('FillOval', Params.WPTR, [0,200,0], StartRect)
+        end
+
+        % color target is confirmed
+        
+        if targetConfirmed
+            f = "should be cyan"
+            StartTargetPos = g(assist_target,:);
+            StartRect = Params.TargetRect; % centered at (0,0)
+            StartRect([1,3]) = StartRect([1,3]) + StartTargetPos(1) + Params.Center(1); % add x-pos
+            StartRect([2,4]) = StartRect([2,4]) + StartTargetPos(2) + Params.Center(2); % add y-pos
+            Screen('FillOval', Params.WPTR, [0,200,200], StartRect)
+
         end
                  
         CursorRect                  = Params.CursorRect;
@@ -563,24 +582,27 @@ if ~Data.ErrorID
         click = 0;
         
         d = 0;
+
+        
         if any(inTarget)
-            if Params.RobotClicker
+            
+            if Params.ClickAtTarget(taskStage) 
+            if targetConfirmed
+                d = 1;
+            end   
+            
+%             if Params.RobotClicker
                 if mean(StopClicker_Buffer) > Params.ClickerBinThresh
                     click = 1;
                     d = 1;
                 end
-            else
+            else 
                 d = 1;
             end
         end
         
         if d == 1
-                
-            StartTargetPos = g(find(inTarget),:);
-            StartRect = Params.TargetRect; % centered at (0,0)
-            StartRect([1,3]) = StartRect([1,3]) + StartTargetPos(1) + Params.Center(1); % add x-pos
-            StartRect([2,4]) = StartRect([2,4]) + StartTargetPos(2) + Params.Center(2); % add y-pos
-            Screen('FillOval', Params.WPTR, [0,200,200], StartRect)
+
             if taskStage == 1
                 Data.SelectedTargetID(1) = find(inTarget);
                taskStage = 2;
@@ -592,6 +614,7 @@ if ~Data.ErrorID
                 userVel = [0,0,0,0,0,0]';
                 Params.RobotClicker = 1;
                 t_targetStart = tim;
+                targetConfirmed = 0;
                % reset inference
             elseif taskStage == 2
                 Data.SelectedTargetID(2) = find(inTarget);
@@ -616,7 +639,7 @@ if ~Data.ErrorID
             
             if any(Data.SelectedTargetID ~= [TargetNum1, TargetNum2])
                 Data.ErrorID = 4;
-                Data.ErrorStr = 'WrongTaget';
+                Data.ErrorStr = 'WrongTarget';
             end
         end
  

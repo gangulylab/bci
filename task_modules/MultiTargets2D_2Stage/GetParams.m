@@ -305,15 +305,15 @@ Params.ClickAction      = 5;
 Params.RobotClicker     = 0;     % 0: trial ends with hold time, 1: trial ends with click
 Params.ClickerBinNum    = 3;
 Params.ClickerBinThresh = 0.7;
-Params.ChangeBinNum     = 10;
-Params.ChangeBinThresh  = 6;
+Params.ChangeBinNum     = 5;
+Params.ChangeBinThresh  = 4;
 
 Params.RobotClickerStop = 0;  % 1: decode of 7 will set velocity to zero
 
 Params.boundaryDist = 1;
 Params.boundaryVel  = 0;
 
-Params.AssistMode = 2;
+Params.AssistMode = 3;
 
 if Params.AssistMode == 0
     Params.Assist               = 0;
@@ -321,13 +321,19 @@ if Params.AssistMode == 0
     Params.AssistGain           = 0.0; 
     Params.AssistThresh         = 0.0;
     Params.AssistLock           = 0;
-elseif Params.AssistMode == 1
+elseif Params.AssistMode == 1    % blended
     Params.Assist               = 1;
     Params.AssistAlpha          = 0.5;
     Params.AssistGain           = 1.; 
     Params.AssistThresh         = 0.15;
     Params.AssistLock           = 0;
-elseif Params.AssistMode == 2
+elseif Params.AssistMode == 2   % auto-complete
+    Params.Assist               = 1;
+    Params.AssistAlpha          = 1.0;
+    Params.AssistGain           = 0.9; 
+    Params.AssistThresh         = 0.15;
+    Params.AssistLock           = 1;
+elseif Params.AssistMode == 3   % auto-complete + supervision
     Params.Assist               = 1;
     Params.AssistAlpha          = 1.0;
     Params.AssistGain           = 0.9; 
@@ -347,6 +353,9 @@ Params.SlowAtTarget   = 1;
 Params.Disengage    = 1;
 Params.Planning     = 0;
 
-Params.AssistDelay = 5;   % seconds  
+Params.AssistDelay = 2;   % seconds  
+Params.ClickAtTarget = [1,1];
+
+Params.SwitchTimeout = 2;
 
 end % GetParams
