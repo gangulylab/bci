@@ -151,6 +151,10 @@ if Params.LSTM_Output_Method
     Params.LSTM_Output_Method_Thresh = 0.85;
 end
 
+%% BAD CHANNELS
+% not needed as LSTM weights during training downweights bad channels
+%Params.BadChannels=[99];
+
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
 Params.AdaptiveBaseline = false;

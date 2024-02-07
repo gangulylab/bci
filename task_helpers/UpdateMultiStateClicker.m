@@ -33,6 +33,12 @@ else,
             end
 
         else
+%             if ~isempty(Params.BadChannels)
+%                 tmp = Neuro.LSTMFeatures;
+%                 tmp(Params.BadChannels,:)=0;
+%                 tmp(2*Params.BadChannels,:)=0;
+%                 Neuro.LSTMFeatures=tmp;
+%             end
             pred =  predict(Params.LSTM,Neuro.LSTMFeatures,'ExecutionEnvironment','cpu');
 
             %         pred = pred +  [0.1, 0, -0.3, 0, 0, 0, 0];
