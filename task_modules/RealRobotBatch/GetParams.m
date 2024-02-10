@@ -155,9 +155,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_robot_20220824_update_20230526';%'net_bilstm_20220824_update'; %'net_bilstm_robot_20220824';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_robot_20220824_update_20230526; % net_bilstm_robot_20220824; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -167,7 +167,6 @@ if Params.LSTM_Output_Method
     Params.lstm_output_pattern = f.lstm_output_pattern;
     Params.LSTM_Output_Method_Thresh = 0.85;
 end
-
 
 %% ADAPTIVE BASELINE FLAG 
 % data is baseline to state 1 data
@@ -363,7 +362,7 @@ Params.OperationModeReset = 0;
 Params.wristStartX = 3.1415*10; 
 Params.wristStartZ = 0; 
 
-Params.wristStartX = 3.1415/2*10; 
+% Params.wristStartX = 3.1415/2*10; 
 Params.wristStartZ = 0; 
 Params.zlim = 7;
 
@@ -371,7 +370,7 @@ Params.SwitchBinNum = 8;
 Params.SwitchBinThresh = 0.7;
 Params.GraspBinNum = 8;
 Params.GraspBinThresh = 0.7;
-Params.graspOrientation     = 0;
+Params.graspOrientation     = 1;
 
 Params.wl = [-50, -65, 5];
 Params.wu = [5, -15 45];
@@ -381,5 +380,8 @@ Params.ClampCorrect     = 0;
 % Beta
 Params.UseBetaStop      = 0;
 Params.BetaThreshold = 0.5;
+
+Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
+
 
 end % GetParams

@@ -138,9 +138,9 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_9DoF_update_20231020_3';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_9DoF_update_20231020_3; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
@@ -229,8 +229,8 @@ Params.NumFixedBlocks       = 1;
  Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
  Params.TargetOrder          = [1:9,1:9,1:9];
 % 
-% Params.NumTrialsPerBlock    = 21;              % standard 7
-% Params.TargetOrder          = [1:7,1:7,1:7];
+Params.NumTrialsPerBlock    = 21;              % standard 7
+Params.TargetOrder          = [1:7,1:7,1:7];
 
 % Params.NumTrialsPerBlock    = 20;                % co-activation - center plane
 % Params.TargetOrder          = [10:13, 10:13, 10:13, 10:13, 10:13];
