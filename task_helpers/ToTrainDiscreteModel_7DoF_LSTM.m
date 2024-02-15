@@ -6,7 +6,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20230419'};
+foldernames = {'20230419z'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -144,7 +144,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20230526'};
+foldernames = {'20240214'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -181,8 +181,8 @@ folders=folders(3:end);
 
 
 % load the decoder.. use the decoder name run in the experiment 
-load net_bilstm_robot_20220824
-net_bilstm = net_bilstm_robot_20220824;
+load net_bilstm_7DoF_Feb2024_RtWrist_Act4
+net_bilstm = net_bilstm_7DoF_Feb2024_RtWrist_Act4;
 
 
 %%%%% get the training data
@@ -190,7 +190,8 @@ folders_train = folders;
 
 % get the files
 files_train=[];
-for j=1:length(folders_train)
+% for j=1:length(folders_train)
+for j=6:length(folders_train)
     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'BCI_Fixed');
     tmp = findfiles('mat',subfolder,1)';
     files_train =[files_train;tmp];
@@ -264,8 +265,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_robot_20220824_update_20230526_p = goat_model.net;
-save net_bilstm_robot_20220824_update_20230526_p net_bilstm_robot_20220824_update_20230526_p
+net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_5 = goat_model.net;
+save net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_5 net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_5
 
 
 

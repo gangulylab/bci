@@ -156,8 +156,11 @@ if Params.biLSTMFlag
 end
 
 Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_4';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
 Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_4;
+
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 
