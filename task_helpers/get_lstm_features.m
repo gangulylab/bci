@@ -301,10 +301,12 @@ end
 for i=1:size(condn_data_new,3)
     tmp=squeeze(condn_data_new(:,:,i));
     tmp1=tmp(:,1:128);
-    tmp1 = (tmp1 - min(tmp1(:)))/(max(tmp1(:))-min(tmp1(:)));
+    %tmp1 = (tmp1 - min(tmp1(:)))/(max(tmp1(:))-min(tmp1(:)));
+    tmp1 = tmp1./norm(tmp1(:));
 
     tmp2=tmp(:,129:256);
-    tmp2 = (tmp2 - min(tmp2(:)))/(max(tmp2(:))-min(tmp2(:)));
+    %tmp2 = (tmp2 - min(tmp2(:)))/(max(tmp2(:))-min(tmp2(:)));
+    tmp2 = tmp2./norm(tmp2(:));
 
     %     tmp3=tmp(:,257:384);
     %     tmp3 = (tmp3 - min(tmp3(:)))/(max(tmp3(:))-min(tmp3(:)));

@@ -190,8 +190,8 @@ folders_train = folders;
 
 % get the files
 files_train=[];
-% for j=1:length(folders_train)
-for j=6:length(folders_train)
+%for j=1:length(folders_train)
+for j=1:length(folders_train)
     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'BCI_Fixed');
     tmp = findfiles('mat',subfolder,1)';
     files_train =[files_train;tmp];
