@@ -155,10 +155,10 @@ if Params.biLSTMFlag
 end
 
 Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
-% Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_5';
+% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
 Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
-% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_5; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1;
 
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
@@ -426,7 +426,7 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
     
-    Params.AssistMode = 2;
+    Params.AssistMode = 1;  %1: blended,  2: flexible autocomplete
 
     
 end

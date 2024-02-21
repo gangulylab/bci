@@ -22,7 +22,7 @@ Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 120; % secs
+Params.BaselineTime         = 0; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
@@ -139,8 +139,11 @@ if Params.biLSTMFlag
 end
 
 Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
+% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
 Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1;
+
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
 

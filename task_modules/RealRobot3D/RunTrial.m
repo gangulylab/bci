@@ -302,7 +302,7 @@ if ~Data.ErrorID
             
             end
 
-            fprintf('Decode: %i    Beta: %2.2f     Flips: %i \n',ClickToSend, beta_scalar, nFlips)
+            fprintf('Decode: %i   \n',ClickToSend)
             %%%%% UPDATE CURSOR STATE OR POSITION BASED ON DECODED
 
             

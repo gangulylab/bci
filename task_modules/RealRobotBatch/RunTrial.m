@@ -221,7 +221,6 @@ end % only complete if no errors
 
 %% Go to reach target
 
-a = "GOOOOOOO"
 if ~Data.ErrorID
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;

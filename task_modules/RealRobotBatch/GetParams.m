@@ -156,10 +156,10 @@ if Params.biLSTMFlag
 end
 
 Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
-% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_4';
+% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
 Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
-% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240214_4;
+% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1;
 
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
@@ -310,8 +310,8 @@ Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot
 
 Params.ValidDir             = [1:9];
 Params.StartPos             = [90, 0, 250];
-Params.NumTrialsPerBlock    = 7;
-Params.TargetOrder          = [1:7];
+Params.NumTrialsPerBlock    = 14;
+Params.TargetOrder          = [1:7, 1:7];
 
 
 Params.index = 1;
