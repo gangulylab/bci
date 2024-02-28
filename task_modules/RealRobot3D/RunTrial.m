@@ -7,8 +7,9 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
-
+write(Params.udp, [0,40,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);%set screen to black
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
+fprintf('Press Enter To Continue After Preview')
 pause()
 ReachTargetPos = Data.TargetPosition;
 TargetID = 0; % Target that cursor is in, 0 for no targets
@@ -39,9 +40,10 @@ dt_vec = [];
 dT_vec = [];
 
 % grab blackrock data and run through processing pipeline
+Cursor.LastPredictTime = GetSecs;
+Cursor.LastUpdateTime = Cursor.LastPredictTime;
+
 if Params.BLACKROCK
-    Cursor.LastPredictTime = GetSecs;
-    Cursor.LastUpdateTime = Cursor.LastPredictTime;
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
 
@@ -59,12 +61,23 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
+    
+    if Params.ShowFlash
+        % send command for green screen
+        write(Params.udp, [0,40,2,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file   
+    end     
+    
     while ~done
         % Update Time & Position
         tim = GetSecs;
         
         % for pausing and quitting expt
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        
+        if (tim - tstart) > Params.FlashDuration/1000 
+            % send
+            write(Params.udp, [0,40,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file  
+        end
         
         % Update Screen
         if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
@@ -173,6 +186,7 @@ end % only complete if no errors
 
 %% Go to reach target
 if ~Data.ErrorID
+    write(Params.udp, [0,40,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -429,7 +443,7 @@ end
 % output feedback
 if Data.ErrorID==0
 %     fprintf('SUCCESS\n')
-    if Params.FeedbackSound,
+    if Params.FeedbackSound
         sound(Params.RewardSound,Params.RewardSoundFs)
     end
 else
@@ -447,7 +461,6 @@ else
     WaitSecs(Params.ErrorWaitTime);
 end
 
-pause()
 
 end % RunTrial
 

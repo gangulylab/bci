@@ -81,8 +81,6 @@ write(Params.udp, [0,19,Params.SwitchBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1
 write(Params.udp, [0,20,Params.GraspBinNum,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,21,Params.GraspBinThresh*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
-
-
 [xa,xb,xc] = doubleToUDP(Params.wl(1));
 [ya,yb,yc] = doubleToUDP(Params.wl(2)); 
 [za,zb,zc] = doubleToUDP(Params.wl(3)) ;
@@ -92,17 +90,16 @@ write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 [za,zb,zc] = doubleToUDP(Params.wu(3)) ;
 write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
-write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
-pause(2.0)
+% write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 write(Params.udp, [0,33,0,0,0,100 ,100 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-
+write(Params.udp, [0,35,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,36,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 % fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
 
-
+pause(5.0)
 
 %%  Loop Through Blocks of Trials
 Trial = 0;

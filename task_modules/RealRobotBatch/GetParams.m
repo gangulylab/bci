@@ -278,18 +278,18 @@ switch Params.CLDA.AdaptType,
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise, % none or refit
+            otherwise % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
 
 %% Hold Times
 Params.TargetHoldTime = 1;
-Params.InterTrialInterval = 1;
+Params.InterTrialInterval = 3;
 Params.InstructedDelayTime = 1;
-Params.CueTime = 0.75;
+Params.CueTime = 1.0;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 10;
+Params.MaxReachTime = 6;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -304,24 +304,17 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-
-
 Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
 Params.ValidDir             = [1:9];
-Params.StartPos             = [90, 0, 250];
+Params.StartPos             = [-50, 50, 300];
 Params.NumTrialsPerBlock    = 14;
 Params.TargetOrder          = [1:7, 1:7];
-
 
 Params.index = 1;
 Params.clickOrder = [9*ones(50,1),8*ones(50,1)];
 
-
-Params.limit = [-100, 300; -200 200; 180 450];
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
-% Params.clickOrder = ones(100,1)*7;
-% Params.TargetOrder = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 Params.TargetOrder          = [Params.TargetOrder, 1];
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
@@ -330,7 +323,6 @@ Params.RobotTargetRadius = 50;
 Params.RobotTargetDim = 1;
 
 Params.ReachTargets      = [1,2,3,4,5,6];
-
 
 Params.deltaT = 1/Params.UpdateRate;
 Params.k_v = 0.9;
@@ -359,11 +351,14 @@ Params.AutoGrasp = 1;
 Params.GraspTask = 1;
 
 Params.autoCenterOverTarget = 0;
+
 Params.autoCenterDist = 8;
 
 Params.OperationModeReset = 0;
-Params.wristStartX = 3.1415*10; 
+Params.wristStartX = 3.1415*10; % vertical
+% Params.wristStartX = 3.1415/2*10; %horixtonal
 Params.wristStartZ = 0; 
+Params.zlim = 10;
 
 % Params.wristStartX = 3.1415/2*10; 
 Params.wristStartZ = 0; 
@@ -375,16 +370,22 @@ Params.GraspBinNum = 8;
 Params.GraspBinThresh = 0.7;
 Params.graspOrientation     = 1;
 
-Params.wl = [-50, -65, 5];
-Params.wu = [5, -15 45];
 
+Params.wl = [-45, -55, 10];
+Params.wu = [-5, -15, 50];
+% 
+% Params.wl = [-40, -60, 10];
+% Params.wu = [-0, -20, 50];
 Params.ClampCorrect     = 0;
 
 % Beta
 Params.UseBetaStop      = 0;
-Params.BetaThreshold = 0.5;
+Params.BetaThreshold    = 0.5;
 
 Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
 
+% Display settings for Eye-gaze Sync
+Params.ShowFlash        = 1;
+Params.FlashDuration    = 50; %ms
 
 end % GetParams

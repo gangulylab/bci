@@ -499,4 +499,9 @@ Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
 Params.UseModeSwitch = 0;
 Params.PreviewTarget = 1;
 
+% Display settings for Eye-gaze Sync
+Params.ShowFlash        = 1;
+Params.FlashDuration    = 50; %ms
+
+
 end % GetParams
