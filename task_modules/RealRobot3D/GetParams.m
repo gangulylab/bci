@@ -306,7 +306,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
 
-Params.RobotMode    = 5; 
+Params.RobotMode    = 6; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 
@@ -414,8 +414,9 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.zlim = 5;
     Params.graspOrientation = 0;
     
-    Params.StartWristX = [3.1415]*10;    
-%     Params.StartWristX = [3.1415]/2*10;                    
+%     Params.StartWristX = [3.1415]*10;    
+    Params.StartWristX = [3.1415]/2*10;
+    Params.wristStartX = 3.1415/2*10;
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     Params.UseNewAutoGrasp = 2;
@@ -427,7 +428,44 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wu           = [5, -15 50];
     
     Params.AssistMode = 1;  %1: blended,  2: flexible autocomplete
+    
+elseif Params.RobotMode == 6 % Auto-pose 2 object
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [100, -250, 400];
+%     Params.StartPos          = [100, -200, 200];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 10;
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
+    
+%     Params.StartWristX = [3.1415]*10;    
+    Params.StartWristX = [3.1415]/2*10;
+    Params.wristStartX = 3.1415/2*10;
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    Params.UseNewAutoGrasp = 2;
+    Params.UseHeightDist  = 1;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+    Params.WaitForGraspSignal   = 1;
+    Params.wl           = [-25, -70, 10];
+    Params.wu           = [25, -40,  55];
+    
+    Params.AssistMode = 2;  %1: blended,  2: flexible autocomplete
 
+    % belief
+    Params.BeliefThresh = 0.3;
+    Params.distB = .4;
+    Params.distK = 3;
+    Params.velB = 0.4;
+    Params.velK = 0.4;
+    Params.pDiag = 0.8;
+    Params.slowThresh = 1;
     
 end
 
@@ -495,9 +533,9 @@ Params.FlipBinThresh    = 3;
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
 
-Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
+Params.view = 3;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
 Params.UseModeSwitch = 0;
-Params.PreviewTarget = 1;
+Params.PreviewTarget = 0;
 
 % Display settings for Eye-gaze Sync
 Params.ShowFlash        = 1;

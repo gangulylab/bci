@@ -84,6 +84,7 @@ write(Params.udp, [3, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pytho
 % write(Params.udp, [3, xa,xb,xc,0,0,0,0,0,0, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
 write(Params.udp, [0,38,Params.PreviewTarget,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,3,Params.RobotTargetRadius,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,4,Params.TargetHoldTime,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -123,6 +124,9 @@ write(Params.udp, [0,37,Params.UseModeSwitch,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", 
 
 write(Params.udp, [0,39,Params.InputBinNum, Params.InputBinThresh*10,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 
+if Params.RobotMode == 6
+    write(Params.udp, [0,41,Params.BeliefThresh*10, Params.distB*10,Params.distK*10,Params.velB*10,Params.velK*10,Params.pDiag*10,Params.slowThresh,0,0,0], "127.0.0.1", Params.pythonPort); 
+end
 
 
 % pause(2.0)
@@ -254,7 +258,7 @@ for Block=1:NumBlocks, % Block Loop
         [za,zb,zc] = doubleToUDP(Params.StartWristZ) ;
         
         write(Params.udp, [0,14,Params.OperationModeReset(TargetID),0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-        write(Params.udp, [0,31, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+%         write(Params.udp, [0,31, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
         
                 write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);   
         
