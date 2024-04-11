@@ -144,7 +144,7 @@ addpath '/home/ucsf/Projects/bci/clicker/'
 addpath '/home/ucsf/Projects/bci/lstm_models/'
 
 root_path = '/home/ucsf/Data/bravo1/';
-foldernames = {'20240221'};
+foldernames = {'20240411'};
 lstm_folder_path = '/home/ucsf/Projects/bci/lstm_models/';
 clicker_path = '/home/ucsf/Projects/bci/clicker/';
 
@@ -191,7 +191,7 @@ folders_train = folders;
 % get the files
 files_train=[];
 %for j=1:length(folders_train)
-for j=1:length(folders_train)
+for j=5:length(folders_train)
     subfolder = fullfile(folders_train(j).folder,folders_train(j).name,'BCI_Fixed');
     tmp = findfiles('mat',subfolder,1)';
     files_train =[files_train;tmp];
@@ -265,8 +265,8 @@ goat_model = load(fullfile(check_pt_foldername,goat_model));
 
 % saving to clicker folder
 cd(clicker_path)
-net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1 = goat_model.net;
-save net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1 net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1
+net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_pm2 = goat_model.net;
+save net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_pm2 net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_pm2
 
 
 

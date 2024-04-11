@@ -44,7 +44,7 @@ if Params.ClickerDataCollection
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync =false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -138,11 +138,11 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
-% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1';
+% Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_2';% or use 'net_bilstm_20220824';
+Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
-% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1;
+% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_2; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4;
 
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
@@ -153,7 +153,6 @@ if Params.LSTM_Output_Method
     Params.lstm_output_pattern = f.lstm_output_pattern;
     Params.LSTM_Output_Method_Thresh = 0.85;
 end
-
 %% BAD CHANNELS
 % not needed as LSTM weights during training downweights bad channels
 %Params.BadChannels=[99];

@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = true;
+Params.ArduinoSync = false;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -155,11 +155,11 @@ if Params.biLSTMFlag
     Params.biLSTMSoftMaxThresh = 0.45;
 end
 
-Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4';%'net_bilstm_20220929_update';% or use 'net_bilstm_20220824';
-% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1';
+Params.LSTMFunctionName = 'net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_pm1'; % or use 'net_bilstm_20220824';
+% Params.LSTMFunctionName =  'net_bilstm_7DoF_Feb2024_RtWrist_Act4';
 Params.LSTM = load(fullfile('clicker',Params.LSTMFunctionName));
-Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4; %net_bilstm_20220929_update; % or use net_bilstm_20220824
-% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240221_1;
+Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4_20240411_pm1; %net_bilstm_20220929_update; % or use net_bilstm_20220824
+% Params.LSTM = Params.LSTM.net_bilstm_7DoF_Feb2024_RtWrist_Act4;
 
 Params.LSTMBufferSize = 1000;
 Params.SaveLSTMFeatures = false;
@@ -289,7 +289,7 @@ Params.InterTrialInterval = 3;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 1.0;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 6;
+Params.MaxReachTime = 8;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -373,6 +373,19 @@ Params.graspOrientation     = 1;
 
 Params.wl = [-45, -55, 10];
 Params.wu = [-5, -15, 50];
+
+
+% for drawer
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [50, -50, 400];    
+    Params.StartWristX = [3.1415]/2*10;
+    Params.wristStartX = 3.1415/2*10;
+    Params.WaitForGraspSignal   = 1;
+    Params.wl           = [-30, -60, 10];
+    Params.wu           = [30, -30,  60];
+    
+
+
 % 
 % Params.wl = [-40, -60, 10];
 % Params.wu = [-0, -20, 50];
@@ -382,7 +395,7 @@ Params.ClampCorrect     = 0;
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
-Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
+Params.view = 3;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
 
 % Display settings for Eye-gaze Sync
 Params.ShowFlash        = 1;
