@@ -69,6 +69,11 @@ for i=1:length(foldernames)
         end
         temp = temp(logical(good_ch),:);
 
+        % 2-norm
+        for ii=1:size(temp,2)
+            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+        end
+
         if TrialData.TargetID == 1
             D1 = [D1 temp];
         elseif TrialData.TargetID == 2
@@ -144,6 +149,11 @@ for i=1:length(foldernames)
             good_ch(bad_ch_tmp)=0;
         end
         temp = temp(logical(good_ch),:);
+
+        % 2-norm
+        for ii=1:size(temp,2)
+            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+        end
 
         if TrialData.TargetID == 1
             D1 = [D1 temp];
