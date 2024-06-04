@@ -19,7 +19,7 @@ Params.DimRed.AvgTrialsFlag = false; % 0-cat imagined mvmts, 1-avg imagined mvmt
 Params.DimRed.NumDims = 500;
 
 Params.Fs = 1000;
-Params.NumChannels = 128;
+Params.NumChannels = 256;
 Params.NumFeatureBins = 1;
 Params.BufferTime = 2; % secs longer for better phase estimation of low frqs
 Params.BufferSamps = Params.BufferTime * Params.Fs;

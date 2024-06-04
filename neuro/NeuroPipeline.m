@@ -22,6 +22,9 @@ if Neuro.Blackrock,
     if Neuro.ZscoreFeaturesFlag,
         Neuro = ZscoreFeatures(Neuro);
     end
+
+    % apply temporal smoothing here
+    
 end
 
 % override neural data if generating neural features
