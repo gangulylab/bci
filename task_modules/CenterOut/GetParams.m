@@ -37,9 +37,13 @@ Params.MaxVelocity              = 200;
 %% Sync to Blackrock
 Params.ArduinoSync = true;
 
+%% Neural feature smoothing
+Params.SmoothDataFlag = true;
+Params.FeatureBufferSize = 5;
+
 %% Timing
-Params.ScreenRefreshRate = 10; % Hz
-Params.UpdateRate = 10; % Hz
+Params.ScreenRefreshRate = 5; % Hz
+Params.UpdateRate = 5; % Hz
 
 %% Targets
 Params.TargetSize = 30;

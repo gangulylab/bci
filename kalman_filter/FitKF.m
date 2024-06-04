@@ -105,7 +105,8 @@ for i=1:length(datafiles),
         Xfull = cat(2,Xfull,TrialData.IntendedCursorState(:,tidx));
     end
     T = cat(2,T,TrialData.NeuralTime(tidx));
-    Y = cat(2,Y,TrialData.NeuralFeatures{tidx});
+    %Y = cat(2,Y,TrialData.NeuralFeatures{tidx});
+    Y = cat(2,Y,TrialData.SmoothedNeuralFeatures{tidx});
 end
 
 % interpolate to get cursor pos and vel at neural times

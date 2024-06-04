@@ -103,6 +103,8 @@ if ~Data.ErrorID && Params.InterTrialInterval>0,
                     Data.KalmanFilter{end+1} = [];
                 end
             end
+
+            
             
             Screen('Flip', Params.WPTR);
         end
@@ -183,6 +185,8 @@ if ~Data.ErrorID && ~Params.CenterReset && TaskFlag>1,
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            % task state
+            Cursor.TaskState = 1;
             
             % start target
             StartRect = Params.TargetRect; % centered at (0,0)
@@ -293,6 +297,8 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0,
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            % task state
+            Cursor.TaskState = 2;
             
             % start target
             StartRect = Params.TargetRect; % centered at (0,0)
@@ -415,6 +421,8 @@ if ~Data.ErrorID,
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
+            % task state
+            Cursor.TaskState = 3;
             
             % reach target
             ReachRect = Params.TargetRect; % centered at (0,0)
