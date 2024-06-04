@@ -37,8 +37,8 @@ if strcmpi(Subject,'Test'), Subject = 'Test'; end % ignore case
 
 %% Set up path for running task dependent code
 if IsWin,
-    homedir = 'C:\Users\ganguly-lab2';
-    projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
+    homedir = 'C:\Users\nikic\Documents\MATLAB\BCI_Online_Code_testing_Data';
+    projectdir = fullfile('C:\Users\nikic\Documents\GitHub\bci');
 elseif IsOSX,
     homedir = '/Users/daniel/';
     projectdir = '/Users/daniel/Projects/bci/';
