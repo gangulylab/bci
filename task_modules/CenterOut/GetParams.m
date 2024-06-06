@@ -13,15 +13,15 @@ switch Params.ControlMode,
 end
 
 %% Control
-Params.CenterReset      = false; % if true, cursor automatically is at center at trial start
+Params.CenterReset      = true; % if true, cursor automatically is at center at trial start
 Params.Assistance       = 0; %0.05; % value btw 0 and 1, 1 full assist
 Params.DaggerAssist 	= false;
 
 Params.CLDA.Type        = 3; % 0-none, 1-refit, 2-smooth batch, 3-RML
 Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & lambda for rml
 
-Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
-Params.BaselineTime         = 0; % secs
+Params.InitializationMode   = 3; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
+Params.BaselineTime         = 120; % secs
 Params.BadChannels          = [];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
