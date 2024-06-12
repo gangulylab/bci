@@ -285,6 +285,7 @@ sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 Params.RobotMode    = 5; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
+Params.view = 1;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
 
 if Params.RobotMode == 1 % lateral R2G boxes
     Params.ValidDir             = [1:9];
@@ -377,22 +378,22 @@ elseif Params.RobotMode == 4 % TopDown with assist
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
     
-elseif Params.RobotMode == 5 % Auto-pose 2 object
+elseif Params.RobotMode == 5 % Three object assist
     Params.ValidDir          = [1:9];
     Params.StartPos          = [-250, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
-    Params.wristStartX = 3.1415*10; 
+%     Params.wristStartX = 3.1415*10; 
     Params.wristStartZ = 0; 
     Params.autoCenterOverTarget = 0;
     Params.autoCenterDist = 10;
     Params.zlim = 5;
-    Params.graspOrientation = 0;
+    Params.graspOrientation = 1;
     
 %     Params.StartWristX = [3.1415]*10;    
-    Params.StartWristX = [3.1415]/2*10;
-    Params.wristStartX = 3.1415/2*10;
+    Params.StartWristX = [3.1415]*10;
+    Params.wristStartX = 3.1415*10;
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     Params.UseNewAutoGrasp = 2;
@@ -403,9 +404,10 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
     
-    Params.AssistMode = 1;  %1: blended,  2: flexible autocomplete
+    Params.AssistMode = 2;  %1: blended,  2: flexible autocomplete
+    Params.view = 2;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
     
-elseif Params.RobotMode == 6 % Auto-pose 2 object
+elseif Params.RobotMode == 6 % Drawer Task
     Params.ValidDir          = [1:9];
     Params.StartPos          = [100, -250, 400];
 %     Params.StartPos          = [100, -200, 200];
@@ -443,6 +445,7 @@ elseif Params.RobotMode == 6 % Auto-pose 2 object
     Params.pDiag = 0.8;
     Params.slowThresh = 1;
     
+    Params.view =3;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
 end
 
 % Params.GoalPos1     = [0, 50, 220];  %red short
@@ -509,9 +512,9 @@ Params.FlipBinThresh    = 3;
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
 
-Params.view = 3;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
+
 Params.UseModeSwitch = 0;
-Params.PreviewTarget = 0;
+Params.PreviewTarget = 1;
 
 % Display settings for Eye-gaze Sync
 Params.ShowFlash        = 1;

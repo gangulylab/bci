@@ -273,14 +273,14 @@ if ~Data.ErrorID
             Data.FilteredClickerState(1,end+1) = RunningMode_ClickDec;
 
             % Beta stopping
-            beta_scalar = betaband_output(Params,Neuro); 
-            Data.BetaScalar(1,end+1)    = beta_scalar;
-            if Params.UseBetaStop
-                 if (beta_scalar >= Params.BetaThreshold)
-                     ClickToSend = 0;
-                 end
-                Data.BetaClickerState(1,end+1) = ClickToSend;
-            end
+%             beta_scalar = betaband_output(Params,Neuro); 
+%             Data.BetaScalar(1,end+1)    = beta_scalar;
+%             if Params.UseBetaStop
+%                  if (beta_scalar >= Params.BetaThreshold)
+%                      ClickToSend = 0;
+%                  end
+%                 Data.BetaClickerState(1,end+1) = ClickToSend;
+%             end
 
             nFlips = 0;
             if Params.FlipStop
