@@ -294,14 +294,14 @@ if ~Data.ErrorID
                 end
                 
                 % Beta stopping
-                beta_scalar = betaband_output(Params,Neuro); 
-                Data.BetaScalar(1,end+1)    = beta_scalar;
-                if Params.UseBetaStop
-                     if (beta_scalar >= Params.BetaThreshold)
-                         ClickToSend = 0;
-                     end
-                    Data.BetaClickerState(1,end+1) = ClickToSend;
-                end
+%                 beta_scalar = betaband_output(Params,Neuro); 
+%                 Data.BetaScalar(1,end+1)    = beta_scalar;
+%                 if Params.UseBetaStop
+%                      if (beta_scalar >= Params.BetaThreshold)
+%                          ClickToSend = 0;
+%                      end
+%                     Data.BetaClickerState(1,end+1) = ClickToSend;
+%                 end
                 
                 fprintf('Decode: %i \n',RunningMode_ClickDec)
 

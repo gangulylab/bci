@@ -74,11 +74,11 @@ Params.MultiDecisionBoundary =-2;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231117_CL2_NoPooling';
-   %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
+%    Params.NeuralNetFunction = 'MLP_9Dir_B1_20240517_CL3_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B1_20240612_CL3_NoPooling';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -86,7 +86,7 @@ end
 
 %% NEURAL NET2 (USED FOR PNP)
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 Params.NeuralNet2UseAllFeat=true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;
@@ -362,7 +362,7 @@ Params.ClampCorrect     = 0;
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
-Params.view = 3;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
+Params.view = 2;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
 
 % Display settings for Eye-gaze Sync
 Params.ShowFlash        = 1;

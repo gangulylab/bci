@@ -44,7 +44,7 @@ if Params.ClickerDataCollection,
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -74,12 +74,12 @@ Params.MultiDecisionBoundary =-2;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231115_CL3_NoPooling';
+%    Params.NeuralNetFunction = 'MLP_7Dir_B3_20231115_CL3_NoPooling';
    %Params.NeuralNetFunction = 'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2';
-   %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
+   Params.NeuralNetFunction = 'MLP_4Dir_B1_20240605_CL3_NoPooling';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -87,8 +87,8 @@ end
 
 %% NEURAL NET2 (USED FOR PNP)
 
-Params.NeuralNet2Flag = true;
-Params.NeuralNet2UseAllFeat=true;
+Params.NeuralNet2Flag = false;
+Params.NeuralNet2UseAllFeat=false;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;
     if Params.NeuralNet2UseAllFeat
@@ -234,9 +234,13 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-% Cardinal Directions
-Params.NumTrialsPerBlock    = 6;
-Params.TargetOrder          = [1:6];
+% Cardinal Directions 4Dof
+Params.NumTrialsPerBlock    = 8;    % 4 target (RT, LT, RtWristExtension, RtWristFlexion)
+Params.TargetOrder          = [1:4, 7:10];
+
+% % Cardinal Directions
+% Params.NumTrialsPerBlock    = 6;
+% Params.TargetOrder          = [1:6];
 
 %Diagonals in the Horizontal Plane
 % Params.NumTrialsPerBlock    = 4;
@@ -348,7 +352,7 @@ Params.dB = Params.dB*Params.k_i;
 Params.LongTrial = 0;
 
 % Clicker
-Params.RobotClicker     = 1;     % 0: trial ends with hold time, 1: trial ends with click
+Params.RobotClicker     = 0;     % 0: trial ends with hold time, 1: trial ends with click
 Params.ClickerBinNum    = 1;
 Params.ClickerBinThresh = 0.1;
 

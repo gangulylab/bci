@@ -7,8 +7,8 @@ close all
 
 % IMAGINED
 clc;clear
-root_path = '/home/ucsf/Data/Bravo1/20240522/HandImagined';
-foldernames = {'103410', '104032', '104409', '105436', '105817', '110148', '110624'};
+root_path = '/home/ucsf/Data/bravo1/20240524/HandImagined';
+foldernames = {'110250', '110829', '111740', '112416', '113043', '113422'};
 cd(root_path)
 
 
@@ -104,8 +104,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo1/20240522/HandOnline';
-foldernames = {'112404', '112809', '113728', '114116', '114913', '120606', '120855', '121135'};
+root_path = '/home/ucsf/Data/bravo1/20240524/HandOnline';
+foldernames = {'114724', '115312', '115639','120528','120848','121404'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -225,7 +225,7 @@ net = net_mlp_hand;
 %net.performParam.regularization=0.3;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_Hand_20240522_CL3_NoPooling_MimeHand')
+genFunction(net,'MLP_Hand_20240524_CL3_NoPooling_MimeHand')
 
 
 %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%

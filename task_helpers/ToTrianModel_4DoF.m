@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/Bravo3/20231117/Robot3DArrow';
-foldernames = {'151638', '152330','152731','153105','153525'};
+root_path = '/home/ucsf/Data/bravo1/20240605/Robot3DArrow';
+foldernames = {'133416', '133908', '134210', '134756', '135160', '135405', '135620', '135822', '140030'};
 cd(root_path)
 
 
@@ -67,8 +67,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/Bravo3/20231117/Robot3DArrow';
-foldernames = {'154040','154341','154645','155001'};
+root_path = '/home/ucsf/Data/bravo1/20240605/Robot3DArrow';
+foldernames = {'141218', '141405', '141607', '143213', '144321', '144528', '144731'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -119,57 +119,57 @@ end
 
 
 %ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
-root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
-foldernames = {'113952', '114341', '114820', '115318', '120050', '120326'};
-cd(root_path)
-
-for i=1:length(foldernames)
-    folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
-    D=dir(folderpath);
-    for j=3:length(D)
-        filepath=fullfile(folderpath,D(j).name);
-        load(filepath)
-        features  = TrialData.SmoothedNeuralFeatures;
-        kinax = find(TrialData.TaskState==3);
-        features =  features(kinax);
-        l = min(length(features),8);
-        features=features(1:l);
-        temp = cell2mat(features);
-
-        % get delta, beta and hG removing bad channels
-        temp = temp([257:512 1025:1280 1537:1792],:);
-        bad_ch = sort([108 113 118 TrialData.Params.SetBadChannels]);
-        %bad_ch = [108 113 118];
-        good_ch = ones(size(temp,1),1);
-        for ii=1:length(bad_ch)
-            %bad_ch_tmp = bad_ch(ii)*[1 2 3];
-            bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
-            good_ch(bad_ch_tmp)=0;
-        end
-        temp = temp(logical(good_ch),:);
-
-       % 2-norm
-        for ii=1:size(temp,2)
-            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
-        end
-
-        if TrialData.TargetID == 1
-            D1 = [D1 temp];
-        elseif TrialData.TargetID == 2
-            D2 = [D2 temp];
-        elseif TrialData.TargetID == 3
-            D3 = [D3 temp];
-        elseif TrialData.TargetID == 4
-            D4 = [D4 temp];
-%         elseif TrialData.TargetID == 5
-%             D5 = [D5 temp];
-%         elseif TrialData.TargetID == 6
-%             D6 = [D6 temp];
-%         elseif TrialData.TargetID == 7
-%             D7 = [D7 temp];
-        end
-    end
-end
+% root_path = '/home/ucsf/Data/Bravo3/20230420/Robot3D';
+% foldernames = {};
+% cd(root_path)
+% 
+% for i=1:length(foldernames)
+%     folderpath = fullfile(root_path, foldernames{i},'BCI_Fixed');
+%     D=dir(folderpath);
+%     for j=3:length(D)
+%         filepath=fullfile(folderpath,D(j).name);
+%         load(filepath)
+%         features  = TrialData.SmoothedNeuralFeatures;
+%         kinax = find(TrialData.TaskState==3);
+%         features =  features(kinax);
+%         l = min(length(features),8);
+%         features=features(1:l);
+%         temp = cell2mat(features);
+% 
+%         % get delta, beta and hG removing bad channels
+%         temp = temp([257:512 1025:1280 1537:1792],:);
+%         bad_ch = sort([108 113 118 TrialData.Params.SetBadChannels]);
+%         %bad_ch = [108 113 118];
+%         good_ch = ones(size(temp,1),1);
+%         for ii=1:length(bad_ch)
+%             %bad_ch_tmp = bad_ch(ii)*[1 2 3];
+%             bad_ch_tmp = bad_ch(ii)+(256*[0 1 2]);
+%             good_ch(bad_ch_tmp)=0;
+%         end
+%         temp = temp(logical(good_ch),:);
+% 
+%        % 2-norm
+%         for ii=1:size(temp,2)
+%             temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+%         end
+% 
+%         if TrialData.TargetID == 1
+%             D1 = [D1 temp];
+%         elseif TrialData.TargetID == 2
+%             D2 = [D2 temp];
+%         elseif TrialData.TargetID == 3
+%             D3 = [D3 temp];
+%         elseif TrialData.TargetID == 4
+%             D4 = [D4 temp];
+% %         elseif TrialData.TargetID == 5
+% %             D5 = [D5 temp];
+% %         elseif TrialData.TargetID == 6
+% %             D6 = [D6 temp];
+% %         elseif TrialData.TargetID == 7
+% %             D7 = [D7 temp];
+%         end
+%     end
+% end
 
 
 
@@ -237,7 +237,7 @@ net.divideParam.valRatio=0.10;
 net.divideParam.testRatio=0.1;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_B3_20231117_CL2_NoPooling')
+genFunction(net,'MLP_4Dir_B1_20240605_CL3_NoPooling')
 % save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
@@ -246,7 +246,7 @@ genFunction(net,'MLP_7Dir_B3_20231117_CL2_NoPooling')
 
 cd('/home/ucsf/Projects/bci')
 % clear;clc
-% ExperimentStart('Robot3DArrow','Bravo3',4,1,0)
+% ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %ExperimentStart('Robot3D','Bravo3',4,1,0)
 
 

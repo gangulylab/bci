@@ -44,7 +44,7 @@ if Params.ClickerDataCollection
 end
 
 %% Sync to Blackrock
-Params.ArduinoSync = false;
+Params.ArduinoSync = true;
 
 %% Update rate in pixels if decoded correctly 
 % expressed as a percentage of the overall target distance
@@ -83,8 +83,8 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_9Dir_B1_20240517_CL3_NoPooling';
-   %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
+%    Params.NeuralNetFunction = 'MLP_9Dir_B1_20240517_CL3_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B1_20240612_CL2_NoPooling';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -220,15 +220,18 @@ Params.NumImaginedBlocks    = 0;
 Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
-% Params.NumTrialsPerBlock    = 21;              % standard 7
-% Params.TargetOrder          = [1:7,1:7,1:7];
+% Params.NumTrialsPerBlock    = 12;              % 4 target (RT, LT, RtWristExtension, RtWristFlexion)
+% Params.TargetOrder          = [1:4,1:4,1:4];
+
+Params.NumTrialsPerBlock    = 21;              % standard 7
+Params.TargetOrder          = [1:7,1:7,1:7];
 
 % Params.NumTrialsPerBlock    = 15;                % co-activation - center plane
 % Params.TargetOrder          = [[1, 2, 4, 10, 11],[1, 2, 4, 10, 11], [1, 2, 4, 10, 11]];
-
-Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
-Params.TargetOrder          = [1:9,1:9,1:9];
 % 
+% Params.NumTrialsPerBlock    = 27;              % 9 target (wrist rotation)
+% Params.TargetOrder          = [1:9,1:9,1:9];
+% % 
 % Params.NumTrialsPerBlock    = 4;                % co-activation - center plane
 % Params.TargetOrder          = [10:13];
 % 
