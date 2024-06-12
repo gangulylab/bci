@@ -39,7 +39,7 @@ Params.MaxVelocity              = 200;
 Params.ClickerBins = -1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
 Params.ClickerDataCollection = true; % if true, does not use clicker, freezes cursor when in target
-if Params.ClickerDataCollection,
+if Params.ClickerDataCollection
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
@@ -264,7 +264,7 @@ Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
 % Params.MaxReachTime = 7;
-Params.MaxReachTime = 10;  %online
+Params.MaxReachTime = 8;  %online
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -278,17 +278,19 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
-
 Params.RobotMode            = 5;  % 1: Horizontal, 2: Vertical, 3: 3D robot 
 
-Params.ValidDir             = [1:7];
-Params.StartPos             = [-50,50,300];
-Params.StartPos             =     [0,0,300];
+Params.ValidDir             = [1:9];
+Params.StartPos             = [90, 0, 250];  % table
+% Params.StartPos             = [-50, 50, 300];  % drawer
+Params.NumTrialsPerBlock    = 14;
+Params.TargetOrder          = [1:7, 1:7];
 
 Params.index = 1;
 Params.clickOrder = [9*ones(50,1),8*ones(50,1)];
 
 Params.RobotDirectionLines  = 1;  % 0: No lines, 1: Lines
+Params.TargetOrder          = [Params.TargetOrder, 1];
 Params.RunningModeBinNum    = 5;  % 1: No filtering, 3+: running mode filter of last n bins: Try 4 bins?
 Params.RunningModeZero      = 1;  % 1: No motion if no winner, 0: maintain prior decision if no winner
 
@@ -320,9 +322,7 @@ Params.boundaryDist     = 0;
 Params.boundaryVel      = 0;
 Params.AssistAlpha      = 0.0;
 Params.AutoGrasp = 1;
-
 Params.GraspTask = 1;
-
 Params.autoCenterOverTarget = 0;
 Params.autoCenterDist = 8;
 
@@ -330,19 +330,31 @@ Params.OperationModeReset = 0;
 Params.wristStartX = 3.1415*10; % vertical
 % Params.wristStartX = 3.1415/2*10; %horixtonal
 Params.wristStartZ = 0; 
-
-Params.SwitchBinNum     = 8;
-Params.SwitchBinThresh  = 0.7;
-Params.GraspBinNum      = 8;
-Params.GraspBinThresh   = 0.7;
-Params.graspOrientation = 0;
-
-% Params.wl = [-50, -60, 5];
-% Params.wu = [5, -15 45];
-Params.wl = [-45, -55, 10];
-Params.wu = [-5, -15, 50];
 Params.zlim = 10;
 
+% Params.wristStartX = 3.1415/2*10; 
+Params.wristStartZ = 0; 
+Params.zlim = 7;
+
+Params.SwitchBinNum = 8;
+Params.SwitchBinThresh = 0.7;
+Params.GraspBinNum = 8;
+Params.GraspBinThresh = 0.7;
+Params.graspOrientation     = 1;
+
+
+Params.wl = [-45, -55, 10];
+Params.wu = [-5, -15, 50];
+
+
+% % for drawer
+%     Params.ValidDir          = [1:9];
+%     Params.StartPos          = [50, -50, 400];    
+%     Params.StartWristX = [3.1415]/2*10;
+%     Params.wristStartX = 3.1415/2*10;
+%     Params.WaitForGraspSignal   = 1;
+%     Params.wl           = [-30, -60, 10];
+%     Params.wu           = [30, -30,  60];
 
 Params.ClampCorrect     = 0;
 
@@ -350,6 +362,9 @@ Params.ClampCorrect     = 0;
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
-Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
-Params.DisableModeSwitch = 1;
+Params.view = 3;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
+
+% Display settings for Eye-gaze Sync
+Params.ShowFlash        = 1;
+Params.FlashDuration    = 50; %ms
 end % GetParams

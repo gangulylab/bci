@@ -47,7 +47,7 @@ DataFields = struct(...
     'BetaClickerState',[],...
     'LSTMFeatures',{{}});
 
-switch TaskFlag
+switch TaskFlag,
     case 1, NumBlocks = Params.NumImaginedBlocks;
     case 2, NumBlocks = Params.NumAdaptBlocks;
     case 3, NumBlocks = Params.NumFixedBlocks;
@@ -91,15 +91,15 @@ write(Params.udp, [0,22, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.py
 write(Params.udp, [0,23, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
 
 % write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
-
 write(Params.udp, [0,33,0,0,0,100 ,100 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,35,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 write(Params.udp, [0,36,Params.view,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-write(Params.udp, [0,37,Params.DisableModeSwitch,0,0,0 ,0 ,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 % fwrite(Params.udp, [0,2,Params.UpdateRate])  % set update rate
 % fwrite(Params.udp, [0,3,Params.RobotMode])   % set robot mode
 % fwrite(Params.udp, [0,4,Params.RobotDirectionLines])   % set debug lines
 
-pause(3.0)
+pause(5.0)
 
 %%  Loop Through Blocks of Trials
 Trial = 0;

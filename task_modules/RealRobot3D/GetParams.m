@@ -39,7 +39,7 @@ Params.MaxVelocity              = 200;
 Params.ClickerBins = -1; % set to -1 to use target hold time instead of click
 Params.DecisionBoundary= -0.5;
 Params.ClickerDataCollection = true; % if true, does not use clicker, freezes cursor when in target
-if Params.ClickerDataCollection,
+if Params.ClickerDataCollection
     Params.ClickerBins = -1; % must override to not use clicker
 end
 
@@ -243,13 +243,13 @@ Params.CLDA.FinalLambda = FinalLambda; % for RML
 Params.CLDA.FixedRmlFlag = false; % for RML during fixed
 Params.CLDA.FixedLambda = FinalLambda; % for RML during fixed
 
-switch Params.CLDA.AdaptType,
-    case 'none',
+switch Params.CLDA.AdaptType
+    case 'none'
         Params.CLDA.DeltaLambda = 0;
         Params.CLDA.DeltaAssistance = 0;
-    case 'linear',
-        switch Params.CLDA.Type,
-            case 2, % smooth batch
+    case 'linear'
+        switch Params.CLDA.Type
+            case 2 % smooth batch
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /(Params.NumAdaptBlocks*Params.NumTrialsPerBlock*5/Params.CLDA.UpdateTime);
@@ -257,7 +257,7 @@ switch Params.CLDA.AdaptType,
                 Params.CLDA.DeltaAssistance = ... % linearly decrease assistance
                     Params.Assistance...
                     /((Params.NumAdaptBlocks-1)*Params.NumTrialsPerBlock);
-            otherwise, % none or refit
+            otherwise % none or refit
                 Params.CLDA.DeltaAssistance = 0;
         end
 end
@@ -268,7 +268,7 @@ Params.InterTrialInterval = 1;
 Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
-Params.MaxReachTime = 120;
+Params.MaxReachTime = 180;
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
 
@@ -282,16 +282,9 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
-
 Params.RobotMode    = 5; 
-
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
-
-Params.wl = [-45, -55, 10];
-Params.wu = [-5, -15, 45];
-Params.zlim = 10;
-
 
 if Params.RobotMode == 1 % lateral R2G boxes
     Params.ValidDir             = [1:9];
@@ -357,7 +350,7 @@ elseif Params.RobotMode == 3  % lateral R2G wall
     Params.UseHeightDist  = 0;
     Params.AutoGraspHorzDist = 10;
     Params.AutoGraspVertDist = 15;
-    Params.autoCenterDist       = 5;
+Params.autoCenterDist       = 5;
     
 elseif Params.RobotMode == 4 % TopDown with assist
     Params.ValidDir          = [1:9];
@@ -386,7 +379,7 @@ elseif Params.RobotMode == 4 % TopDown with assist
     
 elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.ValidDir          = [1:9];
-    Params.StartPos          = [-300, 0,350];
+    Params.StartPos          = [-250, 0,350];
     Params.NumTrialsPerBlock    = 1;
     Params.TargetOrder          = [1];   
     Params.OperationModeReset = 0;
@@ -397,8 +390,9 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.zlim = 5;
     Params.graspOrientation = 0;
     
-    Params.StartWristX = [3.1415]*10;    
-%     Params.StartWristX = [3.1415]/2*10;                    
+%     Params.StartWristX = [3.1415]*10;    
+    Params.StartWristX = [3.1415]/2*10;
+    Params.wristStartX = 3.1415/2*10;
     Params.StartWristZ = 10*[0];
     Params.StartWristY = 10*[0];    
     Params.UseNewAutoGrasp = 2;
@@ -409,7 +403,45 @@ elseif Params.RobotMode == 5 % Auto-pose 2 object
     Params.wl           = [-50, -67, 16];
     Params.wu           = [5, -15 50];
     
-    Params.AssistMode = 2;
+    Params.AssistMode = 1;  %1: blended,  2: flexible autocomplete
+    
+elseif Params.RobotMode == 6 % Auto-pose 2 object
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [100, -250, 400];
+%     Params.StartPos          = [100, -200, 200];
+    Params.NumTrialsPerBlock    = 1;
+    Params.TargetOrder          = [1];   
+    Params.OperationModeReset = 0;
+    Params.wristStartX = 3.1415*10; 
+    Params.wristStartZ = 0; 
+    Params.autoCenterOverTarget = 0;
+    Params.autoCenterDist = 10;
+    Params.zlim = 5;
+    Params.graspOrientation = 0;
+    
+%     Params.StartWristX = [3.1415]*10;    
+    Params.StartWristX = [3.1415]/2*10;
+    Params.wristStartX = 3.1415/2*10;
+    Params.StartWristZ = 10*[0];
+    Params.StartWristY = 10*[0];    
+    Params.UseNewAutoGrasp = 2;
+    Params.UseHeightDist  = 1;
+    Params.AutoGraspHorzDist = 10;
+    Params.AutoGraspVertDist = 15;
+    Params.WaitForGraspSignal   = 1;
+    Params.wl           = [-25, -75, 10];
+    Params.wu           = [25, -35,  55];
+    
+    Params.AssistMode = 2;  %1: blended,  2: flexible autocomplete
+
+    % belief
+    Params.BeliefThresh = 0.25;
+    Params.distB = .4;
+    Params.distK = 3;
+    Params.velB = 0.4;
+    Params.velK = 0.4;
+    Params.pDiag = 0.8;
+    Params.slowThresh = 1;
     
 end
 
@@ -458,9 +490,9 @@ Params.GraspTask        = 1;
 Params.lowGainMode      = 0;
 Params.autoCenterOverTarget    = 0;
 
-Params.SwitchBinNum     = 5;   %Gripper Open/Close
+Params.SwitchBinNum     = 8;
 Params.SwitchBinThresh  = 0.74;
-Params.GraspBinNum      = 5;
+Params.GraspBinNum      = 8;
 Params.GraspBinThresh   = 0.74;
 Params.InputBinNum      = 5;
 Params.InputBinThresh   = 0.7;
@@ -477,7 +509,12 @@ Params.FlipBinThresh    = 3;
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
 
-Params.view = 2;   % 1  = far-side of table, 2 = near-side of table
+Params.view = 3;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
 Params.UseModeSwitch = 0;
 Params.PreviewTarget = 0;
+
+% Display settings for Eye-gaze Sync
+Params.ShowFlash        = 1;
+Params.FlashDuration    = 50; %ms
+
 end % GetParams

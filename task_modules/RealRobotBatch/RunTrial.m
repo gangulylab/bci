@@ -7,8 +7,8 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 global Cursor
 
 %% Set up trial
-
-if Params.OperationModeReset == 0
+write(Params.udp, [0,40,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file  %set screen to black
+% if Params.OperationModeReset == 0
 
 if Data.TargetID == 8
     write(Params.udp, [0,12,3.1415*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
@@ -16,34 +16,21 @@ elseif Data.TargetID == 9
     write(Params.udp, [0,12,3.1415/2*10,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 end
 
-% if Data.TargetID == 3
-%     Params.StartPos = [0,0,250];
-% else
-    Params.StartPos = [-50,0,300];
-% end
-
-% elseif Params.OperationModeReset == 1
-% 
-% if Data.TargetID == 6
-%     Params.StartPos = [0,0,250];
-% else
-%     Params.StartPos = [100,0,250];
-% end
-% 
-% end
-
-[xa,xb,xc] = doubleToUDP(Params.StartPos(1));
-[ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
-[za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
-
+% Params.StartPos
+% [xa,xb,xc] = doubleToUDP(Params.StartPos(1));
+% [ya,yb,yc] = doubleToUDP(Params.StartPos(2)); 
+% [za,zb,zc] = doubleToUDP(Params.StartPos(3) - 256) ;
 % write(Params.udp, [4, xa,xb,xc,ya,yb,yc, za,zb,zc, 0], "127.0.0.1", Params.pythonPort) ; % send pos
+
 % write(Params.udp, [0,2,Params.RobotMode,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
 % write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort);                  % reset robot
 
-% if Data.TargetID == 3 && Params.OperationModeReset == 1
-%     l = "LEFT"
-%     write(Params.udp, [0,27,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-% end
+if Data.TargetID == 3 && Params.OperationModeReset == 1
+    l = "LEFT"
+    write(Params.udp, [0,27,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+end
+
+
 
 write(Params.udp, [0,5,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file     
 ReachTargetPos = Data.TargetPosition;
@@ -52,28 +39,22 @@ TargetID = 0; % Target that cursor is in, 0 for no targets
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
 
-TargetName = {'Right Hand', 'Leg', 'Left Hand', 'Head', 'Up', 'Tongue', 'Both Hands', 'Right Wrist', 'Left Wrist'};
+TargetName = {'Right Thumb', 'Left Leg', 'Left Thumb', 'Right Wrist', 'Lips', 'Tongue', 'Both Middle Fingers', 'Right Wrist', 'Left Wrist'};
 
 fprintf('TARGET: %s\n',TargetName{Data.TargetID})
+fprintf('Press any key if robot at start position')
 
-% fprintf('  Target: %i\n',Data.TargetPosition)
-if Params.Verbose
-    if TaskFlag==2
-        fprintf('    Cursor Assistance: %.2f%%\n',100*Cursor.Assistance)
-        if Params.CLDA.Type==3
-            fprintf('    Lambda 1/2 life: %.2fsecs\n',KF.Lambda)
-        end
-    end
-end
+pause()  % pause to make sure robot is at start position
+
 
 % keep track of update times
 dt_vec = [];
 dT_vec = [];
 
 % grab blackrock data and run through processing pipeline
+Cursor.LastPredictTime = GetSecs;
+Cursor.LastUpdateTime = Cursor.LastPredictTime;
 if Params.BLACKROCK
-    Cursor.LastPredictTime = GetSecs;
-    Cursor.LastUpdateTime = Cursor.LastPredictTime;
     Neuro = NeuroPipeline(Neuro,[],Params);
 end
 
@@ -87,14 +68,11 @@ else
 end
     Cursor.IntendedState = [0,0,0,0,1]';
 
-
 Cursor.ClickState = 0;
 Cursor.ClickDistance = 0;
 inTargetOld = 0;
 
-% pause(4.0)
 
-pause()
 %% Instructed Delay
 if ~Data.ErrorID && Params.InstructedDelayTime>0
     tstart  = GetSecs;
@@ -105,12 +83,23 @@ if ~Data.ErrorID && Params.InstructedDelayTime>0
     done = 0;
     TotalTime = 0;
     InTargetTotalTime = 0;
+    
+    if Params.ShowFlash
+        % send command for green screen
+        write(Params.udp, [0,40,2,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file   
+    end     
+    
     while ~done
         % Update Time & Position
         tim = GetSecs;
         
         % for pausing and quitting expt
         if CheckPause, [Neuro,Data,Params] = ExperimentPause(Params,Neuro,Data); end
+        
+        if (tim - tstart) > Params.FlashDuration/1000 
+            % send
+            write(Params.udp, [0,40,0,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file  
+        end
         
         % Update Screen
         if (tim-Cursor.LastPredictTime) > 1/Params.ScreenRefreshRate
@@ -164,13 +153,7 @@ if ~Data.ErrorID && Params.CueTime>0
     InTargetTotalTime = 0;
     
     write(Params.udp, [0, 29, Data.TargetID,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
-%     Send target position
-%     [xa,xb,xc] = doubleToUDP(ReachTargetPos(1));
-%     [ya,yb,yc] = doubleToUDP(ReachTargetPos(2)); 
-%     [za,zb,zc] = doubleToUDP(ReachTargetPos(3)-256) ;
-% 
-%     write(Params.udp, [1, xa,xb,xc,ya,yb,yc,za,zb,zc, Data.TargetID], "127.0.0.1", Params.pythonPort); 
-%     
+
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -221,6 +204,7 @@ end % only complete if no errors
 %% Go to reach target
 
 if ~Data.ErrorID
+    write(Params.udp, [0,40,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); % open file  
     tstart  = GetSecs;
     Data.Events(end+1).Time = tstart;
     Data.Events(end).Str  = 'Reach Target';
@@ -310,15 +294,14 @@ if ~Data.ErrorID
                 end
                 
                 % Beta stopping
-%                 beta_scalar = betaband_output(Params,Neuro); 
-beta_scalar = [];
-%                 Data.BetaScalar(1,end+1)    = beta_scalar;
-%                 if Params.UseBetaStop
-%                      if (beta_scalar >= Params.BetaThreshold)
-%                          ClickToSend = 0;
-%                      end
-%                     Data.BetaClickerState(1,end+1) = ClickToSend;
-%                 end
+                beta_scalar = betaband_output(Params,Neuro); 
+                Data.BetaScalar(1,end+1)    = beta_scalar;
+                if Params.UseBetaStop
+                     if (beta_scalar >= Params.BetaThreshold)
+                         ClickToSend = 0;
+                     end
+                    Data.BetaClickerState(1,end+1) = ClickToSend;
+                end
                 
                 fprintf('Decode: %i \n',RunningMode_ClickDec)
 
@@ -409,6 +392,7 @@ if Params.InterTrialInterval>0
     InTargetTotalTime = 0;
 
     write(Params.udp, [0,1,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -435,7 +419,6 @@ if Params.InterTrialInterval>0
                 [Neuro,Data] = NeuroPipeline(Neuro,Data,Params);   
             end
             
-            
             Data.CursorState(:,end+1) = Cursor.State;
             Data.IntendedCursorState(:,end+1) = Cursor.IntendedState;
             Data.CursorAssist(1,end+1) = Cursor.Assistance;
@@ -445,8 +428,7 @@ if Params.InterTrialInterval>0
             Data.StopState(1,end+1)=0;
                      
             % start counting time            
-            InTargetTotalTime = InTargetTotalTime + dt;
-           
+            InTargetTotalTime = InTargetTotalTime + dt;     
         end
         
         % end if in start target for hold time
@@ -458,14 +440,6 @@ end % only complete if no errors
 
 
 %% Completed Trial - Give Feedback
-
-% output update times
-if Params.Verbose
-    fprintf('      Screen Update: Goal=%iHz, Actual=%.2fHz (+/-%.2fHz)\n',...
-        Params.ScreenRefreshRate,mean(1./dt_vec),std(1./dt_vec))
-    fprintf('      System Update: Goal=%iHz, Actual=%.2fHz (+/-%.2fHz)\n',...
-        Params.UpdateRate,mean(1./dT_vec),std(1./dT_vec))
-end
 
 % output feedback
 if Data.ErrorID==0
