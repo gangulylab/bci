@@ -42,10 +42,10 @@ disp(['Data split done in ' num2str(iter) ' iterations'])
 
 %%%%%%%% CODE TO BATCH UPDATE THE PNP DECODER %%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
-load net_PnP
-layers=net_PnP.Layers;
-net_PnP_RobotBatchUpdate = trainNetwork(XTrain,YTrain,layers,options);
-save net_PnP_RobotBatchUpdate net_PnP_RobotBatchUpdate %CARRY THIS OVER TO GET PARAMS
+load net_B1_253_TrfLearn
+layers=net_B1_253_TrfLearn.Layers;
+net_B1_253_TrfLearn_BatchUpdate = trainNetwork(XTrain,YTrain,layers,options);
+save net_B1_253_TrfLearn_BatchUpdate net_B1_253_TrfLearn_BatchUpdate %CARRY THIS OVER TO GET PARAMS
 
 
 
