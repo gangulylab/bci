@@ -20,10 +20,12 @@ end
 condn_data_overall = [load_data_for_MLP_TrialLevel_B3_bci(files,1)];
 
 % split the data into validation (20%) and training (80%) sets and get training options
+% IMPORTANT, IF NOT CONVERGING, THEN BREAK AND ADJUST PROPRTION OF SPLIT
+prop=0.85;
 num_classes=7; % 7-actions
 chk = 0;iter=0;
 while chk==0
-    test_idx = randperm(length(condn_data_overall),round(0.8*length(condn_data_overall)));
+    test_idx = randperm(length(condn_data_overall),round(prop*length(condn_data_overall)));
     test_idx=test_idx(:);
     I = ones(length(condn_data_overall),1);
     I(test_idx)=0;
