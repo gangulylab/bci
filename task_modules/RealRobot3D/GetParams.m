@@ -74,10 +74,10 @@ Params.MultiDecisionBoundary =-2;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-   Params.NeuralNetFunction = 'MLP_7Dir_B3_20231117_CL2_NoPooling';
+    Params.NeuralNetFunction = 'MLP_7Dir_B1_20240621_CL4_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -86,7 +86,7 @@ end
 
 %% NEURAL NET2 (USED FOR PNP)
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 Params.NeuralNet2UseAllFeat=true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;
@@ -282,7 +282,7 @@ Params.ErrorSoundFs = 8192;
 sound(0*Params.ErrorSound,Params.ErrorSoundFs)
 
 %% Robotics 
-Params.RobotMode    = 5; 
+Params.RobotMode    = 6; 
 Params.wl           = [-50, -67, 10];
 Params.wu           = [5, -15 55];
 Params.view = 1;   % 1  = far-side of table, 2 = near-side of table % 3 = drawer
@@ -432,7 +432,7 @@ elseif Params.RobotMode == 6 % Drawer Task
     Params.AutoGraspVertDist = 15;
     Params.WaitForGraspSignal   = 1;
     Params.wl           = [-25, -75, 10];
-    Params.wu           = [25, -35,  55];
+    Params.wu           = [25, -35,  70];
     
     Params.AssistMode = 2;  %1: blended,  2: flexible autocomplete
 

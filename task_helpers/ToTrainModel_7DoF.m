@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/bravo1/20240612/Robot3DArrow';
-foldernames = {'102955', '103558', '103931', '104301'};
+root_path = '/home/ucsf/Data/bravo1/20240621/Robot3DArrow';
+foldernames = {'104634', '105305', '105628', '105945', '110422', '110744'};
 cd(root_path)
 
 
@@ -68,8 +68,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/bravo1/20240612/Robot3DArrow';
-foldernames = {'110316', '110649', '110948'};
+root_path = '/home/ucsf/Data/bravo1/20240621/Robot3DArrow';
+foldernames = {'111422', '111843', '112102', '135515', '140114', '140342'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -120,8 +120,8 @@ end
 
 
 % ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
-root_path = '/home/ucsf/Data/bravo1/20240612/RealRobotBatch';
-foldernames = {'112946', '113359'};
+root_path = '/home/ucsf/Data/bravo1/20240621/RealRobotBatch';
+foldernames = {'143842', '144251', '150524', '151223'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -207,10 +207,10 @@ T(aa(1):aa(end),7)=1;
 
 %%%%%%%% CODE TO UPDATE THE PNP DECODER %%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
-% load net_mlp_pnp % this is the original PnP... if updating and saving, use the name below
-% net = net_mlp_pnp;
+% load net_B1_253_TrfLearn % this is the original PnP... if updating and saving, use the name below
+% net = net_B1_253_TrfLearn;
 % net = train(net,N,T','UseParallel','no');
-% genFunction(net,'MLP_7Dir_B3_PnP_04042023_NoPooling_Update2')
+% genFunction(net,'MLP_7Dir_B1Transfer_PnP_06192024_NoPooling_Update')
 % net_mlp_pnp_update1 = net;
 % save net_mlp_pnp_update1 net_mlp_pnp_update1
 %%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
@@ -224,7 +224,7 @@ net.divideParam.valRatio=0.10;
 net.divideParam.testRatio=0.1;
 net = train(net,N,T','UseParallel','no');
 cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_B1_20240612_CL3_NoPooling')
+genFunction(net,'MLP_7Dir_B1_20240621_CL5_NoPooling')
 save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
@@ -233,7 +233,7 @@ save net net
 
 cd('/home/ucsf/Projects/bci')
 % clear;clc
-% ExperimentStart('Robot3DArrow','Bravo1',4,1,0)
+% ExperimentStart('Robot3DArrow','bravo1',4,1,0)
 %ExperimentStart('Robot3D','Bravo3',4,1,0)
 
 

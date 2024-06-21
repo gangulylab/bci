@@ -78,7 +78,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
 %    Params.NeuralNetFunction = 'MLP_9Dir_B1_20240517_CL3_NoPooling';
-   Params.NeuralNetFunction = 'MLP_7Dir_B1_20240612_CL3_NoPooling';
+     Params.NeuralNetFunction = 'MLP_7Dir_B1_20240621_CL4_NoPooling';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -264,6 +264,7 @@ Params.InstructedDelayTime = 1;
 Params.CueTime = 0.75;
 Params.MaxStartTime = 50;
 % Params.MaxReachTime = 7;
+
 Params.MaxReachTime = 8;  %online
 Params.InterBlockInterval = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime = 3;
@@ -345,16 +346,17 @@ Params.graspOrientation     = 1;
 
 Params.wl = [-45, -55, 10];
 Params.wu = [-5, -15, 50];
-
+Params.view = 2;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
 
 % % for drawer
-%     Params.ValidDir          = [1:9];
-%     Params.StartPos          = [50, -50, 400];    
-%     Params.StartWristX = [3.1415]/2*10;
-%     Params.wristStartX = 3.1415/2*10;
-%     Params.WaitForGraspSignal   = 1;
-%     Params.wl           = [-30, -60, 10];
-%     Params.wu           = [30, -30,  60];
+    Params.ValidDir          = [1:9];
+    Params.StartPos          = [50, -50, 400];    
+    Params.StartWristX = [3.1415]/2*10;
+    Params.wristStartX = 3.1415/2*10;
+    Params.WaitForGraspSignal   = 1;
+    Params.wl           = [-30, -60, 10];
+    Params.wu           = [30, -30,  60];
+Params.view = 3;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
 
 Params.ClampCorrect     = 0;
 
@@ -362,7 +364,7 @@ Params.ClampCorrect     = 0;
 Params.UseBetaStop      = 0;
 Params.BetaThreshold    = 0.5;
 
-Params.view = 2;   % 1  = far-side of table, 2 = near-side of table, 3 =  drawer
+
 
 % Display settings for Eye-gaze Sync
 Params.ShowFlash        = 1;

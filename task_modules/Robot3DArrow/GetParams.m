@@ -80,11 +80,11 @@ Params.MultiDecisionBoundary =-2;
 %% Neural network classifier option
 % set this to true to use neural network
 % also set the softmax option
-Params.NeuralNetFlag = false;
+Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
 %    Params.NeuralNetFunction = 'MLP_9Dir_B1_20240517_CL3_NoPooling';
-   Params.NeuralNetFunction = 'MLP_7Dir_B1_20240612_CL2_NoPooling';
+   Params.NeuralNetFunction = 'MLP_7Dir_B1_20240621_CL3_NoPooling';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;
@@ -92,7 +92,7 @@ end
 
 %% NEURAL NET2 (USED FOR PNP)
 
-Params.NeuralNet2Flag = true;
+Params.NeuralNet2Flag = false;
 Params.NeuralNet2UseAllFeat=true;
 if Params.NeuralNet2Flag
     Params.NeuralNet2SoftMaxThresh = 0.4;

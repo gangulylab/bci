@@ -6,6 +6,15 @@ close all
 % PATH
 addpath('/home/ucsf/Projects/bci/task_helpers')
 
+% VIRTUAL DATA
+root_path = '/home/ucsf/Data/bravo1/20240619/Robot3DArrow';
+folders = {'103003', '103544', '103903','104231','104550','104921'};
+files=[];
+for ii=1:length(folders)
+    folderpath = fullfile(root_path, folders{ii},'Imagined');     
+    files = [files;findfiles('',folderpath)'];
+end
+
 % ROBOT DATA
 %root_path= 'F:\DATA\ecog data\ECoG BCI\GangulyServer\Multistate B3\20231127\Robot3D'
 root_path = '/home/ucsf/Data/Bravo3/20231229/RealRobotBatch';
