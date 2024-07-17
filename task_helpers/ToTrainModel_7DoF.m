@@ -119,9 +119,9 @@ end
 
 
 
-% ROBOT DATA AS WELL --> FIRST 5 BINS OR 1.0S
-root_path = '/home/ucsf/Data/bravo1/20240621/RealRobotBatch';
-foldernames = {'143842', '144251', '150524', '151223'};
+% ROBOT DATA AS WELL 
+root_path = '/home/ucsf/Data/bravo1/20240612/RealRobotBatch';
+foldernames = {'112946', '113359'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -133,8 +133,8 @@ for i=1:length(foldernames)
         features  = TrialData.SmoothedNeuralFeatures;
         kinax = find(TrialData.TaskState==3);
         features =  features(kinax);
-        l = min(length(features),8);
-        features=features(1:l);
+        %l = min(length(features),8);
+        %features=features(1:l);
         temp = cell2mat(features);
 
         % get delta, beta and hG removing bad channels
@@ -146,6 +146,11 @@ for i=1:length(foldernames)
             good_ch(bad_ch_tmp)=0;
         end
         temp = temp(logical(good_ch),:);
+
+        % 2-norm
+        for ii=1:size(temp,2)
+            temp(:,ii) = temp(:,ii)./norm(temp(:,ii));
+        end
 
         if TrialData.TargetID == 1
             D1 = [D1 temp];
@@ -207,25 +212,25 @@ T(aa(1):aa(end),7)=1;
 
 %%%%%%%% CODE TO UPDATE THE PNP DECODER %%%%%%%
 cd('/home/ucsf/Projects/bci/clicker')
-% load net_B1_253_TrfLearn % this is the original PnP... if updating and saving, use the name below
-% net = net_B1_253_TrfLearn;
-% net = train(net,N,T','UseParallel','no');
-% genFunction(net,'MLP_7Dir_B1Transfer_PnP_06192024_NoPooling_Update')
+load net_B3B1_PnP_trfLearn_patternet % this is the original PnP... if updating and saving, use the name below
+net = net_B3B1_PnP_trfLearn_patternet;
+net = train(net,N,T','UseParallel','no');
+genFunction(net,'net_B3B1_PnP_trfLearn_patternet_Update1')
 % net_mlp_pnp_update1 = net;
 % save net_mlp_pnp_update1 net_mlp_pnp_update1
 %%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
 
 % %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
-clear net
-net = patternnet([120]);
-net.performParam.regularization=0.2;
-net.divideParam.trainRatio=0.80;
-net.divideParam.valRatio=0.10;
-net.divideParam.testRatio=0.1;
-net = train(net,N,T','UseParallel','no');
-cd('/home/ucsf/Projects/bci/clicker')
-genFunction(net,'MLP_7Dir_B1_20240621_CL5_NoPooling')
-save net net
+% clear net
+% net = patternnet([120]);
+% net.performParam.regularization=0.2;
+% net.divideParam.trainRatio=0.80;
+% net.divideParam.valRatio=0.10;
+% net.divideParam.testRatio=0.1;
+% net = train(net,N,T','UseParallel','no');
+% cd('/home/ucsf/Projects/bci/clicker')
+% genFunction(net,'MLP_7Dir_B1_20240612_CL3_NoPooling')
+% save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
 % 
