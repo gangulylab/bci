@@ -512,6 +512,14 @@ Params.FlipBinThresh    = 3;
 % Mode switch sound
 Params.UseSoundModeSwitch = 0;
 
+% Lock gripper closed
+Params.LockGripperClosed = 1;  % 0: do not lock, 1: lock 
+
+% Slow dynamics when outstretched
+Params.UseSlowMode = 1;
+Params.SlowDistanceThrehold = 65; % cm
+Params.k_v_slow      = 0.7;
+Params.k_i_slow      = 12;  
 
 Params.UseModeSwitch = 0;
 Params.PreviewTarget = 1;

@@ -128,6 +128,9 @@ if Params.RobotMode == 6
     write(Params.udp, [0,41,Params.BeliefThresh*10, Params.distB*10,Params.distK*10,Params.velB*10,Params.velK*10,Params.pDiag*10,Params.slowThresh,0,0,0], "127.0.0.1", Params.pythonPort); 
 end
 
+write(Params.udp, [0,42,Params.LockGripperClosed,0,0,0,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+write(Params.udp, [0,43,Params.UseSlowMode,Params.SlowDistanceThreshold, Params.k_v_slow*100, Params.k_i_slow,0,0,0,0,0,0], "127.0.0.1", Params.pythonPort); 
+
 
 % pause(2.0)
 %% Initiate Sound
