@@ -7,8 +7,8 @@ close all
 
 % IMAGINED 
 clc;clear
-root_path = '/home/ucsf/Data/bravo1/20240621/Robot3DArrow';
-foldernames = {'104634', '105305', '105628', '105945', '110422', '110744'};
+root_path = '/home/ucsf/Data/bravo1/20240731/Robot3DArrow';
+foldernames = {'140330', '140715', '141041', '141406', '141727', '142055'};
 cd(root_path)
 
 
@@ -68,8 +68,8 @@ end
 
 
 % ONLINE DATA AS WELL
-root_path = '/home/ucsf/Data/bravo1/20240621/Robot3DArrow';
-foldernames = {'111422', '111843', '112102', '135515', '140114', '140342'};
+root_path = '/home/ucsf/Data/bravo1/20240731/Robot3DArrow';
+foldernames = {'142859', '143131', '143357'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -120,8 +120,8 @@ end
 
 
 % ROBOT DATA AS WELL 
-root_path = '/home/ucsf/Data/bravo1/20240612/RealRobotBatch';
-foldernames = {'112946', '113359'};
+root_path = '/home/ucsf/Data/bravo1/20240731/RealRobotBatch';
+foldernames = {'144519'};
 cd(root_path)
 
 for i=1:length(foldernames)
@@ -211,26 +211,93 @@ T(aa(1):aa(end),6)=1;
 T(aa(1):aa(end),7)=1;
 
 %%%%%%%% CODE TO UPDATE THE PNP DECODER %%%%%%%
-cd('/home/ucsf/Projects/bci/clicker')
-load net_B3B1_PnP_trfLearn_patternet % this is the original PnP... if updating and saving, use the name below
-net = net_B3B1_PnP_trfLearn_patternet;
-net = train(net,N,T','UseParallel','no');
-genFunction(net,'net_B3B1_PnP_trfLearn_patternet_Update1')
+% cd('/home/ucsf/Projects/bci/clicker')
+% % load net_B3B1_PnP_trfLearn_patternet_0717 % this is the original PnP... if updating and saving, use the name below
+% % net = net_B3B1_PnP_trfLearn_patternet;
+% % net = train(net,N,T','UseParallel','no');
+% % genFunction(net,'net_B3B1_PnP_trfLearn_patternet_Update1')
+% 
+% % some bugs in codes above, could not get the val and test
+% % modified version below
+% load net_B3B1_PnP_trfLearn_patternet_0717 % this is the original PnP net net = net_B3B1_PnP_trfLearn_patternet; 
+% net = net_B3B1_PnP_trfLearn_patternet;
+% trainRatio = 0.7; 
+% valRatio = 0.15; 
+% testRatio = 0.15; 
+% [trainInd,valInd,testInd]=dividerand(length(T),trainRatio,valRatio,testRatio);
+% 
+% net.divideFcn='divideind';
+% net.divideParam.trainInd=trainInd;
+% net.divideParam.valInd=valInd;
+% net.divideParam.testInd=testInd;
+% net = train(net, N, T', 'UseParallel', 'no'); 
+% genFunction(net, 'net_B3B1_PnP_trfLearn_patternet_20240731_Update1') 
+
+
+% backup
+% load net_B3B1_PnP_trfLearn_patternet_0717 % this is the original PnP net net = net_B3B1_PnP_trfLearn_patternet; 
+% net = net_B3B1_PnP_trfLearn_patternet;
+% 
+% 
+% % Split dataset 
+% trainRatio = 0.7; 
+% valRatio = 0.15; 
+% testRatio = 0.15; 
+% totalLength=length(T);
+% 
+% % shuffle idx
+% randnIdx = randperm(totalLength);
+% 
+% trainSize=round(totalLength*trainRatio);
+% valSize=round(totalLength*valRatio);
+% testSize=totalLength - trainSize - valSize;
+% 
+% % set idx of different set manually
+% trainInd=randnIdx(1:trainSize);
+% valInd=randnIdx(trainSize+1:trainSize+valSize);
+% testInd=randnIdx(trainSize+valSize+1:end);
+% 
+% 
+% % Set params 
+% net.divideFcn = 'divideind'; 
+% net.divideParam.trainInd = trainInd; 
+% net.divideParam.valInd = valInd; 
+% net.divideParam.testInd = testInd; 
+% net = train(net, N, T', 'UseParallel', 'no'); 
+% genFunction(net, 'net_B3B1_PnP_trfLearn_patternet_20240731_Update1') 
+
+% 
+% 
+% 
+% 
+% 
+% 
+% 
+
+
+
+% 
+
+
+
+
+
+
 % net_mlp_pnp_update1 = net;
 % save net_mlp_pnp_update1 net_mlp_pnp_update1
 %%%%%%%%%%%%% END SECTION %%%%%%%%%%%%
 
 % %%%% CODE TO TRAIN A NEURAL NETWORK FROM SCRATCH
-% clear net
-% net = patternnet([120]);
-% net.performParam.regularization=0.2;
-% net.divideParam.trainRatio=0.80;
-% net.divideParam.valRatio=0.10;
-% net.divideParam.testRatio=0.1;
-% net = train(net,N,T','UseParallel','no');
-% cd('/home/ucsf/Projects/bci/clicker')
-% genFunction(net,'MLP_7Dir_B1_20240612_CL3_NoPooling')
-% save net net
+clear net
+net = patternnet([120]);
+net.performParam.regularization=0.2;
+net.divideParam.trainRatio=0.80;
+net.divideParam.valRatio=0.10;
+net.divideParam.testRatio=0.1;
+net = train(net,N,T','UseParallel','no');
+cd('/home/ucsf/Projects/bci/clicker')
+genFunction(net,'MLP_7Dir_B1_20240731_CL3_NoPooling')
+save net net
 % %%%%%%%%%%%%%%%%%%%%%%% END SECTION %%%%%
 % 
 % 

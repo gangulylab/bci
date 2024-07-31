@@ -23,7 +23,7 @@ Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & la
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.BaselineTime         = 0; % secs
-Params.BadChannels          = [];
+Params.BadChannels          = [228, 13, 14, 246];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true
@@ -79,7 +79,7 @@ Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
 %    Params.NeuralNetFunction = 'MLP_9Dir_B1_20240517_CL3_NoPooling';
-   Params.NeuralNetFunction = 'net_B3B1_PnP_trfLearn_patternet';
+   Params.NeuralNetFunction = 'MLP_7Dir_B1_20240731_CL2_NoPooling';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
     Params.NeuralNetSoftMaxThresh = 0;

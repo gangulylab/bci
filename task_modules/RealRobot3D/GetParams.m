@@ -23,7 +23,7 @@ Params.CLDA.AdaptType   = 'linear'; % {'none','linear'}, affects assistance & la
 
 Params.InitializationMode   = 4; % 1-imagined mvmts, 2-shuffled imagined mvmts, 3-choose dir, 4-most recent KF
 Params.BaselineTime         = 0; % secs
-Params.BadChannels          = [14,20,21,22];
+Params.BadChannels          = [228, 13, 14, 246];
 Params.SpatialFiltering     = false;
 Params.UseFeatureMask       = true;
 Params.GenNeuralFeaturesFlag= false; % if blackrock is off, automatically sets to true
@@ -77,7 +77,7 @@ Params.MultiDecisionBoundary =-2;
 Params.NeuralNetFlag = true;
 if Params.NeuralNetFlag
    Params.NeuralNetSoftMaxThresh = 0.4;
-    Params.NeuralNetFunction = 'MLP_7Dir_B1_20240621_CL4_NoPooling';
+    Params.NeuralNetFunction = 'MLP_7Dir_B1_20240731_CL3_NoPooling';
    %Params.NeuralNetFunction = 'MLP_4Dir_Imagined_20210217_Day3_AllFeat';
    %Params.NeuralNetFunction = 'multilayer_perceptron_4Dir_MimeUpTongueIn_OnlineData';
 else
@@ -516,10 +516,10 @@ Params.UseSoundModeSwitch = 0;
 Params.LockGripperClosed = 1;  % 0: do not lock, 1: lock 
 
 % Slow dynamics when outstretched
-Params.UseSlowMode = 1;
-Params.SlowDistanceThrehold = 65; % cm
-Params.k_v_slow      = 0.7;
-Params.k_i_slow      = 12;  
+Params.UseSlowMode = 0;
+Params.SlowDistanceThreshold = 65; % cm
+Params.k_v_slow      = 0.8;
+Params.k_i_slow      = 18;  
 
 Params.UseModeSwitch = 0;
 Params.PreviewTarget = 1;
