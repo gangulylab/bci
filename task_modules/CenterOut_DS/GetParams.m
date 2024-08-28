@@ -5,7 +5,7 @@
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'CenterOut_IBID';
+Params.Task = 'CenterOut_DS';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
