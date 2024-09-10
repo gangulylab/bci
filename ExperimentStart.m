@@ -40,8 +40,9 @@ valid_tasks = {...
     'RealRobotBatch',...
     'RealRobot3D',...
     'RobotEtchASketch',...
-    'CenterOut_IBID'
-    'CenterOut_DS'};
+    'CenterOut_IBID',...
+    'CenterOut_DS',...
+    'Cursor_OnOff'};
 assert(any(strcmp(Task,valid_tasks)), 'Unknown task')
 if ~exist('Subject','var'), Subject = 'Test'; DEBUG = 1; end
 if ~exist('ControlMode','var'), ControlMode = 2; end
@@ -54,8 +55,10 @@ if strcmpi(Subject,'Test'), Subject = 'Test'; end % ignore case
 if IsWin
     %homedir = 'C:\Users\ganguly-lab2\Documents\bci_data_test';
     %projectdir = fullfile('C:\Users\ganguly-lab2\Documents\MATLAB\bci');
-    homedir='C:\Users\Nikhlesh\Documents\bci_data_test';
-    projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\bci');
+    % homedir='C:\Users\Nikhlesh\Documents\bci_data_test';
+    % projectdir = fullfile('C:\Users\Nikhlesh\Documents\GitHub\bci');
+    homedir='D:\B1_feedback';
+    projectdir = fullfile('D:\B1_feedback\bci-MultiStateDiscreteBravo2');
 elseif IsOSX
     homedir = '/Users/daniel/';
     projectdir = '/Users/daniel/Projects/bci/';
@@ -278,7 +281,7 @@ if strcmpi(str,'n')
 end
 
 %% Initialize Window
-% Screen('Preference', 'SkipSyncTests', 0);
+Screen('Preference', 'SkipSyncTests', 1);
 if strcmp(Task(1:5), 'Robot') || strcmp(Task(1:4), 'Hand') || strcmp(Task(1:4), 'Grip') || strcmp(Task(1:4), 'Real') 
     Params.Center = [0,0,0];
     if strcmp(Task,'HandSequence')
@@ -365,7 +368,7 @@ catch ME % handle errors gracefully
         end
         fprintf(1,'\n%s\n', errorMessage);
     end
-    keyboard;
+    % keyboard;
 end
 
 end % ExperimentStart

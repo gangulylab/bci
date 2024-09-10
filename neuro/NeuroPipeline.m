@@ -36,7 +36,7 @@ if Params.GenNeuralFeaturesFlag,
 end
 
 % dimensionality reduction on neural features
-Neuro.MaskedFeatures = Neuro.NeuralFeatures(Neuro.FeatureMask);
+% Neuro.MaskedFeatures = Neuro.NeuralFeatures(Neuro.FeatureMask);
 if Neuro.DimRed.Flag,
     %Neuro.NeuralFactors = Neuro.DimRed.F(Neuro.NeuralFeatures);
     Neuro.NeuralFactors = Neuro.DimRed.F(Neuro.MaskedFeatures);

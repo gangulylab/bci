@@ -28,7 +28,7 @@ if decoder_out ~= 7
 switch targetID
     case 1
         if decoder_out ~= 0
-            key = 2;
+            key = 5;
         else; key = 0;
         end
     case 3
@@ -38,7 +38,7 @@ switch targetID
         end
     case 5
         if decoder_out ~= 0
-            key = 4;
+            key = 6;
         else; key = 0;
         end
     case 7

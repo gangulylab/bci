@@ -5,7 +5,7 @@
 % The parameters are all saved in 'Params.mat' for each experiment
 
 %% Experiment
-Params.Task = 'CenterOut_DS';
+Params.Task = 'Cursor_OnOff';
 switch Params.ControlMode
     case 1, Params.ControlModeStr = 'MousePosition';
     case 2, Params.ControlModeStr = 'MouseVelocity';
@@ -62,7 +62,7 @@ Params.UpdateRate           = 5; % Hz
 Params.SaveKalmanFlag = false; % if true, saves kf at each time bin, if false, saves kf 1x per trial
 G = Params.Gain;
 t = 1/Params.UpdateRate;
-a = 0.1; %0.91;%.825;
+a = 0.91;%.825;
 w = 120;
 if Params.ControlMode>=3
     Params = LoadKF2dDynamics(Params, G, t, a, w);
@@ -168,13 +168,13 @@ Params.StartPositions  = [0, 0];
 Params.TargetRect = ...
     [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
-Params.NumTargets   = 8;
-Params.TargetRadius = 450;
+Params.NumTargets   = 9;
+Params.TargetRadius = 700;
 
 Params.ReachTargets = zeros(Params.NumTargets, 2);
 p_tmp   = [0,Params.TargetRadius];
-for i = 1:Params.NumTargets
-    theta = (i-1)*2*pi/Params.NumTargets;
+for i = 1:Params.NumTargets-1
+    theta = (i-1)*2*pi/(Params.NumTargets-1);
     
     R = [cos(theta), -sin(theta);sin(theta), cos(theta)];    
     Params.ReachTargets(i,:) = R*p_tmp';
@@ -185,7 +185,7 @@ Params.NumStartPos  = length(Params.StartPositions);
 
 %% Cursor
 Params.CursorColor  = [0,102,255];
-Params.CursorSize   = 15;  %30
+Params.CursorSize   = 30;
 Params.CursorRect   = [-Params.CursorSize -Params.CursorSize ...
     +Params.CursorSize +Params.CursorSize];
 
@@ -195,10 +195,10 @@ Params.NumAdaptBlocks       = 0;
 Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
-Params.NumTrialsPerBlock    = 4;
-Params.TargetOrder          = [1,3,5,7];
+Params.NumTrialsPerBlock    = 3;
+Params.TargetOrder          = [randi(8), randperm(9,6)];
 % Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
-Params.TargetOrder          = [Params.TargetOrder, 1];
+% Params.TargetOrder          = [Params.TargetOrder, 1];
 
 %% CLDA Parameters
 TypeStrs                = {'none','refit','smooth_batch','rml'};
@@ -246,7 +246,7 @@ Params.InterTrialInterval   = 2;
 Params.InstructedDelayTime  = 1;
 Params.CueTime              = 0.75;
 Params.MaxStartTime         = 25;
-Params.MaxReachTime         = 20;
+Params.MaxReachTime         = 45;
 Params.InterBlockInterval   = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime     = 5;
 
@@ -288,4 +288,6 @@ Params.ClickerBinThresh = 0.7;
 
 Params.HoldTime = 1;
 
+Params.Offwindow = 4;
+Params.Onwindow = 6;
 end % GetParams

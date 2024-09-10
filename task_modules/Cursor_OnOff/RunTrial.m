@@ -6,39 +6,11 @@ function [Data, Neuro, KF, Params, Clicker] = RunTrial(Data,Params,Neuro,TaskFla
 
 global Cursor
 
-% Change constrain_flag to 0 for normal control
-constrain_flag = 0;
-
-%% get random target params for the trial
-% sizearr = [20,35, 50];
-radiusarr = [150, 250, 350, 500];
-Params.TargetSize       = 40; %sizearr(randi(3));
-Params.OutTargetColor   = [55,255,0];
-Params.InTargetColor    = [255,55,0];
-
-Params.StartPositions  = [0, 0];
-Params.TargetRect = ...
-    [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
-
-Params.TargetRadius = radiusarr(randi(4));
-
-Params.ReachTargets = zeros(Params.NumTargets, 2);
-p_tmp   = [0,radiusarr(randi(4))];
-
-for i = 1:Params.NumTargets
-    theta = (i-1)*2*pi/Params.NumTargets;
-    
-    R = [cos(theta), -sin(theta);sin(theta), cos(theta)];    
-    Params.ReachTargets(i,:) = R*p_tmp';
-end
-
-Params.NumStartPos  = length(Params.StartPositions);
-Data.Params = Params;
 %% Set up trial
 ReachTargetPos  = Params.ReachTargets(Data.TargetID,:);
 Data.TargetPosition = ReachTargetPos;
-
-% TargetID        = Data.TargetID;
+targetnum = 1;
+TargetID        = Data.TargetID;
 
 % Output to Command Line
 fprintf('\nTrial: %i\n',Data.Trial)
@@ -147,20 +119,20 @@ if ~Data.ErrorID && Params.CueTime>0
     InTargetTotalTime = 0;
 
     % draw all targets in gray    
-    % for k = 1:Params.NumTargets
-    %      TargetPos = Params.ReachTargets(k,:);
-    %      Rect = Params.TargetRect; % centered at (0,0)
-    %      Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
-    %      Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
-    %      Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
-    % end
+    for k = 1:Params.NumTargets
+         TargetPos = Params.ReachTargets(k,:);
+         Rect = Params.TargetRect; % centered at (0,0)
+         Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
+         Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
+         Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
+    end
 
    % draw goal target in red
     TargetPos = ReachTargetPos;
     Rect = Params.TargetRect; % centered at (0,0)
     Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
     Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
-    Screen('FillOval', Params.WPTR, [255,0,0],  Rect);
+    Screen('FillOval', Params.WPTR, [255,0,255],  Rect);
 
     % show drawing
     Screen('DrawingFinished', Params.WPTR);
@@ -224,12 +196,16 @@ if ~Data.ErrorID
     done                = 0;
     TotalTime           = 0;
     InTargetTotalTime   = 0;
+    lastonofftime       = 0;
+    OnState             = 0;
     ClickDec_Buffer     = zeros(Params.RunningModeBinNum, 1);
     StopClicker_Buffer  = zeros(Params.ClickerBinNum, 1);
 
     temp_dir            = [0,0,0];
     ClickToSend         = 0;
 
+    red                 = [255,0,0];
+    green               = [0,255,0];    
     while ~done
         % Update Time & Position
         tim = GetSecs;
@@ -262,12 +238,25 @@ if ~Data.ErrorID
 
                 % Update decoder
                 [Click_Decision,Click_Distance] = UpdateMultiStateClicker(Params,Neuro,Clicker);
-                
-                %constrain the cursor to 1D
-                if constrain_flag == 1
-                    Click_Decision = constrain1D(Data.TargetID,Click_Decision);
+                % update the on/off state
+                if OnState
+                    if (tim-lastonofftime) >= Params.Onwindow
+                        OnState = ~OnState;
+                        lastonofftime = tim;
+                    end
+                else
+                    if (tim-lastonofftime) >= Params.Offwindow
+                        OnState = ~OnState;
+                        lastonofftime = tim;
+                    end
                 end
-                Click_Decision
+
+                % Set Output to 0 if off state
+                if ~OnState
+                    Click_Decision = 0;
+                end
+
+                % Click_Decision
                 Cursor.ClickState               = Click_Decision;
                 Cursor.ClickDistance            = Click_Distance;
                 Data.ClickerState(1,end+1)      = Cursor.ClickState;
@@ -285,7 +274,7 @@ if ~Data.ErrorID
 
                 U    = zeros(3,1);
                 U(1) = int8(RunningMode_ClickDec == 1) - int8(RunningMode_ClickDec == 3);
-                U(2) = int8(RunningMode_ClickDec == 5) - int8(RunningMode_ClickDec == 6);
+                U(2) = int8(RunningMode_ClickDec == 6) - int8(RunningMode_ClickDec == 5);
                 U(3) = 0;
 
                 A = Params.dA;
@@ -298,28 +287,31 @@ if ~Data.ErrorID
                     Data.InTarget(:,end+1)  = 0;
                 end
 
-                % % draw all targets in gray    
-                % for k = 1:Params.NumTargets
-                %      TargetPos = Params.ReachTargets(k,:);
-                %      Rect = Params.TargetRect; % centered at (0,0)
-                %      Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
-                %      Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
-                %      Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
-                % end
+                % draw all targets in gray    
+                for k = 1:Params.NumTargets
+                     TargetPos = Params.ReachTargets(k,:);
+                     Rect = Params.TargetRect; % centered at (0,0)
+                     Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
+                     Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
+                     Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
+                end
 
-                % draw goal target in red
+                % draw goal target in Purple
                 TargetPos = ReachTargetPos;
                 Rect = Params.TargetRect; % centered at (0,0)
                 Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
                 Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
-                Screen('FillOval', Params.WPTR, [255,0,0],  Rect);
+                Screen('FillOval', Params.WPTR, [255,0,255],  Rect);
 
                 % draw cursor
                 CursorRect                  = Params.CursorRect;
                 CursorRect([1,3])           = CursorRect([1,3]) + Cursor.State(1) + Params.Center(1); % add x-pos
                 CursorRect([2,4])           = CursorRect([2,4]) + Cursor.State(2) + Params.Center(2); % add y-pos
-                Screen('FillOval', Params.WPTR, [0,0,255], CursorRect)
-
+                if OnState
+                    Screen('FillOval', Params.WPTR, green, CursorRect);
+                else
+                    Screen('FillOval', Params.WPTR,red, CursorRect);
+                end
                 Screen('DrawingFinished', Params.WPTR);
                 Screen('Flip', Params.WPTR);
         
@@ -331,11 +323,15 @@ if ~Data.ErrorID
         
                 % trial end conditions 
 
-                if any(inTarget)  % if in any target
+                if find(inTarget)==TargetID  % if in any target
                     if Params.UseClicker % use clicker
                         if (mean(StopClicker_Buffer) > Params.ClickerBinThresh) % if use clicker 
                             click = 1;
-                            done = 1;
+                            % done = 1;
+                            targetnum = targetnum+1;
+                            TargetID = Params.TargetOrder(targetnum);
+                            ReachTargetPos = Params.ReachTargets(TargetID,:);
+
                         end
                     else % use hold time
                         if find(inTarget) == oldTarget
@@ -346,34 +342,39 @@ if ~Data.ErrorID
                         end
 
                         if InTargetTotalTime > Params.HoldTime
-                            done = 1;
+                            % done = 1;
+                            targetnum = targetnum+1;
+                            TargetID = Params.TargetOrder(targetnum);
+                            ReachTargetPos = Params.ReachTargets(TargetID,:);
+
                         end
                     end
                 end
              
+
                 Data.Click(end + 1) = click; 
            
                 % end if takes too long
                 if TotalTime > Params.MaxReachTime
                     done = 1;
-                    Data.ErrorID = 3;
-                    Data.ErrorStr = 'Time-out';
+                    % Data.ErrorID = 3;
+                    % Data.ErrorStr = 'Time-out';
                     Data.SelectedTargetID = 0;
                     Data.SelectedTargetPosition = NaN;
 
                 end
         
                 % end if clicks in a target or hold
-                if done == 1
-                    Data.SelectedTargetID = find(inTarget);
-                    Data.SelectedTargetPosition = Params.ReachTargets(Data.SelectedTargetID,:);
-
-                    if any(Data.SelectedTargetID ~= Data.TargetID)
-                        Data.ErrorID = 4;
-                        Data.ErrorStr = 'WrongTarget';
-
-                    end
-                end
+                % if done == 1
+                %     Data.SelectedTargetID = find(inTarget);
+                %     Data.SelectedTargetPosition = Params.ReachTargets(Data.SelectedTargetID,:);
+                % 
+                %     if any(Data.SelectedTargetID ~= Data.TargetID)
+                %         Data.ErrorID = 4;
+                %         Data.ErrorStr = 'WrongTarget';
+                % 
+                %     end
+                % end
         end
     end % Reach Target Loop
 end % only complete if no errors
