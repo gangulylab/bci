@@ -261,6 +261,7 @@ if ~Data.ErrorID
                 Cursor.ClickDistance            = Click_Distance;
                 Data.ClickerState(1,end+1)      = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1)   = Cursor.ClickDistance;
+                Data.OnState(1,end+1)           = OnState;
 
                 ClickDec_Buffer(1:end-1)        = ClickDec_Buffer(2:end);
                 ClickDec_Buffer(end)            = Click_Decision;

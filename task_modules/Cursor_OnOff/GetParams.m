@@ -289,5 +289,5 @@ Params.ClickerBinThresh = 0.7;
 Params.HoldTime = 1;
 
 Params.Offwindow = 4;
-Params.Onwindow = 6;
+Params.Onwindow = 8;
 end % GetParams
