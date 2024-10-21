@@ -1,7 +1,7 @@
 function key = readNumPad()
 
 % map = [86, 89, 84, 81, 80, 88, 85];
-map = [102, 88, 100, 80, 104, 98, 101];
+map = [39, 89, 37, 104, 38, 40, 101];
 [down, ~, code] = KbCheck();
 
 if down % Key pressed

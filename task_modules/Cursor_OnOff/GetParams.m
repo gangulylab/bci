@@ -160,7 +160,7 @@ Params.ChPooling = false;
 
 %% Targets
 
-Params.TargetSize       = 75;
+Params.TargetSize       = randi([1 2],1,1)*50;
 Params.OutTargetColor   = [55,255,0];
 Params.InTargetColor    = [255,55,0];
 
@@ -196,7 +196,7 @@ Params.NumFixedBlocks       = 1;
 
 % Cardinal Directions
 Params.NumTrialsPerBlock    = 3;
-Params.TargetOrder          = [randi(8), randperm(9,6)];
+Params.TargetOrder          = [randi(8), randperm(9,8)];
 % Params.TargetOrder          = Params.TargetOrder(randperm(length(Params.TargetOrder)));  % randomize order
 % Params.TargetOrder          = [Params.TargetOrder, 1];
 
@@ -246,7 +246,7 @@ Params.InterTrialInterval   = 2;
 Params.InstructedDelayTime  = 1;
 Params.CueTime              = 0.75;
 Params.MaxStartTime         = 25;
-Params.MaxReachTime         = 45;
+Params.MaxReachTime         = 55;
 Params.InterBlockInterval   = 10; % 0-10s, if set to 10 use instruction screen
 Params.ImaginedMvmtTime     = 5;
 

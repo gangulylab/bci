@@ -127,7 +127,7 @@ if ~Data.ErrorID && Params.CueTime>0
          Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
     end
 
-   % draw goal target in red
+   % draw goal target in purple
     TargetPos = ReachTargetPos;
     Rect = Params.TargetRect; % centered at (0,0)
     Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
@@ -198,6 +198,11 @@ if ~Data.ErrorID
     InTargetTotalTime   = 0;
     lastonofftime       = 0;
     OnState             = 0;
+
+    Data.Params.OnWindows = [];
+    Data.Params.OffWindows = [];
+    Data.Params.currentTargetSz = [];
+
     ClickDec_Buffer     = zeros(Params.RunningModeBinNum, 1);
     StopClicker_Buffer  = zeros(Params.ClickerBinNum, 1);
 
@@ -243,11 +248,15 @@ if ~Data.ErrorID
                     if (tim-lastonofftime) >= Params.Onwindow
                         OnState = ~OnState;
                         lastonofftime = tim;
+                        Params.Offwindow = 3 + (5-3)*rand();
+                        Data.Params.OnWindows(end+1) = Params.Onwindow;
                     end
                 else
                     if (tim-lastonofftime) >= Params.Offwindow
                         OnState = ~OnState;
                         lastonofftime = tim;
+                        Params.Onwindow = 8 + (10-8)*rand();
+                        Data.Params.OffWindows(end+1) = Params.Offwindow;
                     end
                 end
 
@@ -261,6 +270,7 @@ if ~Data.ErrorID
                 Cursor.ClickDistance            = Click_Distance;
                 Data.ClickerState(1,end+1)      = Cursor.ClickState;
                 Data.ClickerDistance(1,end+1)   = Cursor.ClickDistance;
+                
                 Data.OnState(1,end+1)           = OnState;
 
                 ClickDec_Buffer(1:end-1)        = ClickDec_Buffer(2:end);
@@ -288,14 +298,14 @@ if ~Data.ErrorID
                     Data.InTarget(:,end+1)  = 0;
                 end
 
-                % draw all targets in gray    
-                for k = 1:Params.NumTargets
-                     TargetPos = Params.ReachTargets(k,:);
-                     Rect = Params.TargetRect; % centered at (0,0)
-                     Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
-                     Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
-                     Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
-                end
+                % % draw all targets in gray    
+                % for k = 1:Params.NumTargets
+                %      TargetPos = Params.ReachTargets(k,:);
+                %      Rect = Params.TargetRect; % centered at (0,0)
+                %      Rect([1,3]) =  Rect([1,3]) +  TargetPos(1) + Params.Center(1); % add x-pos
+                %      Rect([2,4]) =  Rect([2,4]) +  TargetPos(2) + Params.Center(2); % add y-pos
+                %      Screen('FillOval', Params.WPTR, [200,200,200],  Rect)
+                % end
 
                 % draw goal target in Purple
                 TargetPos = ReachTargetPos;
@@ -320,7 +330,8 @@ if ~Data.ErrorID
                 Cursor.TaskState = 3;
                 Data.TaskState(1,end+1) = Cursor.TaskState;
                 click = 0;
-        
+                
+                Data.Params.currentTargetSz(end+1) = Params.TargetSize;
         
                 % trial end conditions 
 
@@ -332,6 +343,10 @@ if ~Data.ErrorID
                             targetnum = targetnum+1;
                             TargetID = Params.TargetOrder(targetnum);
                             ReachTargetPos = Params.ReachTargets(TargetID,:);
+                            Params.TargetSize       = randi([1 2],1,1)*50;
+                            Params.TargetRect = ...
+                            [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
+
 
                         end
                     else % use hold time
@@ -347,6 +362,9 @@ if ~Data.ErrorID
                             targetnum = targetnum+1;
                             TargetID = Params.TargetOrder(targetnum);
                             ReachTargetPos = Params.ReachTargets(TargetID,:);
+                            Params.TargetSize       = randi([1 2],1,1)*50;
+                            Params.TargetRect = ...
+                            [-Params.TargetSize -Params.TargetSize +Params.TargetSize +Params.TargetSize];
 
                         end
                     end
